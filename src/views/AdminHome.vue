@@ -80,9 +80,7 @@ section{
 }
 #left{
   display: flex;
-  flex-basis: auto;
     flex-direction: column;
-    flex-shrink: 0;
     -webkit-box-align: end;
     align-items: flex-end;
     position: relative;
@@ -90,32 +88,25 @@ section{
 #left_wrap{
   width: 275px;
   display: flex;
-    flex-basis: auto;
     flex-direction: column;
-    flex-shrink: 0;
-    align-items: stretch;
 }
 .left-hold{
   position: fixed;
   top: 0;
   height: 100%;
-      display: flex;
-    flex-basis: auto;
-    flex-direction: column;
-    flex-shrink: 0;
-    border-right: 1px solid $dark-light;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid $dark-light;
 }
 .left-content{
   width: 275px;
   height: 100%;
   padding: 25px 15px;
   position: relative;
-      -webkit-box-pack: justify;
-    justify-content: space-between;
-        display: flex;
-    flex-basis: auto;
-    flex-direction: column;
-    flex-shrink: 0;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
 }
 main{
   width: 100%;
