@@ -7,6 +7,7 @@ import Logout from '@/components/app/Logout'
 import AdminHome from '@/views/AdminHome.vue'
 import WebHome from '@/views/WebHome.vue'
 import Dashboard from '@/views/app/Dashboard.vue'
+import Products from '@/views/app/Products.vue'
 //import Error404 from '@/views/web/Error404.vue'
 
 const routes = [
@@ -19,6 +20,7 @@ const routes = [
     meta: {requiresAuth: true },
     children: [
       { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+      { path: '/products', name: 'Products', component: Products },
       { path: '/logout', component: Logout , name: 'Logout', meta: {requiresAuth: true}},
     ]
   },

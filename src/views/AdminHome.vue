@@ -1,6 +1,5 @@
 <template>
-
-<section>
+<section :style="{minHeight: windowHeight + 'px'}">
     <div id="left">
       <div id="left_wrap">
         <div class="left-hold flex">
@@ -24,10 +23,7 @@
               </div>
               <div class="menu flex">
                 <nav id="main_nav">
-                  <ul>
                     <main-menu />
-                    
-                  </ul>
                 </nav>
               </div>
             </div>
@@ -39,8 +35,44 @@
     <main>
         <div class="main-wrap">
           <div class="main-hold">
-            <div class="main-home">main</div>
-            <div class="main-right">right</div>
+            <!-- main home -->
+            <div class="main-home">
+              <header>
+                <div class="header-wrap">
+                  <div class="header-hold">
+                    <div class="header-content">
+                      <div class="page-title">{{ getCurrentpage.title }}</div>
+                      <div>div</div>
+                    </div>
+                  </div>
+                </div>
+              </header>
+              <div class="main-body">
+                <div class="main-body-content">
+                  <router-view />
+                </div>
+              </div>
+            </div>
+            <!-- end -->
+
+            <!-- right -->
+            <div class="main-right">
+              <div class="right-header">
+                <div class="header-wrap">
+                  <div class="right-header-hold">
+                    <div class="header-content">
+                      Search...
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="main-body">
+                <div class="main-body-content">
+                  Right
+                </div>
+              </div>
+            </div>
+            <!-- end -->
           </div>
         </div>
     </main>
@@ -52,20 +84,30 @@
 </template>
 <script>
 import AccountMenu from '../components/app/includes/AccountMenu.vue'
-//import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import MainMenu from '../components/app/includes/MainMenu.vue'
 export default {
   components: { MainMenu, AccountMenu },
     name: 'AdminHome',
+    computed: mapGetters(['getCurrentpage']),
+    data() {
+      return {
+        windowHeight: ''
+      }
+    },
     created() {
-    window.addEventListener('resize', this.me)
+    window.addEventListener('resize', this.windowSize)
+    this.computeWindow()
   },
   unmounted() {
-    window.removeEventListener('resize', this.me)
+    window.removeEventListener('resize', this.windowSize)
   },
   methods: {
-    me() {
-      console.log('me')
+    windowSize() {
+      this.windowHeight = window.innerHeight
+    },
+    computeWindow() {
+      this.windowHeight = window.innerHeight
     }
   }
 }
@@ -73,7 +115,6 @@ export default {
 <style scoped lang="scss">
 section{
   display: flex;
-  height: 100%;
   width: 80%;
   margin: 0 auto;
 
@@ -84,11 +125,15 @@ section{
     -webkit-box-align: end;
     align-items: flex-end;
     position: relative;
+    z-index: 2;
 }
 #left_wrap{
   width: 275px;
   display: flex;
     flex-direction: column;
+}
+#main_nav{
+  width: 90%;
 }
 .left-hold{
   position: fixed;
@@ -96,7 +141,6 @@ section{
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid $dark-light;
 }
 .left-content{
   width: 275px;
@@ -110,36 +154,33 @@ section{
 }
 main{
   width: 100%;
-  height: 900px;
   display: flex;
   flex-direction: column;
 }
 .main-wrap{
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 .main-hold{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  height: 100%;
 }
 .main-right{
   width: 350px;
 }
 .main-home{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
-  height: 700px;
-}
-
-#main_nav{
-  ul{
-    padding: 0;
-    margin-right: 32px;
-  }
-
-  & div a{
-    display: block;
-  }
+  max-width: 710px;
+  border-right: 1px solid $dark-light;
+  border-left: 1px solid $dark-light;
+  align-items: stretch;
+  flex-basis: auto;
 }
 #logo{
   display: flex;
@@ -150,9 +191,49 @@ main{
     padding: 10px 20px;
   }
 }
-li:hover a{
-        background-color: $dark-light;
-  }
-  
+
+header, .right-header{
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+.header-wrap{
+  display: flex;
+  flex-direction: row;
+  height: 80px;
+}
+.header-hold{
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: saturate(180%) blur(20px);
+  width: 100%;
+  max-width: 710px;
+  border-bottom: 1px solid $dark-light;
+}
+.right-header-hold{
+  display: flex;
+  flex-direction: column;
+  background-color: $white-color;
+  width: 100%;
+}
+.header-content{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 30px;
+  height: 80px;
+  align-items: center;
+}
+.main-body-content{
+  padding: 30px;
+}
+.page-title{
+  font-weight: 700;
+  font-size: 1.5rem;
+}
 
 </style>

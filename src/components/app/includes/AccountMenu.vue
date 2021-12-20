@@ -125,9 +125,9 @@ export default {
   .menu-card{
       position: absolute;
       top: -210px;
-      left: 0;
+      left: -5%;
       height: 200px;
-      width: 100%;
+      width: 120%;
       border-radius: 1rem;
       background-color: $white-color;
       z-index: 101;

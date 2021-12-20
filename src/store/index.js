@@ -17,7 +17,8 @@ export default createStore({
       { id: 4, name: 'My Suppliers', icon: '', url: '/dfd', mobile: false},
       { id: 5, name: 'Invoice', icon: '', url: '/dfd', mobile: false},
       { id: 6, name: 'Reports', icon: '', url: '/dfd', mobile: false},
-    ]
+    ],
+    navPage: { title: '' }
   },
   mutations: {
     //authentication
@@ -33,6 +34,9 @@ export default createStore({
         location.reload()
     },
     //end auth
+    setPagetitle(state, payload) {
+      state.navPage.title = payload
+  },
   },
   actions: {
     //authentication && Logout
@@ -71,5 +75,7 @@ export default createStore({
         return state.user
     },
     getToken: (state) => state.token,
+    getCurrentpage: (state) => state.navPage,
+
   }
 })
