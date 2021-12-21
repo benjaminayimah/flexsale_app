@@ -13,6 +13,10 @@ $warning: #EFB91C;
 
 $myFont: 'Urbanist', Helvetica, sans-serif;
 
+.ml-0{
+  margin-left: 0 !important;
+}
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -63,8 +67,8 @@ body {
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease-in-out;
+  border-radius: 14px;
+  transition: all 0.2s linear;
   background-clip: padding-box;
   appearance: none;
   outline: 0;
@@ -79,6 +83,7 @@ body {
 
 .form-row{
   margin-bottom: 20px;
+  position: relative;
 }
 label{
   display: block;
@@ -97,4 +102,19 @@ label{
   width: 80%;
   margin: 0 auto;
 }
-
+.backdrop{
+  background-color: rgba(0, 0, 0, 0);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+}
+hr{
+  margin: 8px 20px;
+  border-bottom: 1px solid $dark-light;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}

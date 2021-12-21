@@ -18,7 +18,8 @@ export default createStore({
       { id: 5, name: 'Invoice', icon: '', url: '/dfd', mobile: false},
       { id: 6, name: 'Reports', icon: '', url: '/dfd', mobile: false},
     ],
-    navPage: { title: '' }
+    navPage: { title: '' },
+    dynamicFloatingDiv: { left: '', top: ''}
   },
   mutations: {
     //authentication
@@ -36,7 +37,18 @@ export default createStore({
     //end auth
     setPagetitle(state, payload) {
       state.navPage.title = payload
-  },
+    },
+    setDynamicFloatingDiv(state, payload) {
+      let top = payload.offsetTop
+      let left = document.getElementById('app_section').offsetLeft
+      state.dynamicFloatingDiv.left = left
+      state.dynamicFloatingDiv.top = top
+      payload.classList.add('this-will-change')
+    },
+    reSetDynamicFloatingDiv(state) {
+      state.dynamicFloatingDiv.left = null
+      state.dynamicFloatingDiv.top = null
+    },
   },
   actions: {
     //authentication && Logout
@@ -76,6 +88,7 @@ export default createStore({
     },
     getToken: (state) => state.token,
     getCurrentpage: (state) => state.navPage,
+    getFloatingDiv: (state) => state.dynamicFloatingDiv
 
   }
 })
