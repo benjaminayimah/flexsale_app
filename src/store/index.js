@@ -10,14 +10,8 @@ export default createStore({
     mobile: false,
     tablet: false,
     desktop: false,
-    mainMenu: [
-      { id: 1, name: 'Home', icon: '', url: '/dashboard', mobile: false},
-      { id: 2, name: 'Products', icon: '', url: '/fd', mobile: false},
-      { id: 3, name: 'Discounts', icon: '', url: '/fdfd', mobile: false},
-      { id: 4, name: 'My Suppliers', icon: '', url: '/dfd', mobile: false},
-      { id: 5, name: 'Invoice', icon: '', url: '/dfd', mobile: false},
-      { id: 6, name: 'Reports', icon: '', url: '/dfd', mobile: false},
-    ],
+    hideRight: false,
+    
     navPage: { title: '' },
     dynamicFloatingDiv: { left: '', top: ''}
   },
@@ -35,19 +29,46 @@ export default createStore({
         location.reload()
     },
     //end auth
+
+    //page dimensions
+    setMobile(state) {
+      state.tablet = false
+      state.desktop = false
+      state.mobile = true
+      state.hideRight = false
+    },
+    setTablet(state, payload) {
+      state.mobile = false
+      state.desktop = false
+      state.tablet = true
+      if(payload <= 987){
+        state.hideRight = true
+      }else{
+        state.hideRight = false
+      }
+    },
+    setDesktop(state) {
+      state.tablet = false
+      state.mobile = false
+      state.desktop = true
+      state.hideRight = false
+    },
     setPagetitle(state, payload) {
       state.navPage.title = payload
     },
     setDynamicFloatingDiv(state, payload) {
-      let top = payload.offsetTop
-      let left = document.getElementById('app_section').offsetLeft
+      const rect = payload.getBoundingClientRect()
+      let top = rect.top
+      let left = rect.left
       state.dynamicFloatingDiv.left = left
       state.dynamicFloatingDiv.top = top
       payload.classList.add('this-will-change')
     },
-    reSetDynamicFloatingDiv(state) {
+    reSetDynamicFloatingDiv(state, payload) {
       state.dynamicFloatingDiv.left = null
       state.dynamicFloatingDiv.top = null
+      payload.classList.remove('this-will-change')
+
     },
   },
   actions: {
@@ -88,7 +109,13 @@ export default createStore({
     },
     getToken: (state) => state.token,
     getCurrentpage: (state) => state.navPage,
-    getFloatingDiv: (state) => state.dynamicFloatingDiv
+    getFloatingDiv: (state) => state.dynamicFloatingDiv,
+    getMobile: (state) => state.mobile,
+    getTablet: (state) => state.tablet,
+    getDesktop: (state) => state.desktop,
+    getHideRight: (state) => state.hideRight,
+
+
 
   }
 })

@@ -1,71 +1,77 @@
 <template>
 <ul id="main_menu">
     <li>
-        <router-link :to="{ name: 'Dashboard'}">
+        <router-link :to="{ name: 'Dashboard'}" :class="{ 'jc' : getTablet }">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21">
                 <path  d="M17.5,19.5a2,2,0,0,0,2-2V14a2,2,0,0,0-2-2H15.166a2,2,0,0,0-2,2v3.5a2,2,0,0,0,2,2H17.5m-11.667,0a2,2,0,0,0,2-2V16.334a2,2,0,0,0-2-2H3.5a2,2,0,0,0-2,2V17.5a2,2,0,0,0,2,2H5.834m0-10.5a2,2,0,0,0,2-2V3.5a2,2,0,0,0-2-2H3.5a2,2,0,0,0-2,2V7a2,2,0,0,0,2,2H5.834M17.5,6.667a2,2,0,0,0,2-2V3.5a2,2,0,0,0-2-2H15.166a2,2,0,0,0-2,2V4.666a2,2,0,0,0,2,2H17.5M17.5,21H15.166a3.5,3.5,0,0,1-3.5-3.5V14a3.5,3.5,0,0,1,3.5-3.5H17.5A3.5,3.5,0,0,1,21,14v3.5A3.5,3.5,0,0,1,17.5,21ZM5.834,21H3.5A3.5,3.5,0,0,1,0,17.5V16.334a3.5,3.5,0,0,1,3.5-3.5H5.834a3.5,3.5,0,0,1,3.5,3.5V17.5A3.5,3.5,0,0,1,5.834,21Zm0-10.5H3.5A3.5,3.5,0,0,1,0,7V3.5A3.5,3.5,0,0,1,3.5,0H5.834a3.5,3.5,0,0,1,3.5,3.5V7A3.5,3.5,0,0,1,5.834,10.5ZM17.5,8.167H15.166a3.5,3.5,0,0,1-3.5-3.5V3.5a3.5,3.5,0,0,1,3.5-3.5H17.5A3.5,3.5,0,0,1,21,3.5V4.666A3.5,3.5,0,0,1,17.5,8.167Z"/>
             </svg>
-            <span>Home</span>
+            <span v-if="getDesktop">Home</span>
         </router-link>
+        <label v-if="getTablet">Home</label>
     </li>
     <li>
-        <router-link :to="{ name: 'Products'}">
+        <router-link :to="{ name: 'Products'}" :class="{ 'jc' : getTablet }">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21.001">
                 <path d="M-4164.91-223.32-4175-233.41V-243.5h10.09l10.09,10.09a2.786,2.786,0,0,1,.819,1.98,2.786,2.786,0,0,1-.819,1.98l-6.131,6.13a2.777,2.777,0,0,1-1.979.82A2.783,2.783,0,0,1-4164.91-223.32Zm-8.69-10.67,9.681,9.679a1.393,1.393,0,0,0,.99.411,1.4,1.4,0,0,0,.99-.411l6.129-6.13a1.393,1.393,0,0,0,.41-.99,1.391,1.391,0,0,0-.41-.99l-9.679-9.679h-8.111Zm2.1-3.21a2.8,2.8,0,0,1,2.8-2.8,2.8,2.8,0,0,1,2.8,2.8,2.8,2.8,0,0,1-2.8,2.8A2.8,2.8,0,0,1-4171.5-237.2Zm1.4,0a1.4,1.4,0,0,0,1.4,1.4,1.4,1.4,0,0,0,1.4-1.4,1.4,1.4,0,0,0-1.4-1.4A1.4,1.4,0,0,0-4170.1-237.2Z" transform="translate(4175 243.5)"/>
             </svg>
-            <span>Products</span>
+            <span v-if="getDesktop">Products</span>
         </router-link>
+        <label v-if="getTablet">Products</label>
     </li>
     <li>
-        <router-link to="/#">
+        <router-link to="/#" :class="{ 'jc' : getTablet }">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 22.5 22.5">
                 <path d="M-4152.781-279.75a4.036,4.036,0,0,1-4.031-4.031,4.036,4.036,0,0,1,4.031-4.031,4.036,4.036,0,0,1,4.031,4.031A4.036,4.036,0,0,1-4152.781-279.75Zm0-6.563a2.534,2.534,0,0,0-2.531,2.531,2.534,2.534,0,0,0,2.531,2.531,2.534,2.534,0,0,0,2.531-2.531A2.534,2.534,0,0,0-4152.781-286.313Zm-16.407,5.25a.748.748,0,0,1-.53-.22.747.747,0,0,1-.22-.53.748.748,0,0,1,.22-.53l18.375-18.375a.75.75,0,0,1,1.061,0,.747.747,0,0,1,.22.53.748.748,0,0,1-.22.53l-18.375,18.375A.748.748,0,0,1-4169.188-281.063Zm1.969-13.125a4.036,4.036,0,0,1-4.031-4.031,4.036,4.036,0,0,1,4.031-4.031,4.036,4.036,0,0,1,4.031,4.031A4.036,4.036,0,0,1-4167.219-294.188Zm0-6.563a2.534,2.534,0,0,0-2.531,2.531,2.534,2.534,0,0,0,2.531,2.531,2.534,2.534,0,0,0,2.531-2.531A2.534,2.534,0,0,0-4167.219-300.75Z" transform="translate(4171.25 302.25)"/>
             </svg>
-            <span>Discounts</span>
+            <span v-if="getDesktop">Discounts</span>
         </router-link>
+        <label v-if="getTablet">Discounts</label>
     </li>
     <li>
-        <router-link to="/#">
+        <router-link to="/#" :class="{ 'jc' : getTablet }">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16.144 19.065">
                 <path d="M-4144.75-98.349v-.666a8.081,8.081,0,0,1,8.072-8.071,8.08,8.08,0,0,1,8.072,8.071v.666Zm1.363-1.33h13.418a6.751,6.751,0,0,0-6.709-6.077A6.751,6.751,0,0,0-4143.387-99.68Zm2.787-13.523a4.217,4.217,0,0,1,4.211-4.212,4.217,4.217,0,0,1,4.212,4.212,4.217,4.217,0,0,1-4.212,4.213A4.218,4.218,0,0,1-4140.6-113.2Zm1.33,0a2.885,2.885,0,0,0,2.881,2.882,2.886,2.886,0,0,0,2.883-2.882,2.885,2.885,0,0,0-2.883-2.881A2.885,2.885,0,0,0-4139.271-113.2Z" transform="translate(4144.75 117.414)"/>
             </svg>
-            <span>My Suppliers</span>
+            <span v-if="getDesktop">My Suppliers</span>
         </router-link>
+        <label v-if="getTablet">Suppliers</label>
     </li>
     <li>
-        <router-link to="/#">
+        <router-link to="/#" :class="{ 'jc' : getTablet }">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20.136 23.003">
                 <path d="M-4174.068-411.993v-23h13.963l6.173,6.173v16.83Zm1.5-1.5h17.136v-14.27h-5.734V-433.5h-11.4Zm12.9-15.769h3.174l-3.174-3.174ZM-4170-418.994v-1.5h12.5v1.5Zm0-4v-1.5h12.5v1.5Zm0-4v-1.5h6.5v1.5Z" transform="translate(4174.068 434.996)" fill="#212121"/>
             </svg>
-            <span>Invoice</span>
+            <span v-if="getDesktop">Invoice</span>
         </router-link>
+        <label v-if="getTablet">Invoice</label>
     </li>
     <li>
-        <router-link to="/#">
+        <router-link to="/#" :class="{ 'jc' : getTablet }">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 22.638 22.638">
                 <path d="M-4170.306-473.723h0a2.767,2.767,0,0,1-2.763-2.764v-8.8h3.01v1.5h-1.51v7.3a1.266,1.266,0,0,0,1.264,1.264,1.265,1.265,0,0,0,1.262-1.264v-19.875h18.612v19.875a2.766,2.766,0,0,1-2.763,2.764Zm2.764-2.764a2.746,2.746,0,0,1-.307,1.264h14.655a1.265,1.265,0,0,0,1.263-1.264v-18.375h-15.611Zm2.474-2.236v-1.5h10.5v1.5Zm0-4v-1.5h10.5v1.5Zm0-4v-5.5h10.5v5.5Zm1.5-1.5h7.5v-2.5h-7.5Z" transform="translate(4173.069 496.362)"/>
             </svg>
-            <span>Reports</span>
+            <span v-if="getDesktop">Reports</span>
         </router-link>
+        <label v-if="getTablet">Reports</label>
     </li>
     <li>
-        <a id="more" href="#" @click.prevent="showthisMenu('more')">
+        <a id="more" href="#" @click.prevent="showthisMenu('more')" :class="{ 'jc' : getTablet }">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path d="M-4181.094-559.625a12,12,0,0,1,12-12,12,12,0,0,1,12,12,12,12,0,0,1-12,12A12,12,0,0,1-4181.094-559.625Zm1.5,0a10.512,10.512,0,0,0,10.5,10.5,10.513,10.513,0,0,0,10.5-10.5,10.513,10.513,0,0,0-10.5-10.5A10.512,10.512,0,0,0-4179.593-559.625Zm15.059-.46a1.414,1.414,0,0,1,1.415-1.414,1.414,1.414,0,0,1,1.415,1.414,1.414,1.414,0,0,1-1.415,1.414A1.414,1.414,0,0,1-4164.535-560.085Zm-5.74,0a1.414,1.414,0,0,1,1.415-1.414,1.414,1.414,0,0,1,1.415,1.414,1.414,1.414,0,0,1-1.415,1.414A1.414,1.414,0,0,1-4170.274-560.085Zm-5.726,0a1.414,1.414,0,0,1,1.415-1.414,1.415,1.415,0,0,1,1.416,1.414,1.415,1.415,0,0,1-1.416,1.414A1.414,1.414,0,0,1-4176-560.085Z" transform="translate(4181.094 571.625)"/>
             </svg>
-            <span>More</span>
+            <span v-if="getDesktop">More</span>
         </a>
+        <label v-if="getTablet">More</label>
     </li>
     <teleport to="body">
-        <backdrop v-if="showMenu" @click="showthisMenu"/>
-        <div class="more" v-if="showMenu" :style="{ left: getFloatingDiv.left+15+'px', top: getFloatingDiv.top-150+'px'}">
+        <backdrop v-if="showMenu" @click.prevent="showthisMenu('more')" />
+        <div class="more" v-if="showMenu" :style="{ left: getFloatingDiv.left+'px', top: getFloatingDiv.top-300+'px'}">
             <ul id="more_menu">
                 <li>
                     <a href="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 25.57 21.724">
                             <path id="Path_1655" data-name="Path 1655" d="M-127.122-114.189h-7.627v-.665a8.081,8.081,0,0,1,8.071-8.072,8.081,8.081,0,0,1,8.072,8.072v.665Zm-6.265-1.33h13.418a6.751,6.751,0,0,0-6.71-6.077A6.751,6.751,0,0,0-133.387-115.52Zm16.144-3.383v-1.33h6.7a6.053,6.053,0,0,0-.87-2.525A6.055,6.055,0,0,0-113.864-125a6.073,6.073,0,0,0-3.259-.617,6.069,6.069,0,0,0-3.1,1.19l-.532.4-.8-1.064.533-.4a7.394,7.394,0,0,1,3.775-1.449,7.387,7.387,0,0,1,3.973.751,7.392,7.392,0,0,1,2.985,2.728,7.4,7.4,0,0,1,1.1,3.89v.665ZM-130.6-129.042a4.217,4.217,0,0,1,4.212-4.212,4.217,4.217,0,0,1,4.212,4.212,4.216,4.216,0,0,1-4.212,4.212A4.217,4.217,0,0,1-130.6-129.042Zm1.33,0a2.885,2.885,0,0,0,2.882,2.882,2.885,2.885,0,0,0,2.882-2.882,2.885,2.885,0,0,0-2.882-2.882A2.886,2.886,0,0,0-129.271-129.042Zm9.31-3.547a3.329,3.329,0,0,1,3.326-3.325,3.328,3.328,0,0,1,3.325,3.325,3.328,3.328,0,0,1-3.325,3.326A3.329,3.329,0,0,1-119.96-132.589Zm1.33,0a2,2,0,0,0,2,2,2,2,0,0,0,2-2,2,2,0,0,0-2-1.994A2,2,0,0,0-118.63-132.589Z" transform="translate(134.75 135.913)" fill="#212121"/>
                         </svg>
-
                         <span>Customers</span>
                     </a>
                 </li>
@@ -104,7 +110,7 @@
 import { mapGetters } from 'vuex'
 import Backdrop from './Backdrop.vue'
 export default {
-    computed: mapGetters(['getFloatingDiv']),
+    computed: mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop']),
     components: { Backdrop },
     name: 'Main-menu',
     props: ['menu'],
@@ -115,19 +121,22 @@ export default {
     },
     methods: {
         showthisMenu(id) {
+            let elem = document.getElementById(id)
             if(this.showMenu == false) {
                 this.showMenu = true
-                let elem = document.getElementById(id)
                 this.$store.commit('setDynamicFloatingDiv', elem)
             }else{
                 this.showMenu = false
-                this.$store.commit('reSetDynamicFloatingDiv')
+                this.$store.commit('reSetDynamicFloatingDiv', elem)
             }
         }
     }
 }
 </script>
 <style scoped lang="scss">
+.jc{
+  justify-content: center;
+}
 ul{
     padding: 0;
     position: relative;
@@ -147,6 +156,8 @@ li a {
     line-height: 22px;
     transition: 0.2s linear all;
     position: relative;
+    align-items: center;
+    height: 62px;
 }
 li:hover a{
     background-color: $dark-light;
@@ -167,14 +178,20 @@ li svg path {
          fill: $primary-color;
     }
 }
+li label{
+    font-size: 0.8rem;
+    text-align: center;
+    display: none;
+}
 .more{
     width: 220px;
     z-index: 101;
-    position: absolute;
+    position: fixed;
     background-color: $white-color;
     border-radius: 16px;
     box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
     padding: 25px 15px;
+
 }
 #more_menu li a{
     padding: 15px 20px;

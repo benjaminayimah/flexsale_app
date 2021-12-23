@@ -9,7 +9,7 @@ export default {
     },
     methods: {
         setPage() {
-            this.$store.commit('setPagetitle', 'Products')
+            this.$store.commit('setPagetitle', 'All Products')
         }
     }
 }

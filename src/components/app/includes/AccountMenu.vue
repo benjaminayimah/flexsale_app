@@ -1,7 +1,7 @@
 <template>
     <teleport to="body">
-        <backdrop v-if="showMenu" @click="showthisMenu"/>
-        <div v-if="showMenu" class="menu-card" :style="{ left: getFloatingDiv.left+'px', bottom: '100px'}">
+        <backdrop v-if="showMenu" @click="showthisMenu('account_menu')"/>
+        <div v-if="showMenu" class="menu-card" :style="{ left: getFloatingDiv.left-15+'px', bottom: '100px'}">
             <div></div>
             <div class="logout-hold">
                 <hr>
@@ -10,11 +10,11 @@
             <!--<a href="#" @click.prevent="$store.commit('destroyToken')">Logout</a>-->
         </div>
     </teleport>
-    <div id="account_menu" @click="showthisMenu('account_menu')" >
+    <div id="account_menu" @click="showthisMenu('account_menu')" :class="{ 'jc' : getTablet }">
         <div id="avatar">
             <span v-bind:style="{backgroundImage: 'url('+require('@/assets/images/avatar.png')+')'}"></span>
         </div>
-        <div class="acct-label">
+        <div class="acct-label" v-if="getDesktop">
             <div class="user-details">
                 <div id="user_name"><strong>Benjamin Ayimah</strong></div>
                 <div id="shop">John’s Enterprise</div>
@@ -34,7 +34,7 @@ import { mapGetters } from 'vuex'
 import Backdrop from './Backdrop.vue'
 export default {
     components: { Backdrop },
-    computed: mapGetters(['getFloatingDiv']),
+    computed: mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop']),
     name: 'AccountMenu',
     data() {
         return {
@@ -43,19 +43,22 @@ export default {
     },
     methods: {
         showthisMenu(id) {
+            let elem = document.getElementById(id)
             if(this.showMenu == false) {
                 this.showMenu = true
-                let elem = document.getElementById(id)
                 this.$store.commit('setDynamicFloatingDiv', elem)
             }else{
                 this.showMenu = false
-                this.$store.commit('reSetDynamicFloatingDiv')
+                this.$store.commit('reSetDynamicFloatingDiv', elem)
             }
         }
     }
 }
 </script>
 <style scoped lang="scss">
+.jc{
+  justify-content: center;
+}
 #account_menu{
     display: flex;
     flex-direction: row;
@@ -120,7 +123,7 @@ export default {
     background-size: cover;
   }
   .menu-card{
-    position: absolute;
+    position: fixed;
     height: 200px;
     width: 300px;
     border-radius: 16px;
