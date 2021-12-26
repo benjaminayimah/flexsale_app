@@ -1,3 +1,4 @@
+
 $primary-color: #566ff4;
 $primary-light: #f0f3ff;
 $primary-hover: #435ADE;
@@ -17,21 +18,6 @@ $myFont: 'Urbanist', Helvetica, sans-serif;
   margin-left: 0 !important;
 }
 
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: $myFont;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: $dark;
-  font-size: 16px;
-  margin: 0;
-  overflow-x: hidden;
-}
 .button{
   border-style: none;
   line-height: 2.5;
@@ -155,4 +141,13 @@ hr{
     transition: 0.3s all linear;
     border-bottom: 1px solid transparent;
   }
+  #account_menu:hover{
+    background-color: transparent;
+  }
+  /*.header-hold{
+    background-color: $primary-color;
+    path{
+      fill: $white-color !important;
+    }
+  }*/
 }

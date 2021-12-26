@@ -14,6 +14,9 @@
         <div id="account_menu" @click="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
             <div id="avatar">
                 <span v-bind:style="{backgroundImage: 'url('+require('@/assets/images/avatar.png')+')'}"></span>
+                <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
+                    <path d="M404.366,1308.847l-4.744-4.732a.75.75,0,0,1,1.059-1.062l3.663,3.655,3.514-3.644a.75.75,0,1,1,1.08,1.041Z" transform="translate(-399.402 -1302.833)" fill="#11172f"/>
+                </svg>
             </div>
             <div class="acct-label" v-if="getDesktop">
                 <div class="user-details">
@@ -67,6 +70,7 @@ padding: 15px 20px;
 .mob-acct-menu{
   padding: none ;
 }
+
 #account_menu{
     display: flex;
     flex-direction: row;
@@ -120,6 +124,13 @@ padding: 15px 20px;
       }
     }
   }
+  #avatar {
+      display: flex;
+      align-items: center;
+      svg{
+          margin-left: 5px;
+      }
+  }
   #avatar span{
     display: block;
     height: 40px;
@@ -149,7 +160,6 @@ padding: 15px 20px;
           padding: 20px;
           color: $dark;
           text-decoration: none;
-          
           font-weight: 500;
           transition: 0.2s all linear;
       }

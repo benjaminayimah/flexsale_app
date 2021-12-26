@@ -10,6 +10,19 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@/assets/index.scss';
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  font-family: $myFont;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $dark;
+  font-size: 16px;
+  margin: 0 ;
+  overflow-x: hidden;
+}
 
 </style>

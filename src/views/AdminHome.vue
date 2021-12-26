@@ -45,10 +45,10 @@
                 <div class="header-wrap">
                   <div class="header-hold" :class="{ 'bt-0' : !getCurrentpage.mobile }">
                     <div class="header-content">
-                      <div id="mob_logo" v-if="getMobile && !getCurrentpage.mobile" >
+                      <div id="mob_logo" class="anime-leave" v-if="getMobile && !getCurrentpage.mobile" >
                         <logo />
                       </div>
-                      <div class="page-title" v-else>{{ getCurrentpage.title }}</div>
+                      <div class="page-title" :class="{ 'anime-enter': getMobile}" v-else>{{ getCurrentpage.title }}</div>
                       <div class="noti-help">
                         <li class="ml-0" v-if="getHideRight || getMobile">
                           <a href="#">
@@ -72,7 +72,7 @@
                             <span>Help</span></a>
                         </li>
                         <li v-if="getMobile" >
-                          <a id="acct_mob_a" href="#">
+                          <a id="acct_mob_a" href="javascript: void">
                             <account-menu />
                           </a>
                         </li>
@@ -219,7 +219,14 @@ $tablet: 100px;
 }
 .mob-view .noti-help li{
   margin-left: 0;
+  min-width: 42px;
 }
+.mob-view .noti-help li a{
+    padding: 10px;
+  }
+  .mob-view .noti-help li:hover a{
+    background-color: transparent;
+  }
 .mob-view .noti-help li #acct_mob_a{
   padding: 0;
   display: flex;
@@ -442,7 +449,21 @@ header, .right-header{
   }
   }
 }
-
-
+.anime-enter{
+  animation-name: example;
+  animation-duration: 0.5s;
+}
+@keyframes example {
+  from {transform: translateY(20px)}
+  to {transform: translateY(0)}
+}
+.anime-leave{
+  animation-name: example2;
+  animation-duration: 0.5s;
+}
+@keyframes example2 {
+  from {transform: translateY(-20px)}
+  to {transform: translateY(0)}
+}
 
 </style>
