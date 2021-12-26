@@ -1,31 +1,33 @@
 <template>
+<div :class="{ 'jc' : getTablet }">
     <teleport to="body">
-        <backdrop v-if="showMenu" @click="showthisMenu('account_menu')"/>
-        <div v-if="showMenu" class="menu-card" :style="{ left: getFloatingDiv.left-15+'px', bottom: '100px'}">
-            <div></div>
-            <div class="logout-hold">
-                <hr>
-                <a href="#" @click.prevent="$store.commit('destroyToken')">Logout</a>
+            <backdrop v-if="showMenu" @click="showthisMenu('account_menu')"/>
+            <div v-if="showMenu" class="menu-card" :style="{ left: getFloatingDiv.left-15+'px', bottom: '100px'}">
+                <div></div>
+                <div class="logout-hold">
+                    <hr>
+                    <a href="#" @click.prevent="$store.commit('destroyToken')">Logout</a>
+                </div>
+                <!--<a href="#" @click.prevent="$store.commit('destroyToken')">Logout</a>-->
             </div>
-            <!--<a href="#" @click.prevent="$store.commit('destroyToken')">Logout</a>-->
-        </div>
-    </teleport>
-    <div id="account_menu" @click="showthisMenu('account_menu')" :class="{ 'jc' : getTablet }">
-        <div id="avatar">
-            <span v-bind:style="{backgroundImage: 'url('+require('@/assets/images/avatar.png')+')'}"></span>
-        </div>
-        <div class="acct-label" v-if="getDesktop">
-            <div class="user-details">
-                <div id="user_name"><strong>Benjamin Ayimah</strong></div>
-                <div id="shop">John’s Enterprise</div>
+        </teleport>
+        <div id="account_menu" @click="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
+            <div id="avatar">
+                <span v-bind:style="{backgroundImage: 'url('+require('@/assets/images/avatar.png')+')'}"></span>
             </div>
-            <div id="acct_elipse">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div> 
+            <div class="acct-label" v-if="getDesktop">
+                <div class="user-details">
+                    <div id="user_name"><strong>Benjamin Ayimah</strong></div>
+                    <div id="shop">John’s Enterprise</div>
+                </div>
+                <div id="acct_elipse">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div> 
     </div>
+</div>
 
     
 </template>
@@ -56,15 +58,20 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.jc{
+.jc #account_menu{
   justify-content: center;
+}
+.acct-menu{
+padding: 15px 20px;
+}
+.mob-acct-menu{
+  padding: none ;
 }
 #account_menu{
     display: flex;
     flex-direction: row;
     width: 100%;
     align-items: center;
-    padding: 15px 20px;
     border-radius: 1rem;
     transition: 0.2s all linear;
     width: 100%;
@@ -155,5 +162,6 @@ export default {
       }
       
   }
+  
 
 </style>

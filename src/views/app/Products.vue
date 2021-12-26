@@ -1,4 +1,5 @@
 <template>
+<h1 id="page_title">All Products</h1>
  <div>Products</div>
 </template>
 <script>
@@ -17,5 +18,6 @@ export default {
 
 
 <style scoped lang="scss">
+
 
 </style>

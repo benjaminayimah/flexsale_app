@@ -96,6 +96,7 @@ header{
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    width: 100%;
 }
 p{
     margin-bottom: 0;
@@ -113,7 +114,7 @@ p{
 #login_card{
     padding: 60px  40px;
     background-color: $white-color;
-    border-radius: 1rem;
+    border-radius: 24px;
 }
 
 button{

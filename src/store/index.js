@@ -12,8 +12,8 @@ export default createStore({
     desktop: false,
     hideRight: false,
     
-    navPage: { title: '' },
-    dynamicFloatingDiv: { left: '', top: ''}
+    navPage: { title: '', mobile: false },
+    dynamicFloatingDiv: { left: '', top: ''},
   },
   mutations: {
     //authentication
@@ -56,6 +56,14 @@ export default createStore({
     setPagetitle(state, payload) {
       state.navPage.title = payload
     },
+    setMobileTitle(state) {
+      state.navPage.mobile = true
+    },
+    unSetMobileTitle(state) {
+      state.navPage.mobile = false
+    },
+
+
     setDynamicFloatingDiv(state, payload) {
       const rect = payload.getBoundingClientRect()
       let top = rect.top
