@@ -109,7 +109,7 @@ p{
 .login-wrapper{
     width: 35%;
     min-width: 350px;
-    margin: 0 auto;
+    
 }
 #login_card{
     padding: 60px  40px;

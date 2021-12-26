@@ -112,10 +112,13 @@ label{
 }
 .container-fluid{
   padding: 0 15px;
+  display: flex;
+  justify-content: center;
 }
 .container{
   width: 80%;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 .backdrop{
   background-color: rgba(0, 0, 0, 0);
