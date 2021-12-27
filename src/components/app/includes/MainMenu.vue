@@ -169,15 +169,7 @@ li svg path {
     fill: $dark;
 }
 
-.router-link-exact-active{
-    & span{
-        color: $primary-color;
-        font-weight: 600;
-    }
-    & svg path{
-         fill: $primary-color;
-    }
-}
+
 li label{
     font-size: 0.8rem;
     text-align: center;

@@ -211,28 +211,6 @@ $tablet: 100px;
   padding: 15px 0 ;
   width: 70px;
 }
-.mob-view .header-content{
-  padding: 0 15px;
-}
-.mob-view .main-home{
-  border: none;
-}
-.mob-view .noti-help li{
-  margin-left: 0;
-  min-width: 42px;
-}
-.mob-view .noti-help li a{
-    padding: 10px;
-  }
-  .mob-view .noti-help li:hover a{
-    background-color: transparent;
-  }
-.mob-view .noti-help li #acct_mob_a{
-  padding: 0;
-  display: flex;
-  justify-content: flex-end;
-  margin-left: 13px;
-}
 
 
 section{
@@ -346,10 +324,9 @@ header, .right-header{
   padding: 0 30px;
   height: 80px;
   align-items: center;
+  overflow: hidden;
 }
-.main-body-content{
-  padding-top: 10px;
-}
+
 .page-title{
   font-weight: 700;
   font-size: 1.2rem;
@@ -450,19 +427,17 @@ header, .right-header{
   }
 }
 .anime-enter{
-  animation-name: example;
-  animation-duration: 0.5s;
+  animation: example 0.5s
 }
 @keyframes example {
-  from {transform: translateY(20px)}
+  from {transform: translateY(80px);}
   to {transform: translateY(0)}
 }
 .anime-leave{
-  animation-name: example2;
-  animation-duration: 0.5s;
+  animation: example2 0.5s
 }
 @keyframes example2 {
-  from {transform: translateY(-20px)}
+  from {transform: translateY(-80px)}
   to {transform: translateY(0)}
 }
 

@@ -122,17 +122,26 @@ hr{
   border-right: none;
   border-left: none;
 }
+.router-link-exact-active, #mob_nav .router-link-exact-active{
+  & span{
+      color: $primary-color;
+      font-weight: 600;
+  }
+  & svg path{
+       fill: $primary-color;
+  }
+}
 
 
 .main-body .main-body-content{
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 30px;
 }
 
 #page_title{
   margin-top: 0;
   font-size: 2rem;
 }
+
 .mob-view{
   #mob_logo svg{
     height: 22px;
@@ -142,7 +151,32 @@ hr{
     border-bottom: 1px solid transparent;
   }
   #account_menu:hover{
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0);
+  }
+  .header-content{
+    padding: 0 15px;
+  }
+  .main-home{
+    border: none;
+  }
+  .noti-help li{
+    margin-left: 0;
+    min-width: 42px;
+  }
+  .noti-help li a{
+    padding: 10px;
+  }
+  .noti-help li:hover a{
+    background-color: rgba(255, 255, 255, 0);
+  }
+  .noti-help li #acct_mob_a{
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 10px;
+  }
+  .main-body .main-body-content{
+    padding: 15px;
   }
   /*.header-hold{
     background-color: $primary-color;
@@ -151,3 +185,4 @@ hr{
     }
   }*/
 }
+
