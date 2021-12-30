@@ -45,10 +45,10 @@
                 <div class="header-wrap">
                   <div class="header-hold" :class="{ 'bt-0' : !getCurrentpage.mobile }">
                     <div class="header-content">
-                      <div id="mob_logo" class="anime-leave" v-if="getMobile && !getCurrentpage.mobile" >
+                      <div id="mob_logo" class="anime-down" v-if="getMobile && !getCurrentpage.mobile" >
                         <logo />
                       </div>
-                      <div class="page-title" :class="{ 'anime-enter': getMobile}" v-else>{{ getCurrentpage.title }}</div>
+                      <div class="page-title" :class="{ 'anime-up': getMobile}" v-else>{{ getCurrentpage.title }}</div>
                       <div class="noti-help">
                         <li class="ml-0" v-if="getHideRight || getMobile">
                           <a href="#">
@@ -426,14 +426,14 @@ header, .right-header{
   }
   }
 }
-.anime-enter{
+.anime-up{
   animation: example 0.5s
 }
 @keyframes example {
   from {transform: translateY(80px);}
   to {transform: translateY(0)}
 }
-.anime-leave{
+.anime-down{
   animation: example2 0.5s
 }
 @keyframes example2 {
