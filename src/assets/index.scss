@@ -53,7 +53,11 @@ $myFont: 'Urbanist', Helvetica, sans-serif;
   justify-content: center;
   align-items: center;
 }
-
+.flex-row-st{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
 
 .form-control {
   display: block;
@@ -134,7 +138,7 @@ hr{
 
 
 .main-body .main-body-content{
-  padding: 30px;
+  padding: 30px 0;
 }
 
 #page_title{
@@ -176,7 +180,14 @@ hr{
     margin-left: 10px;
   }
   .main-body .main-body-content{
-    padding: 15px;
+    padding: 15px 0;
+  }
+  #page_title{
+    display: block;
+    padding: 0 15px;
+  }
+  .ovw-content ul{
+    margin-left: -15px !important;
   }
   /*.header-hold{
     background-color: $primary-color;

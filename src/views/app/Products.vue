@@ -18,6 +18,9 @@ export default {
 
 
 <style scoped lang="scss">
+#page_title{
+    display: none;
+}
 
 
 </style>

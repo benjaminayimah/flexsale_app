@@ -2,7 +2,7 @@
 <div :class="{ 'jc' : getTablet }">
     <teleport to="body">
             <backdrop v-if="showMenu" @click="showthisMenu('account_menu')"/>
-            <div v-if="showMenu" class="menu-card" :style="{ left: getFloatingDiv.left-15+'px', bottom: '100px'}">
+            <div v-if="showMenu" class="menu-card" :style="{ left: getFloatingDiv.left+'px', bottom: '100px'}">
                 <div></div>
                 <div class="logout-hold">
                     <hr>

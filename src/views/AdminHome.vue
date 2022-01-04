@@ -81,7 +81,7 @@
                   </div>
                 </div>
               </header>
-              <div class="main-body" style="height: 2000px">
+              <div class="main-body">
                 <div class="main-body-content">
                   <router-view />
                 </div>
@@ -267,6 +267,12 @@ main{
 .main-right{
   width: 350px;
   min-width: 300px
+}
+.main-body{
+      min-height: 100vh;
+}
+.main-body-content{
+  height: 100%;
 }
 .main-home{
   display: flex;
