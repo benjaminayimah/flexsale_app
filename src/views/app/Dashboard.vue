@@ -41,7 +41,7 @@
         </div>
      </div>
  </div>
- fdfd
+ <input type="text" class="form-control" placeholder="email">
 </template>
 <script>
 export default {
@@ -54,9 +54,6 @@ export default {
                 {id: 3, count: '50', title: 'Expiry alert'},
                 {id: 4, count: '15', title: 'Expiry alert'},
                 {id: 5, count: '15', title: 'Expiry alert'},
-
-
-
             ]
         }
     },
@@ -78,7 +75,6 @@ export default {
 .ovw-wrap{
     display: block;
     overflow-y: hidden;
-    padding: 20px 0;
     align-items: stretch;
     position: relative;
 }
