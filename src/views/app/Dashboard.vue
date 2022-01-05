@@ -4,6 +4,18 @@
  <div class="ovw-wrap">
      <div id="overview_row">
          <div class="flex-row-st">
+             <button class="scroll-button scrl-left">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="17.033" height="17.033" viewBox="0 0 17.033 17.033">
+                    <path  d="M15561.452,6480.315h-12.044v-12.044h1.5v10.544h10.544Z" transform="translate(-6412.817 -15568.85) rotate(45)" fill="#0e142c"/>
+                </svg>
+             </button>
+             <button class="scroll-button scrl-right">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17.033" height="17.033" viewBox="0 0 17.033 17.033">
+                    <path  d="M12.044,0H0V12.045H1.5V1.5H12.044Z" transform="translate(17.033 8.517) rotate(135)" fill="#0e142c"/>
+                </svg>
+
+             </button>
+
              <div class="ovw-hold">
                  <div class="ovw-content">
                      <ul>
@@ -215,6 +227,55 @@ export default {
 .stat-count{
     font-size: 1.3rem;
     font-weight: 700;
+}
+.scroll-button{
+    position: absolute;
+    border-style: none;
+    display: flex;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    background-color: rgba(255, 255, 255, 0.774);
+    backdrop-filter: saturate(180%) blur(20px);
+    box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
+    top: 50%;
+    transform: translateY(-50%);
+    transition: 0.2s background-color;
+    &:hover{
+        background-color: #ffffff;
+        cursor: pointer;
+        path{
+            fill: $primary-color;
+        }
+    }
+    &:active{
+        transform: scale(0.98) translateY(-50%);
+        
+    }
+}
+.scrl-left{
+    left: 10px;
+    svg{
+        margin-left: 5px;
+        transition: 0.2s margin-left;
+    }
+    &:hover svg{
+        margin-left: 0;
+    }
+}
+.scrl-right{
+    right: 10px;
+    svg{
+        margin-left: -5px;
+        transition: 0.2s margin-left;
+    }
+    &:hover svg{
+        margin-left: 0;
+    }
+
 }
 
 
