@@ -13,7 +13,8 @@ export default createStore({
     hideRight: false,
     
     navPage: { title: '', mobile: false },
-    dynamicFloatingDiv: { left: '', top: ''},
+    dynamicFloatingDiv: { left: '', top: '', bottom: ''},
+    showDialog: false
   },
   mutations: {
     //authentication
@@ -68,13 +69,20 @@ export default createStore({
       const rect = payload.getBoundingClientRect()
       let top = rect.top
       let left = rect.left
-      state.dynamicFloatingDiv.left = left
-      state.dynamicFloatingDiv.top = top
+      if(state.mobile) {
+        state.dynamicFloatingDiv.left = '0'
+        state.dynamicFloatingDiv.bottom = '0'
+      }else{
+        state.dynamicFloatingDiv.left = left
+        state.dynamicFloatingDiv.top = top
+        state.dynamicFloatingDiv.bottom = '100'
+      }
       payload.classList.add('this-will-change')
     },
     reSetDynamicFloatingDiv(state, payload) {
       state.dynamicFloatingDiv.left = null
       state.dynamicFloatingDiv.top = null
+      state.dynamicFloatingDiv.bottom = null
       payload.classList.remove('this-will-change')
 
     },

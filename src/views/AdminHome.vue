@@ -45,10 +45,10 @@
                 <div class="header-wrap">
                   <div class="header-hold" :class="{ 'bt-0' : !getCurrentpage.mobile }">
                     <div class="header-content">
-                      <div id="mob_logo" class="anime-down" v-if="getMobile && !getCurrentpage.mobile" >
+                      <div id="mob_logo" class="mob-logo" v-if="getMobile && !getCurrentpage.mobile" >
                         <logo />
                       </div>
-                      <div class="page-title" :class="{ 'anime-up': getMobile}" v-else>{{ getCurrentpage.title }}</div>
+                      <div class="page-title" :class="{ 'mob-title': getMobile}" v-else>{{ getCurrentpage.title }}</div>
                       <div class="noti-help">
                         <li class="ml-0" v-if="getHideRight || getMobile">
                           <a href="#">
@@ -395,7 +395,8 @@ header, .right-header{
   svg{
     position: absolute;
     z-index: 1;
-    top: 30%;
+    top: 50%;
+    transform: translateY(-50%);
     left: 18px;
   }
 }
@@ -433,19 +434,19 @@ header, .right-header{
   }
   }
 }
-.anime-up{
-  animation: example 0.5s
+.mob-title{
+  animation: fade-in 0.7s
 }
-@keyframes example {
-  from {transform: translateY(80px);}
-  to {transform: translateY(0)}
+@keyframes fade-in {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
-.anime-down{
-  animation: example2 0.5s
+.mob-logo{
+  animation: fade-out 0.7s
 }
-@keyframes example2 {
-  from {transform: translateY(-80px)}
-  to {transform: translateY(0)}
+@keyframes fade-out {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
 
 </style>

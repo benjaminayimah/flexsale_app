@@ -4,23 +4,23 @@
  <div class="ovw-wrap">
      <div id="overview_row">
          <div class="flex-row-st">
-             <button class="scroll-button scrl-left">
+             <button v-show="leftShow" class="scroll-button scrl-left" @click="scrollLeft">
                  <svg xmlns="http://www.w3.org/2000/svg" width="17.033" height="17.033" viewBox="0 0 17.033 17.033">
                     <path  d="M15561.452,6480.315h-12.044v-12.044h1.5v10.544h10.544Z" transform="translate(-6412.817 -15568.85) rotate(45)" fill="#0e142c"/>
                 </svg>
              </button>
-             <button class="scroll-button scrl-right">
+             <button v-show="rightShow" class="scroll-button scrl-right" @click="scrollRight">
                 <svg xmlns="http://www.w3.org/2000/svg" width="17.033" height="17.033" viewBox="0 0 17.033 17.033">
                     <path  d="M12.044,0H0V12.045H1.5V1.5H12.044Z" transform="translate(17.033 8.517) rotate(135)" fill="#0e142c"/>
                 </svg>
 
              </button>
 
-             <div class="ovw-hold">
-                 <div class="ovw-content">
+             <div class="ovw-hold" @scroll="ovwScroll">
+                 <div class="ovw-content" id="ovw_content">
                      <ul>
-                         <li v-for="stat in stats" :key="stat.id">
-                             <div style="padding: 0 20px; height: 100%">
+                         <li :id="'ovw'+stat.index" v-for="stat in stats" :key="stat.id" :style="{ transform: 'translateX('+parseInt(stat.index * 150+(15*stat.index)+transitionVal)+'px )'}">
+                             <div class="a-wrap">
                                  <a href="#" class="li-hold">
                                     <div class="overview-content">
                                         <div>
@@ -53,7 +53,7 @@
         </div>
      </div>
  </div>
- <input type="text" class="form-control" placeholder="email">
+
 </template>
 <script>
 export default {
@@ -61,12 +61,16 @@ export default {
     data() {
         return {
             stats: [
-                {id: 1, count: '1,200', title: 'Products'},
-                {id: 2, count: '200', title: 'Low stocks'},
-                {id: 3, count: '50', title: 'Expiry alert'},
-                {id: 4, count: '15', title: 'Expiry alert'},
-                {id: 5, count: '15', title: 'Expiry alert'},
-            ]
+                {id: 1, index: 0, count: '1,200', title: 'Products'},
+                {id: 2, index: 1, count: '200', title: 'Low stocks'},
+                {id: 3, index: 2, count: '50', title: 'Expiry alert'},
+                {id: 4, index: 3, count: '15', title: 'Expiry alert'},
+                {id: 5, index: 4, count: '15', title: 'Expiry alert'},
+                {id: 6, index: 5, count: '15', title: 'Expiry alert'}
+            ],
+            transitionVal: 0,
+            leftShow: true,
+            rightShow: true,
         }
     },
     created() {
@@ -75,6 +79,21 @@ export default {
     methods: {
         setPage() {
             this.$store.commit('setPagetitle', 'Home')
+        },
+        ovwScroll() {
+            
+        },
+        scrollLeft() {
+            this.transitionVal += 150
+            //let elem_1 = document.getElementById('ovw'+0).style.transform
+            //let elem_2 = document.getElementById('ovw'+ parseInt(this.stats.length-1)).style.transform
+            
+        },
+        scrollRight() {
+            this.transitionVal -= 150
+            //let elem_1 = document.getElementById('ovw'+0).style.transform
+            //let elem_2 = document.getElementById('ovw'+ parseInt(this.stats.length-1)).style.transform
+            
         }
     }
 }
@@ -134,6 +153,7 @@ export default {
         list-style-type: none;
         height: 100%;
         position: absolute;
+        transition: transform 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
         .li-hold{
             display: flex;
             height: 100%;
@@ -156,26 +176,21 @@ export default {
             }
             
         }
-        &:nth-child(2){
-            transform: translateX(150px + 20px);
-        }
-        &:nth-child(3){
-            transform: translateX(150px + 150px + 40px);
-        }
-        &:nth-child(4){
-            transform: translateX(150px + 150px + 150px + 60px);
-        }
-        &:nth-child(5){
-            transform: translateX(150px + 150px + 150px + 150px + 80px);
-        }
         
     }
+}
+.a-wrap{
+    padding: 0 20px; 
+    height: 100%
 }
 .overview-content{
     width: 110px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+#ovw_content{
+    transition: transform 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
 }
 
 /*
@@ -238,7 +253,7 @@ export default {
     justify-content: center;
     align-items: center;
     z-index: 3;
-    background-color: rgba(255, 255, 255, 0.774);
+    background-color: rgba(255, 255, 255, 0.664);
     backdrop-filter: saturate(180%) blur(20px);
     box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
     top: 50%;
@@ -259,21 +274,21 @@ export default {
 .scrl-left{
     left: 10px;
     svg{
-        margin-left: 5px;
-        transition: 0.2s margin-left;
+        transform: translateX(3px);
+        transition: 0.2s transform;
     }
     &:hover svg{
-        margin-left: 0;
+        transform: translateX(0);
     }
 }
 .scrl-right{
     right: 10px;
     svg{
-        margin-left: -5px;
-        transition: 0.2s margin-left;
+        transform: translateX(-3px);
+        transition: 0.2s transform;
     }
     &:hover svg{
-        margin-left: 0;
+        transform: translateX(0);
     }
 
 }

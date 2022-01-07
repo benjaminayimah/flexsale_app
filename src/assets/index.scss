@@ -17,10 +17,18 @@ $myFont: 'Urbanist', Helvetica, sans-serif;
 .ml-0{
   margin-left: 0 !important;
 }
+.w-100{
+  width: 100%;
+}
+button{
+  border-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .button{
   border-style: none;
-  line-height: 2.5;
   padding: 8px 16px;
   border-radius: 14px;
   font-size: 1rem;
@@ -40,6 +48,16 @@ $myFont: 'Urbanist', Helvetica, sans-serif;
     //border: 1px solid $primary-color;
   }
   
+}
+.button-alt{
+  background-color: $dark;
+  color: $white-color;
+  &:hover{
+    background-color: #242b46;
+  }
+  &:active{
+    box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
+  }
 }
 .flex-column{
   display: flex;
@@ -111,7 +129,6 @@ label{
   justify-content: center;
 }
 .backdrop{
-  background-color: rgba(0, 0, 0, 0);
   position: fixed;
   bottom: 0;
   left: 0;
@@ -145,6 +162,26 @@ hr{
   margin-top: 0;
   font-size: 2rem;
 }
+.dialog{
+  .title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    div{
+      font-weight: 700;
+      font-size: 1.4rem;
+    }
+    button{
+      border-radius: 50%;
+      padding: 10px;
+      background-color: $primary-light;
+    }
+  }
+  
+
+}
 
 .mob-view{
   #mob_logo svg{
@@ -157,7 +194,7 @@ hr{
   #account_menu:hover{
     background-color: rgba(255, 255, 255, 0);
   }
-  .header-content{
+  .header-content,#all_products{
     padding: 0 15px;
   }
   .main-home{
@@ -185,15 +222,40 @@ hr{
   #page_title{
     display: block;
     padding: 0 15px;
+    margin-bottom: 15px;
   }
   .ovw-content ul{
     margin-left: -15px !important;
   }
-  /*.header-hold{
-    background-color: $primary-color;
-    path{
-      fill: $white-color !important;
-    }
-  }*/
+  .scroll-button{
+    display: none;
+  }
+  .header-wrap, .header-content{
+    height: 60px;
+  }
+  
+
+  
+  
+ 
+  
+}
+
+//transitions
+
+.slide-enter-active {
+  transition: all 0.4s;
+}
+.slide-leave-active {
+  transition: all 0.4s;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 

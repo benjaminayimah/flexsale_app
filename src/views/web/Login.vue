@@ -127,6 +127,7 @@ p{
 
 button{
     width: 100%;
+    line-height: 2.5;
 }
 h1{
     margin: 0 0 25px 0;

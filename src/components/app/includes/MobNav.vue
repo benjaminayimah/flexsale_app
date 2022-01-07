@@ -22,15 +22,8 @@
             </router-link>
             </li>
             <li>
-            <a id="add_button" href="#">
-                <button>
-                <svg xmlns="http://www.w3.org/2000/svg" width="22.5" height="22.5" viewBox="0 0 22.5 22.5">
-                    <g id="Icon_feather-plus" data-name="Icon feather-plus" transform="translate(1.25 1.25)">
-                    <path id="Path_1661" data-name="Path 1661" d="M18,28.75a1.25,1.25,0,0,1-1.25-1.25V7.5a1.25,1.25,0,0,1,2.5,0v20A1.25,1.25,0,0,1,18,28.75Z" transform="translate(-8 -7.5)" fill="#fff"/>
-                    <path id="Path_1662" data-name="Path 1662" d="M27.5,19.25H7.5a1.25,1.25,0,0,1,0-2.5h20a1.25,1.25,0,0,1,0,2.5Z" transform="translate(-7.5 -8)" fill="#fff"/>
-                    </g>
-                </svg>
-                </button>
+            <a id="add_button" href="javascript: void">
+                <mob-add-dialog />
             </a>
             </li>
             <li>
@@ -44,7 +37,7 @@
             </a>
             </li>
             <li>
-            <a href="#">
+            <a href="#" id="more_mob" @click.prevent="showthisMenu('more_mob')">
                 <i>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <path d="M-4181.094-559.625a12,12,0,0,1,12-12,12,12,0,0,1,12,12,12,12,0,0,1-12,12A12,12,0,0,1-4181.094-559.625Zm1.5,0a10.512,10.512,0,0,0,10.5,10.5,10.513,10.513,0,0,0,10.5-10.5,10.513,10.513,0,0,0-10.5-10.5A10.512,10.512,0,0,0-4179.593-559.625Zm15.059-.46a1.414,1.414,0,0,1,1.415-1.414,1.414,1.414,0,0,1,1.415,1.414,1.414,1.414,0,0,1-1.415,1.414A1.414,1.414,0,0,1-4164.535-560.085Zm-5.74,0a1.414,1.414,0,0,1,1.415-1.414,1.414,1.414,0,0,1,1.415,1.414,1.414,1.414,0,0,1-1.415,1.414A1.414,1.414,0,0,1-4170.274-560.085Zm-5.726,0a1.414,1.414,0,0,1,1.415-1.414,1.415,1.415,0,0,1,1.416,1.414,1.415,1.415,0,0,1-1.416,1.414A1.414,1.414,0,0,1-4176-560.085Z" transform="translate(4181.094 571.625)"/>
@@ -55,12 +48,85 @@
             </li>
         </div>
     </div>
+    <teleport to="body">
+      <transition name="fade">
+        <backdrop v-if="showMenu" @click.prevent="showthisMenu('more_mob')" />
+      </transition>
+      <transition name="slide">
+        <div id="more_menu_mob" class="dialog" v-if="showMenu" :class="{ 'menu-card-mob': getMobile}" :style="{ left: getFloatingDiv.left+'px', bottom: getFloatingDiv.bottom + 'px' }">
+          <div class="title" v-show="getMobile">
+            <div>More menus</div>
+            <button @click.prevent="showthisMenu('more_mob')">
+              <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
+                <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
+              </svg>
+          </button>
+          </div>
+            <ul>
+                <li>
+                    <a href="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 25.57 21.724">
+                            <path id="Path_1655" data-name="Path 1655" d="M-127.122-114.189h-7.627v-.665a8.081,8.081,0,0,1,8.071-8.072,8.081,8.081,0,0,1,8.072,8.072v.665Zm-6.265-1.33h13.418a6.751,6.751,0,0,0-6.71-6.077A6.751,6.751,0,0,0-133.387-115.52Zm16.144-3.383v-1.33h6.7a6.053,6.053,0,0,0-.87-2.525A6.055,6.055,0,0,0-113.864-125a6.073,6.073,0,0,0-3.259-.617,6.069,6.069,0,0,0-3.1,1.19l-.532.4-.8-1.064.533-.4a7.394,7.394,0,0,1,3.775-1.449,7.387,7.387,0,0,1,3.973.751,7.392,7.392,0,0,1,2.985,2.728,7.4,7.4,0,0,1,1.1,3.89v.665ZM-130.6-129.042a4.217,4.217,0,0,1,4.212-4.212,4.217,4.217,0,0,1,4.212,4.212,4.216,4.216,0,0,1-4.212,4.212A4.217,4.217,0,0,1-130.6-129.042Zm1.33,0a2.885,2.885,0,0,0,2.882,2.882,2.885,2.885,0,0,0,2.882-2.882,2.885,2.885,0,0,0-2.882-2.882A2.886,2.886,0,0,0-129.271-129.042Zm9.31-3.547a3.329,3.329,0,0,1,3.326-3.325,3.328,3.328,0,0,1,3.325,3.325,3.328,3.328,0,0,1-3.325,3.326A3.329,3.329,0,0,1-119.96-132.589Zm1.33,0a2,2,0,0,0,2,2,2,2,0,0,0,2-2,2,2,0,0,0-2-1.994A2,2,0,0,0-118.63-132.589Z" transform="translate(134.75 135.913)" fill="#212121"/>
+                        </svg>
+                        <span>Customers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 21.5 23.166">
+                            <path d="M-162.427-433a2.727,2.727,0,0,1-2.714-2.539l-.912-13.682,1.5-.1.912,13.683a1.222,1.222,0,0,0,1.217,1.138h9.118a1.222,1.222,0,0,0,1.217-1.139l.912-13.682,1.5.1-.912,13.682A2.727,2.727,0,0,1-153.309-433Zm-6.039-18v-1.5h6.4v-3.666h8.394v3.666h6.705v1.5Zm13.295-1.5v-2.165h-5.394v2.165Z" transform="translate(168.466 456.167)" fill="#212121"/>
+                        </svg>
+
+                        <span>Trash</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 19.597 22.966">
+                            <path d="M-155.951-501.122A24.73,24.73,0,0,1-165.3-502.7l-.445-.2v-.487a7.545,7.545,0,0,1,7.536-7.537h4.524a7.545,7.545,0,0,1,7.537,7.537v.487l-.445.2A24.73,24.73,0,0,1-155.951-501.122Zm-8.278-2.765a25.4,25.4,0,0,0,8.278,1.265,25.269,25.269,0,0,0,8.278-1.264,6.045,6.045,0,0,0-6.016-5.531h-4.524A6.044,6.044,0,0,0-164.229-503.888Zm8.278-8.169a5.28,5.28,0,0,1-4.043-2.066,6.889,6.889,0,0,1-1.609-4.315,5.658,5.658,0,0,1,5.651-5.651,5.658,5.658,0,0,1,5.651,5.651C-150.3-515.425-152.717-512.057-155.951-512.057Zm0-10.532a4.156,4.156,0,0,0-4.151,4.151,5.442,5.442,0,0,0,1.262,3.356,3.814,3.814,0,0,0,2.889,1.524,3.814,3.814,0,0,0,2.889-1.524,5.442,5.442,0,0,0,1.262-3.356A4.156,4.156,0,0,0-155.951-522.588Z" transform="translate(165.75 524.088)" fill="#212121"/>
+                        </svg>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                 <hr>
+                <li>
+                    <a href="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 23.5 23.5">
+                            <path d="M-159.906-585.5l-.281-3.358a8.646,8.646,0,0,1-1.716-.714l-2.576,2.179-3.1-3.1,2.179-2.576a8.67,8.67,0,0,1-.711-1.714l-3.358-.281v-4.379l3.358-.281a8.71,8.71,0,0,1,.714-1.715l-2.179-2.575,3.1-3.1,2.576,2.18a8.675,8.675,0,0,1,1.714-.711l.281-3.359h4.379l.281,3.359a8.656,8.656,0,0,1,1.714.714l2.575-2.179,3.1,3.1-2.18,2.576a8.67,8.67,0,0,1,.711,1.714l3.359.281v4.379l-3.359.281a8.708,8.708,0,0,1-.714,1.714l2.18,2.575-3.1,3.1-2.576-2.179a8.668,8.668,0,0,1-1.714.711l-.281,3.361Zm-1.673-5.621a7.166,7.166,0,0,0,2.262.94l.536.122.256,3.06h1.62l.256-3.063.536-.122a7.18,7.18,0,0,0,2.26-.938l.465-.3,2.349,1.988,1.146-1.146-1.988-2.349.3-.465a7.174,7.174,0,0,0,.941-2.26l.121-.536,3.06-.256v-1.62l-3.06-.256-.121-.536a7.18,7.18,0,0,0-.938-2.26l-.3-.465,1.987-2.349-1.148-1.146-2.349,1.988-.465-.3a7.166,7.166,0,0,0-2.26-.941l-.536-.121-.256-3.06h-1.62l-.256,3.06-.536.121a7.182,7.182,0,0,0-2.26.938l-.465.3-2.348-1.987-1.147,1.147,1.988,2.349-.3.465a7.165,7.165,0,0,0-.941,2.26l-.121.536-3.06.256v1.62l3.06.256.121.536a7.161,7.161,0,0,0,.939,2.26l.294.465-1.987,2.349,1.145,1.146,2.349-1.988Zm.112-6.128a3.755,3.755,0,0,1,3.75-3.75,3.754,3.754,0,0,1,3.75,3.75,3.755,3.755,0,0,1-3.75,3.75A3.755,3.755,0,0,1-161.466-597.25Zm1.5,0a2.253,2.253,0,0,0,2.25,2.25,2.253,2.253,0,0,0,2.25-2.25,2.252,2.252,0,0,0-2.25-2.25A2.253,2.253,0,0,0-159.966-597.25Z" transform="translate(169.465 609)" fill="#212121"/>
+                        </svg>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+      </transition>
+    </teleport>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import Backdrop from './Backdrop.vue'
+import MobAddDialog from './MobAddDialog.vue'
 export default {
     name: 'MobileNavigation',
-    computed: mapGetters(['getMobile']),
+    components: { Backdrop, MobAddDialog },
+    computed: mapGetters(['getMobile', 'getFloatingDiv']),
+    data() {
+        return {
+            showMenu: false
+        }
+    },
+    methods: {
+        showthisMenu(id) {
+            let elem = document.getElementById(id)
+            if(this.showMenu == false) {
+                this.showMenu = true
+                this.$store.commit('setDynamicFloatingDiv', elem)
+            }else{
+                this.showMenu = false
+                this.$store.commit('reSetDynamicFloatingDiv', elem)
+            }
+        }
+    }
 }
 </script>
 <style scoped lang="scss">
@@ -81,7 +147,6 @@ export default {
   padding-bottom: 15px;
   height: 90px;
   padding: 0 15px 15px 15px;
-
   li{
     list-style-type: none;
     display: flex;
@@ -110,18 +175,6 @@ export default {
         color: $dark;
         
       }
-      button{
-        border-style: none;
-        background-color: $primary-color;
-        display: flex;
-        height: 55px;
-        width: 55px;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        box-shadow: rgb(86 111 244 / 33%) 0 5px 15px 0;
-        padding: 0;
-      }
     }
   }
   #add_button{
@@ -130,4 +183,63 @@ export default {
   }
 }
 
+.dialog{
+    position: fixed;
+    background-color: $white-color;
+    z-index: 101;
+    box-shadow: 0 1px 6px 0 rgb(14 20 44 / 18%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 25px 0; 
+  }
+  
+  .menu-card-mob{
+    width: 100%;
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+  }
+  
+
+#more_menu_mob {
+  ul{
+    padding: 0;
+    position: relative;
+    margin: 0;
+  }
+li{
+    list-style-type: none;
+}
+li a {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    color: $dark;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.15rem;
+    line-height: 22px;
+    transition: 0.2s linear all;
+    position: relative;
+    align-items: center;
+    height: 62px;
+  }
+    li span {
+    margin-left: 20px;
+    }
+    li svg path {
+        fill: $dark;
+    }
+
+    li label{
+        font-size: 0.8rem;
+        text-align: center;
+        display: none;
+  }
+}
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(500px);
+  
+}
 </style>
