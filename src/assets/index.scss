@@ -47,7 +47,19 @@ button{
     box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
     //border: 1px solid $primary-color;
   }
-  
+}
+.secondary-primary{
+  background-color: $white-color;
+  border: 1px solid $dark;
+  color: $dark;
+  &:hover{
+    background-color: $dark-light;
+  }
+  &:active{
+    //transform: scale(0.99);
+    box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+    //border: 1px solid $primary-color;
+  }
 }
 .button-alt{
   background-color: $dark;
@@ -76,6 +88,11 @@ button{
   flex-direction: row;
   justify-content: flex-start;
 }
+.flex-row-js{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
 .form-control {
   display: block;
@@ -89,7 +106,7 @@ button{
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: 14px;
+  border-radius: 12px;
   transition: all 0.2s linear;
   background-clip: padding-box;
   appearance: none;
@@ -100,6 +117,9 @@ button{
   &:focus {
     border-color: $primary-color;
     box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+  }
+  &::placeholder{
+    color: #b7bbc0;
   }
 }
 
@@ -182,6 +202,10 @@ hr{
   
 
 }
+.table-row:last-child{
+  border-bottom: none;
+}
+
 
 .mob-view{
   #mob_logo svg{
@@ -217,7 +241,7 @@ hr{
     margin-left: 10px;
   }
   .main-body .main-body-content{
-    padding: 15px 0;
+    padding: 15px 0 100px 0;
   }
   #page_title{
     display: block;
@@ -233,12 +257,23 @@ hr{
   .header-wrap, .header-content{
     height: 60px;
   }
+  .batch-no{
+    display: none;
+  }
+  
+  
   
 
   
   
  
   
+}
+.fixed-body{
+  position: fixed;
+  #app_section{
+    position: fixed;
+  }
 }
 
 //transitions

@@ -32,7 +32,7 @@
                       </div>
                         <button class="button button-primary" @click.prevent="submitSignin">Login</button>
                       <p>
-                        <router-link id="go_hm" :to="{ name: 'Home' }">Back Home</router-link>
+                        <!--<router-link id="go_hm" :to="{ name: 'Home' }">Back Home</router-link>-->
                     </p>
                   </form>
                   </div>

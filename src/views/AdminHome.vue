@@ -40,7 +40,7 @@
         <div class="main-wrap">
           <div class="main-hold">
             <!-- main home -->
-            <div class="main-home">
+            <div class="main-home" id="main_home">
               <header>
                 <div class="header-wrap">
                   <div class="header-hold" :class="{ 'bt-0' : !getCurrentpage.mobile }">
@@ -81,6 +81,7 @@
                   </div>
                 </div>
               </header>
+              <add-new-product v-if="getAddingProduct.status" v-bind:thisWidth="getAddingProduct.width" />
               <div class="main-body">
                 <div class="main-body-content">
                   <router-view />
@@ -118,8 +119,8 @@
           </div>
         </div>
     </main>
+    
 </section>
-
     
     
     
@@ -130,10 +131,11 @@ import { mapGetters } from 'vuex'
 import MainMenu from '../components/app/includes/MainMenu.vue'
 import Logo from '../components/app/includes/Logo.vue'
 import MobNav from '../components/app/includes/MobNav.vue'
+import AddNewProduct from '../components/app/layouts/AddNewProduct.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNewProduct },
     name: 'AdminHome',
-    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight']),
+    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct']),
     data() {
       return {
         windowHeight: ''
@@ -157,6 +159,7 @@ export default {
       if(elem.length > 0){
         return this.$store.commit('setDynamicFloatingDiv', elem[0])
       }
+      this.getAddingProduct.status ? this.$store.commit('getMainHomeWidth') : ''
       //console.log(document.getElementById('app_section').offsetWidth)
     },
     pageScroll(){
@@ -269,7 +272,7 @@ main{
   min-width: 300px
 }
 .main-body{
-      min-height: 100vh;
+    min-height: 100vh;
 }
 .main-body-content{
   height: 100%;
@@ -284,6 +287,7 @@ main{
   border-left: 1px solid $dark-light;
   align-items: stretch;
   flex-basis: auto;
+  position: relative;
 }
 #logo{
   display: flex;
@@ -424,14 +428,14 @@ header, .right-header{
     height: 50px;
     width: 50px;
     transition: 0.1s ease-in-out;
-    &:hover{
-    background-color: rgba(86, 110, 244, 0.15);
-  }
-  &:active{
-    box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
-    border: 1px solid $primary-color;
-    background-color: $primary-light;
-  }
+      &:hover{
+      background-color: rgba(86, 110, 244, 0.15);
+    }
+    &:active{
+      box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+      border: 1px solid $primary-color;
+      background-color: $primary-light;
+    }
   }
 }
 .mob-title{

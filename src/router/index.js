@@ -1,21 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
-import Home from '@/views/web/Home.vue'
-import About from '@/views/web/About.vue'
+//import Home from '@/views/web/Home.vue'
+//import About from '@/views/web/About.vue'
 import Login from '@/views/web/Login.vue'
 import Logout from '@/components/app/Logout'
 import AdminHome from '@/views/AdminHome.vue'
-import WebHome from '@/views/WebHome.vue'
+//import WebHome from '@/views/WebHome.vue'
 import Dashboard from '@/views/app/Dashboard.vue'
 import Products from '@/views/app/Products.vue'
 //import Error404 from '@/views/web/Error404.vue'
 
 const routes = [
-  { path: '/', component: WebHome,
+  /*{ path: '/', component: WebHome,
   children: [
     { path: '/', component: Home, name: 'Home'},
     { path: '/about', name: 'About', component: About}
-  ]},
+  ]},*/
   { path: '/', component: AdminHome, 
     meta: {requiresAuth: true },
     children: [

@@ -113,7 +113,6 @@ export default {
     computed: mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop']),
     components: { Backdrop },
     name: 'Main-menu',
-    props: ['menu'],
     data() {
         return {
             showMenu: false

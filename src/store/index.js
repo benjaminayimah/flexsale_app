@@ -14,7 +14,8 @@ export default createStore({
     
     navPage: { title: '', mobile: false },
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
-    showDialog: false
+    showDialog: false,
+    addingProduct: { status: false, width: ''}
   },
   mutations: {
     //authentication
@@ -63,6 +64,23 @@ export default createStore({
     unSetMobileTitle(state) {
       state.navPage.mobile = false
     },
+
+    getMainHomeWidth() {
+      let homeWidth = document.getElementById('main_home').offsetWidth
+      document.getElementById('app_section').classList.add('fixed-body')
+      this.commit('setMainHomeWidth', homeWidth)
+    },
+    setMainHomeWidth(state, payload) {
+      state.addingProduct.width = payload
+      state.addingProduct.status = true
+    },
+    unsetMainHomeWidth(state){
+      state.addingProduct.status = false
+      state.addingProduct.width = ''
+      document.getElementById('app_section').classList.remove('fixed-body')
+
+    },
+    
 
 
     setDynamicFloatingDiv(state, payload) {
@@ -130,6 +148,8 @@ export default createStore({
     getTablet: (state) => state.tablet,
     getDesktop: (state) => state.desktop,
     getHideRight: (state) => state.hideRight,
+    getAddingProduct: (state) => state.addingProduct,
+
 
 
 
