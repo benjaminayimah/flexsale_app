@@ -67,7 +67,9 @@ export default createStore({
 
     getMainHomeWidth() {
       let homeWidth = document.getElementById('main_home').offsetWidth
-      document.getElementById('app_section').classList.add('fixed-body')
+      let appSection = document.getElementById('app_section')
+      appSection.style.left = appSection.offsetLeft+'px'
+      document.body.classList.add('fixed-body')
       this.commit('setMainHomeWidth', homeWidth)
     },
     setMainHomeWidth(state, payload) {
@@ -77,7 +79,9 @@ export default createStore({
     unsetMainHomeWidth(state){
       state.addingProduct.status = false
       state.addingProduct.width = ''
-      document.getElementById('app_section').classList.remove('fixed-body')
+      document.body.classList.remove('fixed-body')
+      let appSection = document.getElementById('app_section')
+      appSection.style.left = '0px'
 
     },
     

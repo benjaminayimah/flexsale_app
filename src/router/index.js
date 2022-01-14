@@ -19,7 +19,7 @@ const routes = [
   { path: '/', component: AdminHome, 
     meta: {requiresAuth: true },
     children: [
-      { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+      { path: '/', name: 'Dashboard', component: Dashboard },
       { path: '/products', name: 'Products', component: Products },
       { path: '/logout', component: Logout , name: 'Logout', meta: {requiresAuth: true}},
     ]

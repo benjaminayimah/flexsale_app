@@ -38,15 +38,18 @@
                         </div>
                         <div class="form-row">
                             <label>Product name:</label>
-                            <input type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Ideal Milk">
+                            <input v-model="form.name" type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Ideal Milk">
                         </div>
                         <div class="form-row">
                             <label>Batch number:</label>
-                            <input type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
+                            <input v-model="form.batchNumber" type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
                         </div>
                         <div class="form-row">
                             <label>Category:</label>
-                            <input type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
+                            <select v-model="form.category" id="category" class="form-control select">
+                                <option selected="selected">Select a category</option>
+                                <option value="men">men</option>
+                                </select>
                             <div class="a-btn">
                                 <a href="#">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
@@ -57,21 +60,97 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <label>Batch number:</label>
-                            <input type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
+                            <label>Type of product:</label>
+                            <div class="form-row-hold">
+                                <div class="form-check flex-row-st">
+                                    <input v-model="form.prodType" id="retail" value="0" class="form-check-input" type="radio" checked>
+                                    <label for="retail">
+                                        Retail
+                                    </label>
+                                </div>
+                                <div class="form-check flex-row-st">
+                                    <input v-model="form.prodType" id="wholesale" value="1" class="form-check-input" type="radio" >
+                                    <label for="wholesale">
+                                        Wholesale
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-row">
-                            <label>Batch number:</label>
-                            <input type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
+                            <label>Supply Cost per unit:</label>
+                            <div class="form-row-col">
+                                <div class="col-2">
+                                    <input v-model="form.cost" type="text" name="costPrice" class="form-control" placeholder="100">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-row">
-                            <label>Batch number:</label>
-                            <input type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
+                            <label>Selling price per unit:</label>
+                            <div class="form-row-col">
+                                <div class="col-2">
+                                    <input v-model="form.sellingPrice" type="text" name="sellingPrice" class="form-control" placeholder="100">
+                                </div>
+                                <div class="col-2">
+                                    <div class="profit-row">
+                                        <div class="flex-row-st">
+                                            <div class="profit-label">
+                                                Profit per unit:
+                                            </div>
+                                            <div class="vals">
+                                                <span>GH₵</span><span>50</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex-row-st">
+                                            <div class="profit-label">
+                                                Profit margin:
+                                            </div>
+                                            <div class="vals">
+                                                <span>40</span><span class="percent value">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-row">
-                            <label>Batch number:</label>
-                            <select data-v-2a42eb58="" id="status" class="custom-select mr-sm-2"><option data-v-2a42eb58="" selected="selected" value="">Active</option><option data-v-2a42eb58="" value="2">Draft</option><option data-v-2a42eb58="" value="0">Disabled</option></select>
-                            <input type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
+                            <label>Stock:</label>
+                            <div class="form-row-col">
+                                <div class="col-2">
+                                    <input v-model="form.stock" type="text" name="stock" class="form-control" placeholder="100">
+                                </div>
+                                <div class="col-2">
+                                    <div class="profit-row">
+                                        <label class="checkbox-hold">
+                                                <input v-model="form.autoContinue" type="checkbox">
+                                                <span class="checkbox-custom"></span>
+                                                <span class="chk-label">Automatically track quantity</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Description:</label>
+                            <textarea v-model="form.description" class="form-control" name="description" rows="5"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <label>Supplier:</label>
+                            <select v-model="form.supplier" id="supplier" class="form-control select">
+                                <option selected="selected">Select a supplier</option>
+                                <option value="0">ABC Enterprise</option>
+                                <option value="1">XYZ Ltd</option>
+                                </select>
+                            <div class="a-btn">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
+                                        <path d="M-12729.059-1230.178v-5.942H-12735a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.942v-5.942a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.942h5.941a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.941v5.942a1,1,0,0,1-1,1A1,1,0,0,1-12729.059-1230.178Z" transform="translate(12736.001 1245.061)" fill="#566ff4"/>
+                                    </svg>
+                                    Create new Supplier
+                                </a>
+                            </div>
+                        </div>
+                        <div class="btn-wrap2 flex-row">
+                            <button class="button button-primary">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -86,6 +165,23 @@ export default {
     name: 'AddNewProduct',
     computed: mapGetters(['getAddingProduct']),
     props: ['thisWidth'],
+    data() {
+        return {
+            form: {
+                name: '',
+                batchNumber: '',
+                category: '',
+                cost: '',
+                sellingPrice: '',
+                stock: '',
+                description: '',
+                supplier: '',
+                autoContinue: true,
+                prodType: '0'
+
+            }
+        }
+    },
     created() {
         console.log('me')
     }
@@ -154,7 +250,6 @@ export default {
         height: 100%;
         button{
             margin-right: 10px;
-            font-weight: 400;
             height: 44px;
             border-radius: 12px;
             &:last-child{
@@ -162,6 +257,19 @@ export default {
             }
         }
         
+    }
+    .btn-wrap2{
+        height: 80px;
+        margin-bottom: 20px;
+        button{
+            margin-right: 10px;
+            height: 48px;
+            border-radius: 12px;
+            width: 100%;
+            &:last-child{
+                margin-right: 0;
+            }
+        }
     }
     .add-body{
         overflow-y: auto;
@@ -243,6 +351,60 @@ export default {
         }
     }
 }
+.flex-row-st{
+    align-items: center;
+    margin-bottom: 5px;
+    &:last-child{
+        margin-bottom: 0; 
+    }
+}
+.form-row-hold{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.form-row-col{
+    display: flex;
+    flex-direction: row;
+    .col-2{
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        padding: 0 20px;
+        .profit-row{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+        .profit-label{
+            text-decoration-line: underline;
+            text-decoration-style: dotted;
+            margin-right: 8px;
+        }
+    }
+}
+label{
+    position: relative;
+}
+.vals{
+    color: $success;
+    font-weight: 600;
+}
+.checkbox-hold .checkbox-custom{
+    border-color: #ced4da;
+}
+.chk-label{
+    margin-left: 28px;
+}
+.checkbox-custom {
+     border: 2px solid rgba(21, 31, 57, 0.6);
+}
+
+
+
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(200px);

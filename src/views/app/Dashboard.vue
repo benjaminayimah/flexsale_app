@@ -19,7 +19,7 @@
              <div class="ovw-hold" @scroll="ovwScroll">
                  <div class="ovw-content" id="ovw_content">
                      <ul>
-                         <li :id="'ovw'+stat.index" v-for="stat in stats" :key="stat.id" :style="{ transform: 'translateX('+parseInt(stat.index * 150+(15*stat.index)+transitionVal)+'px )'}">
+                         <li :id="'ovw'+stat.index" v-for="stat in stats" :key="stat.id" :style="{ transform: 'translateX('+parseInt(stat.index * 170+(transitionVal))+'px )'}">
                              <div class="a-wrap">
                                  <a href="#" class="li-hold">
                                     <div class="overview-content">
@@ -66,11 +66,14 @@ export default {
                 {id: 3, index: 2, count: '50', title: 'Expiry alert'},
                 {id: 4, index: 3, count: '15', title: 'Expiry alert'},
                 {id: 5, index: 4, count: '15', title: 'Expiry alert'},
-                {id: 6, index: 5, count: '15', title: 'Expiry alert'}
+                {id: 6, index: 5, count: '15', title: 'Expiry alert'},
+                {id: 7, index: 6, count: '15', title: 'Expiry alert'},
             ],
             transitionVal: 0,
-            leftShow: true,
+            leftShow: false,
             rightShow: true,
+            fistVal: 0,
+            lastVal: ''
         }
     },
     created() {
@@ -80,20 +83,39 @@ export default {
         setPage() {
             this.$store.commit('setPagetitle', 'Home')
         },
-        ovwScroll() {
-            
-        },
+       
         scrollLeft() {
-            this.transitionVal += 150
+            this.transitionVal += 170
+            this.fistVal += 170
+            this.checkBtn()
             //let elem_1 = document.getElementById('ovw'+0).style.transform
             //let elem_2 = document.getElementById('ovw'+ parseInt(this.stats.length-1)).style.transform
             
         },
         scrollRight() {
-            this.transitionVal -= 150
+            //this.fistVal = document.getElementById('ovw'+0).style.transform
+            let no = this.stats.length -1
+            let last = document.getElementById('ovw'+no).style.transform
+            this.lastVal = last
+            console.log(last)
+            this.transitionVal -= 170
+            this.fistVal -= 170
+            this.checkBtn()
             //let elem_1 = document.getElementById('ovw'+0).style.transform
             //let elem_2 = document.getElementById('ovw'+ parseInt(this.stats.length-1)).style.transform
+        },
+        checkBtn() {
+            if ( this.fistVal <= 0){
+                this.leftShow = true
+            }else{
+                this.leftShow = false
+            }if(this.lastVal == 'translateX(680px)'){
+                this.rightShow = false
+            }else{
+                this.rightShow = true
+            }
             
+           
         }
     }
 }
@@ -180,7 +202,7 @@ export default {
     }
 }
 .a-wrap{
-    padding: 0 20px; 
+    padding: 0 10px; 
     height: 100%
 }
 .overview-content{

@@ -21,21 +21,45 @@
         <div class="table">
             <div class="table-head">
                 <div class="flex-row-js tbh-row">
-                    <div class="prod-stat-item">
-                        <div class="stat-count">1,435</div>
-                        <label>Total Products</label>
+                    <div class="prod-stat-hold">
+                        <div class="prod-stat-item">
+                            <a href="#">
+                                <div class="stat-count">1,435</div>
+                                <span class="label">Expired products</span>
+                            </a>
+                        </div>
                     </div>
-                    <div class="prod-stat-item">
-
+                    <div class="prod-stat-hold">
+                        <div class="prod-stat-item">
+                            <a href="#">
+                                <div class="stat-count">217</div>
+                                <span class="label">Low stock</span>
+                            </a>
+                        </div>
                     </div>
-                    <div class="prod-stat-item"></div>
-                    <div class="prod-stat-item">
-                        <button class="flex-column" @click.prevent="$store.commit('getMainHomeWidth')">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="20.582" viewBox="0 0 20.582 20.582">
-                                <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff"/>
-                            </svg>
-                        </button>
-                        <span>Add New</span>
+                    <div class="prod-stat-hold">
+                        <div class="add-new">
+                            <a href="#" @click.prevent="$store.commit('getMainHomeWidth')">
+                                <i class="flex-column">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582">
+                                    <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff"/>
+                                </svg>
+                                </i>
+                                <span>Add category</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="prod-stat-hold">
+                        <div class="add-new">
+                            <a href="#" @click.prevent="$store.commit('getMainHomeWidth')">
+                                <i class="flex-column">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582">
+                                    <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff"/>
+                                </svg>
+                                </i>
+                                <span>Add product</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -168,20 +192,98 @@ export default {
 .tbh-row{
     margin-bottom: 25px;
 }
-.prod-stat-item{
+.mob-view .tbh-row{
+    
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    .prod-stat-hold{
+        width: 50%;
+        margin: 0;
+        padding:5px;
+        a{
+            
+            flex-wrap: nowrap;
+            flex-direction: row;
+            span{
+                width: 100%;
+                text-align: left;
+                font-size: 1rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin-top: 0;
+            }
+            .label{
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            i{
+                height: 35px;
+                width: 35px;
+                padding: 10px 0
+            }
+        }
+    }
+    .prod-stat-item, .prod-stat-item-2, .add-new{
+        height: 60px;
+        border-radius: 18px;
+        justify-content: flex-start;
+        a{
+            display: flex;
+            justify-content: flex-start;
+            .label{
+                padding-left: 8px;
+                text-align: left;
+            }
+        }
+    }
+}
+.prod-stat-hold{
     width: 25%;
-    height: 110px;
+    padding: 0 10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.prod-stat-item-2{
+    &:hover{
+        background-color: #d7dcf7;
+    }
+    &:active{
+        box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+        border: 1px solid $primary-color;
+        background-color: $primary-light;
+    }
+}
+.prod-stat-item, .prod-stat-item-2{
     background-color: #E5E9F7;
     border: $gray-light;
+}
+.add-new{
+    background-color: $primary-color;
+    span{
+        color: $white-color;
+        margin-top: 0 !important;
+    }
+    &:hover{
+        background-color: $primary-hover;
+    }
+    &:active{
+        box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+    }
+}
+.prod-stat-item, .prod-stat-item-2, .add-new{
+    height: 110px;
     border-radius: 24px;
-    margin-right: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px 15px;
+    transition: 0.3s all;
     //border: 1px solid $gray-light;
-    label{
+    .label{
         color: $gray-color;
         text-align: center;
     }
@@ -192,29 +294,30 @@ export default {
     &:last-child{
         margin-right: 0;
     }
-    button{
-        border-style: none;
+    i{
         padding: 8px;
-        border-radius: 50%;
-        cursor: pointer;
-        background-color: $dark;
         padding: 10px;
         height: 40px;
         width: 40px;
-        transition: 0.1s ease-in-out;
-        &:hover{
-            background-color: #2a3049;
-        }
-        &:active{
-            box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
-            background-color: #686c7c;
-        }
     }
     span{
         font-size: 0.9rem;
         font-weight: 600;
         margin-top: 5px;
         text-align: center;
+        
+    }
+    a{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        color: $primary-color;
+        text-decoration: none;
+        height: 100%;
+        width: 100%;
+        border-radius: inherit;
+        padding: 20px;
     }
 }
 .table-menu{

@@ -121,10 +121,5 @@ export default {
         }
     }
 }
-.mob-view .menu-toggle button:hover{
-    background-color: transparent !important;
-    span{
-        background-color: $dark;
-     }
-}
+
 </style>
