@@ -128,6 +128,7 @@
 <script>
 import AccountMenu from '../components/app/includes/AccountMenu.vue'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import MainMenu from '../components/app/includes/MainMenu.vue'
 import Logo from '../components/app/includes/Logo.vue'
 import MobNav from '../components/app/includes/MobNav.vue'
@@ -135,13 +136,14 @@ import AddNewProduct from '../components/app/layouts/AddNewProduct.vue'
 export default {
   components: { MainMenu, AccountMenu, Logo, MobNav, AddNewProduct },
     name: 'AdminHome',
-    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct']),
+    computed: mapGetters(['getToken', 'getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct']),
     data() {
       return {
         windowHeight: ''
       }
     },
     created() {
+    this.fetchUser()
     window.addEventListener('resize', this.windowSize)
     window.addEventListener('scroll', this.pageScroll)
     this.computeWindow()
@@ -152,6 +154,13 @@ export default {
     document.removeEventListener('scroll', this.pageScroll )
   },
   methods: {
+    ...mapActions({
+            user: 'getAuthUser'
+      }),
+      fetchUser(){
+            this.user(this.getToken)
+      },
+      
     windowSize() {
       this.computeWindow()
       this.windowDimension() 

@@ -14,17 +14,44 @@ $warning: #EFB91C;
 
 $myFont: 'Urbanist', Helvetica, sans-serif;
 
+.lazy-loader{
+  height: 25px;
+  width: 25px;
+  border: 3px solid $primary-light;
+  border-top: 3px $primary-color solid;
+  border-radius: 50%;
+}
+.loader{
+  -webkit-animation: load 2s linear infinite;
+  animation: load 2s linear infinite;
+}
+@keyframes load{
+  0%{transform: rotate(0deg)}
+  100%{transform: rotate(360deg)}
+}
+
 .ml-0{
   margin-left: 0 !important;
 }
+.form-row-col{
+  .col-2:first-child{
+    padding-left: 0;
+  }
+}
 .w-100{
   width: 100%;
+}
+.hide{
+  display: none;
 }
 button{
   border-style: none;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
 }
 
 .button{
@@ -33,7 +60,6 @@ button{
   border-radius: 14px;
   font-size: 1rem;
   transition: 0.3s all;
-  cursor: pointer;
   font-weight: 600;
 }
 .button-primary{
@@ -239,8 +265,8 @@ button, input, optgroup, select, textarea {
 label{
   display: block;
   margin: 8px 0;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 .flex{
   display: flex;
@@ -357,7 +383,7 @@ hr{
     margin-bottom: 15px;
   }
   .ovw-content ul{
-    margin-left: -15px !important;
+    margin-left: -5px !important;
   }
   .scroll-button{
     display: none;
@@ -378,11 +404,17 @@ hr{
   .table-head{
     border-bottom: none;
   }
-  .menu-toggle button:hover{
-    background-color: transparent ;
-    span{
-      background-color: $dark;
+  .menu-toggle{
+    button{
+      i {
       }
+      &:hover {
+        background-color: transparent ;
+        i{
+          background-color: $dark;
+        }
+      }
+    }
   }
   
 

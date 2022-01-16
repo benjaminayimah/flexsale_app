@@ -4,6 +4,8 @@
  <div class="ovw-wrap">
      <div id="overview_row">
          <div class="flex-row-st">
+             <span id="left_scroll_indicator"></span>
+             <span id="right_scroll_indicator"></span>
              <button v-show="leftShow" class="scroll-button scrl-left" @click="scrollLeft">
                  <svg xmlns="http://www.w3.org/2000/svg" width="17.033" height="17.033" viewBox="0 0 17.033 17.033">
                     <path  d="M15561.452,6480.315h-12.044v-12.044h1.5v10.544h10.544Z" transform="translate(-6412.817 -15568.85) rotate(45)" fill="#0e142c"/>
@@ -72,7 +74,7 @@ export default {
             transitionVal: 0,
             leftShow: false,
             rightShow: true,
-            fistVal: 0,
+            firstVal: '',
             lastVal: ''
         }
     },
@@ -85,36 +87,36 @@ export default {
         },
        
         scrollLeft() {
-            this.transitionVal += 170
-            this.fistVal += 170
+            let no = this.stats.length -1
+            let elem_1 = document.getElementById('ovw'+0).getBoundingClientRect().left + 170
+            let lastElem = document.getElementById('ovw'+no).getBoundingClientRect().left + 170
+            this.firstVal = elem_1
+            this.lastVal = lastElem
             this.checkBtn()
-            //let elem_1 = document.getElementById('ovw'+0).style.transform
-            //let elem_2 = document.getElementById('ovw'+ parseInt(this.stats.length-1)).style.transform
-            
+            this.transitionVal += 170
         },
         scrollRight() {
-            //this.fistVal = document.getElementById('ovw'+0).style.transform
             let no = this.stats.length -1
-            let last = document.getElementById('ovw'+no).style.transform
-            this.lastVal = last
-            console.log(last)
-            this.transitionVal -= 170
-            this.fistVal -= 170
+            let elem_1 = document.getElementById('ovw'+0).getBoundingClientRect().left - 170
+            let lastElem = document.getElementById('ovw'+no).getBoundingClientRect().left - 170
+            this.firstVal = elem_1
+            this.lastVal = lastElem
             this.checkBtn()
-            //let elem_1 = document.getElementById('ovw'+0).style.transform
-            //let elem_2 = document.getElementById('ovw'+ parseInt(this.stats.length-1)).style.transform
+            this.transitionVal -= 170
         },
         checkBtn() {
-            if ( this.fistVal <= 0){
+            let leftIndicator = document.getElementById('left_scroll_indicator').getBoundingClientRect().left
+            let rightIndicator = document.getElementById('right_scroll_indicator').getBoundingClientRect().left
+            if(this.firstVal < leftIndicator+10) {
                 this.leftShow = true
             }else{
                 this.leftShow = false
-            }if(this.lastVal == 'translateX(680px)'){
+            }
+            if(this.lastVal < (rightIndicator -170)) {
                 this.rightShow = false
             }else{
                 this.rightShow = true
             }
-            
            
         }
     }
@@ -292,6 +294,14 @@ export default {
         transform: scale(0.98) translateY(-50%);
         
     }
+}
+#left_scroll_indicator{
+    position: absolute;
+    left: 0;
+}
+#right_scroll_indicator{
+    position: absolute;
+    right: 0;
 }
 .scrl-left{
     left: 10px;

@@ -31,9 +31,9 @@
         </div>
         <div class="menu-toggle">
             <button>
-                <span></span>
-                <span></span>
-                <span></span>
+                <i></i>
+                <i></i>
+                <i></i>
             </button>
         </div>
     </div>
@@ -103,13 +103,14 @@ export default {
         align-items: center;
         background-color: transparent;
         transition: 0.4s;
+        padding: 0;
         &:hover{
             background-color: $primary-light;
-            span{
+            i{
                 background-color: $primary-color;
             }
         }
-        span{
+        i{
             height: 4px;
             width: 4px;
             background-color: $dark;

@@ -4,7 +4,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    hostname: 'http://localhost:8000',
+    hostname: 'http://localhost:8001',
     token: localStorage.getItem('token') || null,
     user: {},
     mobile: false,

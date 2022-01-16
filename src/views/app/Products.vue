@@ -322,17 +322,19 @@ export default {
 }
 .table-menu{
     margin-top: 25px;
+    height: 44px;
      ul{
         padding: 0;
         margin: 0;
         list-style-type: none;
         display: flex;
         height: 100%;
+        align-items: center;
         li{
             display: flex;
             margin-right: 10px;
             align-items: center;
-            height: 41px;
+            height: 40px;
             
             &:hover a{
                 background-color: $dark-light;
@@ -357,6 +359,7 @@ export default {
     display: flex;
     overflow: hidden;
     .pill-wrap{
+        height: 100%;
         display: flex;
         overflow-x: auto;
         &::-webkit-scrollbar {
