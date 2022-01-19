@@ -14,10 +14,44 @@
                     </svg>
                   </button>
                 </div>
-                <div></div>
+                <div id="stores">
+                  <div v-for="store in getStores" :key="store.id">
+                    <div class="store-info-hold active" v-if="store.id == getUser.current">
+                        <div class="avatar">
+                          <span v-bind:style="{backgroundImage: 'url('+require('@/assets/images/avatar.png')+')'}"></span>
+                        </div>
+                        <div class="acct-label">
+                            <div class="user-details">
+                                <div class="user-name"><strong>{{ store.name }}</strong></div>
+                                <div class="shop">{{ store.address }}</div>
+                            </div>
+                            <div class="acct-elipse" v-if="store.id == getUser.current">
+                                <svg xmlns="http://www.w3.org/2000/svg"  height="13" viewBox="0 0 27.028 19.354">
+                                  <path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"/>
+                                </svg>
+                            </div>
+                        </div> 
+                      </div>
+                    </div>
+                    <div v-for="store in getStores" :key="store.id">
+                      <div class="store-info-hold inactive" v-if="store.id != getUser.current" @click="$store.dispatch('getSwitchStore', store.id)">
+                          <div class="avatar">
+                            <span v-bind:style="{backgroundImage: 'url('+require('@/assets/images/avatar.png')+')'}"></span>
+                          </div>
+                          <div class="acct-label">
+                              <div class="user-details">
+                                  <div class="user-name"><strong>{{ store.name }}</strong></div>
+                                  <div class="shop">{{ store.address }}</div>
+                              </div>
+                          </div> 
+                      </div>
+                    </div>
+            
+
+                </div>
                 <div class="logout-hold">
                     <hr>
-                    <a href="#" @click.prevent="$store.commit('destroyToken')">
+                    <a href="#" @click.prevent="$store.dispatch('getLogout')">
                       <svg xmlns="http://www.w3.org/2000/svg"  height="14" viewBox="0 0 12.142 10.928">
                       <path id="Path_1672" data-name="Path 1672" d="M11.107,5.428l-.856.856,1.566,1.572H5.643V9.071h6.174l-1.566,1.566.856.862,3.036-3.036ZM3.214,4.214H8.071V3H3.214A1.218,1.218,0,0,0,2,4.214v8.5a1.218,1.218,0,0,0,1.214,1.214H8.071V12.714H3.214Z" transform="translate(-2 -3)" fill="#212121"/>
                     </svg>
@@ -27,8 +61,8 @@
             </div>
       </transition>
         </teleport>
-          <div id="account_menu" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
-              <div id="avatar">
+          <div id="account_menu" class="store-info-hold" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
+              <div class="avatar">
                   <span v-bind:style="{backgroundImage: 'url('+require('@/assets/images/avatar.png')+')'}"></span>
                   <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
                       <path d="M404.366,1308.847l-4.744-4.732a.75.75,0,0,1,1.059-1.062l3.663,3.655,3.514-3.644a.75.75,0,1,1,1.08,1.041Z" transform="translate(-399.402 -1302.833)" fill="#11172f"/>
@@ -36,10 +70,10 @@
               </div>
               <div class="acct-label" v-if="getDesktop">
                   <div class="user-details">
-                      <div id="user_name"><strong>Benjamin Ayimah</strong></div>
-                      <div id="shop">John’s Enterprise</div>
+                      <div class="user-name"><strong>{{ getThiStore.name }}</strong></div>
+                      <div class="shop">{{ getThiStore.address }}</div>
                   </div>
-                  <div id="acct_elipse">
+                  <div class="acct-elipse">
                       <span></span>
                       <span></span>
                       <span></span>
@@ -55,7 +89,7 @@ import { mapGetters } from 'vuex'
 import Backdrop from './Backdrop.vue'
 export default {
     components: { Backdrop },
-    computed: mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop']),
+    computed: mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop', 'getStores', 'getUser', 'getThiStore']),
     name: 'AccountMenu',
     data() {
         return {
@@ -88,6 +122,16 @@ padding: 15px 20px;
 }
 
 #account_menu{
+  cursor: pointer;
+  &:hover{
+    background-color: $dark-light;
+  }
+  &:hover .acct-elipse span{
+      background-color: $primary-color;
+    }
+}
+
+.store-info-hold{
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -95,14 +139,8 @@ padding: 15px 20px;
     border-radius: 1rem;
     transition: 0.2s all linear;
     width: 100%;
-    cursor: pointer;
   }
-  #account_menu:hover{
-      background-color: $dark-light;
-    }
-    #account_menu:hover #acct_elipse span{
-      background-color: $primary-color;
-    }
+  
   .acct-label{
     width: 100%;
     display: flex;
@@ -112,21 +150,21 @@ padding: 15px 20px;
       max-width: 140px;
       flex-shrink: 1;
       padding: 0 10px;
-      #user_name{
-        font-size: 1.1rem;
+      .user-name{
+        font-size: 1rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      #shop{
+      .shop{
         color: $gray-color;
-        font-size: 0.99rem;
+        font-size: 0.9rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
     }
-    #acct_elipse{
+    .acct-elipse{
       display: flex;
       align-items: center;
       width: 24px;
@@ -140,14 +178,14 @@ padding: 15px 20px;
       }
     }
   }
-  #avatar {
+  .avatar {
       display: flex;
       align-items: center;
       svg{
           margin-left: 5px;
       }
   }
-  #avatar span{
+  .avatar span{
     display: block;
     height: 40px;
     width: 40px;
@@ -158,7 +196,7 @@ padding: 15px 20px;
   }
   .dialog{
     position: fixed;
-    height: 200px;
+  
     background-color: $white-color;
     z-index: 101;
     box-shadow: 0 1px 6px 0 rgb(14 20 44 / 18%);
@@ -168,13 +206,16 @@ padding: 15px 20px;
     padding: 25px 0; 
   }
   .menu-card-desk{
-    width: 300px;
+    width: 255px;
     border-radius: 16px; 
   }
   .menu-card-mob{
     width: 100%;
     border-top-right-radius: 16px;
     border-top-left-radius: 16px;
+    .acct-label .user-details{
+      max-width: 100%;
+    }
   }
   .logout-hold{
       
@@ -185,19 +226,40 @@ padding: 15px 20px;
           text-decoration: none;
           font-weight: 500;
           transition: 0.2s all linear;
+          display: flex;
+          align-items: center;
           svg{
             margin-right: 15px;
           }
       }
       a:hover{
-          background-color: $primary-light;
-          color: $primary-color;
+          background-color: $dark-light;
       }
       a:active{
           background-color: $dark-light;
       }
       
   }
+  #stores{
+    .store-info-hold{
+      padding: 15px 20px;
+      border-radius: 0;
+      
+    }
+    .active {
+
+    }
+    .inactive {
+      cursor: pointer;
+      &:hover{
+        background-color: $dark-light;
+      }
+    }
+  }
+
+
+
+
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(200px);

@@ -7,6 +7,8 @@ export default createStore({
     hostname: 'http://localhost:8001',
     token: localStorage.getItem('token') || null,
     user: {},
+    stores: [],
+    thiStore: {},
     mobile: false,
     tablet: false,
     desktop: false,
@@ -24,6 +26,13 @@ export default createStore({
     },
     setUser(state, payload) {
         state.user = payload
+    },
+    setStore(state, payload) {
+      state.stores = payload
+    },
+    setThiStore(state, payload) {
+      state.thiStore = payload
+      console.log(payload)
     },
     destroyToken(state){
         localStorage.removeItem('token')
@@ -122,19 +131,35 @@ export default createStore({
         console.log(err.response)
       })
   },*/
-  getAuthUser(state, payload) {            
+    getAuthUser(state, payload) {            
       axios.post(this.getters.getHostname+'/api/user?token='+payload)
       .then((res) => {
-          state.commit('setUser', res.data.user)   
+          state.commit('setUser', res.data.user)
+          state.commit('setStore', res.data.stores)
+          state.commit('setThiStore', res.data.this_store)
       }).catch(() => {
           state.commit('destroyToken')    
       })      
     },
-    async Logout(state){
-        axios.delete(this.getters.getHostname+'/api/logout')
-        state.commit('destroyToken') 
+    async getLogout(state){
+        axios.delete(this.getters.getHostname+'/api/logout?token='+this.getters.getToken)
+        .then(()=> {
+          state.commit('destroyToken')
+        })
     },
     //end auth && logout
+    getSwitchStore(state, payload) { 
+      axios.post(this.getters.getHostname+'/api/switch-store?token='+this.getters.getToken, 
+      { 'storeID' : payload})
+      .then((res) => {
+        if(res.data.status === 1) {
+          location.reload()
+        }
+          console.log(res)
+      }).catch((err) => {
+          console.log(err.response) 
+      })      
+    },
   },
   getters: {
     getHostname: (state) => state.hostname,
@@ -145,6 +170,7 @@ export default createStore({
     getUser(state) {
         return state.user
     },
+    getThiStore: (state) => state.thiStore,
     getToken: (state) => state.token,
     getCurrentpage: (state) => state.navPage,
     getFloatingDiv: (state) => state.dynamicFloatingDiv,
@@ -153,6 +179,8 @@ export default createStore({
     getDesktop: (state) => state.desktop,
     getHideRight: (state) => state.hideRight,
     getAddingProduct: (state) => state.addingProduct,
+    getStores: (state) => state.stores,
+
 
 
 

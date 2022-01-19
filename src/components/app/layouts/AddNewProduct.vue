@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div v-else-if="imageUploaded" class="img-container">
-                                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/temp/'+form.tempImage.image+')'}">
+                                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/temp/'+form.tempImage.image+')'}">
                                         <div v-if="deleting" id="loading_hold">
                                             <i class="lazy-loader" :class="{ 'loader' : load }"></i>
                                         </div>
@@ -229,7 +229,6 @@ export default {
         }
     },
     methods: {
-
         uploadClick(id) {
             document.getElementById(id).click()
         },
@@ -258,7 +257,6 @@ export default {
                         return this.showError('This file is too large. The file size must be less than 1MB') 
                         //return console.log('File too large')
                     }else {
-                        this.doingtempUpload = true
                         this.load = true
                         this.form.image = this.$refs.img.files[0];
                         let formData = new FormData();
@@ -278,7 +276,6 @@ export default {
                             this.form.tempImage = newImg
                              this.form.image = null
                             //document.getElementById('prod_img').value = null
-                            this.doingtempUpload = false
                             this.load = false
                             this.imageUploaded = true
                             this.doingProductUpload = true
@@ -306,10 +303,12 @@ export default {
                 console.log(err)
             })
         },
+        
         preventReload(event) {
-            if (this.doingProductUpload) {
+            if(this.form.name || this.form.supplier || this.form.description || this.form. batchNumber || this.form.category || this.form.cost || this.form.sellingPrice || this.form.stock || this.doingProductUpload ) {
                 event.returnValue = `Are you sure you want to leave?`;
             }
+            
         }
     },
     created() {

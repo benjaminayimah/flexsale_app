@@ -58,7 +58,7 @@ export default {
             },
             validation: {
                 error: false,
-                message: 'sdfd'
+                message: ''
             }
         }
     },

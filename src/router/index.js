@@ -3,7 +3,6 @@ import store from '@/store'
 //import Home from '@/views/web/Home.vue'
 //import About from '@/views/web/About.vue'
 import Login from '@/views/web/Login.vue'
-import Logout from '@/components/app/Logout'
 import AdminHome from '@/views/AdminHome.vue'
 //import WebHome from '@/views/WebHome.vue'
 import Dashboard from '@/views/app/Dashboard.vue'
@@ -21,7 +20,6 @@ const routes = [
     children: [
       { path: '/', name: 'Dashboard', component: Dashboard },
       { path: '/products', name: 'Products', component: Products },
-      { path: '/logout', component: Logout , name: 'Logout', meta: {requiresAuth: true}},
     ]
   },
   { path: '/login', name: 'Login', component: Login, meta: {requiresVisitor: true}},
