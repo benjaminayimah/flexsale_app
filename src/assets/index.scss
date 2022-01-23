@@ -29,9 +29,16 @@ $myFont: 'Urbanist', Helvetica, sans-serif;
   0%{transform: rotate(0deg)}
   100%{transform: rotate(360deg)}
 }
-
+.bg-img{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
 .ml-0{
   margin-left: 0 !important;
+}
+.mb-0{
+  margin-bottom: 0 !important;
 }
 .form-row-col{
   .col-2:first-child{
@@ -51,7 +58,7 @@ button{
   align-items: center;
   padding: 0;
   cursor: pointer;
-  transition: 0.1s ease-in-out;
+  transition: 0.2s all;
 }
 
 .button{
@@ -74,9 +81,9 @@ button{
     //border: 1px solid $primary-color;
   }
 }
-.secondary-primary{
+.button-secondary{
   background-color: $white-color;
-  border: 1px solid $dark;
+  border: 1px solid $gray-light;
   color: $dark;
   &:hover{
     background-color: $dark-light;
@@ -118,6 +125,7 @@ button{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 }
 textarea{
   height: auto !important;
@@ -305,6 +313,82 @@ hr{
   & svg path{
        fill: $primary-color;
   }
+}
+.status-alert{
+  .alert{
+    border-radius: 6px;
+    margin-top: 1rem;
+    position: relative;
+    padding: 1.2rem 1.25rem;
+    border: none;
+    border: 1px solid;
+    h5{
+      margin: 0;
+      font-weight: 500;
+      font-size: 1.1em;
+    }
+    .alert-body{
+      font-size: 0.96em;
+    }
+    
+  }
+  .success-alert{
+    background-color: rgba(58, 173, 116, 0.1);
+    color: #064727;
+    border-color: rgba(58, 173, 116, 0.5);
+    .i-hold{
+      background-color: rgba(58, 173, 116, 0.6);
+      i{
+        background-image: url('/images/mark-correct.svg');
+      }
+    }
+  }
+  .danger-alert{
+    background-color: rgba(250, 10, 10, 0.1);
+    color: #4b0808;
+    border-color: rgba(250, 10, 10, 0.5);
+    .i-hold{
+      background-color: #fa0a0a;
+      i{
+        background-image: url('/images/danger.svg');
+      }
+    }
+  }
+  .warning-alert{
+    background-color: rgba(255, 159, 10, 0.1);
+    color: #5c3a07;
+    border-color:rgba(255, 159, 10, 0.5);
+    .i-hold{
+      background-color: #ff9f0a;
+      i{
+        background-image: url('/images/warning.svg');
+      }
+    }
+  }
+  .info-alert{
+    background-color: rgba(100, 210, 255, 0.1);
+    color: #053b50;
+    border-color: rgba(100, 210, 255, 0.5);
+    .i-hold{
+      background-color: #64d2ff;
+      i{
+        background-image: url('/images/info.svg');
+      }
+    }
+  }
+  .alert-close{
+    background-image: url('/images/close.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    padding: 5px 12px;
+    margin: 15px 8px;
+    right: 0;
+    top: 0;
+  }
+  
+  
 }
 
 

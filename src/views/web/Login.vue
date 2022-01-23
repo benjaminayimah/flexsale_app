@@ -25,10 +25,16 @@
                       <div class="form-row">
                           <label>Email:</label>
                           <input v-model="form.email" @mousedown="resertForm" type="email" name="email" class="form-control">
+                          <span class="validation-err" v-if="validation.error && validation.errors.email">
+                              {{ validation.errors.email[0] }}
+                          </span>
                       </div>
                       <div class="form-row">
                           <label>Password:</label>
                           <input v-model="form.password" @mousedown="resertForm" type="password" name="password" class="form-control">
+                          <span class="validation-err" v-if="validation.error && validation.errors.password">
+                              {{ validation.errors.password[0] }}
+                          </span>
                       </div>
                         <button class="button button-primary" @click.prevent="submitSignin">Login</button>
                       <p>
@@ -58,6 +64,7 @@ export default {
             },
             validation: {
                 error: false,
+                errors: [],
                 message: ''
             }
         }
@@ -73,8 +80,13 @@ export default {
             }).catch((err) => {
                 if (err.response.status == 401) {
                     this.validation.error = true
-                    this.validation.message = 'Wrong password'
+                    this.validation.message = err.response.data.status
+                }if(err.response.status == 422){
+                    this.validation.error = true
+                    this.validation.errors = err.response.data.errors
+                    this.validation.message = err.response.data.message
                 }
+           
 
             })
         },
@@ -134,16 +146,22 @@ h1{
     font-weight: 700;
     text-align: center;
 }
+
 .validation-error {
     padding: 15px;
     border-radius: 6px;
     background-color: rgba(230, 50, 50, 0.1);
     border: 1px solid rgba(230, 50, 50, 0.5);
-    color: #9E2323;
+    color: $danger;
     margin-bottom: 20px;
     & span{
         font-size: 0.9rem;
     }
+}
+.validation-err{
+    color: $danger;
+    padding-top: 8px;
+    display: flex;
 }
 #mini-logo{
     display: none;

@@ -39,19 +39,19 @@
                     </div>
                     <div class="prod-stat-hold">
                         <div class="add-new">
-                            <a href="#" @click.prevent="$store.commit('getMainHomeWidth')">
+                            <a href="#" @click.prevent="$store.commit('getMainHomeWidth', 'tag')">
                                 <i class="flex-column">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582">
                                     <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff"/>
                                 </svg>
                                 </i>
-                                <span>Add category</span>
+                                <span>Create Tags</span>
                             </a>
                         </div>
                     </div>
                     <div class="prod-stat-hold">
                         <div class="add-new">
-                            <a href="#" @click.prevent="$store.commit('getMainHomeWidth')">
+                            <a href="#" @click.prevent="$store.commit('getMainHomeWidth', 'product')">
                                 <i class="flex-column">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582">
                                     <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff"/>
@@ -69,8 +69,8 @@
                     <div class="category-pill pill">
                         <div class="pill-wrap">
                             <ul class="flex-row-st">
-                                <li><a href="#" class="active">All</a></li>
-                                <li><a href="#">Expired</a></li>
+                                <li><router-link :to="{ name: 'AllProducts'}" class="active">All</router-link></li>
+                                <li v-for="tag in getTags" :key="tag.id"><router-link :to="'/products/filter/'+tag.id+'/'+tag.name">{{ tag.name }}</router-link></li>
                             </ul>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                         </ul>
                     </div>
                 </div>
-                <product-row v-for="product in products" :key="product.id" v-bind:product="product" />
+                <router-view></router-view>
             </div>
         </div>
     </div>
@@ -101,30 +101,26 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import ProductRow from '../../components/app/includes/ProductRow.vue'
 
 export default {
-  components: { ProductRow },
     name: 'Products',
-    computed: mapGetters(['getMobile', 'getTablet', 'getDesktop']),
-    data() {
-        return {
-            products: [
-                {id: 1, name: 'Ideal Milk', price: '24', currency: 'GH₵', quantity: '45', batchNo: '90012-38740-33'},
-                {id: 2, name: 'Cocoa Drink', price: '393', currency: 'GH₵', quantity: '13', batchNo: '038334-93722-75'},
-                {id: 3, name: 'Ketchup', price: '9', currency: 'GH₵', quantity: '80', batchNo: '98369-38740-34'},
-                {id: 4, name: 'Suger', price: '93', currency: 'GH₵', quantity: '200', batchNo: '0863-98253-09'},
-                {id: 5, name: 'Vegetable Oil', price: '43', currency: 'GH₵', quantity: '930', batchNo: '09762-862P9-93'},
-
-            ]
-        }
-    },
+    computed: mapGetters(['getMobile', 'getProducts', 'getTags', 'getToken']),
+    // data() {
+    //     return {
+            
+    //     }
+    // },
     created() {
         this.setPage()
+        this.loadProducts()
+        //this.$store.dispatch('fetchTags', this.getToken)
     },
     methods: {
         setPage() {
             this.$store.commit('setPagetitle', 'All Products')
+        },
+        loadProducts() {
+            this.$store.dispatch('fetchProducts', this.getToken)
         }
     }
 }
@@ -335,7 +331,7 @@ export default {
             display: flex;
             margin-right: 10px;
             align-items: center;
-            height: 40px;
+            height: 42px;
             
             &:hover a{
                 background-color: $dark-light;

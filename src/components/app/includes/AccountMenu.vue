@@ -18,7 +18,7 @@
                   <div v-for="store in getStores" :key="store.id">
                     <div class="store-info-hold active" v-if="store.id == getUser.current">
                         <div class="avatar">
-                          <span v-bind:style="{backgroundImage: 'url('+require('@/assets/images/avatar.png')+')'}"></span>
+                          <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
                         </div>
                         <div class="acct-label">
                             <div class="user-details">
@@ -34,14 +34,17 @@
                       </div>
                     </div>
                     <div v-for="store in getStores" :key="store.id">
-                      <div class="store-info-hold inactive" v-if="store.id != getUser.current" @click="$store.dispatch('getSwitchStore', store.id)">
+                      <div class="store-info-hold inactive" v-if="store.id != getUser.current" @click="doSwitch(store.id)">
                           <div class="avatar">
-                            <span v-bind:style="{backgroundImage: 'url('+require('@/assets/images/avatar.png')+')'}"></span>
+                            <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
                                   <div class="user-name"><strong>{{ store.name }}</strong></div>
                                   <div class="shop">{{ store.address }}</div>
+                              </div>
+                              <div class="acct-elipse">
+                                <i class="lazy-loader" v-if="load" :class="{ 'loader' : load }"></i>
                               </div>
                           </div> 
                       </div>
@@ -63,15 +66,15 @@
         </teleport>
           <div id="account_menu" class="store-info-hold" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
               <div class="avatar">
-                  <span v-bind:style="{backgroundImage: 'url('+require('@/assets/images/avatar.png')+')'}"></span>
+                  <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+getCurrentStore.id+'/'+getCurrentStore.image+')'}"></span>
                   <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
                       <path d="M404.366,1308.847l-4.744-4.732a.75.75,0,0,1,1.059-1.062l3.663,3.655,3.514-3.644a.75.75,0,1,1,1.08,1.041Z" transform="translate(-399.402 -1302.833)" fill="#11172f"/>
                   </svg>
               </div>
               <div class="acct-label" v-if="getDesktop">
                   <div class="user-details">
-                      <div class="user-name"><strong>{{ getThiStore.name }}</strong></div>
-                      <div class="shop">{{ getThiStore.address }}</div>
+                      <div class="user-name"><strong>{{ getCurrentStore.name }}</strong></div>
+                      <div class="shop">{{ getCurrentStore.address }}</div>
                   </div>
                   <div class="acct-elipse">
                       <span></span>
@@ -89,11 +92,12 @@ import { mapGetters } from 'vuex'
 import Backdrop from './Backdrop.vue'
 export default {
     components: { Backdrop },
-    computed: mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop', 'getStores', 'getUser', 'getThiStore']),
+    computed: mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop', 'getStores', 'getUser', 'getCurrentStore', 'getHostname']),
     name: 'AccountMenu',
     data() {
         return {
-            showMenu: false
+            showMenu: false,
+            load: false
         }
     },
     methods: {
@@ -106,13 +110,23 @@ export default {
                 this.showMenu = false
                 this.$store.commit('reSetDynamicFloatingDiv', elem)
             }
+        },
+        doSwitch(id) {
+          this.load = true
+          this.$store.dispatch('getSwitchStore', id)
+          
         }
     }
 }
 </script>
 <style scoped lang="scss">
-.jc #account_menu{
-  justify-content: center;
+.jc{
+  padding: 0 3px;
+  #account_menu{
+    justify-content: center;
+    height: 64px
+  }
+  
 }
 .acct-menu{
 padding: 15px 20px;
@@ -262,7 +276,7 @@ padding: 15px 20px;
 
 .slide-enter-from,
 .slide-leave-to {
-  transform: translateY(200px);
+  transform: translateY(300px);
   
 }
   

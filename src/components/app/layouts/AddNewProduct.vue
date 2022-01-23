@@ -1,6 +1,6 @@
 <template>
 <transition name="fade">
-    <div class="add-backdrop"></div>
+    <secondary-backdrop />
 </transition>
 <transition name="slide">
     <div class="add-wrap" :style="{width: thisWidth+'px'}">
@@ -10,11 +10,12 @@
                     <div class="add-head-hold" :style="{width: thisWidth+'px'}">
                         <div class="head-content">
                             <div class="heading">
-                                <h1>Add New Product</h1>
+                                <h1>{{ getAddingProduct.product? 'Add New Product' : 'Create Product Tag' }}</h1>
                             </div>
                             <div class="btn-wrap flex-row">
-                                <button class="button secondary-primary" @click.prevent="$store.commit('unsetMainHomeWidth')">Cancel</button>
-                                <button class="button button-primary">Submit</button>
+                                <button class="button button-secondary" @click.prevent="$store.commit('unsetMainHomeWidth')">Cancel</button>
+                                <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
+                                <button class="button button-primary" v-if="getAddingProduct.tag" @click.prevent="submitTag">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -22,7 +23,8 @@
             </div>
             <div class="add-body">
                 <div class="form-wrap">
-                    <form action="">
+                    <alerts />
+                    <form v-if="getAddingProduct.product" id="product_form">
                         <div class="form-row">
                             <label>Product Image:</label>
                             <div class="img-hold">
@@ -34,11 +36,11 @@
                                     </div>
                                 </div>
                                 <div v-else-if="imageUploaded" class="img-container">
-                                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/temp/'+form.tempImage.image+')'}">
+                                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/temp/'+form.tempImage+')'}">
                                         <div v-if="deleting" id="loading_hold">
                                             <i class="lazy-loader" :class="{ 'loader' : load }"></i>
                                         </div>
-                                        <button v-else class="secondary-primary" id="deltmp" @click.prevent="deltmp(form.tempImage.image)">
+                                        <button v-else class="button-secondary" id="deltmp" @click.prevent="deltmp(form.tempImage)">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 17.063 18">
                                                 <path fill="#0e142c"  d="M-163.673-438.167a2.146,2.146,0,0,1-2.154-1.973l-.724-10.631,1.188-.078.724,10.632a.961.961,0,0,0,.966.884h7.236a.962.962,0,0,0,.966-.885l.724-10.631,1.188.078-.724,10.631a2.146,2.146,0,0,1-2.154,1.973Zm-4.793-13.986v-1.166h5.08v-2.848h6.662v2.848h5.321v1.166Zm10.551-1.166V-455H-162.2v1.683Z" transform="translate(168.466 456.167)"/>
                                             </svg>
@@ -54,7 +56,7 @@
                                     <span>Upload product image</span>
                                     <span class="instruction">The file type must be <strong>"png, jpg or jpeg"</strong> and <strong>Less than 1MB</strong></span>
                                     <input class="hide" @change="uploadTemp" name="image" id="prod_img" type="file" ref="img">
-                                    <div v-if="imageStatus.status" class="status-div-backdrop" @mousedown="clrError">
+                                    <div v-if="imageStatus.status" class="status-div-backdrop" @click="clrError">
                                         <div class="status-div">
                                             <button @click.prevent="">
                                                 <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
@@ -76,7 +78,7 @@
                         </div>
                         <div class="form-row">
                             <label>Product name:</label>
-                            <input v-model="form.name" type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Ideal Milk">
+                            <input v-model="form.name" type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Ideal Milk" required>
                         </div>
                         <div class="form-row">
                             <label>Batch number:</label>
@@ -84,7 +86,7 @@
                         </div>
                         <div class="form-row">
                             <label>Category:</label>
-                            <select v-model="form.category" id="category" class="form-control select">
+                            <select id="category" class="form-control select">
                                 <option selected="selected">Select a category</option>
                                 <option value="men">men</option>
                                 </select>
@@ -159,7 +161,7 @@
                                 <div class="col-2">
                                     <div class="profit-row">
                                         <label class="checkbox-hold">
-                                                <input v-model="form.autoContinue" type="checkbox">
+                                                <input v-model="form.trackQty" type="checkbox">
                                                 <span class="checkbox-custom"></span>
                                                 <span class="chk-label">Automatically track quantity</span>
                                         </label>
@@ -188,9 +190,12 @@
                             </div>
                         </div>
                         <div class="btn-wrap2 flex-row">
-                            <button class="button button-primary">Submit</button>
+                            <button class="button button-primary" @click.prevent="doUpload">Submit</button>
                         </div>
                     </form>
+                    <div v-if="getAddingProduct.tag">
+                        <add-new-tag v-bind:thisWidth="thisWidth" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -200,7 +205,11 @@
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import Alerts from '../includes/Alerts.vue'
+import AddNewTag from './AddNewTag.vue'
+import SecondaryBackdrop from '../includes/SecondaryBackdrop.vue'
 export default {
+  components: { Alerts, AddNewTag, SecondaryBackdrop },
     name: 'AddNewProduct',
     computed: mapGetters(['getAddingProduct', 'getToken', 'getHostname', 'getUser']),
     props: ['thisWidth'],
@@ -209,17 +218,18 @@ export default {
             doingProductUpload: false,
             form: {
                 image: '',
-                tempImage: {},
+                tempImage: '',
                 name: '',
                 batchNumber: '',
-                category: '',
                 cost: '',
                 sellingPrice: '',
                 stock: '',
                 description: '',
                 supplier: '',
-                autoContinue: true,
-                prodType: '0'
+                trackQty: true,
+                prodType: '0',
+                profit: '',
+                profitMargin: ''
             },
             doingtempUpload: false,
             imageUploaded: false,
@@ -269,12 +279,8 @@ export default {
                                     },
                                 }
                         ).then((res) => {
-                            const newImg = {
-                                id: res.data.id,
-                                image: res.data.img,
-                            }
-                            this.form.tempImage = newImg
-                             this.form.image = null
+                            this.form.tempImage = res.data.img
+                            this.form.image = null
                             //document.getElementById('prod_img').value = null
                             this.load = false
                             this.imageUploaded = true
@@ -291,6 +297,51 @@ export default {
             
             
         },
+        doUpload() {
+            
+            axios.post( this.getHostname+'/api/products?token='+this.getToken,
+                    this.form,
+                    {
+                        headers: {
+                            'Content-Type': ['application/json']
+                        },
+                    }
+            ).then((res) => {
+                console.log(res.data)
+                this.$store.commit('addToProducts', res.data.product)
+                const payload = {
+                    id: 'success',
+                    title: res.data.title,
+                    body: res.data.body
+                }
+                // const newProduct = {
+                //     id: res.data.id,
+                //     name: res.data.name,
+                //     image: res.data.image
+                // }
+                this.$store.commit('showAlert', payload)
+                
+            }).catch((err) => {
+                if(err.response.status === 422) {
+                    const payload = {
+                        id: 'danger',
+                        title: 'Submition error',
+                        body: err.response.data.errors.name[0]
+                    }
+                    console.log(err.response.data.errors)
+                    this.$store.commit('showAlert', payload)
+                }else{
+                    const payload = {
+                        id: 'danger',
+                        title: 'Submition error',
+                        body: 'please fill out the required fields.'
+                    }
+                    this.$store.commit('showAlert', payload)
+                }
+                //window.scrollTo(0,0)
+                    
+            })
+        },
         deltmp(id) {
             this.deleting = true
             axios.delete(this.getHostname+'/api/temp-upload/'+id+'?token='+this.getToken)
@@ -303,6 +354,14 @@ export default {
                 console.log(err)
             })
         },
+
+        //tag
+        
+        // fetchAllCategories() {
+        //     if(this.getAddingProduct.tag) {
+        //         this.$store.dispatch('fetchTags', this.getToken)
+        //     }
+        // },
         
         preventReload(event) {
             if(this.form.name || this.form.supplier || this.form.description || this.form. batchNumber || this.form.category || this.form.cost || this.form.sellingPrice || this.form.stock || this.doingProductUpload ) {
@@ -311,11 +370,9 @@ export default {
             
         }
     },
-    created() {
-    // window.addEventListener('beforeunload', (event) => {
-    // event.returnValue = `Are you sure you want to leave?`;
-    // });
-    },
+   created() {
+    //    this.fetchAllCategories()
+   },
     unmounted() {
         axios.post(this.getHostname+'/api/del-alltemp-img?token='+this.getToken)
 
@@ -331,15 +388,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.add-backdrop{
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
-    z-index: 200;
-}
+
 .add-wrap{
     background-color: $white-color;
     height: 100%;
@@ -355,7 +404,7 @@ export default {
 }
 .add-content{
     .add-prd-head{
-        z-index: 500;
+        z-index: 100;
         display: flex;
         align-items: center;
         position: relative;
@@ -465,7 +514,6 @@ export default {
         padding: 10px;
         height: 70px;
         width: 70px;
-      
         &:hover{
             background-color: rgba(86, 110, 244, 0.2);
         }

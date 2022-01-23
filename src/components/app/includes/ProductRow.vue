@@ -2,7 +2,7 @@
     <div class="table-row flex-row-js">
         <div class="flex-row-st">
             <div class="img-hold">
-                <div class="img" :style="{backgroundImage: 'url('+require('@/assets/images/product-1.png')+')'}">
+                <div class="img" :style="{ backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')' }">
                 </div>
             </div>
             <div class="prod-capt-hold">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="batch-no">3847494-3827293-93e</div>
+            <div class="batch-no">{{ product.batch_no }} </div>
         </div>
         <div class="menu-toggle">
             <button>
@@ -39,9 +39,11 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
     name: 'ProductRow',
     props: ['product'],
+    computed: mapGetters(['getHostname', 'getUser'])
     
 }
 </script>

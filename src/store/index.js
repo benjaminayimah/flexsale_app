@@ -6,18 +6,24 @@ export default createStore({
   state: {
     hostname: 'http://localhost:8001',
     token: localStorage.getItem('token') || null,
+    windowHeight: '',
     user: {},
     stores: [],
-    thiStore: {},
+    products: [],
+    tags: [],
+    filters: [],
+    checkedProducts: [],
+    currentStore: {},
     mobile: false,
     tablet: false,
     desktop: false,
     hideRight: false,
-    
+    alert: { status: { show: false, success: false, danger: false, warning: false, info: false }, title: '', body: '' },
+
     navPage: { title: '', mobile: false },
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
-    addingProduct: { status: false, width: ''}
+    addingProduct: { status: false, width: '', product: false, tag: false}
   },
   mutations: {
     //authentication
@@ -27,13 +33,26 @@ export default createStore({
     setUser(state, payload) {
         state.user = payload
     },
+    fetchProducts(state, payload) {
+      state.products = payload
+    },
+    addToProducts(state, payload) {
+      state.products.push(payload)
+    },
     setStore(state, payload) {
       state.stores = payload
+      payload.forEach(element => {
+        if(element.id == state.user.current)
+        state.currentStore = element
+      });
     },
-    setThiStore(state, payload) {
-      state.thiStore = payload
-      console.log(payload)
+    computeWindow(state) {
+      state.windowHeight = window.innerHeight
     },
+    // setThiStore(state, payload) {
+    //   state.thiStore = payload
+    //   console.log(payload)
+    // },
     destroyToken(state){
         localStorage.removeItem('token')
         state.token = null
@@ -74,27 +93,82 @@ export default createStore({
       state.navPage.mobile = false
     },
 
-    getMainHomeWidth() {
+    getMainHomeWidth(state, payload) {
       let homeWidth = document.getElementById('main_home').offsetWidth
       let appSection = document.getElementById('app_section')
       appSection.style.left = appSection.offsetLeft+'px'
       document.body.classList.add('fixed-body')
-      this.commit('setMainHomeWidth', homeWidth)
+      const thispayload = { dimension: homeWidth, addType: payload }
+      this.commit('setMainHomeWidth', thispayload)
     },
     setMainHomeWidth(state, payload) {
-      state.addingProduct.width = payload
+      state.addingProduct.width = payload.dimension
       state.addingProduct.status = true
+      if(payload.addType == 'product'){
+        state.addingProduct.product = true
+      }else if(payload.addType == 'tag'){
+        state.addingProduct.tag = true
+      }
     },
     unsetMainHomeWidth(state){
+      this.commit('dismisAlert')
       state.addingProduct.status = false
+      state.addingProduct.tag = false
+      state.addingProduct.product = false
       state.addingProduct.width = ''
       document.body.classList.remove('fixed-body')
       let appSection = document.getElementById('app_section')
       appSection.style.left = '0px'
+      if(state.checkedProducts) {
+        state.checkedProducts = []
+      }
 
     },
-    
+    showAlert(state, payload) {
+      this.commit('dismisAlert')
+      if(payload.id === 'success'){
+          state.alert.status.show = true
+          state.alert.status.success = true
+          state.alert.title = payload.title
+          state.alert.body = payload.body
+      }else if(payload.id === 'danger'){
+          state.alert.status.show = true
+          state.alert.status.danger = true
+          state.alert.title = payload.title
+          state.alert.body = payload.body
+      }   
+    },
+    dismisAlert(state) {
+        for (let i in state.alert.status)
+        state.alert.status[i] = false
+        state.alert.body = ''
+        state.alert.title = ''
+    },
 
+    fetchTags(state, payload) {
+      state.tags = payload
+    },
+    addToTags(state, payload) {
+      state.tags.push(payload)
+    },
+    addCheckedProdToArray(state, payload) {
+      state.checkedProducts.push(payload)
+    },
+    removeCheckedProdFromArray(state, payload) {
+      // for (let i = 0; i < state.checkedProducts.length; i++) {
+      //   if (state.checkedProducts[i] && (state.checkedProducts[i].id === payload.id )) {
+      //     state.checkedProducts.splice(i, 1)
+      //   } 
+      // }
+      state.checkedProducts = state.checkedProducts.filter(product => product.id !== payload.id)
+    },
+    clrCheckedProdArray(state) {
+      state.checkcheckedProductsedItems = [] 
+    },
+    fetchFilters(state, payload) {
+      state.filters = payload
+      //console.log(payload)
+    },
 
     setDynamicFloatingDiv(state, payload) {
       const rect = payload.getBoundingClientRect()
@@ -136,10 +210,15 @@ export default createStore({
       .then((res) => {
           state.commit('setUser', res.data.user)
           state.commit('setStore', res.data.stores)
-          state.commit('setThiStore', res.data.this_store)
+          state.commit('fetchTags', res.data.tags)
       }).catch(() => {
           state.commit('destroyToken')    
       })      
+    },
+    async fetchProducts(state, payload){
+      const res = await axios.get(this.getters.getHostname+'/api/products?token='+payload)
+      state.commit('fetchProducts', res.data.products)
+      //console.log(res.data)
     },
     async getLogout(state){
         axios.delete(this.getters.getHostname+'/api/logout?token='+this.getters.getToken)
@@ -153,16 +232,31 @@ export default createStore({
       { 'storeID' : payload})
       .then((res) => {
         if(res.data.status === 1) {
-          location.reload()
+          //location.reload()
+          window.location.href = '/'
         }
-          console.log(res)
       }).catch((err) => {
           console.log(err.response) 
       })      
     },
+    // async fetchTags(state, payload){
+    //   //state.commit('unCheckAllAndEmpty')
+    //   const res = await axios.get(this.getters.getHostname+'/api/tag?token='+payload)
+    //   console.log(res.data.tags)
+    //   //state.commit('fetchTags', res.data.tags)
+    // },
+    async fetchFilters(state, payload){
+      //state.commit('unCheckAllAndEmpty')
+      const res = await axios.post(this.getters.getHostname+'/api/get-all-filters?token='+this.getters.getToken, { 'id' : payload})
+      state.commit('fetchFilters', res.data.filters)
+      //state.commit('fetchTags', res.data.tags)
+    }
+
+
   },
   getters: {
     getHostname: (state) => state.hostname,
+    getWindowHeight: (state) => state.windowHeight,
     auth(state){
         return state.token !== null
     },
@@ -170,7 +264,7 @@ export default createStore({
     getUser(state) {
         return state.user
     },
-    getThiStore: (state) => state.thiStore,
+    getCurrentStore: (state) => state.currentStore,
     getToken: (state) => state.token,
     getCurrentpage: (state) => state.navPage,
     getFloatingDiv: (state) => state.dynamicFloatingDiv,
@@ -180,6 +274,16 @@ export default createStore({
     getHideRight: (state) => state.hideRight,
     getAddingProduct: (state) => state.addingProduct,
     getStores: (state) => state.stores,
+    getAlert: (state) => state.alert,
+    getTags: (state) => state.tags,
+    getProducts: (state) => state.products,
+    getCheckedProducts: (state) => state.checkedProducts,
+    getAllFilters: (state) => state.filters
+
+    
+
+
+    
 
 
 

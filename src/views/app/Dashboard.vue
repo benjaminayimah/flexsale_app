@@ -105,6 +105,7 @@ export default {
             this.transitionVal -= 170
         },
         checkBtn() {
+            
             let leftIndicator = document.getElementById('left_scroll_indicator').getBoundingClientRect().left
             let rightIndicator = document.getElementById('right_scroll_indicator').getBoundingClientRect().left
             if(this.firstVal < leftIndicator+10) {

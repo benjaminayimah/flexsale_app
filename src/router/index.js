@@ -7,6 +7,9 @@ import AdminHome from '@/views/AdminHome.vue'
 //import WebHome from '@/views/WebHome.vue'
 import Dashboard from '@/views/app/Dashboard.vue'
 import Products from '@/views/app/Products.vue'
+import All from '@/components/app/layouts/AllProducts.vue'
+import Filter from '@/components/app/layouts/ProductFilter.vue'
+
 //import Error404 from '@/views/web/Error404.vue'
 
 const routes = [
@@ -19,7 +22,13 @@ const routes = [
     meta: {requiresAuth: true },
     children: [
       { path: '/', name: 'Dashboard', component: Dashboard },
-      { path: '/products', name: 'Products', component: Products },
+      { path: '/', component: Products,
+      children: [
+        { path: '/products', name: 'AllProducts', component: All},
+        { path: '/products/filter/:id/:name', component: Filter},
+      ]
+    
+    },
     ]
   },
   { path: '/login', name: 'Login', component: Login, meta: {requiresVisitor: true}},

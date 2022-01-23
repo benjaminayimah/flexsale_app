@@ -1,5 +1,5 @@
 <template>
-<section id="app_section" :style="{minHeight: windowHeight + 'px'}" :class="[{ 'tb-mw': getTablet }, {'tb-mw2': getHideRight }, {'mob-view': getMobile }  ]">
+<section id="app_section" :style="{minHeight: getWindowHeight + 'px'}" :class="[{ 'tb-mw': getTablet }, {'tb-mw2': getHideRight }, {'mob-view': getMobile }  ]">
   <!-- main home -->
     <div id="left" v-if="!getMobile">
       <div id="left_wrap" :class="[{ 'dt-w' : getDesktop }, { 'tb-w': getTablet}, { 'tb-p0': getHideRight}]">
@@ -136,7 +136,7 @@ import AddNewProduct from '../components/app/layouts/AddNewProduct.vue'
 export default {
   components: { MainMenu, AccountMenu, Logo, MobNav, AddNewProduct },
     name: 'AdminHome',
-    computed: mapGetters(['getToken', 'getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct']),
+    computed: mapGetters(['getToken', 'getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight']),
     data() {
       return {
         windowHeight: ''
@@ -144,9 +144,9 @@ export default {
     },
     created() {
     this.fetchUser()
-    window.addEventListener('resize', this.windowSize)
+    window.addEventListener('resize', this.windowSize )
     window.addEventListener('scroll', this.pageScroll)
-    this.computeWindow()
+    this.$store.commit('computeWindow')
     this.windowDimension()
   },
   unmounted() {
@@ -161,26 +161,32 @@ export default {
             this.user(this.getToken)
       },
       
+      
     windowSize() {
-      this.computeWindow()
-      this.windowDimension() 
-      let elem = document.getElementsByClassName('this-will-change')
-      if(elem.length > 0){
-        return this.$store.commit('setDynamicFloatingDiv', elem[0])
-      }
-      this.getAddingProduct.status ? this.$store.commit('getMainHomeWidth') : ''
+      
+      setTimeout(()=> {
+        this.$store.commit('computeWindow')
+        this.windowDimension() 
+        let elem = document.getElementsByClassName('this-will-change')
+        if(elem.length > 0){
+            return this.$store.commit('setDynamicFloatingDiv', elem[0])
+        }
+        this.getAddingProduct.status ? this.$store.commit('getMainHomeWidth') : ''
+      }, 100)
+      
       //console.log(document.getElementById('app_section').offsetWidth)
     },
     pageScroll(){
-      if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50){
-        return this.$store.commit('setMobileTitle')
-      }else{
-        return this.$store.commit('unSetMobileTitle')
-      }
+      //setTimeout(() => {
+        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50){
+          return this.$store.commit('setMobileTitle')
+        }else{
+            return this.$store.commit('unSetMobileTitle')
+        }
+      //}, 100)
+      
     },
-    computeWindow() {
-      this.windowHeight = window.innerHeight
-    },
+    
     windowDimension() {
       let winWidth = window.innerWidth
       let appWidth = 1344
