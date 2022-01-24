@@ -69,7 +69,7 @@
                     <div class="category-pill pill">
                         <div class="pill-wrap">
                             <ul class="flex-row-st">
-                                <li><router-link :to="{ name: 'AllProducts'}" class="active">All</router-link></li>
+                                <li><router-link :to="{ name: 'AllProducts'}">All</router-link></li>
                                 <li v-for="tag in getTags" :key="tag.id"><router-link :to="'/products/filter/'+tag.id+'/'+tag.name">{{ tag.name }}</router-link></li>
                             </ul>
                         </div>
@@ -342,13 +342,14 @@ export default {
             a{
                 transition: 0.3s all;
             }
-            .active{
-                background-color: $dark !important;
-                color: #ffffff !important;
-                border: none !important;
-            }
         }
         
+}
+.router-link-exact-active{
+    background-color: $dark !important;
+    color: #ffffff !important;
+    border: 1px solid $dark !important;
+
 }
 .category-pill{
     position: relative;

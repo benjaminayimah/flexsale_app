@@ -210,7 +210,6 @@ padding: 15px 20px;
   }
   .dialog{
     position: fixed;
-  
     background-color: $white-color;
     z-index: 101;
     box-shadow: 0 1px 6px 0 rgb(14 20 44 / 18%);
@@ -260,9 +259,7 @@ padding: 15px 20px;
       border-radius: 0;
       
     }
-    .active {
-
-    }
+  
     .inactive {
       cursor: pointer;
       &:hover{

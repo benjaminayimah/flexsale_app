@@ -174,6 +174,8 @@ export default createStore({
       const rect = payload.getBoundingClientRect()
       let top = rect.top
       let left = rect.left
+      console.log(left)
+      console.log(top)
       if(state.mobile) {
         state.dynamicFloatingDiv.left = '0'
         state.dynamicFloatingDiv.bottom = '0'
