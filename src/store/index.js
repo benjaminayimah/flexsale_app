@@ -4,7 +4,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    hostname: 'http://localhost:8001',
+    hostname: 'http://localhost:8000',
     token: localStorage.getItem('token') || null,
     windowHeight: '',
     user: {},
@@ -13,6 +13,8 @@ export default createStore({
     tags: [],
     filters: [],
     checkedProducts: [],
+    //viewingMode: false,
+    tagEditForm: { id: '', name: '', active: false, viewingMode: true },
     currentStore: {},
     mobile: false,
     tablet: false,
@@ -20,7 +22,7 @@ export default createStore({
     hideRight: false,
     alert: { status: { show: false, success: false, danger: false, warning: false, info: false }, title: '', body: '' },
 
-    navPage: { title: '', mobile: false },
+    navPage: { title: '', mobile: false, back: true },
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
     addingProduct: { status: false, width: '', product: false, tag: false}
@@ -84,7 +86,14 @@ export default createStore({
       state.hideRight = false
     },
     setPagetitle(state, payload) {
-      state.navPage.title = payload
+      if(payload.back) {
+        state.navPage.back = true
+        state.navPage.title = payload.title
+      }
+      else{
+        state.navPage.back = false
+        state.navPage.title = payload.title
+      }
     },
     setMobileTitle(state) {
       state.navPage.mobile = true
@@ -119,7 +128,7 @@ export default createStore({
       document.body.classList.remove('fixed-body')
       let appSection = document.getElementById('app_section')
       appSection.style.left = '0px'
-      if(state.checkedProducts) {
+      if(state.checkedProducts && !state.tagEditForm.active) {
         state.checkedProducts = []
       }
 
@@ -151,31 +160,44 @@ export default createStore({
     addToTags(state, payload) {
       state.tags.push(payload)
     },
+    updateTags(state, payload) {
+      state.tags = payload
+    },
     addCheckedProdToArray(state, payload) {
       state.checkedProducts.push(payload)
     },
     removeCheckedProdFromArray(state, payload) {
-      // for (let i = 0; i < state.checkedProducts.length; i++) {
-      //   if (state.checkedProducts[i] && (state.checkedProducts[i].id === payload.id )) {
-      //     state.checkedProducts.splice(i, 1)
-      //   } 
-      // }
       state.checkedProducts = state.checkedProducts.filter(product => product.id !== payload.id)
     },
     clrCheckedProdArray(state) {
-      state.checkcheckedProductsedItems = [] 
+      state.checkedProducts = []
+      state.tagEditForm.active = false
+      state.tagEditForm.viewingMode = true
     },
     fetchFilters(state, payload) {
       state.filters = payload
       //console.log(payload)
+    },
+    fetchThisFilter(state, payload) {
+      state.checkedProducts = payload.array
+      state.tagEditForm.id = payload.id
+      state.tagEditForm.name = payload.name
+      state.tagEditForm.active = true
+    },
+    removeDeletedTags(state, payload) {
+      state.tags = state.tags.filter(tag => tag.id != payload)
+      state.filters = state.filters.filter(filter => filter.tag_id != payload);
+      console.log(state.tags)
+      console.log(state.filters)
+
+
+
     },
 
     setDynamicFloatingDiv(state, payload) {
       const rect = payload.getBoundingClientRect()
       let top = rect.top
       let left = rect.left
-      console.log(left)
-      console.log(top)
       if(state.mobile) {
         state.dynamicFloatingDiv.left = '0'
         state.dynamicFloatingDiv.bottom = '0'
@@ -213,15 +235,16 @@ export default createStore({
           state.commit('setUser', res.data.user)
           state.commit('setStore', res.data.stores)
           state.commit('fetchTags', res.data.tags)
+          state.commit('fetchProducts', res.data.products)
       }).catch(() => {
           state.commit('destroyToken')    
       })      
     },
-    async fetchProducts(state, payload){
-      const res = await axios.get(this.getters.getHostname+'/api/products?token='+payload)
-      state.commit('fetchProducts', res.data.products)
-      //console.log(res.data)
-    },
+    // async fetchProducts(state, payload){
+    //   const res = await axios.get(this.getters.getHostname+'/api/products?token='+payload)
+    //   state.commit('fetchProducts', res.data.products)
+    //   //console.log(res.data)
+    // },
     async getLogout(state){
         axios.delete(this.getters.getHostname+'/api/logout?token='+this.getters.getToken)
         .then(()=> {
@@ -234,7 +257,6 @@ export default createStore({
       { 'storeID' : payload})
       .then((res) => {
         if(res.data.status === 1) {
-          //location.reload()
           window.location.href = '/'
         }
       }).catch((err) => {
@@ -244,14 +266,18 @@ export default createStore({
     // async fetchTags(state, payload){
     //   //state.commit('unCheckAllAndEmpty')
     //   const res = await axios.get(this.getters.getHostname+'/api/tag?token='+payload)
-    //   console.log(res.data.tags)
-    //   //state.commit('fetchTags', res.data.tags)
+    //   console.log(res.data.filters)
+    //   //state.commit('fetchTags', res.data.filters)
     // },
-    async fetchFilters(state, payload){
+    async fetchFilters(state){
       //state.commit('unCheckAllAndEmpty')
-      const res = await axios.post(this.getters.getHostname+'/api/get-all-filters?token='+this.getters.getToken, { 'id' : payload})
+      const res = await axios.post(this.getters.getHostname+'/api/get-all-filters?token='+this.getters.getToken)
       state.commit('fetchFilters', res.data.filters)
-      //state.commit('fetchTags', res.data.tags)
+    },
+    async fetchThisFilter(state, payload){
+      const res = await axios.post(this.getters.getHostname+'/api/get-this-filter?token='+this.getters.getToken, {id: payload})
+      const newData = { id: payload, name: res.data.name, array: res.data.filter}
+      state.commit('fetchThisFilter', newData)
     }
 
 
@@ -280,7 +306,9 @@ export default createStore({
     getTags: (state) => state.tags,
     getProducts: (state) => state.products,
     getCheckedProducts: (state) => state.checkedProducts,
-    getAllFilters: (state) => state.filters
+    getAllFilters: (state) => state.filters,
+    getViewingMode: (state) => state.viewingMode,
+    getTagEditMode: (state) => state.tagEditForm
 
     
 

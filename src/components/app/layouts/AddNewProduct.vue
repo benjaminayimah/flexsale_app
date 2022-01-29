@@ -10,18 +10,24 @@
                     <div class="add-head-hold" :style="{width: thisWidth+'px'}">
                         <div class="head-content">
                             <div class="heading">
-                                <h1>{{ getAddingProduct.product? 'Add New Product' : 'Create Product Tag' }}</h1>
+                     
+                                <h1 v-if="getAddingProduct.product">Add New Product</h1>
+                                <h1 v-else-if="getAddingProduct.tag && !getTagEditMode.active">Create Product Tag</h1>
+                                <h1 v-else>Edit {{ getTagEditMode.name }}</h1>
                             </div>
                             <div class="btn-wrap flex-row">
                                 <button class="button button-secondary" @click.prevent="$store.commit('unsetMainHomeWidth')">Cancel</button>
-                                <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
-                                <button class="button button-primary" v-if="getAddingProduct.tag" @click.prevent="submitTag">Submit</button>
+                                <!-- <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
+                                <button class="button button-primary" v-if="getAddingProduct.tag && !getTagEditMode.active" @click.prevent="submitTag">Submit</button>
+                                <button class="button button-primary" v-if="getAddingProduct.tag && getTagEditMode.active" @click.prevent="">Save changes</button> -->
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="add-body">
+            <div class="main-page-body">
+                <div class="add-body">
                 <div class="form-wrap">
                     <alerts />
                     <form v-if="getAddingProduct.product" id="product_form">
@@ -194,9 +200,10 @@
                         </div>
                     </form>
                     <div v-if="getAddingProduct.tag">
-                        <add-new-tag v-bind:thisWidth="thisWidth" />
+                        <add-new-tag v-bind:thisWidth="thisWidth" v-bind:getTagEditMode="getTagEditMode" />
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -211,7 +218,7 @@ import SecondaryBackdrop from '../includes/SecondaryBackdrop.vue'
 export default {
   components: { Alerts, AddNewTag, SecondaryBackdrop },
     name: 'AddNewProduct',
-    computed: mapGetters(['getAddingProduct', 'getToken', 'getHostname', 'getUser']),
+    computed: mapGetters(['getAddingProduct', 'getToken', 'getHostname', 'getUser', 'getTagEditMode']),
     props: ['thisWidth'],
     data() {
         return {
@@ -465,15 +472,18 @@ export default {
     }
     .add-body{
         overflow-y: auto;
+        display: flex;
+        justify-content: center;
     }
     
 }
 .form-wrap{
-    padding: 20px 120px;
+    padding: 20px 0;
+    width: 70%;
 }
 .mob-view{
     .form-wrap{
-        padding: 15px !important;
+        width: 100% !important;
     }
     .head-content{
         padding: 0 15px !important;

@@ -1,12 +1,8 @@
 <template>
      <div v-for="filter in getAllFilters" :key="filter.id">
-        <div v-if="filter.tag_id == $route.params.id">
-            <div v-for="product in getProducts" :key="product.id">
-                <product-row v-if="product.id == filter.product_id" v-bind:product="product" />
-            </div>
-        </div>
+         <product-row v-if="filter.tag_id == $route.params.id" v-bind:product="filter" />
     </div>
-                <!-- <product-row v-bind:product="product" /> -->
+    <!-- <product-row v-for="filter in newFilter" :key="filter.id" v-bind:product="filter" /> -->
    
 </template>
 <script>
@@ -17,15 +13,22 @@ import ProductRow from '../includes/ProductRow.vue'
 export default {
   components: { ProductRow },
     name: 'ProductFilter',
-
-    computed: mapGetters(['getProducts', 'getTags', 'getAllFilters']),
-    methods: {
-        getFilters() {
-            this.$store.dispatch('fetchFilters', this.$route.params.id)
+    computed: mapGetters(['getProducts', 'getAllFilters']),
+    data() {
+        return {
+            newFilter: []
         }
     },
-    created() {
+    methods: {
+        getFilters() {
+            this.$store.dispatch('fetchFilters')
+        }
+    },
+    beforeMount() {
         this.getFilters()
-    }
+    },
+    // beforeUpdate() {
+    //     this.newFilter = this.getAllFilters.filter(filter => filter.tag_id === this.$route.params.id)
+    // }
 }
 </script>

@@ -34,6 +34,14 @@ $myFont: 'Urbanist', Helvetica, sans-serif;
   background-position: center;
   background-size: cover;
 }
+.text-overflow-ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+ul{
+  list-style-type: none;
+}
 .ml-0{
   margin-left: 0 !important;
 }
@@ -60,9 +68,16 @@ button{
   cursor: pointer;
   transition: 0.2s all;
 }
+.add-new{
+  &:hover{
+      background-color: $primary-hover !important;
+  }
+  &:active{
+      box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+  }
+}
 
 .button{
-  border-style: none;
   padding: 8px 16px;
   border-radius: 14px;
   font-size: 1rem;
@@ -104,6 +119,18 @@ button{
     box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
   }
 }
+.rounded-btn-light{
+  transition: 0.1s ease-in-out;
+    background-color: $primary-light;
+      &:hover{
+      background-color: rgba(86, 110, 244, 0.15) !important;
+    }
+    &:active{
+      box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+      border: 1px solid $primary-color !important;
+      background-color: $primary-light !important;
+    }
+}
 .flex-column{
   display: flex;
   flex-direction: column;
@@ -127,6 +154,7 @@ button{
   justify-content: space-between;
   align-items: center;
 }
+
 textarea{
   height: auto !important;
 }
@@ -138,7 +166,7 @@ textarea{
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #495057;
+  color: $dark;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
@@ -390,6 +418,34 @@ hr{
   
   
 }
+.menu-toggle-btn{
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  transition: 0.4s;
+  padding: 0;
+  &:hover{
+      background-color: $primary-light;
+      i{
+          background-color: $primary-color;
+      }
+  }
+  i{
+      height: 4px;
+      width: 4px;
+      background-color: $dark;
+      border-radius: 50%;
+      margin-right: 4px;
+      &:last-child{
+          margin-right: 0;
+      }
+  }
+}
 
 
 .main-body .main-body-content{
@@ -399,6 +455,7 @@ hr{
 #page_title{
   margin-top: 0;
   font-size: 2rem;
+  display: none;
 }
 .dialog{
   .title{
@@ -437,6 +494,17 @@ hr{
   }
   }
 }
+//desktop && tablet
+.main-page-body{
+  padding: 0 30px;
+}
+.mini-body{
+  display: flex;
+  justify-content: center;
+  .mini-body-hold{
+    width: 70%;
+  }
+}
 
 .mob-view{
   #mob_logo svg{
@@ -449,7 +517,8 @@ hr{
   #account_menu:hover{
     background-color: rgba(255, 255, 255, 0);
   }
-  .header-content,#all_products{
+  
+  .header-content,.main-page-body{
     padding: 0 15px;
   }
   .main-home{
@@ -503,8 +572,6 @@ hr{
   }
   .menu-toggle{
     button{
-      i {
-      }
       &:hover {
         background-color: transparent ;
         i{
@@ -512,6 +579,15 @@ hr{
         }
       }
     }
+  }
+  .card-outer{
+    width: 50% !important;
+  }
+  #main_back_btn{
+    margin-left: 0;
+  }
+  .mini-body-hold{
+    width: 100%;
   }
   
   

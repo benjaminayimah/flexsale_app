@@ -19,7 +19,7 @@
               <div id="left_add_new_pd" :class="{ 'desktop-mode': getDesktop}">
                 <div class="left-new-wrap flex-column" :class="{ 'jc' : getTablet }">
                   <div class="left-new-hold flex-column">
-                    <button class="flex-column" @click.prevent="$store.commit('getMainHomeWidth')">
+                    <button class="flex-column rounded-btn-light" @click.prevent="$store.commit('getMainHomeWidth')">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20.291 20.29">
                         <path d="M-4280.267-699.712a2.84,2.84,0,0,1-2.837-2.838v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a1.339,1.339,0,0,0,1.337,1.338h14.615a1.34,1.34,0,0,0,1.338-1.338v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a2.842,2.842,0,0,1-2.839,2.838Zm6.558-7.013v-10.717l-3.939,3.94a.751.751,0,0,1-1.061,0,.751.751,0,0,1,0-1.061l5.22-5.22a.748.748,0,0,1,.531-.219h.018a.745.745,0,0,1,.33.085h0l.012.006.007,0,.007,0,.01.006,0,0,.014.009h0a.762.762,0,0,1,.126.1l5.22,5.22a.751.751,0,0,1,0,1.061.748.748,0,0,1-.531.219.749.749,0,0,1-.53-.219l-3.939-3.94v10.718a.749.749,0,0,1-.749.749A.749.749,0,0,1-4273.709-706.725Z" transform="translate(4283.104 720.002)" fill="#566ff4"/>
                       </svg>
@@ -45,10 +45,13 @@
                 <div class="header-wrap">
                   <div class="header-hold" :class="{ 'bt-0' : !getCurrentpage.mobile }">
                     <div class="header-content">
-                      <div id="mob_logo" class="mob-logo" v-if="getMobile && !getCurrentpage.mobile" >
+                      <div id="mob_logo" class="mob-logo" v-if="getMobile && !getCurrentpage.mobile && !getCurrentpage.back" >
                         <logo />
                       </div>
-                      <div class="page-title" :class="{ 'mob-title': getMobile}" v-else>{{ getCurrentpage.title }}</div>
+                      <div class="page-title flex-row-st" :class="{ 'mob-title': getMobile}" v-else>
+                        <back-button v-if="getCurrentpage.back" />
+                        {{ getCurrentpage.title }}
+                      </div>
                       <div class="noti-help">
                         <li class="ml-0" v-if="getHideRight || getMobile">
                           <a href="#">
@@ -133,8 +136,9 @@ import MainMenu from '../components/app/includes/MainMenu.vue'
 import Logo from '../components/app/includes/Logo.vue'
 import MobNav from '../components/app/includes/MobNav.vue'
 import AddNewProduct from '../components/app/layouts/AddNewProduct.vue'
+import BackButton from '../components/app/includes/BackButton.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNewProduct },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNewProduct, BackButton },
     name: 'AdminHome',
     computed: mapGetters(['getToken', 'getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight']),
     data() {
@@ -143,7 +147,7 @@ export default {
       }
     },
     created() {
-    this.fetchUser()
+      this.fetchUser()
     window.addEventListener('resize', this.windowSize )
     window.addEventListener('scroll', this.pageScroll)
     this.$store.commit('computeWindow')
@@ -160,7 +164,6 @@ export default {
       fetchUser(){
             this.user(this.getToken)
       },
-      
       
     windowSize() {
       
@@ -356,6 +359,7 @@ header, .right-header{
 .page-title{
   font-weight: 700;
   font-size: 1.2rem;
+  align-items: center;
 }
 .noti-help{
   display: flex;
@@ -438,19 +442,10 @@ header, .right-header{
     border-radius: 50%;
     color: $white-color;
     cursor: pointer;
-    background-color: $primary-light;
     padding: 10px;
     height: 50px;
     width: 50px;
-    transition: 0.1s ease-in-out;
-      &:hover{
-      background-color: rgba(86, 110, 244, 0.15);
-    }
-    &:active{
-      box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
-      border: 1px solid $primary-color;
-      background-color: $primary-light;
-    }
+    
   }
 }
 .mob-title{

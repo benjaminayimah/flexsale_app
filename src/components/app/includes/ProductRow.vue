@@ -30,38 +30,37 @@
             <div class="batch-no">{{ product.batch_no }} </div>
         </div>
         <div class="menu-toggle">
-            <button :id="'prod_menu_'+product.id" @click.prevent="doMenu('prod_menu_'+product.id)">
+            <button class="menu-toggle-btn" :id="'prod_menu_'+product.id" @click.prevent="doMenu('prod_menu_'+product.id)">
                 <i></i>
                 <i></i>
                 <i></i>
             </button>
         </div>
    
-            <teleport to="body">
+        <teleport to="body">
+            <transition name="fade">
                 <backdrop v-if="toggleMenu" @click.prevent="doMenu('prod_menu_'+product.id)" />
-            </teleport>
-            <div class="menu" v-if="toggleMenu" :class="[{ 'class-above' : classAbove}, { 'class-below' : !classAbove}]">
+            </transition>
+        </teleport>
+        <transition :name="getMobile? 'slide' : ''">
+            <div class="menu" v-if="toggleMenu" :class="[{ 'class-above' : classAbove && !getMobile}, { 'class-below' : !classAbove && !getMobile}, { 'menu-card-mob': getMobile}]">
+                <div class="title" v-show="getMobile">
+                    <div>Menu {{ product.id }}</div>
+                    <button @click.prevent="doMenu('prod_menu_'+product.id)">
+                        <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
+                        <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
+                        </svg>
+                    </button>
+                </div>
                 <ul>
-                    <li><a href="#">View product</a></li>
+                    <li><router-link :to="'/product/'+product.id+'/'+product.name">View product</router-link></li>
                     <li><a href="#">Edit details</a></li>
                     <li><a href="#">Update stock</a></li>
                     <li><a href="#">Delete</a></li>
-
                 </ul>
             </div>
-        <!-- </div> -->
-        
+        </transition>
     </div>
-    <!-- <teleport to="#main_home" v-if="toggleMenu">
-        <backdrop @click.prevent="doMenu('prod_menu_'+product.id)" />
-        <div class="menu" :style="{ top: getFloatingDiv.top+30+'px'}">
-            <ul>
-                <li>
-                    <a href="#">{{ product.name }}</a>
-                </li>
-            </ul>
-        </div>
-    </teleport> -->
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -70,7 +69,7 @@ export default {
   components: { Backdrop },
     name: 'ProductRow',
     props: ['product'],
-    computed: mapGetters(['getHostname', 'getUser', 'getWindowHeight']),
+    computed: mapGetters(['getHostname', 'getUser', 'getWindowHeight', 'getMobile']),
     data() {
         return {
             toggleMenu: false,
@@ -143,34 +142,7 @@ export default {
 .menu-toggle{
     align-items: center;
     display: flex;
-    button{
-        height: 40px;
-        width: 40px;
-        border-radius: 20px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        background-color: transparent;
-        transition: 0.4s;
-        padding: 0;
-        &:hover{
-            background-color: $primary-light;
-            i{
-                background-color: $primary-color;
-            }
-        }
-        i{
-            height: 4px;
-            width: 4px;
-            background-color: $dark;
-            border-radius: 50%;
-            margin-right: 4px;
-            &:last-child{
-                margin-right: 0;
-            }
-        }
-    }
+    
 }
 .class-above{
   top: 53%;
@@ -183,17 +155,16 @@ export default {
     background-color: #ffffff;
     z-index: 33301;
     right: 0;
-    
+    padding: 20px 0;
     box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
     //0 1px 6px 0 rgb(14 20 44 / 18%);
     border-radius: 16px;
-
     width: 200px;
     ul{
+        padding: 0;
         list-style-type: none;
         display: flex;
         margin: 0;
-        padding: 20px 0;
         flex-direction: column;
         li{
             display: flex;
@@ -216,4 +187,38 @@ export default {
         }
     }
 }
+.menu-card-mob{
+    padding: 25px 0;
+    position: fixed;
+    bottom: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        margin-bottom: 20px;
+        font-weight: 700;
+        font-size: 1.4rem;
+        button{
+            border-radius: 50%;
+            padding: 10px;
+            background-color: #f0f3ff;
+        }
+    }
+   
+    width: 100%;
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    .acct-label .user-details{
+      max-width: 100%;
+    }
+  }
+  .slide-enter-from,
+.slide-leave-to {
+  transform: translateY(300px);
+  
+}
+  
 </style>

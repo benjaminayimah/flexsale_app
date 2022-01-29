@@ -1,8 +1,9 @@
 <template>
     <form id="tag_form">
         <div class="form-row">
-            <label>Give a title to your tag:</label>
-            <input v-model="form.tag" type="text" name="tagName" class="form-control" placeholder="Tag title eg. tooth paste or new arrivals" required>
+            <label>{{ getTagEditMode.active? 'Tag name' : 'Give a title to your tag' }}:</label>
+            <input v-if="!getTagEditMode.active" v-model="form.tag" type="text" name="tagName" class="form-control" placeholder="Tag title eg. tooth paste or new arrivals" required>
+            <input v-if="getTagEditMode.active" v-model="editForm.tag" type="text" name="tagName" class="form-control" required>
             <span class="validation-err" v-if="validation.error && validation.errors.tag">
                 {{ validation.errors.tag[0] }}
             </span>
@@ -18,14 +19,13 @@
                             <svg xmlns="http://www.w3.org/2000/svg"  height="13" viewBox="0 0 16.721 16.72">
                                 <path d="M-23237.838-313.921v-6.359h-6.359a1,1,0,0,1-1-1,1,1,0,0,1,1-1h6.359v-6.359a1,1,0,0,1,1-1,1,1,0,0,1,1,1v6.359h6.359a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-6.359v6.359a1,1,0,0,1-1,1A.994.994,0,0,1-23237.838-313.921Z" transform="translate(23245.201 329.643)" fill="#0e142c"/>
                             </svg>
-
                             <span>Add more</span>
                         </button>
                     </div>
                 </div>
                 <div class="selected-products-hold" :style="{maxHeight: (getWindowHeight-380)+'px'}">
                     <ul style="margin-top:20px">
-                        <selected-tag-row v-for="checked in this.getCheckedProducts" :key="checked.id" v-bind:checkedProduct="checked" />
+                        <selected-tag-row v-for="checked in this.getCheckedProducts" :key="checked.id" v-bind:checkedProduct="checked" v-bind:getTagEditMode="getTagEditMode.viewingMode" />
                     </ul>
                 </div>
             </div>
@@ -43,7 +43,9 @@
             </div>
         </div>
         <div class="btn-wrap2 flex-row">
-            <button class="button button-primary" @click.prevent="submitTag">Submit</button>
+            <button v-if="!getTagEditMode.active" class="button button-primary" @click.prevent="submitTag">Submit</button>
+            <button v-else class="button button-primary" @click.prevent="submitEditTag">Save changes</button>
+
         </div>
     </form>
      <teleport to="#main_home" v-if="selectionSheet">
@@ -85,12 +87,17 @@ export default {
   components: { TertiaryBackdrop, AddTagRow, SelectedTagRow },
     computed: mapGetters(['getProducts', 'getCheckedProducts', 'getWindowHeight', 'getToken', 'getHostname']),
     name: 'AddNewTag',
-    props: ['thisWidth'],
+    props: ['thisWidth', 'getTagEditMode'],
     data() {
         return {
             form: {
                 tag: '',
                 products: []
+            },
+            editForm: {
+                tag: this.getTagEditMode.name,
+                products: [],
+                id: this.getTagEditMode.id
             },
             selectionSheet: false,
             validation: {
@@ -107,7 +114,8 @@ export default {
             ).then((res) => {
                 console.log(res)
                 if(res.data.status === 1) {
-                    this.$store.commit('addToTags', res.data.tags)
+                    this.$store.commit('addToTags', res.data.tag)
+                    this.$store.commit('fetchFilters', res.data.filters)
                     const payload = {
                         id: 'success',
                         title: res.data.title,
@@ -138,6 +146,53 @@ export default {
                     this.validation.message = err.response.data.message
                 }
             })
+        },
+        async submitEditTag() {
+            this.editForm.products = this.getCheckedProducts
+            axios.put( this.getHostname+'/api/tag/'+this.editForm.id+'?token='+this.getToken, this.editForm)
+            .then((res) => {
+                console.log(res)
+                if(res.data.status === 1) {
+                    this.$store.commit('updateTags', res.data.tag)
+                    const payload = {
+                        id: 'success',
+                        title: res.data.title,
+                        body: res.data.message
+                    }
+                    this.$store.commit('showAlert', payload)
+                }
+                if(res.data.status === 2) {
+                    const payload = {
+                        id: 'danger',
+                        title: res.data.title,
+                        body: res.data.message
+                    }
+                    this.$store.commit('showAlert', payload)
+                    
+                }
+                //location.reload()
+
+                // const id = res.data.id
+                // const name = res.data.name
+                // this.$router.push({ name: 'DetailedTag', params: { id,name } })
+                // this.$route.params = name
+                //this.$router.push({ path: `/tag/${id}/${name}` }) // -> /user/123
+            }).catch((err) => {
+                console.log(err.response)
+                if(err.response.status === 422) {
+                    const payload = {
+                        id: 'danger',
+                        title: 'Error!',
+                        body: err.response.data.message
+                    }
+                    this.$store.commit('showAlert', payload)
+                    this.validation.error = true
+                    this.validation.errors = err.response.data.errors
+                    this.validation.message = err.response.data.message
+                }
+            })
+
+
         },
         buttonHeight() {
             let elem = document.getElementById('tag_big_add')

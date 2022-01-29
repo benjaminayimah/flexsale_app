@@ -39,6 +39,7 @@
                      </ul>
                  </div>
              </div>
+             
              <!--
             <div class="ovw-colum" v-for="stat in stats" :key="stat.id">
                 <div class="overview-content">
@@ -83,7 +84,8 @@ export default {
     },
     methods: {
         setPage() {
-            this.$store.commit('setPagetitle', 'Home')
+            const title = { title: 'Home', back: false}
+            this.$store.commit('setPagetitle', title)
         },
        
         scrollLeft() {
@@ -125,9 +127,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#page_title{
-    display: none;
-}
+
 .ovw-wrap{
     display: block;
     overflow-y: hidden;

@@ -2,13 +2,13 @@
 <div :class="{ 'jc' : getTablet }">
     <teleport to="body">
       <transition name="fade">
-            <backdrop v-if="showMenu" @click="showthisMenu('account_menu')"/>
+          <backdrop v-if="showMenu" @click="showthisMenu('account_menu')"/>
       </transition>
       <transition :name="getMobile? 'slide' : ''">
             <div v-if="showMenu" class="dialog" :class="[{ 'menu-card-mob': getMobile}, { 'menu-card-desk': !getMobile}]" :style="{ left: getFloatingDiv.left+'px', bottom: getFloatingDiv.bottom + 'px'}">
                 <div class="title" v-show="getMobile">
                   <div>Stores</div>
-                  <button @click="showthisMenu('account_menu')">
+                  <button @click.prevent="showthisMenu('account_menu')">
                     <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
                       <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
                     </svg>
@@ -49,8 +49,6 @@
                           </div> 
                       </div>
                     </div>
-            
-
                 </div>
                 <div class="logout-hold">
                     <hr>
@@ -63,26 +61,26 @@
                 </div>
             </div>
       </transition>
-        </teleport>
-          <div id="account_menu" class="store-info-hold" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
-              <div class="avatar">
-                  <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+getCurrentStore.id+'/'+getCurrentStore.image+')'}"></span>
-                  <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
-                      <path d="M404.366,1308.847l-4.744-4.732a.75.75,0,0,1,1.059-1.062l3.663,3.655,3.514-3.644a.75.75,0,1,1,1.08,1.041Z" transform="translate(-399.402 -1302.833)" fill="#11172f"/>
-                  </svg>
-              </div>
-              <div class="acct-label" v-if="getDesktop">
-                  <div class="user-details">
-                      <div class="user-name"><strong>{{ getCurrentStore.name }}</strong></div>
-                      <div class="shop">{{ getCurrentStore.address }}</div>
-                  </div>
-                  <div class="acct-elipse">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                  </div>
-              </div> 
+    </teleport>
+        <div id="account_menu" class="store-info-hold" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
+          <div class="avatar">
+              <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+getCurrentStore.id+'/'+getCurrentStore.image+')'}"></span>
+              <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
+                  <path d="M404.366,1308.847l-4.744-4.732a.75.75,0,0,1,1.059-1.062l3.663,3.655,3.514-3.644a.75.75,0,1,1,1.08,1.041Z" transform="translate(-399.402 -1302.833)" fill="#11172f"/>
+              </svg>
+          </div>
+          <div class="acct-label" v-if="getDesktop">
+            <div class="user-details">
+                <div class="user-name"><strong>{{ getCurrentStore.name }}</strong></div>
+                <div class="shop">{{ getCurrentStore.address }}</div>
             </div>
+            <div class="acct-elipse">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div> 
+    </div>
 </div>
 
     
