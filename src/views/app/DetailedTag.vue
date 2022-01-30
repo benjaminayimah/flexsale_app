@@ -80,6 +80,7 @@ ul{
     font-weight: 500;
     span{
         margin-left: 8px;
+        color: $dark;
    
     }
     &:hover {

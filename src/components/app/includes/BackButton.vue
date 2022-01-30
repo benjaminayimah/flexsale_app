@@ -14,9 +14,9 @@ export default {
 #main_back_btn{
   background-color: #ffffff;
   margin-right: 20px;
-  margin-left: -15px;
-  height: 40px;
-  width: 40px;
+  margin-left: -10px;
+  height: 44px;
+  width: 44px;
   border-radius: 50%;
   //transition: 0.3s all;
   &:hover{

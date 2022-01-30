@@ -12,7 +12,7 @@
             <div v-if="this.getCheckedProducts.length > 0">
                 <div class="header-holder flex-row-js">
                     <div>
-                        <span class="count">{{ getCheckedProducts.length }}</span><span>items are added to your group</span>
+                        <span class="count">{{ getCheckedProducts.length }}</span><span>items in this group</span>
                     </div>
                     <div>
                         <button class="flex-row button add-more" @click.prevent="doProductSelection">
@@ -334,6 +334,7 @@ button.add-more{
     }
     span{
         padding-left: 4px;
+        color: $dark;
     }
 }
 </style>

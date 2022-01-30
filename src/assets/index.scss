@@ -339,7 +339,7 @@ hr{
       font-weight: 600;
   }
   & svg path{
-       fill: $primary-color;
+       fill: $primary-color !important;
   }
 }
 .status-alert{
@@ -583,11 +583,14 @@ hr{
   .card-outer{
     width: 50% !important;
   }
-  #main_back_btn{
-    margin-left: 0;
-  }
+  // #main_back_btn, .cancel-btn{
+  //   margin-left: 0;
+  // }
   .mini-body-hold{
     width: 100%;
+  }
+  .page-title-span{
+    max-width: 120px;
   }
   
   

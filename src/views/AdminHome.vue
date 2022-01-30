@@ -50,7 +50,7 @@
                       </div>
                       <div class="page-title flex-row-st" :class="{ 'mob-title': getMobile}" v-else>
                         <back-button v-if="getCurrentpage.back" />
-                        {{ getCurrentpage.title }}
+                        <span class="page-title-span text-overflow-ellipsis">{{ getCurrentpage.title }}</span>
                       </div>
                       <div class="noti-help">
                         <li class="ml-0" v-if="getHideRight || getMobile">

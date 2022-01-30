@@ -9,18 +9,20 @@
                 <div class="add-head-wrap">
                     <div class="add-head-hold" :style="{width: thisWidth+'px'}">
                         <div class="head-content">
+                            <button class="button button-secondary cancel-btn" @click.prevent="$store.commit('unsetMainHomeWidth')">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
+                                    <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"/>
+                                </svg>
+                            </button>
                             <div class="heading">
-                     
-                                <h1 v-if="getAddingProduct.product">Add New Product</h1>
-                                <h1 v-else-if="getAddingProduct.tag && !getTagEditMode.active">Create Product Tag</h1>
-                                <h1 v-else>Edit {{ getTagEditMode.name }}</h1>
+                                <h1 class="text-overflow-ellipsis" v-if="getAddingProduct.product">Add New Product</h1>
+                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.tag && !getTagEditMode.active">Create Product Tag</h1>
+                                <h1 class="text-overflow-ellipsis" v-else>Edit {{ getTagEditMode.name }}</h1>
                             </div>
                             <div class="btn-wrap flex-row">
-                                <button class="button button-secondary" @click.prevent="$store.commit('unsetMainHomeWidth')">Cancel</button>
-                                <!-- <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
-                                <button class="button button-primary" v-if="getAddingProduct.tag && !getTagEditMode.active" @click.prevent="submitTag">Submit</button>
-                                <button class="button button-primary" v-if="getAddingProduct.tag && getTagEditMode.active" @click.prevent="">Save changes</button> -->
-
+                                <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
+                                <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && !getTagEditMode.active" @click.prevent="submitTag">x</button>
+                                <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && getTagEditMode.active" @click.prevent="">x</button>
                             </div>
                         </div>
                     </div>
@@ -433,6 +435,7 @@ export default {
             justify-content: space-between;
             width: 100%;
             padding: 0 30px;
+            align-items: center;
         }
     }
     .heading{
@@ -448,12 +451,8 @@ export default {
     .btn-wrap{
         height: 100%;
         button{
-            margin-right: 10px;
             height: 44px;
             border-radius: 12px;
-            &:last-child{
-                margin-right: 0;
-            }
         }
         
     }
@@ -476,6 +475,26 @@ export default {
         justify-content: center;
     }
     
+}
+.cancel-btn{
+    display: flex;
+    background-color: #ffffff;
+    height: 44px;
+    width: 44px;
+    border-radius: 50%;
+    border: none;
+    margin-left: -10px;
+    border: 1px solid transparent;
+    padding: 0;
+  //transition: 0.3s all;
+  &:hover{
+    background-color: $dark-light;
+  }
+  &:focus{
+      box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
+      border: 1px solid #0e142c;
+      background-color: #fff;
+  }
 }
 .form-wrap{
     padding: 20px 0;
