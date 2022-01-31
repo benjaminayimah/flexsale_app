@@ -14,11 +14,11 @@ export default {
   components: { ProductRow },
     name: 'ProductFilter',
     computed: mapGetters(['getProducts', 'getAllFilters']),
-    data() {
-        return {
-            newFilter: []
-        }
-    },
+    // data() {
+    //     return {
+    //         newFilter: []
+    //     }
+    // },
     methods: {
         getFilters() {
             this.$store.dispatch('fetchFilters')
@@ -26,6 +26,7 @@ export default {
     },
     beforeMount() {
         this.getFilters()
+        //console.log(this.getAllFilters)
     },
     // beforeUpdate() {
     //     this.newFilter = this.getAllFilters.filter(filter => filter.tag_id === this.$route.params.id)

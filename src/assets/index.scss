@@ -161,11 +161,10 @@ textarea{
 .form-control {
   display: block;
   width: 100%;
-  height: calc(1.5em + 1.4rem + 2px);
+  height: 55px;
   padding: 0.375rem 1rem;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5;
   color: $dark;
   background-color: #fff;
   background-clip: padding-box;
@@ -592,7 +591,10 @@ hr{
   .page-title-span{
     max-width: 120px;
   }
-  
+  .cover-caption{
+    width: 100%;
+    padding: 30px 20px;
+  }
   
   
 

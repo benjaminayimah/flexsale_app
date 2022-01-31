@@ -89,11 +89,7 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'Products',
     computed: mapGetters(['getMobile', 'getProducts', 'getTags', 'getToken']),
-    // data() {
-    //     return {
-            
-    //     }
-    // },
+   
     created() {
         this.setPage()
         //this.loadProducts()
@@ -114,9 +110,6 @@ export default {
 
 
 <style scoped lang="scss">
-.main-page-body{
-    padding: 0 30px;
-}
 
 .prod-header {
     display: flex;

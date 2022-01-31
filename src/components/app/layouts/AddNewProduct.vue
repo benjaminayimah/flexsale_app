@@ -21,8 +21,8 @@
                             </div>
                             <div class="btn-wrap flex-row">
                                 <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
-                                <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && !getTagEditMode.active" @click.prevent="submitTag">x</button>
-                                <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && getTagEditMode.active" @click.prevent="">x</button>
+                                <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && !getTagEditMode.active" @click.prevent="submitTag"></button>
+                                <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && getTagEditMode.active" @click.prevent=""></button>
                             </div>
                         </div>
                     </div>
@@ -461,7 +461,7 @@ export default {
         margin-bottom: 20px;
         button{
             margin-right: 10px;
-            height: 48px;
+            height: 58px;
             border-radius: 12px;
             width: 100%;
             &:last-child{

@@ -12,6 +12,13 @@ import All from '@/components/app/layouts/AllProducts.vue'
 import Filter from '@/components/app/layouts/ProductFilter.vue'
 import DetailedTag from '@/views/app/DetailedTag.vue'
 import DetailedProduct from '@/views/app/DetailedProduct.vue'
+import Discount from '@/views/app/Discount.vue'
+import Suppliers from '@/views/app/Suppliers.vue'
+import Invoice from '@/views/app/Invoice.vue'
+import Reports from '@/views/app/Reports.vue'
+
+
+
 
 
 
@@ -36,6 +43,11 @@ const routes = [
     { path: '/tags', name: 'Tags', component: Tags },
     { path: '/tag/:id/:name', name: 'DetailedTag', component: DetailedTag },
     { path: '/product/:id/:name', name: 'DetailedProduct', component: DetailedProduct },
+    { path: '/discounts', name: 'Discount', component: Discount },
+    { path: '/reports', name: 'Reports', component: Reports },
+    { path: '/suppliers', name: 'Suppliers', component: Suppliers },
+    { path: '/invoice', name: 'Invoice', component: Invoice },
+
     ]
   },
   { path: '/login', name: 'Login', component: Login, meta: {requiresVisitor: true}},

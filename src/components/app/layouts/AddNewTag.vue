@@ -29,7 +29,7 @@
                     </ul>
                 </div>
             </div>
-            <div v-else>
+            <div v-else style="margin-bottom: 30px">
                 <label>Products:</label>
                 <button id="tag_big_add" class="button-secondary" @click.prevent="doProductSelection">
                     <div>
@@ -213,8 +213,9 @@ export default {
 <style scoped lang='scss'>
 .btn-wrap2{
     height: 80px;
+    justify-content: flex-end;
     button{
-        height: 48px;
+        height: 58px;
         border-radius: 12px;
         width: 100%;
     }

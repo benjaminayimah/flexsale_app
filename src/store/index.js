@@ -10,6 +10,7 @@ export default createStore({
     user: {},
     stores: [],
     products: [],
+    thisProduct: {},
     tags: [],
     filters: [],
     checkedProducts: [],
@@ -184,6 +185,12 @@ export default createStore({
       state.tagEditForm.name = payload.name
       state.tagEditForm.active = true
     },
+    fetchThisProduct(state, payload) {
+      state.thisProduct = payload
+    },
+    clrThisProduct(state) {
+      state.thisProduct = ''
+    },
     removeDeletedTags(state, payload) {
       state.tags = state.tags.filter(tag => tag.id != payload)
       state.filters = state.filters.filter(filter => filter.tag_id != payload);
@@ -278,6 +285,10 @@ export default createStore({
       const res = await axios.post(this.getters.getHostname+'/api/get-this-filter?token='+this.getters.getToken, {id: payload})
       const newData = { id: payload, name: res.data.name, array: res.data.filter}
       state.commit('fetchThisFilter', newData)
+    },
+    async fetchThisProduct(state, payload){
+       const res = await axios.post(this.getters.getHostname+'/api/product-detail?token='+this.getters.getToken, {id: payload})
+       state.commit('fetchThisProduct', res.data.product)
     }
 
 
@@ -308,7 +319,8 @@ export default createStore({
     getCheckedProducts: (state) => state.checkedProducts,
     getAllFilters: (state) => state.filters,
     getViewingMode: (state) => state.viewingMode,
-    getTagEditMode: (state) => state.tagEditForm
+    getTagEditMode: (state) => state.tagEditForm,
+    getThisProduct: (state) => state.thisProduct
 
     
 

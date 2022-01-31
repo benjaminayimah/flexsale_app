@@ -32,7 +32,7 @@
                       </div>
                       <div class="form-row">
                           <label>Password:</label>
-                          <input v-model="form.password" @mousedown="resertForm" type="password" name="password" class="form-control">
+                          <input v-model="form.password"  @mousedown="resertForm" required type="password" name="password" class="form-control">
                           <span class="validation-err" v-if="validation.error && validation.errors.password">
                               {{ validation.errors.password[0] }}
                           </span>

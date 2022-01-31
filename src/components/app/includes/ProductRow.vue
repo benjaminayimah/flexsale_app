@@ -1,66 +1,73 @@
 <template>
-    <div class="table-row flex-row-js" style="position: relative">
-        <div class="flex-row-st">
-            <div class="img-hold">
-                <div class="img" :style="{ backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')' }">
+<li style="position: relative">
+    <router-link :to="'/product/'+product.id+'/'+product.name" class="a-row" >
+        <div class="table-row flex-row-js" >
+            <div class="flex-row-st">
+                <div class="img-hold">
+                    <div class="img" :style="{ backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')' }">
+                    </div>
                 </div>
-            </div>
-            <div class="prod-capt-hold">
-                <div class="itm-name">{{ product.name }}</div>
-                <div class="flex-row-st">
-                    <label>Price:</label>
-                    <div class="itm-price"><span>GH₵</span>500</div>
-                </div>
-                <div class="flex-row-st">
+                <div class="prod-capt-hold">
+                    <div class="itm-name">{{ product.name }}</div>
                     <div class="flex-row-st">
-                        <label>Qty:</label>
-                        <div class="qty">500</div>
+                        <label>Price:</label>
+                        <div class="itm-price"><span>GH₵</span>500</div>
                     </div>
-                    
-                    <div class="edit-action">
-                        <a href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 14.62 16.711">
-                                <path d="M-8807.809-385.606a.691.691,0,0,1-.692-.69.692.692,0,0,1,.692-.692h13.237a.692.692,0,0,1,.69.692.691.691,0,0,1-.69.69Zm-.489-2.477a.691.691,0,0,1-.146-.759l1.781-4.153a.706.706,0,0,1,.145-.216l8.367-8.4a2.379,2.379,0,0,1,1.7-.7,2.375,2.375,0,0,1,1.693.7,2.4,2.4,0,0,1,0,3.384l-8.4,8.37a.647.647,0,0,1-.216.145l-4.155,1.781a.667.667,0,0,1-.271.057A.692.692,0,0,1-8808.3-388.083Zm2.852-4.247-1.048,2.446,2.446-1.05,6.716-6.686-1.428-1.426Zm8.767-5.94.942-.938a1.017,1.017,0,0,0,0-1.433,1,1,0,0,0-.717-.3,1,1,0,0,0-.718.3l-.936.94Z" transform="translate(8808.501 402.318)" fill="#566ff4"/>
+                    <div class="flex-row-st">
+                        <div class="flex-row-st">
+                            <label>Qty:</label>
+                            <div class="qty">500</div>
+                        </div>
+                        
+                        <div class="edit-action">
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 14.62 16.711">
+                                    <path d="M-8807.809-385.606a.691.691,0,0,1-.692-.69.692.692,0,0,1,.692-.692h13.237a.692.692,0,0,1,.69.692.691.691,0,0,1-.69.69Zm-.489-2.477a.691.691,0,0,1-.146-.759l1.781-4.153a.706.706,0,0,1,.145-.216l8.367-8.4a2.379,2.379,0,0,1,1.7-.7,2.375,2.375,0,0,1,1.693.7,2.4,2.4,0,0,1,0,3.384l-8.4,8.37a.647.647,0,0,1-.216.145l-4.155,1.781a.667.667,0,0,1-.271.057A.692.692,0,0,1-8808.3-388.083Zm2.852-4.247-1.048,2.446,2.446-1.05,6.716-6.686-1.428-1.426Zm8.767-5.94.942-.938a1.017,1.017,0,0,0,0-1.433,1,1,0,0,0-.717-.3,1,1,0,0,0-.718.3l-.936.94Z" transform="translate(8808.501 402.318)" fill="#566ff4"/>
+                                </svg>
+                                Update stock
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="batch-no">{{ product.batch_no }} </div>
+            </div>
+            <div class="menu-toggle">
+                <button class="menu-toggle-btn" :id="'prod_menu_'+product.id" @click.prevent="doMenu('prod_menu_'+product.id)">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </button>
+            </div>
+    
+            <teleport to="body">
+                <transition name="fade">
+                    <backdrop v-if="toggleMenu" @click.prevent="doMenu('prod_menu_'+product.id)" />
+                </transition>
+            </teleport>
+            <transition :name="getMobile? 'slide' : ''">
+                <div class="menu" v-if="toggleMenu" :class="[{ 'class-above' : classAbove && !getMobile}, { 'class-below' : !classAbove && !getMobile}, { 'menu-card-mob': getMobile}]">
+                    <div class="title" v-show="getMobile">
+                        <div>Menu</div>
+                        <button @click.prevent="doMenu('prod_menu_'+product.id)">
+                            <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
+                            <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
                             </svg>
-                            Update stock
-                        </a>
+                        </button>
                     </div>
+                    <ul>
+                        <li><a href="#">Edit details</a></li>
+                        <li><a href="#">Update stock</a></li>
+                        <li><a href="#">Delete</a></li>
+                    </ul>
                 </div>
-            </div>
-            <div class="batch-no">{{ product.batch_no }} </div>
-        </div>
-        <div class="menu-toggle">
-            <button class="menu-toggle-btn" :id="'prod_menu_'+product.id" @click.prevent="doMenu('prod_menu_'+product.id)">
-                <i></i>
-                <i></i>
-                <i></i>
-            </button>
-        </div>
-   
-        <teleport to="body">
-            <transition name="fade">
-                <backdrop v-if="toggleMenu" @click.prevent="doMenu('prod_menu_'+product.id)" />
             </transition>
-        </teleport>
-        <transition :name="getMobile? 'slide' : ''">
-            <div class="menu" v-if="toggleMenu" :class="[{ 'class-above' : classAbove && !getMobile}, { 'class-below' : !classAbove && !getMobile}, { 'menu-card-mob': getMobile}]">
-                <div class="title" v-show="getMobile">
-                    <div>Menu</div>
-                    <button @click.prevent="doMenu('prod_menu_'+product.id)">
-                        <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
-                        <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
-                        </svg>
-                    </button>
-                </div>
-                <ul>
-                    <li><router-link :to="'/product/'+product.id+'/'+product.name">View product</router-link></li>
-                    <li><a href="#">Edit details</a></li>
-                    <li><a href="#">Update stock</a></li>
-                    <li><a href="#">Delete</a></li>
-                </ul>
-            </div>
-        </transition>
-    </div>
+        </div>
+    </router-link>
+</li>
+
+
+
+    
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -82,7 +89,7 @@ export default {
             let elem = document.getElementById(id).getBoundingClientRect().top
             if(this.toggleMenu == false) {
                 this.toggleMenu = true
-                if((this.getWindowHeight-elem) > 250)
+                if((this.getWindowHeight-elem) > 200)
                 this.classAbove = true
                 else
                 this.classAbove = false
@@ -98,7 +105,7 @@ export default {
 <style scoped lang="scss">
 .table-row{
     padding: 20px 0;
-    border-bottom: 1px solid $dark-light;
+    width: 100%;
 }
 .img-hold{
     .img{
@@ -145,10 +152,23 @@ export default {
     
 }
 .class-above{
-  top: 53%;
+  top: 55%;
 }
 .class-below{
-    top: -130%;
+    top: -100%;
+}
+li{
+    list-style-type: none;
+}
+.a-row{
+    display: flex;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid $dark-light;
+    &:hover {
+        background-color: rgb(250, 250, 250);
+    }
 }
 .menu{
     position: absolute;
@@ -217,7 +237,7 @@ export default {
   }
   .slide-enter-from,
 .slide-leave-to {
-  transform: translateY(300px);
+  transform: translateY(250px);
   
 }
   
