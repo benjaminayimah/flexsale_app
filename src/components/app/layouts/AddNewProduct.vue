@@ -1,230 +1,222 @@
 <template>
-<transition name="fade">
-    <secondary-backdrop />
-</transition>
-<transition name="slide">
-    <div class="add-wrap" :style="{width: thisWidth+'px'}">
-        <div class="add-content">
-            <div class="add-prd-head">
-                <div class="add-head-wrap">
-                    <div class="add-head-hold" :style="{width: thisWidth+'px'}">
-                        <div class="head-content">
-                            <button class="button button-secondary cancel-btn" @click.prevent="$store.commit('unsetMainHomeWidth')">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
-                                    <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"/>
+    <form id="product_form">
+        <div class="form-row">
+            <label>Product Image:</label>
+            <div class="img-hold">
+                <div v-if="doingtempUpload" class="img-container">
+                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+require('@/assets/images/preview-img.png')+')'}">
+                        <div id="loading_hold">
+                            <i class="lazy-loader" :class="{ 'loader' : load }"></i>
+                        </div>
+                    </div>
+                </div>
+                <div v-else-if="imageUploaded" class="img-container">
+                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/temp/'+form.tempImage+')'}">
+                        <div v-if="deleting" id="loading_hold">
+                            <i class="lazy-loader" :class="{ 'loader' : load }"></i>
+                        </div>
+                        <button v-else class="button-secondary" id="deltmp" @click.prevent="deltmp(form.tempImage)">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 17.063 18">
+                                <path fill="#0e142c"  d="M-163.673-438.167a2.146,2.146,0,0,1-2.154-1.973l-.724-10.631,1.188-.078.724,10.632a.961.961,0,0,0,.966.884h7.236a.962.962,0,0,0,.966-.885l.724-10.631,1.188.078-.724,10.631a2.146,2.146,0,0,1-2.154,1.973Zm-4.793-13.986v-1.166h5.08v-2.848h6.662v2.848h5.321v1.166Zm10.551-1.166V-455H-162.2v1.683Z" transform="translate(168.466 456.167)"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div v-else class="empty-state-container">
+                    <button class="flex-column" @click.prevent="uploadClick('prod_img')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20.291 20.29">
+                            <path d="M-4280.267-699.712a2.84,2.84,0,0,1-2.837-2.838v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a1.339,1.339,0,0,0,1.337,1.338h14.615a1.34,1.34,0,0,0,1.338-1.338v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a2.842,2.842,0,0,1-2.839,2.838Zm6.558-7.013v-10.717l-3.939,3.94a.751.751,0,0,1-1.061,0,.751.751,0,0,1,0-1.061l5.22-5.22a.748.748,0,0,1,.531-.219h.018a.745.745,0,0,1,.33.085h0l.012.006.007,0,.007,0,.01.006,0,0,.014.009h0a.762.762,0,0,1,.126.1l5.22,5.22a.751.751,0,0,1,0,1.061.748.748,0,0,1-.531.219.749.749,0,0,1-.53-.219l-3.939-3.94v10.718a.749.749,0,0,1-.749.749A.749.749,0,0,1-4273.709-706.725Z" transform="translate(4283.104 720.002)" fill="#566ff4"/>
+                        </svg>
+                    </button>
+                    <span>Upload product image</span>
+                    <span class="instruction">The file type must be <strong>"png, jpg or jpeg"</strong> and <strong>Less than 1MB</strong></span>
+                    <input class="hide" @change="uploadTemp" name="image" id="prod_img" type="file" ref="img">
+                    <div v-if="imageStatus.status" class="status-div-backdrop" @click="clrError">
+                        <div class="status-div">
+                            <button @click.prevent="">
+                                <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
+                                    <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#ffffff"/>
                                 </svg>
                             </button>
-                            <div class="heading">
-                                <h1 class="text-overflow-ellipsis" v-if="getAddingProduct.product">Add New Product</h1>
-                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.tag && !getTagEditMode.active">Create Product Tag</h1>
-                                <h1 class="text-overflow-ellipsis" v-else>Edit {{ getTagEditMode.name }}</h1>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 0 39.159 34.195">
+                                    <path d="M-12866.661-2756.781h-30.138a4.567,4.567,0,0,1-3.908-2.3,4.571,4.571,0,0,1,.014-4.536.025.025,0,0,0,.006-.013l15.066-25.148s0,0,0,0a4.579,4.579,0,0,1,3.895-2.2,4.579,4.579,0,0,1,3.9,2.2s0,0,0,0l15.063,25.148a.138.138,0,0,1,.01.013,4.571,4.571,0,0,1,.014,4.536,4.567,4.567,0,0,1-3.908,2.3Zm-17.248-30.967-15.056,25.139a2.572,2.572,0,0,0-.007,2.539,2.581,2.581,0,0,0,2.189,1.292h30.118a2.57,2.57,0,0,0,2.186-1.292,2.562,2.562,0,0,0,0-2.539l-15.057-25.139a2.574,2.574,0,0,0-2.186-1.227A2.576,2.576,0,0,0-12883.909-2787.748Zm.975,23.452a1,1,0,0,1,1-1,1,1,0,0,1,1,1,1,1,0,0,1-1,1A1,1,0,0,1-12882.935-2764.3Zm0-7v-8a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8a1,1,0,0,1-1,1A1,1,0,0,1-12882.935-2771.3Z" transform="translate(12901.303 2790.976)" fill="#e63232"/>
+                                </svg>
                             </div>
-                            <div class="btn-wrap flex-row">
-                                <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
-                                <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && !getTagEditMode.active" @click.prevent="submitTag"></button>
-                                <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && getTagEditMode.active" @click.prevent=""></button>
-                            </div>
+                            <div><span>{{ imageStatus.msg }}</span></div>
+                            
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="main-page-body">
-                <div class="add-body">
-                <div class="form-wrap">
-                    <alerts />
-                    <form v-if="getAddingProduct.product" id="product_form">
-                        <div class="form-row">
-                            <label>Product Image:</label>
-                            <div class="img-hold">
-                                <div v-if="doingtempUpload" class="img-container">
-                                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+require('@/assets/images/preview-img.png')+')'}">
-                                        <div id="loading_hold">
-                                            <i class="lazy-loader" :class="{ 'loader' : load }"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div v-else-if="imageUploaded" class="img-container">
-                                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/temp/'+form.tempImage+')'}">
-                                        <div v-if="deleting" id="loading_hold">
-                                            <i class="lazy-loader" :class="{ 'loader' : load }"></i>
-                                        </div>
-                                        <button v-else class="button-secondary" id="deltmp" @click.prevent="deltmp(form.tempImage)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 17.063 18">
-                                                <path fill="#0e142c"  d="M-163.673-438.167a2.146,2.146,0,0,1-2.154-1.973l-.724-10.631,1.188-.078.724,10.632a.961.961,0,0,0,.966.884h7.236a.962.962,0,0,0,.966-.885l.724-10.631,1.188.078-.724,10.631a2.146,2.146,0,0,1-2.154,1.973Zm-4.793-13.986v-1.166h5.08v-2.848h6.662v2.848h5.321v1.166Zm10.551-1.166V-455H-162.2v1.683Z" transform="translate(168.466 456.167)"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div v-else class="empty-state-container">
-                                    <button class="flex-column" @click.prevent="uploadClick('prod_img')">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20.291 20.29">
-                                            <path d="M-4280.267-699.712a2.84,2.84,0,0,1-2.837-2.838v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a1.339,1.339,0,0,0,1.337,1.338h14.615a1.34,1.34,0,0,0,1.338-1.338v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a2.842,2.842,0,0,1-2.839,2.838Zm6.558-7.013v-10.717l-3.939,3.94a.751.751,0,0,1-1.061,0,.751.751,0,0,1,0-1.061l5.22-5.22a.748.748,0,0,1,.531-.219h.018a.745.745,0,0,1,.33.085h0l.012.006.007,0,.007,0,.01.006,0,0,.014.009h0a.762.762,0,0,1,.126.1l5.22,5.22a.751.751,0,0,1,0,1.061.748.748,0,0,1-.531.219.749.749,0,0,1-.53-.219l-3.939-3.94v10.718a.749.749,0,0,1-.749.749A.749.749,0,0,1-4273.709-706.725Z" transform="translate(4283.104 720.002)" fill="#566ff4"/>
-                                        </svg>
-                                    </button>
-                                    <span>Upload product image</span>
-                                    <span class="instruction">The file type must be <strong>"png, jpg or jpeg"</strong> and <strong>Less than 1MB</strong></span>
-                                    <input class="hide" @change="uploadTemp" name="image" id="prod_img" type="file" ref="img">
-                                    <div v-if="imageStatus.status" class="status-div-backdrop" @click="clrError">
-                                        <div class="status-div">
-                                            <button @click.prevent="">
-                                                <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
-                                                    <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#ffffff"/>
-                                                </svg>
-                                            </button>
-                                            <div>
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 0 39.159 34.195">
-                                                    <path d="M-12866.661-2756.781h-30.138a4.567,4.567,0,0,1-3.908-2.3,4.571,4.571,0,0,1,.014-4.536.025.025,0,0,0,.006-.013l15.066-25.148s0,0,0,0a4.579,4.579,0,0,1,3.895-2.2,4.579,4.579,0,0,1,3.9,2.2s0,0,0,0l15.063,25.148a.138.138,0,0,1,.01.013,4.571,4.571,0,0,1,.014,4.536,4.567,4.567,0,0,1-3.908,2.3Zm-17.248-30.967-15.056,25.139a2.572,2.572,0,0,0-.007,2.539,2.581,2.581,0,0,0,2.189,1.292h30.118a2.57,2.57,0,0,0,2.186-1.292,2.562,2.562,0,0,0,0-2.539l-15.057-25.139a2.574,2.574,0,0,0-2.186-1.227A2.576,2.576,0,0,0-12883.909-2787.748Zm.975,23.452a1,1,0,0,1,1-1,1,1,0,0,1,1,1,1,1,0,0,1-1,1A1,1,0,0,1-12882.935-2764.3Zm0-7v-8a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8a1,1,0,0,1-1,1A1,1,0,0,1-12882.935-2771.3Z" transform="translate(12901.303 2790.976)" fill="#e63232"/>
-                                                </svg>
-                                            </div>
-                                            <div><span>{{ imageStatus.msg }}</span></div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
 
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <label>Product name:</label>
-                            <input v-model="form.name" type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Ideal Milk" required>
-                        </div>
-                        <div class="form-row">
-                            <label>Batch number:</label>
-                            <input v-model="form.batchNumber" type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
-                        </div>
-                        <div class="form-row">
-                            <label>Category:</label>
-                            <select id="category" class="form-control select">
-                                <option selected="selected">Select a category</option>
-                                <option value="men">men</option>
-                                </select>
-                            <div class="a-btn">
-                                <a href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
-                                        <path d="M-12729.059-1230.178v-5.942H-12735a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.942v-5.942a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.942h5.941a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.941v5.942a1,1,0,0,1-1,1A1,1,0,0,1-12729.059-1230.178Z" transform="translate(12736.001 1245.061)" fill="#566ff4"/>
-                                    </svg>
-                                    Create new Category
-                                </a>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <label>Type of product:</label>
-                            <div class="form-row-hold">
-                                <div class="form-check flex-row-st">
-                                    <input v-model="form.prodType" id="retail" value="0" class="form-check-input" type="radio" checked>
-                                    <label for="retail">
-                                        Retail
-                                    </label>
-                                </div>
-                                <div class="form-check flex-row-st">
-                                    <input v-model="form.prodType" id="wholesale" value="1" class="form-check-input" type="radio" >
-                                    <label for="wholesale">
-                                        Wholesale
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <label>Supply Cost per unit:</label>
-                            <div class="form-row-col">
-                                <div class="col-2 pl-0">
-                                    <input v-model="form.cost" type="text" name="costPrice" class="form-control" placeholder="100">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <label>Selling price per unit:</label>
-                            <div class="form-row-col">
-                                <div class="col-2">
-                                    <input v-model="form.sellingPrice" type="text" name="sellingPrice" class="form-control" placeholder="100">
-                                </div>
-                                <div class="col-2">
-                                    <div class="profit-row">
-                                        <div class="flex-row-st">
-                                            <div class="profit-label">
-                                                Profit per unit:
-                                            </div>
-                                            <div class="vals">
-                                                <span>GH₵</span><span>50</span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-row-st">
-                                            <div class="profit-label">
-                                                Profit margin:
-                                            </div>
-                                            <div class="vals">
-                                                <span>40</span><span class="percent value">%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <label>Stock:</label>
-                            <div class="form-row-col">
-                                <div class="col-2">
-                                    <input v-model="form.stock" type="text" name="stock" class="form-control" placeholder="100">
-                                </div>
-                                <div class="col-2">
-                                    <div class="profit-row">
-                                        <label class="checkbox-hold">
-                                                <input v-model="form.trackQty" type="checkbox">
-                                                <span class="checkbox-custom"></span>
-                                                <span class="chk-label">Automatically track quantity</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <label>Description:</label>
-                            <textarea v-model="form.description" class="form-control" name="description" rows="5"></textarea>
-                        </div>
-                        <div class="form-row">
-                            <label>Supplier:</label>
-                            <select v-model="form.supplier" id="supplier" class="form-control select">
-                                <option selected="selected">Select a supplier</option>
-                                <option value="0">ABC Enterprise</option>
-                                <option value="1">XYZ Ltd</option>
-                                </select>
-                            <div class="a-btn">
-                                <a href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
-                                        <path d="M-12729.059-1230.178v-5.942H-12735a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.942v-5.942a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.942h5.941a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.941v5.942a1,1,0,0,1-1,1A1,1,0,0,1-12729.059-1230.178Z" transform="translate(12736.001 1245.061)" fill="#566ff4"/>
-                                    </svg>
-                                    Create new Supplier
-                                </a>
-                            </div>
-                        </div>
-                        <div class="btn-wrap2 flex-row">
-                            <button class="button button-primary" @click.prevent="doUpload">Submit</button>
-                        </div>
-                    </form>
-                    <div v-if="getAddingProduct.tag">
-                        <add-new-tag v-bind:thisWidth="thisWidth" v-bind:getTagEditMode="getTagEditMode" />
-                    </div>
-                </div>
-            </div>
             </div>
         </div>
-    </div>
-</transition>
+        <div class="form-row">
+            <label>Product name:</label>
+            <input v-model="form.name" type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Ideal Milk" required>
+        </div>
+        <div class="form-row">
+            <div id="unit_bg">
+                <label>Add units</label>
+                <div>If there are several units in this product, you may proceed to add the individual units here.</div>
+                <div class="flex-row align-content-center">
+                    <div class="unit-input-hold">
+                        <!-- <label>Batch no.:</label> -->
+                        <input type="text" name="BatchNumber" v-model="unitForm.batch" class="form-control" placeholder="Batch number">
+                    </div>
+                    <div class="unit-input-hold">
+                        <!-- <label>Expiry Date:</label> -->
+                        <input type="text" name="ExpiryDate" v-model="unitForm.expiry" class="form-control exp-date" placeholder="Expiry date">
+                    </div>
+                    <button class="button add-unit-btn button-primary" @click.prevent="addToUnit">Add</button>
+                </div>
+                <div class="unit-added-wrap" v-if="form.units.length > 0">
+                    <ul>
+                        <li v-for="unit in form.units" :key="unit.batch">
+                            <div class="unit-pill flex flex-row-js">
+                                <span class="batch-no text-overflow-ellipsis">{{ unit.batchNumber }}</span>
+                                <span class="divider" v-show="unit.expiry">|</span>
+                                <span class="expiry-date text-overflow-ellipsis" v-show="unit.expiry">{{ unit.expiry }}</span>
+                                <button class="flex align-items-center justify-content-center" @click.prevent="delUnit(unit.batchNumber)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 20 20">
+                                        <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <label>Batch number:</label>
+            <input v-model="form.batchNumber" type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
+        </div>
+        <div class="form-row">
+            <label>Category:</label>
+            <select id="category" class="form-control select">
+                <option selected="selected">Select a category</option>
+                <option value="men">men</option>
+                </select>
+            <div class="a-btn">
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
+                        <path d="M-12729.059-1230.178v-5.942H-12735a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.942v-5.942a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.942h5.941a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.941v5.942a1,1,0,0,1-1,1A1,1,0,0,1-12729.059-1230.178Z" transform="translate(12736.001 1245.061)" fill="#566ff4"/>
+                    </svg>
+                    Create new Category
+                </a>
+            </div>
+        </div>
+        <div class="form-row">
+            <label>Type of product:</label>
+            <div class="form-row-hold">
+                <div class="form-check flex-row-st">
+                    <input v-model="form.prodType" id="retail" value="0" class="form-check-input" type="radio" checked>
+                    <label for="retail">
+                        Retail
+                    </label>
+                </div>
+                <div class="form-check flex-row-st">
+                    <input v-model="form.prodType" id="wholesale" value="1" class="form-check-input" type="radio" >
+                    <label for="wholesale">
+                        Wholesale
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <label>Supply Cost per unit:</label>
+            <div class="form-row-col">
+                <div class="col-2 pl-0">
+                    <input v-model="form.cost" type="text" name="costPrice" class="form-control" placeholder="100">
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <label>Selling price per unit:</label>
+            <div class="form-row-col">
+                <div class="col-2">
+                    <input v-model="form.sellingPrice" type="text" name="sellingPrice" class="form-control" placeholder="100">
+                </div>
+                <div class="col-2">
+                    <div class="profit-row">
+                        <div class="flex-row-st">
+                            <div class="profit-label">
+                                Profit per unit:
+                            </div>
+                            <div class="vals">
+                                <span>GH₵</span><span>50</span>
+                            </div>
+                        </div>
+                        <div class="flex-row-st">
+                            <div class="profit-label">
+                                Profit margin:
+                            </div>
+                            <div class="vals">
+                                <span>40</span><span class="percent value">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <label>Stock:</label>
+            <div class="form-row-col">
+                <div class="col-2">
+                    <input v-model="form.stock" type="text" name="stock" class="form-control" placeholder="100">
+                </div>
+                <div class="col-2">
+                    <div class="profit-row">
+                        <label class="checkbox-hold">
+                                <input v-model="form.trackQty" type="checkbox">
+                                <span class="checkbox-custom"></span>
+                                <span class="chk-label">Automatically track quantity</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <label>Description:</label>
+            <textarea v-model="form.description" class="form-control" name="description" rows="5"></textarea>
+        </div>
+        <div class="form-row">
+            <label>Supplier:</label>
+            <select v-model="form.supplier" id="supplier" class="form-control select">
+                <option selected="selected">Select a supplier</option>
+                <option value="0">ABC Enterprise</option>
+                <option value="1">XYZ Ltd</option>
+                </select>
+            <div class="a-btn">
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
+                        <path d="M-12729.059-1230.178v-5.942H-12735a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.942v-5.942a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.942h5.941a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.941v5.942a1,1,0,0,1-1,1A1,1,0,0,1-12729.059-1230.178Z" transform="translate(12736.001 1245.061)" fill="#566ff4"/>
+                    </svg>
+                    Create new Supplier
+                </a>
+            </div>
+        </div>
+        <div class="btn-wrap2 flex-row">
+            <button class="button button-primary" @click.prevent="doUpload">Submit</button>
+        </div>
+    </form>
 </template>
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
-import Alerts from '../includes/Alerts.vue'
-import AddNewTag from './AddNewTag.vue'
-import SecondaryBackdrop from '../includes/SecondaryBackdrop.vue'
 export default {
-  components: { Alerts, AddNewTag, SecondaryBackdrop },
     name: 'AddNewProduct',
-    computed: mapGetters(['getAddingProduct', 'getToken', 'getHostname', 'getUser', 'getTagEditMode']),
-    props: ['thisWidth'],
+    computed: mapGetters(['getToken', 'getHostname', 'getUser']),
     data() {
         return {
             doingProductUpload: false,
+            duplicate: false,
+            unitForm: {
+                batch: '',
+                expiry: ''
+            },
             form: {
                 image: '',
                 tempImage: '',
@@ -238,7 +230,8 @@ export default {
                 trackQty: true,
                 prodType: '0',
                 profit: '',
-                profitMargin: ''
+                profitMargin: '',
+                units: []
             },
             doingtempUpload: false,
             imageUploaded: false,
@@ -323,11 +316,6 @@ export default {
                     title: res.data.title,
                     body: res.data.body
                 }
-                // const newProduct = {
-                //     id: res.data.id,
-                //     name: res.data.name,
-                //     image: res.data.image
-                // }
                 this.$store.commit('showAlert', payload)
                 
             }).catch((err) => {
@@ -350,6 +338,41 @@ export default {
                 //window.scrollTo(0,0)
                     
             })
+        },
+        addToUnit() {
+            if(this.unitForm.batch !== ''){
+                const newUnit = { batchNumber: this.unitForm.batch, expiry: this.unitForm.expiry}
+                if(this.form.units.length === 0) {
+                    this.form.units.push(newUnit)
+                    this.resetInput()
+                }
+                else if(this.form.units.length !== 0) {
+                    this.form.units.forEach(element => {
+                        if(element.batchNumber === this.unitForm.batch) {
+                            this.duplicate = true
+                            //duplicated
+                            return false
+                        }
+                    });
+                    if(!this.duplicate) {
+                        this.form.units.push(newUnit)
+                        this.resetInput()
+                    }else{
+                        this.duplicate = false
+                    } 
+                }
+                
+            }
+            
+        },
+        resetInput() {
+            this.unitForm.batch = ''
+            this.unitForm.expiry = ''
+            this.duplicate = false
+        },
+        delUnit(id) {
+            this.form.units = this.form.units.filter(filter => filter.batchNumber != id)
+
         },
         deltmp(id) {
             this.deleting = true
@@ -379,9 +402,6 @@ export default {
             
         }
     },
-   created() {
-    //    this.fetchAllCategories()
-   },
     unmounted() {
         axios.post(this.getHostname+'/api/del-alltemp-img?token='+this.getToken)
 
@@ -392,126 +412,18 @@ export default {
     beforeUnmount() {
         window.removeEventListener('beforeunload', this.preventReload)
     }
-
-        
 }
 </script>
 <style scoped lang="scss">
-
-.add-wrap{
-    background-color: $white-color;
-    height: 100%;
-    position: fixed;
-    z-index: 201;
-    top: 0;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-        display: none;
-        -ms-overflow-style: none; 
-        scrollbar-width: none; 
+.btn-wrap2{
+    height: 80px;
+    justify-content: flex-end;
+    button{
+        height: 58px;
+        border-radius: 12px;
+        width: 100%;
     }
 }
-.add-content{
-    .add-prd-head{
-        z-index: 100;
-        display: flex;
-        align-items: center;
-        position: relative;
-        .add-head-wrap{
-            height: 80px;
-            width: 100%;
-        }
-        .add-head-hold{
-            position: fixed;
-            top: 0;
-            display: flex;
-            height: 80px;
-            border-bottom: 1px solid $dark-light;
-            background-color: $white-color;
-        }
-        .head-content{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 30px;
-            align-items: center;
-        }
-    }
-    .heading{
-        display: flex;
-        height: 100%;
-        align-items: center;
-        h1{
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin: 0;
-        }
-    }
-    .btn-wrap{
-        height: 100%;
-        button{
-            height: 44px;
-            border-radius: 12px;
-        }
-        
-    }
-    .btn-wrap2{
-        height: 80px;
-        margin-bottom: 20px;
-        button{
-            margin-right: 10px;
-            height: 58px;
-            border-radius: 12px;
-            width: 100%;
-            &:last-child{
-                margin-right: 0;
-            }
-        }
-    }
-    .add-body{
-        overflow-y: auto;
-        display: flex;
-        justify-content: center;
-    }
-    
-}
-.cancel-btn{
-    display: flex;
-    background-color: #ffffff;
-    height: 44px;
-    width: 44px;
-    border-radius: 50%;
-    border: none;
-    margin-left: -10px;
-    border: 1px solid transparent;
-    padding: 0;
-  //transition: 0.3s all;
-  &:hover{
-    background-color: $dark-light;
-  }
-  &:focus{
-      box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
-      border: 1px solid #0e142c;
-      background-color: #fff;
-  }
-}
-.form-wrap{
-    padding: 20px 0;
-    width: 70%;
-}
-.mob-view{
-    .form-wrap{
-        width: 100% !important;
-    }
-    .head-content{
-        padding: 0 15px !important;
-    }
-    .add-head-wrap, .add-head-hold{
-        height: 60px !important;
-    }
-
-} 
 .img-hold{
     width: 100%;
     height: 300px;
@@ -694,9 +606,8 @@ export default {
             height: 100%;
         }
         .profit-label{
-            text-decoration-line: underline;
-            text-decoration-style: dotted;
-            margin-right: 8px;
+            border-bottom: dashed 1px ;
+            margin-right: 10px;
         }
     }
 }
@@ -716,12 +627,62 @@ label{
 .checkbox-custom {
      border: 2px solid rgba(21, 31, 57, 0.6);
 }
+#unit_bg{
+    background-color: $primary-light;
+    padding: 20px;
+    border-radius: 16px;
+    .add-unit-btn{
+        height: 48px;
+    }
+    input{
+        height: 48px;
+    }
+}
+.unit-input-hold{
+    padding: 15px 0;
+    margin-right: 10px
+}
+.exp-date{
+    max-width: 140px;
+}
+ul{
+    padding: 0;
+}
+li{
+    max-width: 86%;
+    list-style-type: none;
+    padding: 0 15px 15px 0;
+    .unit-pill{
+        //border: 1px solid #e2e4e7;
+        border-radius: 27px;
+        padding: 0 6px 0 18px;
+        background-color: $gray-light;
+    span{
+        align-items: center;
+        display: flex;
+        //margin-right: 20px;
+        height: 44px;
+        &:last-child{
+            padding-right: 18px;
+        }
+    }
+    .divider{
+        color: $gray-color;
+    }
+    .expiry-date{
+        color: $gray-color;
+    }
+    button{
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: flex;
+        background-color: transparent;
+        &:hover{
+            background-color: $dark-light;
+        }
+    }
+}
 
-
-
-.slide-enter-from,
-.slide-leave-to {
-  transform: translateY(200px);
-  
 }
 </style>

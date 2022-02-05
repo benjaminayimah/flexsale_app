@@ -4,24 +4,50 @@
             <div class="cover-image bg-img" :style="{ backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+getThisProduct.image+')' }">
                 <div class="cover-image-backdrop"></div>
                 <div class="flex-row action-btn-hold">
-                    <button class="icon-label-btn flex-row" @click.prevent="">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 14.62 16.711"><path d="M-8807.809-385.606a.691.691,0,0,1-.692-.69.692.692,0,0,1,.692-.692h13.237a.692.692,0,0,1,.69.692.691.691,0,0,1-.69.69Zm-.489-2.477a.691.691,0,0,1-.146-.759l1.781-4.153a.706.706,0,0,1,.145-.216l8.367-8.4a2.379,2.379,0,0,1,1.7-.7,2.375,2.375,0,0,1,1.693.7,2.4,2.4,0,0,1,0,3.384l-8.4,8.37a.647.647,0,0,1-.216.145l-4.155,1.781a.667.667,0,0,1-.271.057A.692.692,0,0,1-8808.3-388.083Zm2.852-4.247-1.048,2.446,2.446-1.05,6.716-6.686-1.428-1.426Zm8.767-5.94.942-.938a1.017,1.017,0,0,0,0-1.433,1,1,0,0,0-.717-.3,1,1,0,0,0-.718.3l-.936.94Z" transform="translate(8808.501 402.318)" fill="#0e142c"></path></svg>
-                        <span>Edit</span>
+                    <button class="icon-label-btn image-icon menu-toggle-btn flex-row" @click.prevent="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="28" viewBox="0 0 36 29.998">
+                            <path d="M19900,4735.5a4.5,4.5,0,0,1-4.5-4.5v-16.5a4.508,4.508,0,0,1,4.5-4.5h5.2l2.551-3.832a1.51,1.51,0,0,1,1.25-.665h9a1.508,1.508,0,0,1,1.252.665l2.551,3.832h5.2a4.509,4.509,0,0,1,4.5,4.5V4731a4.5,4.5,0,0,1-4.5,4.5Zm-1.5-21V4731a1.506,1.506,0,0,0,1.5,1.5h27a1.5,1.5,0,0,0,1.5-1.5v-16.5a1.5,1.5,0,0,0-1.5-1.5h-6a1.51,1.51,0,0,1-1.25-.665l-2.551-3.832h-7.4l-2.551,3.832a1.508,1.508,0,0,1-1.252.665h-6A1.506,1.506,0,0,0,19898.5,4714.5Zm7.5,7.5a7.5,7.5,0,1,1,7.5,7.5A7.512,7.512,0,0,1,19906,4722Zm3,0a4.5,4.5,0,1,0,4.5-4.5A4.509,4.509,0,0,0,19909,4722Z" transform="translate(-19895.5 -4705.501)"/>
+                        </svg>
                     </button>
-                    <button class="icon-label-btn flex-row" @click.prevent="">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 21.5 23.166"><path d="M-162.427-433a2.727,2.727,0,0,1-2.714-2.539l-.912-13.682,1.5-.1.912,13.683a1.222,1.222,0,0,0,1.217,1.138h9.118a1.222,1.222,0,0,0,1.217-1.139l.912-13.682,1.5.1-.912,13.682A2.727,2.727,0,0,1-153.309-433Zm-6.039-18v-1.5h6.4v-3.666h8.394v3.666h6.705v1.5Zm13.295-1.5v-2.165h-5.394v2.165Z" transform="translate(168.466 456.167)" fill="#0e142c"></path></svg>
-                        <span class="text-overflow-ellipsis">Delete</span>
+                    <button class="icon-label-btn menu-toggle-btn flex-row" @click.prevent="">
+                        <i></i>
+                        <i></i>
+                        <i></i>
                     </button>
                 </div>
                 <div class="cover-caption">
-                    <div><h1>{{ getThisProduct.name }}</h1></div>
-                    <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor.
-                    </p>
+                    <div class="flex align-items-center">
+                        <h1>{{ getThisProduct.name }}</h1>
+                        <i></i>
+                        <div class="edit-action-2">
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 14.62 16.711">
+                                    <path d="M-8807.809-385.606a.691.691,0,0,1-.692-.69.692.692,0,0,1,.692-.692h13.237a.692.692,0,0,1,.69.692.691.691,0,0,1-.69.69Zm-.489-2.477a.691.691,0,0,1-.146-.759l1.781-4.153a.706.706,0,0,1,.145-.216l8.367-8.4a2.379,2.379,0,0,1,1.7-.7,2.375,2.375,0,0,1,1.693.7,2.4,2.4,0,0,1,0,3.384l-8.4,8.37a.647.647,0,0,1-.216.145l-4.155,1.781a.667.667,0,0,1-.271.057A.692.692,0,0,1-8808.3-388.083Zm2.852-4.247-1.048,2.446,2.446-1.05,6.716-6.686-1.428-1.426Zm8.767-5.94.942-.938a1.017,1.017,0,0,0,0-1.433,1,1,0,0,0-.717-.3,1,1,0,0,0-.718.3l-.936.94Z" transform="translate(8808.501 402.318)" fill="#ffffff"/>
+                                </svg>
+                                Edit
+                            </a>
+                        </div>
+                        </div>
+                        <div class="flex-row caption-row"><span>({{ getThisProduct.batch_no }})</span></div>
+                        <p></p>
                     <div class="flex-row caption-row"><label>Created:</label><span>{{ dateTime(getThisProduct.created_at) }}</span></div>
                     <div class="flex-row caption-row"><label>By:</label><span>{{ getThisProduct.added_by }}</span></div>
                 </div>
             </div>
+        </div>
+        <div class="table-body">
+            <div class="table-menu flex-row-js">
+                <div class="category-pill pill">
+                    <div class="pill-wrap">
+                        <ul class="flex-row-st">
+                            <li><router-link replace :to="'/product/'+getThisProduct.id+'/'+getThisProduct.name">Details</router-link></li>
+                            <li><router-link replace :to="'/product/stats/'+getThisProduct.id+'/'+getThisProduct.name">Statistics</router-link></li>
+                            <li><router-link replace :to="'/product/logs/'+getThisProduct.id+'/'+getThisProduct.name">Activity logs</router-link></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <router-view></router-view>
         </div>
     </div>
 </template>
@@ -45,10 +71,11 @@ export default {
             this.$store.dispatch('fetchThisProduct', this.$route.params.id)
         },
         dateTime(value) {
-        return moment(String(value)).format('MMM DD, YYYY hh:mm a')
+        return moment(value).format('MMM DD, YYYY hh:mm a')
         },
     },
     created() {
+        window.scrollTo(0,0)
         this.setPage()
         this.fetchThisProduct()
     },
@@ -64,8 +91,8 @@ export default {
     position: relative;
     .action-btn-hold{
         position: absolute;
-        top: 20px;
-        right: 20px;
+        top: 15px;
+        right: 15px;
         border-radius: 16px;
 
     }
@@ -90,6 +117,13 @@ export default {
     padding: 40px 32px;
     color: #fff;
     position: absolute;
+    i{
+        height: 5px;
+        width: 5px;
+        border-radius: 3px;
+        background-color: #fff;
+        margin: 0 15px;
+    }
     h1{
         margin: 0;
         font-size: 2.2rem;
@@ -102,20 +136,8 @@ export default {
 }
 .icon-label-btn{
     padding: 12px 10px;
-    border-radius: 11px;
     background-color: #fff;
-    transition: 0.2s linear all;
     margin-left: 5px;
-    font-weight: 500;
-    span{
-        margin-left: 8px;
-        color: $dark;
-   
-    }
-    &:hover {
-        background-color: $dark-light;
-        
-    }
 }
 .caption-row{
     font-size: 0.98rem;
@@ -125,5 +147,40 @@ export default {
     span{
         color: $dark-light;
     }
+}
+.edit-action-2{
+    background-color: rgba($color: #000000, $alpha: 0.3);
+    padding: 5px 8px;
+    border-radius: 20px;
+    a{
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        &:hover{
+            text-decoration: underline;
+        }
+        svg{
+            margin-right: 5px;
+        }
+    }
+}
+.image-icon{
+    background-color: rgba($color: #000000, $alpha: 0.4);
+    margin-right: 10px;
+    svg path {
+        fill: #ffffff;
+    }
+    &:hover {
+        background-color: rgba($color: #000000, $alpha: 0.8);
+    }
+}
+
+.router-link-exact-active{
+    background-color: $dark !important;
+    color: #ffffff !important;
+    border: 1px solid $dark !important;
 }
 </style>

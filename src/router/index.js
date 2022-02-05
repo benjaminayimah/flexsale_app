@@ -16,6 +16,11 @@ import Discount from '@/views/app/Discount.vue'
 import Suppliers from '@/views/app/Suppliers.vue'
 import Invoice from '@/views/app/Invoice.vue'
 import Reports from '@/views/app/Reports.vue'
+import ProductDetailsBasic from '@/components/app/layouts/ProductInfoDetails.vue'
+import ProductDetailsStats from '@/components/app/layouts/ProductInfoStats.vue'
+import ProductDetailsLogs from '@/components/app/layouts/ProductInfoLogs.vue'
+
+
 
 
 
@@ -42,7 +47,13 @@ const routes = [
     },
     { path: '/tags', name: 'Tags', component: Tags },
     { path: '/tag/:id/:name', name: 'DetailedTag', component: DetailedTag },
-    { path: '/product/:id/:name', name: 'DetailedProduct', component: DetailedProduct },
+    { path: '/product/:id/:name', component: DetailedProduct ,
+    children: [
+      { path: '/product/:id/:name', name: 'ProductDetailsBasic', component: ProductDetailsBasic},
+      { path: '/product/stats/:id/:name', name: 'ProductDetailsStats', component: ProductDetailsStats},
+      { path: '/product/logs/:id/:name', name: 'ProductDetailsLogs', component: ProductDetailsLogs},
+      
+    ]},
     { path: '/discounts', name: 'Discount', component: Discount },
     { path: '/reports', name: 'Reports', component: Reports },
     { path: '/suppliers', name: 'Suppliers', component: Suppliers },
@@ -58,7 +69,7 @@ const router = createRouter({
   routes
 })
 router.beforeEach((to, from, next) => {
-  window.scrollTo(0,0)
+  //window.scrollTo(0,0)
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.

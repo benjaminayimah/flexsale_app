@@ -23,7 +23,7 @@ export default createStore({
     hideRight: false,
     alert: { status: { show: false, success: false, danger: false, warning: false, info: false }, title: '', body: '' },
 
-    navPage: { title: '', mobile: false, back: true },
+    navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
     addingProduct: { status: false, width: '', product: false, tag: false}

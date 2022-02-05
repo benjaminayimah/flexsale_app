@@ -131,6 +131,21 @@ button{
       background-color: $primary-light !important;
     }
 }
+.flex{
+  display: flex;
+}
+.flex-wrap{
+  flex-wrap: wrap !important;
+}
+.align-items-center{
+  align-items: center;
+}
+.justify-content-center{
+  justify-content: center;
+}
+.justify-content-start{
+  justify-content: flex-start;
+}
 .flex-column{
   display: flex;
   flex-direction: column;
@@ -262,6 +277,62 @@ textarea{
   border: 1px solid $primary-color;
 }
 
+.table-body {
+  .table-menu{
+    margin: 25px 0;
+    height: 44px;
+     ul{
+        padding: 0;
+        margin: 0;
+        display: flex;
+        height: 100%;
+        align-items: center;
+        li{
+            display: flex;
+            margin-right: 10px;
+            align-items: center;
+            height: 42px;
+            &:hover a{
+                background-color: $dark-light;
+            }
+            &:last-child{
+                margin-right: 0 
+            }
+            a{
+                transition: 0.3s all;
+            }
+        }
+        
+    }
+    .category-pill{
+        position: relative;
+        align-items: center;
+        display: flex;
+        overflow: hidden;
+    .pill-wrap{
+        height: 100%;
+        display: flex;
+        overflow-x: auto;
+        &::-webkit-scrollbar {
+            display: none;
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
+        li a{
+            padding: 10px 14px;
+            border: 1px solid $gray-light;
+            color: $dark;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            }
+        }
+    }
+    
+  }
+  
+}
+
 
 .form-check-input {
   float: left;
@@ -338,7 +409,7 @@ hr{
       font-weight: 600;
   }
   & svg path{
-       fill: $primary-color !important;
+       fill: $primary-color;
   }
 }
 .status-alert{
@@ -420,7 +491,7 @@ hr{
 .menu-toggle-btn{
   height: 40px;
   width: 40px;
-  border-radius: 20px;
+  border-radius: 50%;
   display: flex;
   flex-direction: row;
   justify-content: center;

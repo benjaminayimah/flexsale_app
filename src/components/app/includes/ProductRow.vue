@@ -41,7 +41,7 @@
     
             <teleport to="body">
                 <transition name="fade">
-                    <backdrop v-if="toggleMenu" @click.prevent="doMenu('prod_menu_'+product.id)" />
+                    <backdrop v-if="toggleMenu" @mousedown="doMenu('prod_menu_'+product.id)" />
                 </transition>
             </teleport>
             <transition :name="getMobile? 'slide' : ''">
@@ -50,7 +50,7 @@
                         <div>Menu</div>
                         <button @click.prevent="doMenu('prod_menu_'+product.id)">
                             <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
-                            <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
+                                <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
                             </svg>
                         </button>
                     </div>
@@ -104,7 +104,7 @@ export default {
 
 <style scoped lang="scss">
 .table-row{
-    padding: 20px 0;
+    padding: 15px 0;
     width: 100%;
 }
 .img-hold{

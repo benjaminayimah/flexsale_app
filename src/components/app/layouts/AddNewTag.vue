@@ -112,7 +112,7 @@ export default {
             this.form.products = this.getCheckedProducts
             axios.post( this.getHostname+'/api/tag?token='+this.getToken, this.form
             ).then((res) => {
-                console.log(res)
+                //console.log(res)
                 if(res.data.status === 1) {
                     this.$store.commit('addToTags', res.data.tag)
                     this.$store.commit('fetchFilters', res.data.filters)

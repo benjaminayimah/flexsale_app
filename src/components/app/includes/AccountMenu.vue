@@ -2,7 +2,7 @@
 <div :class="{ 'jc' : getTablet }">
     <teleport to="body">
       <transition name="fade">
-          <backdrop v-if="showMenu" @click="showthisMenu('account_menu')"/>
+          <backdrop v-if="showMenu" @mousedown="showthisMenu('account_menu')"/>
       </transition>
       <transition :name="getMobile? 'slide' : ''">
             <div v-if="showMenu" class="dialog" :class="[{ 'menu-card-mob': getMobile}, { 'menu-card-desk': !getMobile}]" :style="{ left: getFloatingDiv.left+'px', bottom: getFloatingDiv.bottom + 'px'}">
