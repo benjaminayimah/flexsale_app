@@ -1,7 +1,7 @@
 <template>
 <h1 id="page_title">Home</h1>
 
- <div class="ovw-wrap">
+ <div class="ovw-wrap" v-if="getStores.length > 0">
      <div id="overview_row">
          <div class="flex-row-st">
              <span id="left_scroll_indicator"></span>
@@ -59,8 +59,10 @@
 
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
     name: 'Dashboard',
+    computed: mapGetters(['getStores']),
     data() {
         return {
             stats: [

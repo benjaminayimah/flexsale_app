@@ -14,10 +14,12 @@
                             <div class="heading">
                                 <h1 class="text-overflow-ellipsis" v-if="getAddingProduct.product">Add New Product</h1>
                                 <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.tag && !getTagEditMode.active">Create Product Tag</h1>
+                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.discount && !getTagEditMode.active">Create New Discount</h1>
                                 <h1 class="text-overflow-ellipsis" v-else>Edit {{ getTagEditMode.name }}</h1>
                             </div>
                             <div class="btn-wrap flex-row">
                                 <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
+                                <button class="button button-primary" v-else-if="getAddingProduct.discount && !getTagEditMode.active" @click.prevent="">Submit</button>
                                 <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && !getTagEditMode.active" @click.prevent="submitTag"></button>
                                 <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && getTagEditMode.active" @click.prevent=""></button>
                             </div>
@@ -28,9 +30,9 @@
             <div class="main-page-body">
                 <div class="add-body">
                     <div class="form-wrap">
-                        <alerts />
                         <add-new-product v-if="getAddingProduct.product" />
-                        <add-new-tag v-if="getAddingProduct.tag" v-bind:thisWidth="thisWidth" v-bind:getTagEditMode="getTagEditMode" />
+                        <add-new-tag v-else-if="getAddingProduct.tag" v-bind:thisWidth="thisWidth" v-bind:getTagEditMode="getTagEditMode" />
+                        <add-new-discount v-else-if="getAddingProduct.discount" v-bind:thisWidth="thisWidth" />
                     </div>
                 </div>
             </div>
@@ -40,12 +42,12 @@
 <script>
 
 import { mapGetters } from 'vuex'
-import Alerts from '../includes/Alerts.vue'
 import AddNewTag from './AddNewTag.vue'
 import SecondaryBackdrop from '../includes/SecondaryBackdrop.vue'
 import AddNewProduct from './AddNewProduct.vue'
+import AddNewDiscount from './AddNewDiscount.vue'
 export default {
-  components: { Alerts, AddNewTag, SecondaryBackdrop, AddNewProduct },
+  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount },
     name: 'AddNew',
     computed: mapGetters(['getAddingProduct', 'getTagEditMode']),
     props: ['thisWidth'],
@@ -142,7 +144,7 @@ export default {
 }
 .form-wrap{
     padding: 20px 0;
-    width: 70%;
+    width: 75%;
 }
 .mob-view{
     .form-wrap{

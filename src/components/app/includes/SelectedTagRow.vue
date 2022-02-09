@@ -22,7 +22,7 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'SelectedTagRow',
     props: ['checkedProduct', 'getViewingMode'],
-    computed: mapGetters(['getCheckedProducts', 'getHostname', 'getUser']),
+    computed: mapGetters(['getHostname', 'getUser']),
     methods: {
         removeSelectedProduct(id) {
             const obj = {id: id}

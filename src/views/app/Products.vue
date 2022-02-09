@@ -89,7 +89,6 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'Products',
     computed: mapGetters(['getMobile', 'getProducts', 'getTags', 'getToken']),
-   
     created() {
         this.setPage()
         window.scrollTo(0,0)
@@ -105,7 +104,7 @@ export default {
         // loadProducts() {
         //     this.$store.dispatch('fetchProducts', this.getToken)
         // }
-    }
+    },
 }
 </script>
 

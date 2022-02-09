@@ -1,12 +1,39 @@
 <template>
-    <form id="tag_form">
+    <form>
         <div class="form-row">
-            <label>{{ getTagEditMode.active? 'Tag name' : 'Give a title to your tag' }}:</label>
-            <input v-if="!getTagEditMode.active" v-model="form.tag" type="text" name="tagName" class="form-control" placeholder="Tag title eg. tooth paste or new arrivals" required>
-            <input v-if="getTagEditMode.active" v-model="editForm.tag" type="text" name="tagName" class="form-control" required>
-            <span class="validation-err" v-if="validation.error && validation.errors.tag">
-                {{ validation.errors.tag[0] }}
-            </span>
+            <label>Discount name:</label>
+            <input type="text" v-model="form.name" name="DiscountName" class="form-control" placeholder="Eg. Workers day discount" required>
+        </div>
+        <div class="form-row">
+            <label>Discount Type:</label>
+            <div class="flex">
+                <div class="form-check flex-row-st">
+                    <input v-model="form.type" id="percent" value="1" class="form-check-input" type="radio">
+                    <label for="percent">
+                        Percentage(%)
+                    </label>
+                </div>
+                <div class="form-check flex-row-st">
+                    <input v-model="form.type" id="amount" value="0" class="form-check-input" type="radio" >
+                    <label for="amount">
+                        Direct amount(GH₵)
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <label>Amount:</label>
+            <input type="number" v-model="form.amount" name="Amount" class="form-control" placeholder="Eg. 5" required>
+        </div>
+        <div class="form-row-col">
+            <div class="col-2 pl-0">
+                <label>Start date:</label>
+                <Datepicker v-model="form.startDate" :monthChangeOnScroll="false" />
+            </div>
+            <div class="col-2 pr-0">
+                <label>End date:</label>
+                <Datepicker v-model="form.endDate" :monthChangeOnScroll="false" />
+            </div>
         </div>
         <div class="form-row mb-0">
             <div v-if="this.getCheckedProducts.length > 0">
@@ -31,62 +58,61 @@
             </div>
             <div v-else style="margin-bottom: 30px">
                 <label>Products:</label>
-                <button id="tag_big_add" class="button-secondary" @click.prevent="$store.commit('setSelectionSheet')">
+                <button id="discount_big_add" class="button-secondary" @click.prevent="$store.commit('setSelectionSheet')">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582"><path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#566ff4"></path></svg>
                     </div>
-                    <span>Add products to this group</span>
+                    <span>Add products to this discount</span>
                 </button>
-                <span class="validation-err" v-if="validation.error && validation.errors.products">
-                    {{ validation.errors.products[0] }}
-                </span>
             </div>
         </div>
         <div class="btn-wrap2 flex-row">
-            <button v-if="!getTagEditMode.active" class="button button-primary" @click.prevent="submitTag">Submit</button>
-            <button v-else class="button button-primary" @click.prevent="submitEditTag">Save changes</button>
+            <button v-if="!getTagEditMode.active" class="button button-primary" @click.prevent="submitDiscount">Submit</button>
+            <button v-else class="button button-primary" @click.prevent="submitEditDiscount">Save changes</button>
         </div>
     </form>
      <select-products-overlay v-if="getSelectionSheet" v-bind:thisWidth="thisWidth" v-bind:windowHeight="getWindowHeight" />
 </template>
 <script>
 import axios from 'axios'
+import 'vue3-date-time-picker/dist/main.css'
+import Datepicker from 'vue3-date-time-picker';
 import { mapGetters } from 'vuex'
-import SelectedTagRow from '../includes/SelectedTagRow.vue'
-import SelectProductsOverlay from '../includes/SelectProductsOverlay.vue'
+import SelectProductsOverlay from '../includes/SelectProductsOverlay.vue';
+import SelectedTagRow from '../includes/SelectedTagRow.vue';
 export default {
-  components: { SelectedTagRow, SelectProductsOverlay },
-    computed: mapGetters(['getCheckedProducts', 'getWindowHeight', 'getToken', 'getHostname', 'getSelectionSheet']),
-    name: 'AddNewTag',
-    props: ['thisWidth', 'getTagEditMode'],
+    name: 'AddNewDiscount',
+     components: { Datepicker, SelectProductsOverlay, SelectedTagRow },
+     computed: mapGetters(['getToken', 'getHostname', 'getCheckedProducts', 'getWindowHeight', 'getSelectionSheet', 'getTagEditMode', 'getThisDiscount']),
+     props: ['thisWidth'],
     data() {
         return {
             form: {
-                tag: '',
-                products: []
-            },
-            editForm: {
-                tag: this.getTagEditMode.name,
+                name: '',
+                type: '1',
+                amount: '',
+                startDate: new Date(),
+                endDate: new Date(),
                 products: [],
-                id: this.getTagEditMode.id
+                id: ''
             },
-            
-            validation: {
-                error: false,
-                errors: [],
-                message: ''
-            }
+            selectionSheet: false,
         }
     },
     methods: {
-        async submitTag() {
+        async submitDiscount() {
             this.form.products = this.getCheckedProducts
-            axios.post( this.getHostname+'/api/tag?token='+this.getToken, this.form
+            console.log(this.form.startDate.toJSON())
+            axios.post( this.getHostname+'/api/discount?token='+this.getToken,
+                    this.form,
+                    {
+                        headers: {
+                            'Content-Type': ['application/json']
+                        },
+                    }
             ).then((res) => {
-                //console.log(res)
                 if(res.data.status === 1) {
-                    this.$store.commit('addToTags', res.data.tag)
-                    this.$store.commit('fetchFilters', res.data.filters)
+                    this.$store.commit('addToDiscounts', res.data.discount)
                     const payload = {
                         id: 'success',
                         title: res.data.title,
@@ -104,8 +130,8 @@ export default {
                     this.$store.commit('showAlert', payload)
                     
                 }
+                
             }).catch((err) => {
-                console.log(err.response)
                 if(err.response.status === 422) {
                     const payload = {
                         id: 'danger',
@@ -113,22 +139,19 @@ export default {
                         body: err.response.data.message
                     }
                     this.$store.commit('showAlert', payload)
-                    this.validation.error = true
-                    this.validation.errors = err.response.data.errors
-                    this.validation.message = err.response.data.message
                 }
+                console.log(err.response.data.errors)
             })
         },
-        async submitEditTag() {
-            this.editForm.products = this.getCheckedProducts
-            axios.put( this.getHostname+'/api/tag/'+this.editForm.id+'?token='+this.getToken, this.editForm)
+        async submitEditDiscount() {
+            this.form.products = this.getCheckedProducts
+            axios.put( this.getHostname+'/api/discount/'+this.form.id+'?token='+this.getToken, this.form)
             .then((res) => {
                 if(res.data.status === 1) {
-                    
                     const newData = {
-                        tags: res.data.tags, tag: this.editForm.tag
+                        discount: res.data.discount, discounts: res.data.discounts
                     }
-                    this.$store.commit('updateTags', newData)
+                    this.$store.commit('updateDiscounts', newData)
                     const payload = {
                         id: 'success',
                         title: res.data.title,
@@ -136,7 +159,7 @@ export default {
                     }
                     this.$store.commit('showAlert', payload)
                     this.$store.commit('unsetMainHomeWidth')
-                    this.$router.push({ name: 'DetailedTag', params: { id: this.editForm.id, name: this.editForm.tag }, replace: true })
+                    this.$router.push({ name: 'DetailedDiscount', params: { id: res.data.discount.id, name: res.data.discount.name }, replace: true })
                 }
                 if(res.data.status === 2) {
                     const payload = {
@@ -145,17 +168,8 @@ export default {
                         body: res.data.message
                     }
                     this.$store.commit('showAlert', payload)
-                    
                 }
-                //location.reload()
-
-                // const id = res.data.id
-                // const name = res.data.name
-                // this.$router.push({ name: 'DetailedTag', params: { id,name } })
-                // this.$route.params = name
-                //this.$router.push({ path: `/tag/${id}/${name}` }) // -> /user/123
             }).catch((err) => {
-                console.log(err.response)
                 if(err.response.status === 422) {
                     const payload = {
                         id: 'danger',
@@ -163,40 +177,36 @@ export default {
                         body: err.response.data.message
                     }
                     this.$store.commit('showAlert', payload)
-                    this.validation.error = true
-                    this.validation.errors = err.response.data.errors
-                    this.validation.message = err.response.data.message
                 }
+                console.log(err.response.data.errors)
             })
 
 
         },
-        buttonHeight() {
-            let elem = document.getElementById('tag_big_add')
-            let elemWidth = elem.offsetWidth
-            //let me = elem.offsetHeight = +'px'
-            //elem.style.height = parseInt(elemWidth/2)+'px'
-            console.log(elemWidth/2)
-            
+        doProductSelection() {
+            this.selectionSheet = !this.selectionSheet
+        },
+        preloadForEdit() {
+            if(this.getTagEditMode.active){
+                this.form.name = this.getThisDiscount.name
+                this.form.type = this.getThisDiscount.percentage
+                this.form.amount = this.getThisDiscount.value
+                this.form.startDate = this.getThisDiscount.start
+                this.form.endDate = this.getThisDiscount.end
+                this.form.id = this.getThisDiscount.id
+
+
+                
+            }
         }
+    },
+    beforeMount() {
+        this.preloadForEdit()
     }
-    
 }
 </script>
-
-<style scoped lang='scss'>
-.btn-wrap2{
-    height: 80px;
-    justify-content: flex-end;
-    button{
-        height: 58px;
-        border-radius: 12px;
-        width: 100%;
-    }
-}
-
-
-#tag_big_add{
+<style scoped lang="scss">
+#discount_big_add{
     width: 100%;
     border-radius: 16px;
     display: flex;
@@ -232,18 +242,23 @@ export default {
         padding: 15px 0;
     }
 }
-
-
+.form-row-col{
+    padding-bottom: 30px ;
+    display: flex;
+    flex-direction: row;
+    .col-2{
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        padding: 0 10px;
+    }
+}
+.count{
+    color: $primary-color;
+}
 ul{
     list-style-type: none;
     margin: 0;
     padding-left: 0;
 }
-.count{
-    color: $primary-color;
-}
-.validation-err{
-    color: $danger;
-}
-
 </style>

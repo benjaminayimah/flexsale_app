@@ -57,42 +57,68 @@
         </div>
         <div class="form-row">
             <div id="unit_bg">
-                <label>Add units</label>
-                <div>If there are several units in this product, you may proceed to add the individual units here.</div>
-                <div class="flex-row align-content-center">
-                    <div class="unit-input-hold">
-                        <!-- <label>Batch no.:</label> -->
-                        <input type="text" name="BatchNumber" v-model="unitForm.batch" class="form-control" placeholder="Batch number">
+                <div :class="{ 'activate-dst': form.directStock}">
+                    <label>Add Product Units</label>
+                    <div style="color: #7e8596">If there are several units in this product, you may proceed to add the individual units here.</div>
+                    <div class="flex-row align-content-center">
+                        <div class="unit-input-hold">
+                            <input type="text" name="BatchNumber" :disabled="form.directStock? true : false" v-model="unitForm.batch" class="form-control" placeholder="Batch number">
+                        </div>
+                        <div class="unit-input-hold">
+                            <Datepicker v-model="month" monthPicker :disabled="form.directStock? true : false"></Datepicker>
+                        </div>
+                        <button class="button add-unit-btn button-primary" @click.prevent="addToUnit">Add</button>
                     </div>
-                    <div class="unit-input-hold">
-                        <!-- <label>Expiry Date:</label> -->
-                        <input type="text" name="ExpiryDate" v-model="unitForm.expiry" class="form-control exp-date" placeholder="Expiry date">
+                    <span v-if="error.active" class="err">{{ error.message }}</span>
+                    <div class="unit-added-wrap" v-if="form.units.length > 0">
+                        <ul v-show="!form.directStock">
+                            <li v-for="unit in form.units" :key="unit.batch">
+                                <div class="unit-pill flex flex-row-js">
+                                    <span class="batch-no text-overflow-ellipsis">{{ unit.batchNumber }}</span>
+                                    <span class="divider" v-show="unit.expiry">|</span>
+                                    <span class="expiry-date text-overflow-ellipsis" v-show="unit.expiry">{{ unit.expiry }}</span>
+                                    <button class="flex align-items-center justify-content-center" @click.prevent="delUnit(unit.batchNumber)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 20 20">
+                                            <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#ffffff">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <button class="button add-unit-btn button-primary" @click.prevent="addToUnit">Add</button>
                 </div>
-                <div class="unit-added-wrap" v-if="form.units.length > 0">
-                    <ul>
-                        <li v-for="unit in form.units" :key="unit.batch">
-                            <div class="unit-pill flex flex-row-js">
-                                <span class="batch-no text-overflow-ellipsis">{{ unit.batchNumber }}</span>
-                                <span class="divider" v-show="unit.expiry">|</span>
-                                <span class="expiry-date text-overflow-ellipsis" v-show="unit.expiry">{{ unit.expiry }}</span>
-                                <button class="flex align-items-center justify-content-center" @click.prevent="delUnit(unit.batchNumber)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 20 20">
-                                        <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c">
-                                        </path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </li>
-                    </ul>
+                
+                <div>
+                    <div class="or">
+                        <span>Or</span>
+                    </div>
+                    <label class="checkbox-hold">
+                        <input v-model="form.directStock" type="checkbox">
+                        <span class="checkbox-custom"></span>
+                        <span class="chk-label">Add stock number directly.</span>
+                    </label>
+                    <div class="flex-row-st" :class="{ 'activate-dst': !form.directStock}">
+                        <div style="margin-right:10px">
+                            <label>Stock:</label>
+                            <input type="text" name="stockNumber" :disabled="!form.directStock? true : false" class="form-control stk2" placeholder="100">
+                        </div>
+                        <div style="margin-right:10px">
+                            <label>Batch No.:</label>
+                            <input type="text" name="stockNumber" :disabled="!form.directStock? true : false" class="form-control" placeholder="Batch number">
+                        </div>
+                        <div class="unit-input-hold" style="margin:0; padding: 10px 0">
+                            <label>Expiry date:</label>
+                            <Datepicker v-model="month2" monthPicker :disabled="!form.directStock? true : false"></Datepicker>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-row">
+        <!-- <div class="form-row">
             <label>Batch number:</label>
             <input v-model="form.batchNumber" type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
-        </div>
+        </div> -->
         <div class="form-row">
             <label>Category:</label>
             <select id="category" class="form-control select">
@@ -161,7 +187,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-row">
+        <!-- <div class="form-row">
             <label>Stock:</label>
             <div class="form-row-col">
                 <div class="col-2">
@@ -177,7 +203,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="form-row">
             <label>Description:</label>
             <textarea v-model="form.description" class="form-control" name="description" rows="5"></textarea>
@@ -205,12 +231,33 @@
 </template>
 <script>
 import axios from 'axios'
+import 'vue3-date-time-picker/dist/main.css'
+import Datepicker from 'vue3-date-time-picker';
+//import { ref } from 'vue';
 import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewProduct',
     computed: mapGetters(['getToken', 'getHostname', 'getUser']),
+    components: { Datepicker },
+    // setup() {
+    //     const month = ref({ 
+    //         month: new Date().getMonth(),
+    //         year: new Date().getFullYear()
+    //     });
+    //     return {
+    //         month,
+    //     }
+    // },
     data() {
         return {
+            month: {
+                month: new Date().getMonth(),
+                year: new Date().getFullYear()
+             },
+             month2: {
+                month: new Date().getMonth(),
+                year: new Date().getFullYear()
+             },
             doingProductUpload: false,
             duplicate: false,
             unitForm: {
@@ -227,17 +274,18 @@ export default {
                 stock: '',
                 description: '',
                 supplier: '',
-                trackQty: true,
                 prodType: '0',
                 profit: '',
                 profitMargin: '',
-                units: []
+                units: [],
+                directStock: false,
             },
             doingtempUpload: false,
             imageUploaded: false,
             deleting: false,
             load: false,
-            imageStatus: {status: false, msg: ''}
+            imageStatus: {status: false, msg: ''},
+            error: { active: false, message: ''}
         }
     },
     methods: {
@@ -340,8 +388,12 @@ export default {
             })
         },
         addToUnit() {
+            console.log(this.form.units)
+            if(this.error.active === true) {
+                this.error.active = false
+            }
             if(this.unitForm.batch !== ''){
-                const newUnit = { batchNumber: this.unitForm.batch, expiry: this.unitForm.expiry}
+                const newUnit = { batchNumber: this.unitForm.batch, expiry: this.month.month+1+'/'+ this.month.year}
                 if(this.form.units.length === 0) {
                     this.form.units.push(newUnit)
                     this.resetInput()
@@ -350,7 +402,8 @@ export default {
                     this.form.units.forEach(element => {
                         if(element.batchNumber === this.unitForm.batch) {
                             this.duplicate = true
-                            //duplicated
+                            this.error.active = true
+                            this.error.message = 'This batch number already exist'
                             return false
                         }
                     });
@@ -367,7 +420,6 @@ export default {
         },
         resetInput() {
             this.unitForm.batch = ''
-            this.unitForm.expiry = ''
             this.duplicate = false
         },
         delUnit(id) {
@@ -415,15 +467,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.btn-wrap2{
-    height: 80px;
-    justify-content: flex-end;
-    button{
-        height: 58px;
-        border-radius: 12px;
-        width: 100%;
-    }
-}
+
 .img-hold{
     width: 100%;
     height: 300px;
@@ -656,7 +700,7 @@ li{
         //border: 1px solid #e2e4e7;
         border-radius: 27px;
         padding: 0 6px 0 18px;
-        background-color: $gray-light;
+        background-color: $primary-color;
     span{
         align-items: center;
         display: flex;
@@ -666,11 +710,15 @@ li{
             padding-right: 18px;
         }
     }
+    .batch-no{
+        color: #ffffff;
+        font-weight: 500;
+    }
     .divider{
-        color: $gray-color;
+        color: $dark-light;
     }
     .expiry-date{
-        color: $gray-color;
+        color: #ffffff;
     }
     button{
         width: 34px;
@@ -678,11 +726,54 @@ li{
         border-radius: 50%;
         display: flex;
         background-color: transparent;
-        &:hover{
-            background-color: $dark-light;
+            &:hover{
+                background-color: rgba(14, 20, 44, 0.1);
+            }
+        }
+    }
+
+}
+.err{
+    color: $danger;
+}
+hr{
+    margin: 20px 0;
+    border-color: $gray-light;
+}
+.or{
+    padding: 20px 0;
+    text-align: center;
+    position: relative;
+
+    span{
+        font-weight: 600;
+        &::before{
+            content: '';
+            height: 1px;
+            background-color: $gray-light;
+            width: 45%;
+            position: absolute;
+            left: 0;
+            top: 50%;
+
+        }
+        &::after{
+            content: '';
+            height: 1px;
+            background-color: $gray-light;
+            width: 45%;
+            position: absolute;
+            right: 0;
+            top: 50%;
         }
     }
 }
-
+.stk2{
+    max-width: 65px;
+    text-align: center;
+    padding: 6px;
+}
+.activate-dst{
+    opacity: 0.6;
 }
 </style>

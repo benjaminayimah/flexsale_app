@@ -19,6 +19,8 @@ import Reports from '@/views/app/Reports.vue'
 import ProductDetailsBasic from '@/components/app/layouts/ProductInfoDetails.vue'
 import ProductDetailsStats from '@/components/app/layouts/ProductInfoStats.vue'
 import ProductDetailsLogs from '@/components/app/layouts/ProductInfoLogs.vue'
+import DetailedDiscount from '@/views/app/DetailedDiscount.vue'
+
 
 
 
@@ -55,6 +57,7 @@ const routes = [
       
     ]},
     { path: '/discounts', name: 'Discount', component: Discount },
+    { path: '/discounts/:id/:name', name: 'DetailedDiscount', component: DetailedDiscount },
     { path: '/reports', name: 'Reports', component: Reports },
     { path: '/suppliers', name: 'Suppliers', component: Suppliers },
     { path: '/invoice', name: 'Invoice', component: Invoice },

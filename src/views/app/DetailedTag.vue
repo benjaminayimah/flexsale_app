@@ -33,7 +33,7 @@ import SelectedTagRow from '../../components/app/includes/SelectedTagRow.vue'
 export default {
   components: { SelectedTagRow },
     name: 'DetailedTag',
-    computed: mapGetters(['getAllFilters', 'getCheckedProducts', 'getToken', 'getHostname']),
+    computed: mapGetters(['getAllFilters', 'getCheckedProducts', 'getToken', 'getHostname', 'getTempContainer']),
     methods: {
         setPage() {
             const title = { title: this.$route.params.name, back: true}
@@ -44,6 +44,11 @@ export default {
             .then((res) => {
                 console.log(res.data)
                 this.$store.commit('removeDeletedTags', res.data.id)
+                const payload = {
+                    id: 'success',
+                    body: res.data.status
+                }
+                this.$store.commit('showAlert', payload)
                 this.$router.go(-1)
             }).catch((err) => {
                 console.log(err)
@@ -52,8 +57,10 @@ export default {
     },
     created() {
         window.scrollTo(0,0)
-        this.setPage()
         this.$store.dispatch('fetchThisFilter', this.$route.params.id)
+    },
+    beforeUpdate() {
+        this.setPage()
     },
     unmounted() {
         this.$store.commit('clrCheckedProdArray')

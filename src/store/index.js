@@ -14,19 +14,24 @@ export default createStore({
     tags: [],
     filters: [],
     checkedProducts: [],
+    selectionSheet: false,
+    discounts: [],
+    thisDiscount: {},
     //viewingMode: false,
     tagEditForm: { id: '', name: '', active: false, viewingMode: true },
+    thisTempHold: { active: false, editMode: false, data: {}},
     currentStore: {},
     mobile: false,
     tablet: false,
     desktop: false,
     hideRight: false,
-    alert: { status: { show: false, success: false, danger: false, warning: false, info: false }, title: '', body: '' },
+    alert: { status: { show: false, success: false, danger: false, warning: false, info: false }, title: 'dfd', body: '' },
+    loader: false,
 
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
-    addingProduct: { status: false, width: '', product: false, tag: false}
+    addingProduct: { status: false, width: '', product: false, tag: false, discount: false}
   },
   mutations: {
     //authentication
@@ -38,6 +43,9 @@ export default createStore({
     },
     fetchProducts(state, payload) {
       state.products = payload
+    },
+    fetchDiscounts(state, payload) {
+      state.discounts = payload
     },
     addToProducts(state, payload) {
       state.products.push(payload)
@@ -102,7 +110,12 @@ export default createStore({
     unSetMobileTitle(state) {
       state.navPage.mobile = false
     },
-
+    setSelectionSheet(state) {
+      state.selectionSheet = !state.selectionSheet
+    },
+    setLoader(state) {
+        state.loader = !state.loader
+    },
     getMainHomeWidth(state, payload) {
       let homeWidth = document.getElementById('main_home').offsetWidth
       let appSection = document.getElementById('app_section')
@@ -118,13 +131,16 @@ export default createStore({
         state.addingProduct.product = true
       }else if(payload.addType == 'tag'){
         state.addingProduct.tag = true
+      }else if(payload.addType == 'discount'){
+        state.addingProduct.discount = true
       }
     },
     unsetMainHomeWidth(state){
-      this.commit('dismisAlert')
+      // this.commit('dismisAlert')
       state.addingProduct.status = false
       state.addingProduct.tag = false
       state.addingProduct.product = false
+      state.addingProduct.discount = false
       state.addingProduct.width = ''
       document.body.classList.remove('fixed-body')
       let appSection = document.getElementById('app_section')
@@ -161,8 +177,16 @@ export default createStore({
     addToTags(state, payload) {
       state.tags.push(payload)
     },
+    addToDiscounts(state, payload) {
+      state.discounts.push(payload)
+    },
     updateTags(state, payload) {
-      state.tags = payload
+      state.tags = payload.tags
+      state.tagEditForm.name = payload.tag
+    },
+    updateDiscounts(state, payload) {
+      state.discounts = payload.discounts
+      state.thisDiscount = payload.discount
     },
     addCheckedProdToArray(state, payload) {
       state.checkedProducts.push(payload)
@@ -174,6 +198,7 @@ export default createStore({
       state.checkedProducts = []
       state.tagEditForm.active = false
       state.tagEditForm.viewingMode = true
+      state.thisDiscount = {}
     },
     fetchFilters(state, payload) {
       state.filters = payload
@@ -188,18 +213,30 @@ export default createStore({
     fetchThisProduct(state, payload) {
       state.thisProduct = payload
     },
+    fetchThisDiscount(state, payload) {
+       state.checkedProducts = payload.array
+       state.thisDiscount = payload.discount
+       state.tagEditForm.id = payload.discount.id
+       state.tagEditForm.name = payload.discount.name
+       state.tagEditForm.active = true
+    },
+    // fetchThisDiscount(state, payload) {
+    //   state.thisProduct = payload
+    // },
+
+
     clrThisProduct(state) {
       state.thisProduct = ''
     },
     removeDeletedTags(state, payload) {
       state.tags = state.tags.filter(tag => tag.id != payload)
       state.filters = state.filters.filter(filter => filter.tag_id != payload);
-      console.log(state.tags)
-      console.log(state.filters)
-
-
-
     },
+    removeDeletedDiscount(state, payload) {
+      state.discounts = state.discounts.filter(discount => discount.id != payload)
+      // state.filters = state.filters.filter(filter => filter.tag_id != payload);
+    },
+    
 
     setDynamicFloatingDiv(state, payload) {
       const rect = payload.getBoundingClientRect()
@@ -236,13 +273,16 @@ export default createStore({
         console.log(err.response)
       })
   },*/
-    getAuthUser(state, payload) {            
+    getAuthUser(state, payload) {  
+      state.commit('setLoader')          
       axios.post(this.getters.getHostname+'/api/user?token='+payload)
       .then((res) => {
           state.commit('setUser', res.data.user)
           state.commit('setStore', res.data.stores)
           state.commit('fetchTags', res.data.tags)
           state.commit('fetchProducts', res.data.products)
+          state.commit('fetchDiscounts', res.data.discounts)
+          state.commit('setLoader')          
       }).catch(() => {
           state.commit('destroyToken')    
       })      
@@ -278,18 +318,31 @@ export default createStore({
     // },
     async fetchFilters(state){
       //state.commit('unCheckAllAndEmpty')
+      state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-all-filters?token='+this.getters.getToken)
       state.commit('fetchFilters', res.data.filters)
+      state.commit('setLoader') 
     },
     async fetchThisFilter(state, payload){
+      state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-this-filter?token='+this.getters.getToken, {id: payload})
       const newData = { id: payload, name: res.data.name, array: res.data.filter}
       state.commit('fetchThisFilter', newData)
+      state.commit('setLoader') 
     },
     async fetchThisProduct(state, payload){
+      state.commit('setLoader') 
        const res = await axios.post(this.getters.getHostname+'/api/product-detail?token='+this.getters.getToken, {id: payload})
        state.commit('fetchThisProduct', res.data.product)
-    }
+       state.commit('setLoader') 
+    },
+    async fetchThisDiscount(state, payload){
+      state.commit('setLoader') 
+      const res = await axios.post(this.getters.getHostname+'/api/get-this-discount?token='+this.getters.getToken, {id: payload})
+      const newData = { discount: res.data.discount, array: res.data.products}
+      state.commit('fetchThisDiscount', newData)
+      state.commit('setLoader') 
+    },
 
 
   },
@@ -320,7 +373,15 @@ export default createStore({
     getAllFilters: (state) => state.filters,
     getViewingMode: (state) => state.viewingMode,
     getTagEditMode: (state) => state.tagEditForm,
-    getThisProduct: (state) => state.thisProduct
+    getThisProduct: (state) => state.thisProduct,
+    getDiscounts: (state) => state.discounts,
+    getSelectionSheet: (state) => state.selectionSheet,
+    getThisDiscount: (state) => state.thisDiscount,
+    getLoader: (state) => state.loader,
+
+
+
+
 
     
 

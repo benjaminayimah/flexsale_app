@@ -41,6 +41,7 @@
           <div class="main-hold">
             <!-- main home -->
             <div class="main-home" id="main_home">
+              <alerts />
               <header>
                 <div class="header-wrap">
                   <div class="header-hold" :class="{ 'bt-0' : !getCurrentpage.mobile }">
@@ -60,7 +61,7 @@
                             </svg>
                           </a>
                         </li>
-                        <li><a href="#">
+                        <li><a href="javascript: void">
                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
                             <g transform="translate(-6.775 -3.93)">
                               <path d="M-1239.676-30.952a.746.746,0,0,1,.795-.874.794.794,0,0,1,.795.561,1.317,1.317,0,0,0,.313.6,1.285,1.285,0,0,0,1.008.324,1.26,1.26,0,0,0,1.008-.324,1.317,1.317,0,0,0,.313-.6.794.794,0,0,1,.795-.561.749.749,0,0,1,.795.874,2.73,2.73,0,0,1-2.909,2.04A2.735,2.735,0,0,1-1239.676-30.952Zm2.959-1.919h-8.784a1.089,1.089,0,0,1-.995-1.748c.964-1.122,2.86-1.77,2.86-6.769,0-5.13,2.571-7.187,4.98-7.687.226-.05.388-.121.388-.324v-.16a1.446,1.446,0,0,1,1.5-1.352h.038a1.445,1.445,0,0,1,1.5,1.352v.16c0,.209.163.275.388.324,2.4.495,4.981,2.557,4.981,7.687,0,5,1.9,5.653,2.859,6.769a1.087,1.087,0,0,1-.976,1.748Zm-.419-15.385a2.278,2.278,0,0,1-1.164.578,4.062,4.062,0,0,0-2.421,1.518,7.641,7.641,0,0,0-1.308,4.772,11.131,11.131,0,0,1-.894,4.85,6.65,6.65,0,0,1-1.314,1.837.239.239,0,0,0,.206.4h14.591a.226.226,0,0,0,.194-.374,6.717,6.717,0,0,1-1.345-1.864,11.116,11.116,0,0,1-.9-4.85,7.646,7.646,0,0,0-1.307-4.772,4.062,4.062,0,0,0-2.421-1.518,2.368,2.368,0,0,1-1.177-.588.509.509,0,0,0-.361-.143A.547.547,0,0,0-1237.136-48.256Z" transform="translate(1253.524 54.842)"/>
@@ -68,7 +69,7 @@
                           </svg>
                           <i></i></a>
                         </li>
-                        <li v-if="!getMobile"><a href="#">
+                        <li v-if="!getMobile"><a href="javascript: void">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.25 26.249">
                               <path d="M-1129.625,12.658A13.123,13.123,0,0,1-1116.5-.467a13.123,13.123,0,0,1,13.126,13.125A13.123,13.123,0,0,1-1116.5,25.782,13.123,13.123,0,0,1-1129.625,12.658Zm5.092-8.033a11.281,11.281,0,0,0-3.325,8.033,11.283,11.283,0,0,0,3.325,8.032,11.283,11.283,0,0,0,8.032,3.326,11.283,11.283,0,0,0,8.033-3.326,11.283,11.283,0,0,0,3.326-8.032,11.281,11.281,0,0,0-3.326-8.033A11.283,11.283,0,0,0-1116.5,1.3,11.283,11.283,0,0,0-1124.533,4.625Zm6.418,12.79a1.321,1.321,0,0,1,1.35-1.3,1.319,1.319,0,0,1,1.356,1.3,1.319,1.319,0,0,1-1.356,1.3A1.314,1.314,0,0,1-1118.115,17.415Zm.22-2.4-.019-.543a2.628,2.628,0,0,1,1.49-2.776c1.066-.637,1.514-1.041,1.514-1.823a1.531,1.531,0,0,0-1.7-1.356,1.6,1.6,0,0,0-1.691,1.552h-2.24c.044-2.031,1.546-3.464,4.083-3.464,2.366,0,3.994,1.312,3.994,3.2a3.086,3.086,0,0,1-1.773,2.8c-1.1.637-1.471,1.1-1.471,1.912v.5Z" transform="translate(1129.625 0.467)"/>
                             </svg>
@@ -84,6 +85,7 @@
                   </div>
                 </div>
               </header>
+              <loader />
               <add-new v-if="getAddingProduct.status" v-bind:thisWidth="getAddingProduct.width" />
               <div class="main-body">
                 <div class="main-body-content">
@@ -137,8 +139,10 @@ import Logo from '../components/app/includes/Logo.vue'
 import MobNav from '../components/app/includes/MobNav.vue'
 import AddNew from '../components/app/layouts/AddNew.vue'
 import BackButton from '../components/app/includes/BackButton.vue'
+import Alerts from '../components/app/includes/Alerts.vue'
+import Loader from '../components/app/includes/Loader.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader },
     name: 'AdminHome',
     computed: mapGetters(['getToken', 'getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight']),
     data() {

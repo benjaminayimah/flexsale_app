@@ -8,7 +8,7 @@ $gray-light: #D4D8DE;
 $dark-light: #e9ebf0;
 $accent-color: #1dbef4;
 $white-color: #ffffff;
-$danger: rgb(230, 50, 50);
+$danger: #e63232;
 $success: #20C647;
 $warning: #EFB91C;
 
@@ -48,9 +48,53 @@ ul{
 .mb-0{
   margin-bottom: 0 !important;
 }
+.btn-wrap2{
+  height: 80px;
+  justify-content: flex-end;
+  button{
+      height: 58px;
+      border-radius: 12px;
+      width: 100%;
+  }
+}
+button.add-more{
+  border: 2px solid $dark;
+  background-color: #ffffff;
+  font-size: 0.95rem;
+  height: 44px;
+  border-radius: 25px;
+  padding: 8px 12px;
+  &:hover{
+      background-color: $dark-light;
+  }
+  &:active{
+      box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+  }
+  span{
+      padding-left: 4px;
+      color: $dark;
+  }
+}
+.header-holder{
+  font-weight: 600;
+  padding-top: 10px;
+  span{
+      padding-right: 5px;
+      &:last-child{
+          padding-right: 0;
+      }
+  }
+}
+.selected-products-hold{
+  overflow-y: auto;
+  min-height: 200px;
+}
 .form-row-col{
   .col-2:first-child{
     padding-left: 0;
+  }
+  .col-2:last-child{
+    padding-right: 0;
   }
 }
 .w-100{
@@ -412,82 +456,7 @@ hr{
        fill: $primary-color;
   }
 }
-.status-alert{
-  .alert{
-    border-radius: 6px;
-    margin-top: 1rem;
-    position: relative;
-    padding: 1.2rem 1.25rem;
-    border: none;
-    border: 1px solid;
-    h5{
-      margin: 0;
-      font-weight: 500;
-      font-size: 1.1em;
-    }
-    .alert-body{
-      font-size: 0.96em;
-    }
-    
-  }
-  .success-alert{
-    background-color: rgba(58, 173, 116, 0.1);
-    color: #064727;
-    border-color: rgba(58, 173, 116, 0.5);
-    .i-hold{
-      background-color: rgba(58, 173, 116, 0.6);
-      i{
-        background-image: url('/images/mark-correct.svg');
-      }
-    }
-  }
-  .danger-alert{
-    background-color: rgba(250, 10, 10, 0.1);
-    color: #4b0808;
-    border-color: rgba(250, 10, 10, 0.5);
-    .i-hold{
-      background-color: #fa0a0a;
-      i{
-        background-image: url('/images/danger.svg');
-      }
-    }
-  }
-  .warning-alert{
-    background-color: rgba(255, 159, 10, 0.1);
-    color: #5c3a07;
-    border-color:rgba(255, 159, 10, 0.5);
-    .i-hold{
-      background-color: #ff9f0a;
-      i{
-        background-image: url('/images/warning.svg');
-      }
-    }
-  }
-  .info-alert{
-    background-color: rgba(100, 210, 255, 0.1);
-    color: #053b50;
-    border-color: rgba(100, 210, 255, 0.5);
-    .i-hold{
-      background-color: #64d2ff;
-      i{
-        background-image: url('/images/info.svg');
-      }
-    }
-  }
-  .alert-close{
-    background-image: url('/images/close.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    position: absolute;
-    padding: 5px 12px;
-    margin: 15px 8px;
-    right: 0;
-    top: 0;
-  }
-  
-  
-}
+
 .menu-toggle-btn{
   height: 40px;
   width: 40px;
