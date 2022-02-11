@@ -224,9 +224,11 @@
                 </a>
             </div>
         </div>
-        <div class="btn-wrap2 flex-row">
-            <button class="button button-primary" @click.prevent="doUpload">Submit</button>
-        </div>
+        <teleport to="#form_submit_btn_holder">
+            <div class="btn-wrap2">
+                <button class="button button-primary" @click.prevent="doUpload">Submit</button>
+            </div>
+        </teleport>
     </form>
 </template>
 <script>

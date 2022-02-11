@@ -85,6 +85,7 @@
                   </div>
                 </div>
               </header>
+              <div id="form_submit_btn_holder" :style="{width: getAddingProduct.width + 'px'}"></div>
               <loader />
               <add-new v-if="getAddingProduct.status" v-bind:thisWidth="getAddingProduct.width" />
               <div class="main-body">
@@ -123,8 +124,9 @@
             <!-- end -->
           </div>
         </div>
+        
     </main>
-    
+    <delete-modal />
 </section>
     
     
@@ -141,8 +143,9 @@ import AddNew from '../components/app/layouts/AddNew.vue'
 import BackButton from '../components/app/includes/BackButton.vue'
 import Alerts from '../components/app/includes/Alerts.vue'
 import Loader from '../components/app/includes/Loader.vue'
+import DeleteModal from '../components/app/includes/DeleteModal.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal },
     name: 'AdminHome',
     computed: mapGetters(['getToken', 'getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight']),
     data() {

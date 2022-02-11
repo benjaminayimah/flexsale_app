@@ -11,6 +11,7 @@ $white-color: #ffffff;
 $danger: #e63232;
 $success: #20C647;
 $warning: #EFB91C;
+$button-disabled: #9ea7d8;
 
 $myFont: 'Urbanist', Helvetica, sans-serif;
 
@@ -48,9 +49,24 @@ ul{
 .mb-0{
   margin-bottom: 0 !important;
 }
+#form_submit_btn_holder{
+  bottom: 0; 
+  position: fixed; 
+  z-index:300; 
+  width:100%;
+  background-color: hsl(0deg 0% 100% / 50%);
+  display: flex;
+  justify-content: center;
+   -webkit-backdrop-filter: saturate(180%) blur(6px);
+  backdrop-filter: saturate(180%) blur(6px);
+
+}
 .btn-wrap2{
-  height: 80px;
-  justify-content: flex-end;
+  display: flex;
+  height: 130px;
+  width: 68%;
+  align-self: flex-start;
+  padding-top: 20px;
   button{
       height: 58px;
       border-radius: 12px;
@@ -151,6 +167,13 @@ button{
     //transform: scale(0.99);
     box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
     //border: 1px solid $primary-color;
+  }
+}
+.button-disabled{
+  background-color:$button-disabled;
+  cursor: progress;
+  &:hover {
+    background-color: $button-disabled;
   }
 }
 .button-alt{
@@ -635,19 +658,25 @@ hr{
     width: 100%;
     padding: 30px 20px;
   }
-  
-  
+  .btn-wrap2{
+    padding-top: 13px;
+    height: 110px;
+    width: 82%;
+    button{
+        height: 54px;
+        border-radius: 16px;
+        width: 100%;
+    }
+  }
 
-  
-  
+.status-alert .alert-wrap .alert{
+    margin-top: 10px;
+}
  
   
 }
 .fixed-body{
-  position: fixed;
-  #app_section{
-    position: fixed;
-  }
+  overflow: hidden; overscroll-behavior-y: none;
 }
 
 //transitions

@@ -12,11 +12,11 @@
                 </svg>
             </div>
             <div class="alert-body">{{ getAlert.body }}</div>
-            <a href="#" class="alert-close flex justify-content-center align-items-center" @click.prevent="closeAlert">
+            <button class="alert-close flex justify-content-center align-items-center" @click.prevent="$store.commit('dismisAlert')">
                 <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
                       <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
                 </svg>
-            </a>
+            </button>
         </div>
     </div>
 </div>
@@ -28,13 +28,7 @@
 import { mapGetters } from 'vuex'
 export default {
     name: 'Alerts',
-    computed: mapGetters(['getAlert']),
-    methods: {
-        closeAlert() {
-            this.$store.commit('dismisAlert')
-            
-        }
-    }
+    computed: mapGetters(['getAlert'])
 }
 </script>
 <style scoped lang="scss">
@@ -42,7 +36,7 @@ export default {
         position: -webkit-sticky;
         position: sticky;
         top: 0;
-        z-index: 9999999;
+        z-index: 999;
         display: flex;
         justify-content: center;
     .alert-wrap{
@@ -54,7 +48,7 @@ export default {
                 background-color: $white-color;
                 justify-content: flex-start;
                 width: 100%;
-                box-shadow: 9px 11px 27px 14px rgba(8,14,75,0.18);
+                box-shadow: 3px 10px 20px 7px rgb(7 10 46 / 11%);
                 margin-top: 20px;
             h5{
                 margin: 0;
@@ -125,6 +119,7 @@ export default {
         height: 38px;
         width: 38px;
         border-radius: 50%;
+        background-color: $white-color;
         &:hover {
             background-color: $dark-light;
         }

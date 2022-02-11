@@ -50,9 +50,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="selected-products-hold" :style="{maxHeight: (getWindowHeight-380)+'px'}">
+                <!-- :style="{maxHeight: (getWindowHeight-380)+'px'}" -->
+                <div class="selected-products-hold">
                     <ul style="margin-top:20px">
-                        <selected-tag-row v-for="checked in this.getCheckedProducts" :key="checked.id" v-bind:checkedProduct="checked" v-bind:getTagEditMode="getTagEditMode.viewingMode" />
+                        <selected-tag-row v-for="checked in this.getCheckedProducts" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="getTempContainer.editMode" />
                     </ul>
                 </div>
             </div>
@@ -66,10 +67,12 @@
                 </button>
             </div>
         </div>
-        <div class="btn-wrap2 flex-row">
-            <button v-if="!getTagEditMode.active" class="button button-primary" @click.prevent="submitDiscount">Submit</button>
-            <button v-else class="button button-primary" @click.prevent="submitEditDiscount">Save changes</button>
-        </div>
+        <teleport to="#form_submit_btn_holder">
+            <div class="btn-wrap2">
+                <button v-if="!getTempContainer.active" class="button button-primary" @click.prevent="submitDiscount">Submit</button>
+                <button v-else class="button button-primary" @click.prevent="submitEditDiscount">Save changes</button>
+            </div>
+        </teleport>
     </form>
      <select-products-overlay v-if="getSelectionSheet" v-bind:thisWidth="thisWidth" v-bind:windowHeight="getWindowHeight" />
 </template>
@@ -83,7 +86,7 @@ import SelectedTagRow from '../includes/SelectedTagRow.vue';
 export default {
     name: 'AddNewDiscount',
      components: { Datepicker, SelectProductsOverlay, SelectedTagRow },
-     computed: mapGetters(['getToken', 'getHostname', 'getCheckedProducts', 'getWindowHeight', 'getSelectionSheet', 'getTagEditMode', 'getThisDiscount']),
+     computed: mapGetters(['getToken', 'getHostname', 'getCheckedProducts', 'getWindowHeight', 'getSelectionSheet', 'getTempContainer']),
      props: ['thisWidth'],
     data() {
         return {
@@ -187,16 +190,13 @@ export default {
             this.selectionSheet = !this.selectionSheet
         },
         preloadForEdit() {
-            if(this.getTagEditMode.active){
-                this.form.name = this.getThisDiscount.name
-                this.form.type = this.getThisDiscount.percentage
-                this.form.amount = this.getThisDiscount.value
-                this.form.startDate = this.getThisDiscount.start
-                this.form.endDate = this.getThisDiscount.end
-                this.form.id = this.getThisDiscount.id
-
-
-                
+            if(this.getTempContainer.active){
+                this.form.name = this.getTempContainer.data.name
+                this.form.type = this.getTempContainer.data.percentage
+                this.form.amount = this.getTempContainer.data.value
+                this.form.startDate = this.getTempContainer.data.start
+                this.form.endDate = this.getTempContainer.data.end
+                this.form.id = this.getTempContainer.data.id
             }
         }
     },

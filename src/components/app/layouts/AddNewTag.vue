@@ -1,9 +1,8 @@
 <template>
     <form id="tag_form">
         <div class="form-row">
-            <label>{{ getTagEditMode.active? 'Tag name' : 'Give a title to your tag' }}:</label>
-            <input v-if="!getTagEditMode.active" v-model="form.tag" type="text" name="tagName" class="form-control" placeholder="Tag title eg. tooth paste or new arrivals" required>
-            <input v-if="getTagEditMode.active" v-model="editForm.tag" type="text" name="tagName" class="form-control" required>
+            <label>{{ getTempContainer.active? 'Tag name' : 'Give a title to your tag' }}:</label>
+            <input v-model="form.tag" type="text" name="tagName" class="form-control" placeholder="Tag title eg. tooth paste or new arrivals" required>
             <span class="validation-err" v-if="validation.error && validation.errors.tag">
                 {{ validation.errors.tag[0] }}
             </span>
@@ -23,9 +22,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="selected-products-hold" :style="{maxHeight: (getWindowHeight-380)+'px'}">
+                <!-- :style="{maxHeight: (getWindowHeight-380)+'px'}" -->
+                <div class="selected-products-hold">
                     <ul style="margin-top:20px">
-                        <selected-tag-row v-for="checked in this.getCheckedProducts" :key="checked.id" v-bind:checkedProduct="checked" v-bind:getTagEditMode="getTagEditMode.viewingMode" />
+                        <selected-tag-row v-for="checked in this.getCheckedProducts" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="getTempContainer.editMode" />
                     </ul>
                 </div>
             </div>
@@ -42,10 +42,12 @@
                 </span>
             </div>
         </div>
-        <div class="btn-wrap2 flex-row">
-            <button v-if="!getTagEditMode.active" class="button button-primary" @click.prevent="submitTag">Submit</button>
-            <button v-else class="button button-primary" @click.prevent="submitEditTag">Save changes</button>
-        </div>
+        <teleport to="#form_submit_btn_holder">
+            <div class="btn-wrap2">
+                <button v-if="!getTempContainer.active" class="button button-primary" @click.prevent="submitTag">Submit</button>
+                <button v-else class="button button-primary" @click.prevent="submitEditTag">Save changes</button>
+            </div>
+        </teleport>
     </form>
      <select-products-overlay v-if="getSelectionSheet" v-bind:thisWidth="thisWidth" v-bind:windowHeight="getWindowHeight" />
 </template>
@@ -56,21 +58,16 @@ import SelectedTagRow from '../includes/SelectedTagRow.vue'
 import SelectProductsOverlay from '../includes/SelectProductsOverlay.vue'
 export default {
   components: { SelectedTagRow, SelectProductsOverlay },
-    computed: mapGetters(['getCheckedProducts', 'getWindowHeight', 'getToken', 'getHostname', 'getSelectionSheet']),
+    computed: mapGetters(['getCheckedProducts', 'getWindowHeight', 'getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer']),
     name: 'AddNewTag',
-    props: ['thisWidth', 'getTagEditMode'],
+    props: ['thisWidth'],
     data() {
         return {
             form: {
                 tag: '',
-                products: []
-            },
-            editForm: {
-                tag: this.getTagEditMode.name,
                 products: [],
-                id: this.getTagEditMode.id
+                id: ''
             },
-            
             validation: {
                 error: false,
                 errors: [],
@@ -120,13 +117,12 @@ export default {
             })
         },
         async submitEditTag() {
-            this.editForm.products = this.getCheckedProducts
-            axios.put( this.getHostname+'/api/tag/'+this.editForm.id+'?token='+this.getToken, this.editForm)
+            this.form.products = this.getCheckedProducts
+            axios.put( this.getHostname+'/api/tag/'+this.form.id+'?token='+this.getToken, this.form)
             .then((res) => {
                 if(res.data.status === 1) {
-                    
                     const newData = {
-                        tags: res.data.tags, tag: this.editForm.tag
+                        tags: res.data.tags, data: { id: this.form.id, name: this.form.tag}
                     }
                     this.$store.commit('updateTags', newData)
                     const payload = {
@@ -136,7 +132,7 @@ export default {
                     }
                     this.$store.commit('showAlert', payload)
                     this.$store.commit('unsetMainHomeWidth')
-                    this.$router.push({ name: 'DetailedTag', params: { id: this.editForm.id, name: this.editForm.tag }, replace: true })
+                    this.$router.push({ name: 'DetailedTag', params: { id: this.form.id, name: this.form.tag }, replace: true })
                 }
                 if(res.data.status === 2) {
                     const payload = {
@@ -178,23 +174,22 @@ export default {
             //elem.style.height = parseInt(elemWidth/2)+'px'
             console.log(elemWidth/2)
             
+        },
+        preloadForEdit() {
+            if(this.getTempContainer.active){
+                this.form.tag = this.getTempContainer.data.name
+                this.form.id = this.getTempContainer.data.id
+            }
         }
+    },
+    beforeMount() {
+        this.preloadForEdit()
     }
     
 }
 </script>
 
 <style scoped lang='scss'>
-.btn-wrap2{
-    height: 80px;
-    justify-content: flex-end;
-    button{
-        height: 58px;
-        border-radius: 12px;
-        width: 100%;
-    }
-}
-
 
 #tag_big_add{
     width: 100%;

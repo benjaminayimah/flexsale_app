@@ -12,16 +12,16 @@
                                 </svg>
                             </button>
                             <div class="heading">
-                                <h1 class="text-overflow-ellipsis" v-if="getAddingProduct.product">Add New Product</h1>
-                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.tag && !getTagEditMode.active">Create Product Tag</h1>
-                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.discount && !getTagEditMode.active">Create New Discount</h1>
-                                <h1 class="text-overflow-ellipsis" v-else>Edit {{ getTagEditMode.name }}</h1>
+                                <h1 class="text-overflow-ellipsis" v-if="getAddingProduct.product && !getTempContainer.active">Add New Product</h1>
+                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.tag && !getTempContainer.active">Create Product Tag</h1>
+                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.discount && !getTempContainer.active">Create New Discount</h1>
+                                <h1 class="text-overflow-ellipsis" v-else>Edit {{ getTempContainer.propertyName }}</h1>
                             </div>
                             <div class="btn-wrap flex-row">
-                                <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
-                                <button class="button button-primary" v-else-if="getAddingProduct.discount && !getTagEditMode.active" @click.prevent="">Submit</button>
-                                <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && !getTagEditMode.active" @click.prevent="submitTag"></button>
-                                <button class="button button-primary" style="visibility: hidden" v-if="getAddingProduct.tag && getTagEditMode.active" @click.prevent=""></button>
+                                <!-- <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
+                                <button class="button button-primary" v-else-if="getAddingProduct.discount && !getTempContainer.active" @click.prevent="doDiscount">Submit</button>
+                                <button class="button button-primary" v-if="getAddingProduct.tag && !getTempContainer.active" @click.prevent="doTag">Submit</button> -->
+                                <button class="button button-primary" style="visibility: hidden; width:44px" @click.prevent=""></button>
                             </div>
                         </div>
                     </div>
@@ -31,12 +31,13 @@
                 <div class="add-body">
                     <div class="form-wrap">
                         <add-new-product v-if="getAddingProduct.product" />
-                        <add-new-tag v-else-if="getAddingProduct.tag" v-bind:thisWidth="thisWidth" v-bind:getTagEditMode="getTagEditMode" />
+                        <add-new-tag v-else-if="getAddingProduct.tag" v-bind:thisWidth="thisWidth" />
                         <add-new-discount v-else-if="getAddingProduct.discount" v-bind:thisWidth="thisWidth" />
                     </div>
                 </div>
             </div>
         </div>
+        
     </div>
 </template>
 <script>
@@ -49,8 +50,16 @@ import AddNewDiscount from './AddNewDiscount.vue'
 export default {
   components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount },
     name: 'AddNew',
-    computed: mapGetters(['getAddingProduct', 'getTagEditMode']),
+    computed: mapGetters(['getAddingProduct', 'getTempContainer']),
     props: ['thisWidth'],
+    methods: {
+        doDiscount() {
+            console.log('submit discount')
+        },
+        doTag() {
+            console.log('subit tag')
+        }
+    }
         
 }
 </script>
@@ -70,6 +79,11 @@ export default {
     }
 }
 .add-content{
+    &::-webkit-scrollbar {
+        display: none;
+        -ms-overflow-style: none; 
+        scrollbar-width: none; 
+    }
     .add-prd-head{
         z-index: 100;
         display: flex;
@@ -143,7 +157,7 @@ export default {
   }
 }
 .form-wrap{
-    padding: 20px 0;
+    padding: 20px 0 120px 0;
     width: 75%;
 }
 .mob-view{
