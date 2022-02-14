@@ -57,24 +57,28 @@
         </div>
         <div class="form-row">
             <div id="unit_bg">
-                <div :class="{ 'activate-dst': form.directStock}">
-                    <label>Add Product Units</label>
-                    <div style="color: #7e8596">If there are several units in this product, you may proceed to add the individual units here.</div>
+                <div>
+                    <div class="form-check flex-row-st">
+                        <input v-model="form.prodType" id="retail" value="0" class="form-check-input" type="radio" :checked="form.prodType == '0' ? true : false">
+                        <label for="retail">Add Product Units</label>
+                    </div>
+                    <div :class="{ 'activate-dst': form.prodType == '1'}">
+                        <div>If there are several units in this product, you may proceed to add the individual units here.</div>
                     <div class="flex-row align-content-center">
                         <div class="unit-input-hold">
-                            <input type="text" name="BatchNumber" :disabled="form.directStock? true : false" v-model="unitForm.batch" class="form-control" placeholder="Batch number">
+                            <input type="text" name="BatchNumber" :disabled="form.prodType == '0' ? false : true" v-model="unitForm.batch" class="form-control" placeholder="Batch number">
                         </div>
                         <div class="unit-input-hold">
-                            <Datepicker v-model="month" monthPicker :disabled="form.directStock? true : false"></Datepicker>
+                            <Datepicker v-model="month" monthPicker :disabled="form.prodType == '0' ? false : true"></Datepicker>
                         </div>
-                        <button class="button add-unit-btn button-primary" @click.prevent="addToUnit">Add</button>
+                        <button class="button add-unit-btn button-primary" :disabled="form.prodType == '0' ? false : true" @click.prevent="addToUnit">Add</button>
                     </div>
                     <span v-if="error.active" class="err">{{ error.message }}</span>
-                    <div class="unit-added-wrap" v-if="form.units.length > 0">
-                        <ul v-show="!form.directStock">
-                            <li v-for="unit in form.units" :key="unit.batch">
+                    <div class="unit-added-wrap" v-if="units.length > 0">
+                        <ul v-show="form.prodType == '0'">
+                            <li v-for="unit in units" :key="unit.batch">
                                 <div class="unit-pill flex flex-row-js">
-                                    <span class="batch-no text-overflow-ellipsis">{{ unit.batchNumber }}</span>
+                                    <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batchNumber }}</span>
                                     <span class="divider" v-show="unit.expiry">|</span>
                                     <span class="expiry-date text-overflow-ellipsis" v-show="unit.expiry">{{ unit.expiry }}</span>
                                     <button class="flex align-items-center justify-content-center" @click.prevent="delUnit(unit.batchNumber)">
@@ -87,29 +91,34 @@
                             </li>
                         </ul>
                     </div>
+                    </div>
                 </div>
-                
                 <div>
                     <div class="or">
                         <span>Or</span>
                     </div>
-                    <label class="checkbox-hold">
+                    <!-- <label class="checkbox-hold">
                         <input v-model="form.directStock" type="checkbox">
                         <span class="checkbox-custom"></span>
                         <span class="chk-label">Add stock number directly.</span>
-                    </label>
-                    <div class="flex-row-st" :class="{ 'activate-dst': !form.directStock}">
+                    </label> -->
+                    
+                    <div class="form-check flex-row-st">
+                    <input v-model="form.prodType" id="wholesale" value="1" class="form-check-input" type="radio" :checked="form.prodType == '1' ? true : false" >
+                    <label for="wholesale">Add stock number directly.</label>
+                </div>
+                    <div class="flex-row-st" :class="{ 'activate-dst': form.prodType == '0'}">
                         <div style="margin-right:10px">
                             <label>Stock:</label>
-                            <input type="text" name="stockNumber" :disabled="!form.directStock? true : false" class="form-control stk2" placeholder="100">
+                            <input type="text" name="stockNumber" v-model="direct.quantity" :disabled="form.prodType == '1' ? false : true" class="form-control stk2" placeholder="100">
                         </div>
                         <div style="margin-right:10px">
                             <label>Batch No.:</label>
-                            <input type="text" name="stockNumber" :disabled="!form.directStock? true : false" class="form-control" placeholder="Batch number">
+                            <input type="text" name="stockNumber" v-model="direct.batch" :disabled="form.prodType == '1' ? false : true" class="form-control" placeholder="Batch number">
                         </div>
                         <div class="unit-input-hold" style="margin:0; padding: 10px 0">
                             <label>Expiry date:</label>
-                            <Datepicker v-model="month2" monthPicker :disabled="!form.directStock? true : false"></Datepicker>
+                            <Datepicker v-model="month2" monthPicker :disabled="form.prodType == '1' ? false : true"></Datepicker>
                         </div>
                     </div>
                 </div>
@@ -136,20 +145,7 @@
         </div>
         <div class="form-row">
             <label>Type of product:</label>
-            <div class="form-row-hold">
-                <div class="form-check flex-row-st">
-                    <input v-model="form.prodType" id="retail" value="0" class="form-check-input" type="radio" checked>
-                    <label for="retail">
-                        Retail
-                    </label>
-                </div>
-                <div class="form-check flex-row-st">
-                    <input v-model="form.prodType" id="wholesale" value="1" class="form-check-input" type="radio" >
-                    <label for="wholesale">
-                        Wholesale
-                    </label>
-                </div>
-            </div>
+            
         </div>
         <div class="form-row">
             <label>Supply Cost per unit:</label>
@@ -226,7 +222,8 @@
         </div>
         <teleport to="#form_submit_btn_holder">
             <div class="btn-wrap2">
-                <button class="button button-primary" @click.prevent="doUpload">Submit</button>
+                <button v-if="!getTempContainer.active" class="button button-primary" @click.prevent="doUpload">Submit</button>
+                <button v-else class="button button-primary" @click.prevent="">Save changes</button>
             </div>
         </teleport>
     </form>
@@ -239,7 +236,7 @@ import Datepicker from 'vue3-date-time-picker';
 import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewProduct',
-    computed: mapGetters(['getToken', 'getHostname', 'getUser']),
+    computed: mapGetters(['getToken', 'getHostname', 'getUser', 'getTempContainer']),
     components: { Datepicker },
     // setup() {
     //     const month = ref({ 
@@ -266,6 +263,8 @@ export default {
                 batch: '',
                 expiry: ''
             },
+            units: [],
+            direct: { quantity: '', batch: ''},
             form: {
                 image: '',
                 tempImage: '',
@@ -279,8 +278,8 @@ export default {
                 prodType: '0',
                 profit: '',
                 profitMargin: '',
-                units: [],
-                directStock: false,
+                batch: ''
+                //directStock: false,
             },
             doingtempUpload: false,
             imageUploaded: false,
@@ -319,6 +318,7 @@ export default {
                         return this.showError('This file is too large. The file size must be less than 1MB') 
                         //return console.log('File too large')
                     }else {
+                        this.doingtempUpload = true
                         this.load = true
                         this.form.image = this.$refs.img.files[0];
                         let formData = new FormData();
@@ -331,12 +331,7 @@ export default {
                                     },
                                 }
                         ).then((res) => {
-                            this.form.tempImage = res.data.img
-                            this.form.image = null
-                            //document.getElementById('prod_img').value = null
-                            this.load = false
-                            this.imageUploaded = true
-                            this.doingProductUpload = true
+                            this.afterTempUpload(res.data.img)
                         }).catch((err) => {
                             console.log(err.response)
                                 
@@ -350,58 +345,64 @@ export default {
             
         },
         doUpload() {
-            
-            axios.post( this.getHostname+'/api/products?token='+this.getToken,
-                    this.form,
-                    {
-                        headers: {
-                            'Content-Type': ['application/json']
-                        },
-                    }
-            ).then((res) => {
-                console.log(res.data)
-                this.$store.commit('addToProducts', res.data.product)
-                const payload = {
-                    id: 'success',
-                    title: res.data.title,
-                    body: res.data.body
-                }
-                this.$store.commit('showAlert', payload)
+            if(this.form.prodType === '0'){
+                this.form.batch = this.units
+            }else{
+                const direct = { batchNumber: this.direct.batch, stock: this.direct.quantity, expiry: this.month2.year+'-'+ ('0'+parseInt(this.month2.month+1)).slice(-2) }
+                this.form.batch = direct
+            }
+
+            // axios.post( this.getHostname+'/api/products?token='+this.getToken,
+            //         this.form,
+            //         {
+            //             headers: {
+            //                 'Content-Type': ['application/json']
+            //             },
+            //         }
+            // ).then((res) => {
+            //     console.log(res.data)
+            //     this.$store.commit('addToProducts', res.data.product)
+            //     const payload = {
+            //         id: 'success',
+            //         title: res.data.title,
+            //         body: res.data.body
+            //     }
+            //     this.$store.commit('showAlert', payload)
                 
-            }).catch((err) => {
-                if(err.response.status === 422) {
-                    const payload = {
-                        id: 'danger',
-                        title: 'Submition error',
-                        body: err.response.data.errors.name[0]
-                    }
-                    console.log(err.response.data.errors)
-                    this.$store.commit('showAlert', payload)
-                }else{
-                    const payload = {
-                        id: 'danger',
-                        title: 'Submition error',
-                        body: 'please fill out the required fields.'
-                    }
-                    this.$store.commit('showAlert', payload)
-                }
-                //window.scrollTo(0,0)
+            // }).catch((err) => {
+            //     if(err.response.status === 422) {
+            //         const payload = {
+            //             id: 'danger',
+            //             title: 'Submition error',
+            //             body: err.response.data.errors.name[0]
+            //         }
+            //         console.log(err.response.data.errors)
+            //         this.$store.commit('showAlert', payload)
+            //     }else{
+            //         const payload = {
+            //             id: 'danger',
+            //             title: 'Submition error',
+            //             body: 'please fill out the required fields.'
+            //         }
+            //         this.$store.commit('showAlert', payload)
+            //     }
+            //     //window.scrollTo(0,0)
                     
-            })
+            // })
         },
         addToUnit() {
-            console.log(this.form.units)
+            console.log(this.units)
             if(this.error.active === true) {
                 this.error.active = false
             }
             if(this.unitForm.batch !== ''){
-                const newUnit = { batchNumber: this.unitForm.batch, expiry: this.month.month+1+'/'+ this.month.year}
-                if(this.form.units.length === 0) {
-                    this.form.units.push(newUnit)
+                const newUnit = { batchNumber: this.unitForm.batch, expiry: this.month.year+'-'+ ('0'+parseInt(this.month.month+1)).slice(-2)}
+                if(this.units.length === 0) {
+                    this.units.push(newUnit)
                     this.resetInput()
                 }
-                else if(this.form.units.length !== 0) {
-                    this.form.units.forEach(element => {
+                else if(this.units.length !== 0) {
+                    this.units.forEach(element => {
                         if(element.batchNumber === this.unitForm.batch) {
                             this.duplicate = true
                             this.error.active = true
@@ -410,7 +411,7 @@ export default {
                         }
                     });
                     if(!this.duplicate) {
-                        this.form.units.push(newUnit)
+                        this.units.push(newUnit)
                         this.resetInput()
                     }else{
                         this.duplicate = false
@@ -425,43 +426,88 @@ export default {
             this.duplicate = false
         },
         delUnit(id) {
-            this.form.units = this.form.units.filter(filter => filter.batchNumber != id)
+            this.units = this.units.filter(filter => filter.batchNumber != id)
 
         },
         deltmp(id) {
             this.deleting = true
+            this.load = true
             axios.delete(this.getHostname+'/api/temp-upload/'+id+'?token='+this.getToken)
             .then(() => {
                 this.imageUploaded = false
                 this.deleting = false
+                this.load = false
                 this.doingProductUpload = false
+                this.form.tempImage = ''
             }).catch((err) => {
                 this.deleting = false
+                this.load = false
                 console.log(err)
             })
         },
-
-        //tag
-        
-        // fetchAllCategories() {
-        //     if(this.getAddingProduct.tag) {
-        //         this.$store.dispatch('fetchTags', this.getToken)
-        //     }
-        // },
         
         preventReload(event) {
             if(this.form.name || this.form.supplier || this.form.description || this.form. batchNumber || this.form.category || this.form.cost || this.form.sellingPrice || this.form.stock || this.doingProductUpload ) {
                 event.returnValue = `Are you sure you want to leave?`;
             }
             
+        },
+        setTempImage() {
+            this.doingtempUpload = true
+            this.load = true
+            let image = this.getTempContainer.data.image
+            axios.post( this.getHostname+'/api/reset-temp-img?token='+this.getToken, { id: image})
+            .then((res) => {
+                this.afterTempUpload(res.data.image)
+            }).catch((e) => {
+                console.log(e.response)
+            })
+            
+        },
+        afterTempUpload(res) {
+            this.form.tempImage = res
+            this.form.image = null
+            this.load = false
+            this.imageUploaded = true
+            this.doingProductUpload = true
+            this.doingtempUpload = false
+        },
+        preloadForEdit() {
+            if(this.getTempContainer.active){
+                this.form.name = this.getTempContainer.data.name
+                this.form.batchNumber = this.getTempContainer.data.batch_no
+                this.form.cost = this.getTempContainer.data.cost
+                this.form.sellingPrice = this.getTempContainer.data.selling_price
+                this.form.stock = this.getTempContainer.data.end
+                this.form.description = this.getTempContainer.data.description
+                this.form.supplier = this.getTempContainer.data.supplier
+                this.form.prodType = this.getTempContainer.data.prod_type
+                this.form.profit = this.getTempContainer.data.profit
+                this.form.profitMargin = this.getTempContainer.data.profit_margin
+                this.units = this.getTempContainer.array
+            }
+        },
+        clearPreloader() {
+            console.log('cleared')
+            for (let i in this.form)
+            this.form[i] = ''
         }
+        
+
+
+                
+    },
+
+    mounted() {
+        this.getTempContainer.active && this.getTempContainer.data.image ? this.setTempImage() : ''
     },
     unmounted() {
-        axios.post(this.getHostname+'/api/del-alltemp-img?token='+this.getToken)
-
+        this.imageUploaded ? axios.post(this.getHostname+'/api/del-alltemp-img?token='+this.getToken) : ''
+        this.getTempContainer.active ? this.clearPreloader() : ''
     },
     beforeMount() {
         window.addEventListener('beforeunload', this.preventReload)
+        this.preloadForEdit()
     },
     beforeUnmount() {
         window.removeEventListener('beforeunload', this.preventReload)
@@ -587,12 +633,15 @@ export default {
                   fill: $danger;
               }
               &:hover{
-                  background-color: rgba(230, 50, 50, 0.1);
+                  background-color: $danger;
+                    svg path{
+                    fill: $white-color;
+                }
               }
               &:active{
-                box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
+                box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 10%);
                 border: 1px solid $danger;
-                background-color: #ffffff;
+                //background-color: #ffffff;
             }
           }
           #loading_hold{
@@ -606,6 +655,7 @@ export default {
   
 
 }
+
 .a-btn{
     margin-top: 10px;
     a{
@@ -680,9 +730,6 @@ label{
     .add-unit-btn{
         height: 48px;
     }
-    input{
-        height: 48px;
-    }
 }
 .unit-input-hold{
     padding: 15px 0;
@@ -712,7 +759,7 @@ li{
             padding-right: 18px;
         }
     }
-    .batch-no{
+    .pill-batch-no{
         color: #ffffff;
         font-weight: 500;
     }
@@ -776,6 +823,6 @@ hr{
     padding: 6px;
 }
 .activate-dst{
-    opacity: 0.6;
+    opacity: 0.5;
 }
 </style>

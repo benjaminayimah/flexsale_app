@@ -343,7 +343,10 @@ export default createStore({
       state.commit('setLoader') 
        const res = await axios.post(this.getters.getHostname+'/api/product-detail?token='+this.getters.getToken, {id: payload})
        if(res.data.product) {
-        state.commit('fetchThisProduct', res.data.product)
+         //console.log(res.data)
+        // state.commit('fetchThisProduct', res.data.product)
+        const newData = { data: res.data.product, array: res.data.units}
+        state.commit('setTempDataContainer', newData)
        }else{
          console.log('does not exist')
        }

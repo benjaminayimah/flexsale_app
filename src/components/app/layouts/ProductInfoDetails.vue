@@ -2,14 +2,6 @@
 <div class="section">
     <div class="flex align-items-center content-row">
         <div class="row-title">inventory</div>
-        <div class="edit-action-2">
-            <a href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 14.62 16.711">
-                    <path d="M-8807.809-385.606a.691.691,0,0,1-.692-.69.692.692,0,0,1,.692-.692h13.237a.692.692,0,0,1,.69.692.691.691,0,0,1-.69.69Zm-.489-2.477a.691.691,0,0,1-.146-.759l1.781-4.153a.706.706,0,0,1,.145-.216l8.367-8.4a2.379,2.379,0,0,1,1.7-.7,2.375,2.375,0,0,1,1.693.7,2.4,2.4,0,0,1,0,3.384l-8.4,8.37a.647.647,0,0,1-.216.145l-4.155,1.781a.667.667,0,0,1-.271.057A.692.692,0,0,1-8808.3-388.083Zm2.852-4.247-1.048,2.446,2.446-1.05,6.716-6.686-1.428-1.426Zm8.767-5.94.942-.938a1.017,1.017,0,0,0,0-1.433,1,1,0,0,0-.717-.3,1,1,0,0,0-.718.3l-.936.94Z" transform="translate(8808.501 402.318)" fill="#566ff4"/>
-                </svg>
-                Edit
-            </a>
-        </div>
     </div>
     <div class="flex lign-items-center item-row">
         <div class="item-label">Total units:</div>
@@ -22,7 +14,7 @@
         <div class="flex flex-wrap">
             <li v-for="unit in units" :key="unit.id">
                 <div class="unit-pill flex flex-row-js">
-                    <span class="batch-no text-overflow-ellipsis">9344739-3934df934</span>
+                    <span class="pill-batch-no text-overflow-ellipsis">9344739-3934df934</span>
                     <span class="divider">|</span>
                     <span class="expiry-date text-overflow-ellipsis">20-83-20</span>
                     <button v-if="editMode" class="flex align-items-center justify-content-center">
@@ -38,14 +30,6 @@
     <hr>
     <div class="flex align-items-center content-row">
         <div class="row-title">Cost, pricing & profit</div>
-        <div class="edit-action-2">
-            <a href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 14.62 16.711">
-                    <path d="M-8807.809-385.606a.691.691,0,0,1-.692-.69.692.692,0,0,1,.692-.692h13.237a.692.692,0,0,1,.69.692.691.691,0,0,1-.69.69Zm-.489-2.477a.691.691,0,0,1-.146-.759l1.781-4.153a.706.706,0,0,1,.145-.216l8.367-8.4a2.379,2.379,0,0,1,1.7-.7,2.375,2.375,0,0,1,1.693.7,2.4,2.4,0,0,1,0,3.384l-8.4,8.37a.647.647,0,0,1-.216.145l-4.155,1.781a.667.667,0,0,1-.271.057A.692.692,0,0,1-8808.3-388.083Zm2.852-4.247-1.048,2.446,2.446-1.05,6.716-6.686-1.428-1.426Zm8.767-5.94.942-.938a1.017,1.017,0,0,0,0-1.433,1,1,0,0,0-.717-.3,1,1,0,0,0-.718.3l-.936.94Z" transform="translate(8808.501 402.318)" fill="#566ff4"/>
-                </svg>
-                Edit
-            </a>
-        </div>
     </div>
     <div class="flex lign-items-center item-row">
         <div class="item-label">Unit Cost:</div>
@@ -66,14 +50,6 @@
     <hr>
     <div class="flex align-items-center content-row">
         <div class="row-title">Discounts</div>
-        <div class="edit-action-2">
-            <a href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 14.62 16.711">
-                    <path d="M-8807.809-385.606a.691.691,0,0,1-.692-.69.692.692,0,0,1,.692-.692h13.237a.692.692,0,0,1,.69.692.691.691,0,0,1-.69.69Zm-.489-2.477a.691.691,0,0,1-.146-.759l1.781-4.153a.706.706,0,0,1,.145-.216l8.367-8.4a2.379,2.379,0,0,1,1.7-.7,2.375,2.375,0,0,1,1.693.7,2.4,2.4,0,0,1,0,3.384l-8.4,8.37a.647.647,0,0,1-.216.145l-4.155,1.781a.667.667,0,0,1-.271.057A.692.692,0,0,1-8808.3-388.083Zm2.852-4.247-1.048,2.446,2.446-1.05,6.716-6.686-1.428-1.426Zm8.767-5.94.942-.938a1.017,1.017,0,0,0,0-1.433,1,1,0,0,0-.717-.3,1,1,0,0,0-.718.3l-.936.94Z" transform="translate(8808.501 402.318)" fill="#566ff4"/>
-                </svg>
-                Edit
-            </a>
-        </div>
     </div>
     <div class="flex empty-state">
         <button class="button-secondary">
@@ -104,9 +80,6 @@ export default {
 <style scoped lang="scss">
 .section{
     padding: 20px 0
-}
-.edit-action-2{
-    margin-left: 20px;
 }
 a{
     color: $primary-color;
