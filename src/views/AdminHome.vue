@@ -327,7 +327,7 @@ main{
 
 header, .right-header{
   position: sticky;
-  position: -webkit-sticky;
+  -webkit-position: sticky;
   top: 0;
   display: flex;
   flex-direction: column;

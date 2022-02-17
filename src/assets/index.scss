@@ -171,7 +171,6 @@ button{
 }
 .button-disabled{
   background-color:$button-disabled;
-  cursor: progress;
   &:hover {
     background-color: $button-disabled;
   }

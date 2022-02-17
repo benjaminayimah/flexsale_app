@@ -82,13 +82,13 @@ export default {
             ).then((res) => {
                 //console.log(res)
                 if(res.data.status === 1) {
-                    this.$store.commit('addToTags', res.data.tag)
-                    this.$store.commit('fetchFilters', res.data.filters)
                     const payload = {
                         id: 'success',
                         title: res.data.title,
                         body: res.data.message
                     }
+                    this.$store.commit('addToTags', res.data.tag)
+                    this.$store.commit('fetchFilters', res.data.filters)
                     this.$store.commit('showAlert', payload)
                     this.$store.commit('unsetMainHomeWidth')
                 }

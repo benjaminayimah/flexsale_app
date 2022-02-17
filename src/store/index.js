@@ -2,7 +2,6 @@ import axios from 'axios'
 import { createStore } from 'vuex'
 import router from '@/router'
 
-
 export default createStore({
   state: {
     hostname: 'http://localhost:8000',
@@ -152,18 +151,18 @@ export default createStore({
     showAlert(state, payload) {
       this.commit('dismisAlert')
       if(payload.id === 'success'){
-          state.alert.status.show = true
           state.alert.status.success = true
           state.alert.title = payload.title
           state.alert.body = payload.body
+          state.alert.status.show = true
           setTimeout(() => {
             this.commit('dismisAlert')
           }, 3000);
       }else if(payload.id === 'danger'){
-          state.alert.status.show = true
           state.alert.status.danger = true
           state.alert.title = payload.title
           state.alert.body = payload.body
+          state.alert.status.show = true
       }   
     },
     dismisAlert(state) {
