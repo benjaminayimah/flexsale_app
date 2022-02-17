@@ -18,7 +18,7 @@
                   </header>
                   
                   <div id="login_card">
-                        <h1>Welcome!</h1>
+                        <h1>Welcome back!</h1>
                         <div v-if="validation.error" class="validation-error">
                           <span>{{ validation.message }}</span>
                         </div>
