@@ -182,9 +182,9 @@ button{
     margin-top: 20px;
        text-align: center;
        justify-content: center;
+       font-weight: 500;
        a{
            color: $primary-color;
-           font-weight: 500;
            text-decoration: none;
             &:hover{
                 text-decoration: underline;
