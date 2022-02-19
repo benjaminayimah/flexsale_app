@@ -184,8 +184,8 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   padding-bottom: 15px;
-  height: 90px;
-  padding: 0 15px 15px 15px;
+  height: 85px;
+  padding: 0 15px;
   li{
     list-style-type: none;
     display: flex;
@@ -195,7 +195,7 @@ export default {
     a{
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       text-decoration: none;
       padding: 12px;
       font-size: 0.75rem;

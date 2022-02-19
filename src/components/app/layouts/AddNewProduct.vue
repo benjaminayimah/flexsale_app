@@ -351,44 +351,46 @@ export default {
                 const direct = { batchNumber: this.direct.batch, stock: this.direct.quantity, expiry: this.month2.year+'-'+ ('0'+parseInt(this.month2.month+1)).slice(-2) }
                 this.form.batch = direct
             }
+            console.log(this.form)
 
-            // axios.post( this.getHostname+'/api/products?token='+this.getToken,
-            //         this.form,
-            //         {
-            //             headers: {
-            //                 'Content-Type': ['application/json']
-            //             },
-            //         }
-            // ).then((res) => {
-            //     console.log(res.data)
-            //     this.$store.commit('addToProducts', res.data.product)
-            //     const payload = {
-            //         id: 'success',
-            //         title: res.data.title,
-            //         body: res.data.body
-            //     }
-            //     this.$store.commit('showAlert', payload)
+            axios.post( this.getHostname+'/api/products?token='+this.getToken,
+                    this.form,
+                    {
+                        headers: {
+                            'Content-Type': ['application/json']
+                        },
+                    }
+            ).then((res) => {
+                console.log(res.data)
+                this.$store.commit('addToProducts', res.data.product)
+                const payload = {
+                    id: 'success',
+                    title: res.data.title,
+                    body: res.data.body
+                }
+                this.$store.commit('showAlert', payload)
                 
-            // }).catch((err) => {
-            //     if(err.response.status === 422) {
-            //         const payload = {
-            //             id: 'danger',
-            //             title: 'Submition error',
-            //             body: err.response.data.errors.name[0]
-            //         }
-            //         console.log(err.response.data.errors)
-            //         this.$store.commit('showAlert', payload)
-            //     }else{
-            //         const payload = {
-            //             id: 'danger',
-            //             title: 'Submition error',
-            //             body: 'please fill out the required fields.'
-            //         }
-            //         this.$store.commit('showAlert', payload)
-            //     }
-            //     //window.scrollTo(0,0)
+            }).catch((err) => {
+                if(err.response.status === 422) {
+                    const payload = {
+                        id: 'danger',
+                        title: 'Submition error',
+                        body: err.response.data.errors.name[0]
+                    }
+                    console.log(err.response.data.errors)
+                    this.$store.commit('showAlert', payload)
+                }else{
+                    const payload = {
+                        id: 'danger',
+                        title: 'Submition error',
+                        body: 'Please fill out the required fields.'
+                    }
+                    this.$store.commit('showAlert', payload)
+                }
+                console.log(err.response.data.errors)
+                //window.scrollTo(0,0)
                     
-            // })
+            })
         },
         addToUnit() {
             console.log(this.units)
