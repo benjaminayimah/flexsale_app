@@ -249,6 +249,7 @@ button{
             padding-left: 0;
             transition: all 0.1s linear;
             box-shadow: none;
+            height: 50px;
             &:focus{
                 border-bottom-width: 2px;
                 border-bottom-color: $primary-color;
