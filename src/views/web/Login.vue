@@ -236,6 +236,7 @@ button{
         margin-bottom: 60px;
         span{
             font-weight: 400;
+            font-size: 1rem;
         }
     }
     #login_card{
