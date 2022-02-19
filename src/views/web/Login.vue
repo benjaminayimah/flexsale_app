@@ -160,6 +160,7 @@ button{
     span{
         font-weight: 500;
         color: $gray-color;
+        font-size: 1.1rem;
     }
 }
 .forgot-pass{
@@ -233,6 +234,10 @@ button{
     }
     .title{
         margin-bottom: 60px;
+        span{
+            font-weight: 400;
+            font-size: 1.3rem;
+        }
     }
     #login_card{
        
