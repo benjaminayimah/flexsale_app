@@ -250,7 +250,6 @@ button{
             transition: all 0.1s linear;
             box-shadow: none;
             &:focus{
-                padding: 0 15px;
                 border-bottom-width: 2px;
                 border-bottom-color: $primary-color;
             }
