@@ -27,14 +27,14 @@
                     <form action="">
                       <div class="form-row">
                           <label>Email:</label>
-                          <input v-model="form.email" @mousedown="resertForm" type="email" name="email" class="form-control">
+                          <input v-model="form.email" @mousedown="resertForm" type="email" name="email" class="form-control" placeholder="Enter email">
                           <span class="validation-err" v-if="validation.error && validation.errors.email">
                               {{ validation.errors.email[0] }}
                           </span>
                       </div>
                       <div class="form-row">
                           <label>Password:</label>
-                          <input v-model="form.password"  @mousedown="resertForm" required type="password" name="password" class="form-control">
+                          <input v-model="form.password"  @mousedown="resertForm" required type="password" name="password" class="form-control" placeholder="Enter password">
                           <span class="validation-err" v-if="validation.error && validation.errors.password">
                               {{ validation.errors.password[0] }}
                           </span>
