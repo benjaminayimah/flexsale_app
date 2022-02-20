@@ -17,10 +17,10 @@ module.exports = {
     pwa: {
       name: 'Flexsale App',
       shortName: 'Flexsale',
-      themeColor: '#f0f3ff',
+      themeColor: '#ffffff',
       msTileColor: '#000000',
       appleMobileWebAppCapable: 'yes',
-      appleMobileWebAppStatusBarStyle: 'black',
+      appleMobileWebAppStatusBarStyle: 'white',
   
     }
     
