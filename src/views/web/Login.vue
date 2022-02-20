@@ -67,8 +67,8 @@ export default {
     data() {
         return {
             form: {
-              email: '',
-              password: ''
+              email: 'benjaminayimah@gmail.com',
+              password: 'ajf1432#@!'
             },
             validation: {
                 error: false,
@@ -221,6 +221,7 @@ button{
         background-image: none;
         padding-top: 20%;
         justify-content: flex-start;
+        background-image: url('../../assets/images/shapes-mob.svg');
         
     }
     #mini-logo{

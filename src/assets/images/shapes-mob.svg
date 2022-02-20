@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="450" height="841.857" viewBox="0 0 450 841.857">
+  <g id="Group_3737" data-name="Group 3737" transform="translate(98.984 -55.122)">
+    <g id="Group_3551" data-name="Group 3551" transform="translate(-98.984 55.122)">
+      <g id="Ellipse_14" data-name="Ellipse 14" transform="matrix(0.951, 0.309, -0.309, 0.951, 51.859, 687.781)" fill="none" stroke="#faefd2" stroke-width="3">
+        <ellipse cx="22.116" cy="22.116" rx="22.116" ry="22.116" stroke="none"/>
+        <ellipse cx="22.116" cy="22.116" rx="20.616" ry="20.616" fill="none"/>
+      </g>
+      <g id="Ellipse_16" data-name="Ellipse 16" transform="matrix(0.951, 0.309, -0.309, 0.951, 366.67, 786.123)" fill="none" stroke="#faefd2" stroke-width="3">
+        <ellipse cx="22.116" cy="22.116" rx="22.116" ry="22.116" stroke="none"/>
+        <ellipse cx="22.116" cy="22.116" rx="20.616" ry="20.616" fill="none"/>
+      </g>
+      <g id="Polygon_1" data-name="Polygon 1" transform="matrix(0.951, 0.309, -0.309, 0.951, 400.831, 159.82)" fill="none">
+        <path d="M25.849,0,51.7,44.231H0Z" stroke="none"/>
+        <path d="M 25.84941864013672 5.945682525634766 L 5.227996826171875 41.23122024536133 L 46.47084045410156 41.23122024536133 L 25.84941864013672 5.945682525634766 M 25.84941864013672 3.814697265625e-06 L 51.69883728027344 44.23122024536133 L 0 44.23122024536133 L 25.84941864013672 3.814697265625e-06 Z" stroke="none" fill="#d2fdf3"/>
+      </g>
+      <g id="Rectangle_2380" data-name="Rectangle 2380" transform="matrix(0.951, 0.309, -0.309, 0.951, 332.732, 706.263)" fill="none" stroke="#ffd3f3" stroke-width="3">
+        <rect width="44.231" height="43.657" stroke="none"/>
+        <rect x="1.5" y="1.5" width="41.231" height="40.657" fill="none"/>
+      </g>
+      <g id="Rectangle_2382" data-name="Rectangle 2382" transform="matrix(0.951, 0.309, -0.309, 0.951, 23.991, 773.12)" fill="none" stroke="#ffd3f3" stroke-width="3">
+        <rect width="44.231" height="44.231" stroke="none"/>
+        <rect x="1.5" y="1.5" width="41.231" height="41.231" fill="none"/>
+      </g>
+      <g id="Ellipse_15" data-name="Ellipse 15" transform="translate(47.971 0)" fill="none" stroke="#fae0d2" stroke-width="3">
+        <ellipse cx="22.977" cy="22.977" rx="22.977" ry="22.977" stroke="none"/>
+        <ellipse cx="22.977" cy="22.977" rx="21.477" ry="21.477" fill="none"/>
+      </g>
+      <g id="Polygon_2" data-name="Polygon 2" transform="translate(0 45.954)" fill="none">
+        <path d="M27,0,54,45.955H0Z" stroke="none"/>
+        <path d="M 26.9982852935791 5.92242431640625 L 5.241920471191406 42.95451736450195 L 48.75464248657227 42.95451736450195 L 26.9982852935791 5.92242431640625 M 26.9982852935791 0 L 53.99656677246094 45.95451736450195 L -3.814697265625e-06 45.95451736450195 L 26.9982852935791 0 Z" stroke="none" fill="#d2fdf3"/>
+      </g>
+      <g id="Polygon_3" data-name="Polygon 3" transform="translate(353.002)" fill="none">
+        <path d="M27,0,54,45.955H0Z" stroke="none"/>
+        <path d="M 26.9982852935791 5.92242431640625 L 5.241920471191406 42.95451736450195 L 48.75464248657227 42.95451736450195 L 26.9982852935791 5.92242431640625 M 26.9982852935791 0 L 53.99656677246094 45.95451736450195 L -3.814697265625e-06 45.95451736450195 L 26.9982852935791 0 Z" stroke="none" fill="#d2fdf3"/>
+      </g>
+      <g id="Rectangle_2381" data-name="Rectangle 2381" transform="translate(328.21 91.908)" fill="none" stroke="#ffd3f3" stroke-width="3">
+        <rect width="46.529" height="45.955" stroke="none"/>
+        <rect x="1.5" y="1.5" width="43.529" height="42.955" fill="none"/>
+      </g>
+      <g id="Rectangle_2383" data-name="Rectangle 2383" transform="translate(1.94 165.864)" fill="none" stroke="#ffd3f3" stroke-width="3">
+        <rect width="45.955" height="45.955" stroke="none"/>
+        <rect x="1.5" y="1.5" width="42.955" height="42.955" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>
