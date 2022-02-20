@@ -124,6 +124,7 @@ header{
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
+    transition: 0.5s all;
 }
 p{
     margin-bottom: 0;
