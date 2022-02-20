@@ -218,7 +218,7 @@ button{
 }
 @media screen and (max-width: 499px){
     #login_page{
-        background-color: $white-color;
+        background-color: $primary-light;
         background-image: none;
         padding-top: 20%;
         justify-content: flex-start;
