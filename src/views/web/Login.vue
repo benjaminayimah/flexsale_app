@@ -251,7 +251,7 @@ button{
             border-radius: 0;
             background-color: transparent;
             border: none;
-            border-bottom: 1px solid $gray-color;
+            border-bottom: 1px solid $dark;
             padding-left: 0;
             transition: all 0.1s linear;
             box-shadow: none;
