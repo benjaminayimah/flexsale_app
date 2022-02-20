@@ -241,7 +241,7 @@ button{
         }
     }
     #login_card{
-       
+       background-color: transparent;
         padding: 0;
         h1{
             font-size: 2.5rem;
@@ -267,9 +267,6 @@ button{
     .login-wrapper{
         min-width: 100%;
     }
-    header{
-        margin-bottom: 50px;
-        
-    }
+  
 }
 </style>
