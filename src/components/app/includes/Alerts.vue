@@ -12,7 +12,7 @@
                 </svg>
             </div>
             <div class="alert-body">{{ getAlert.body }}</div>
-            <button class="alert-close flex justify-content-center align-items-center" @click.prevent="$store.commit('dismisAlert')">
+            <button class="alert-close flex justify-content-center align-items-center" @mousedown="$store.commit('dismisAlert')">
                 <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
                       <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
                 </svg>

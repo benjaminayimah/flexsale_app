@@ -189,6 +189,8 @@ export default createStore({
         this.dispatch('deleteDiscount', state.deleteModal.id)
       }else if(state.deleteModal.type === 'tag') {
         this.dispatch('deleteTag', state.deleteModal.id)
+      }else if(state.deleteModal.type === 'product') {
+        this.dispatch('deleteProduct', state.deleteModal.id)
       }else{
         const newPayload = {
             id: 'danger',
@@ -249,7 +251,10 @@ export default createStore({
     },
     removeDeletedDiscount(state, payload) {
       state.discounts = state.discounts.filter(discount => discount.id != payload)
-      // state.filters = state.filters.filter(filter => filter.tag_id != payload);
+
+    },
+    removeDeletedProduct(state, payload) {
+      state.products = state.products.filter(product => product.id != payload)
     },
     
 
@@ -396,10 +401,27 @@ export default createStore({
         state.commit('closeDeleteModal')
         state.commit('showAlert', newPayload)
         router.go(-1)
+      }).catch((err) => {
+          console.log(err)
+      })
+  },
+  deleteProduct(state, payload) {
+    axios.delete(this.getters.getHostname+'/api/products/'+payload+'?token='+this.getters.getToken)
+    .then((res) => {
+      console.log(res.data)
+      state.commit('removeDeletedProduct', res.data.id)
+      const newPayload = {
+          id: 'success',
+          body: res.data.status
+      }
+      state.commit('closeDeleteModal')
+      state.commit('showAlert', newPayload)
+      document.body.classList.remove('fixed-body')
+      router.go(-1)
     }).catch((err) => {
         console.log(err)
     })
-},
+  }
 
 
   },

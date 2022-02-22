@@ -271,7 +271,6 @@ export default {
             form: {
                 tempImage: '',
                 name: '',
-                batchNumber: '',
                 cost: '',
                 sellingPrice: '',
                 stock: '',
@@ -344,53 +343,55 @@ export default {
             
             
         },
-        doUpload() {
-            if(this.form.prodType === '0'){
-                this.form.batch = this.units
-            }else{
-                const direct = { batchNumber: this.direct.batch, stock: this.direct.quantity, expiry: this.month2.year+'-'+ ('0'+parseInt(this.month2.month+1)).slice(-2) }
-                this.form.batch = direct
+        alertMsg(id, title, msg) {
+            const payload = {
+                id: id,
+                title: title,
+                body: msg
             }
-            console.log(this.form)
-            axios.post( this.getHostname+'/api/products?token='+this.getToken,
-                    this.form,
-                    {
-                        headers: {
-                            'Content-Type': ['application/json']
-                        },
-                    }
-            ).then((res) => {
-                console.log(res.data)
-                this.$store.commit('addToProducts', res.data.product)
-                const payload = {
-                    id: 'success',
-                    title: res.data.title,
-                    body: res.data.body
-                }
-                this.$store.commit('showAlert', payload)
-                this.resetTempImg()
-                
-            }).catch((err) => {
-                if(err.response.status === 422) {
-                    const payload = {
-                        id: 'danger',
-                        title: 'Submition error',
-                        body: err.response.data.errors.name[0]
-                    }
-                    console.log(err.response.data.errors)
-                    this.$store.commit('showAlert', payload)
+            this.$store.commit('showAlert', payload)
+        },
+        doUpload() {
+            let x = this.form
+            if(x.prodType === '0'){
+                x.batch = this.units
+            }else{
+                if(this.direct.batch !== '') {
+                    const direct = { batchNumber: this.direct.batch, stock: this.direct.quantity, expiry: this.month2.year+'-'+ ('0'+parseInt(this.month2.month+1)).slice(-2) }
+                    x.batch = direct  
                 }else{
-                    const payload = {
-                        id: 'danger',
-                        title: 'Submition error',
-                        body: 'Please fill out the required fields.'
-                    }
-                    this.$store.commit('showAlert', payload)
+                    x.batch = ''
                 }
-                //console.log(err.response.data.errors)
-                //window.scrollTo(0,0)
+            }
+            if(x.name == '') {
+                this.alertMsg('danger', 'Submition error', 'The name field is required')
+            }else if(x.batch == '') {
+                this.alertMsg('danger', 'Submition error', 'The batch field is required')
+            }else {
+                console.log(x.batch)
+                const postUrl = this.getHostname+'/api/products?token='
+                //console.log(this.form)
+                axios.post( postUrl+this.getToken,
+                        this.form,
+                        {
+                            headers: {
+                                'Content-Type': ['application/json']
+                            },
+                        }
+                ).then((res) => {
+                    console.log(res.data)
+                    this.$store.commit('addToProducts', res.data.product)
+                    this.alertMsg('success', res.data.title, res.data.body)
+                    this.resetTempImg()
                     
-            })
+                }).catch((err) => {
+                    console.log(err.response)  
+                })
+            }
+            
+        },
+        deleteItem() {
+
         },
         resetTempImg() {
             this.form.tempImage = ''
@@ -483,7 +484,6 @@ export default {
         preloadForEdit() {
             if(this.getTempContainer.active){
                 this.form.name = this.getTempContainer.data.name
-                this.form.batchNumber = this.getTempContainer.data.batch_no
                 this.form.cost = this.getTempContainer.data.cost
                 this.form.sellingPrice = this.getTempContainer.data.selling_price
                 this.form.stock = this.getTempContainer.data.end

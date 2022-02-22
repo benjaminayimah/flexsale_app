@@ -4,7 +4,7 @@
         <div class="table-row flex-row-js" >
             <div class="flex-row-st">
                 <div class="img-hold">
-                    <div class="img" :style="{ backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')' }">
+                    <div class="img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+require('@/assets/images/preview-img.png')+')'}">
                     </div>
                 </div>
                 <div class="prod-capt-hold">
@@ -55,9 +55,9 @@
                         </button>
                     </div>
                     <ul>
-                        <li><a href="#">Edit details</a></li>
-                        <li><a href="#">Update stock</a></li>
-                        <li><a href="#">Delete</a></li>
+                        <li><a href="javascript: void">Edit details</a></li>
+                        <li><a href="javascript: void">Update stock</a></li>
+                        <li><a href="javascript: void">Delete</a></li>
                     </ul>
                 </div>
             </transition>
@@ -89,12 +89,14 @@ export default {
             let elem = document.getElementById(id).getBoundingClientRect().top
             if(this.toggleMenu == false) {
                 this.toggleMenu = true
+                document.body.classList.add('fixed-body')
                 if((this.getWindowHeight-elem) > 200)
                 this.classAbove = true
                 else
                 this.classAbove = false
             }else{
                 this.toggleMenu = false
+                document.body.classList.remove('fixed-body')
             }
         },
     }
@@ -173,7 +175,7 @@ li{
 .menu{
     position: absolute;
     background-color: #ffffff;
-    z-index: 33301;
+    z-index: 200;
     right: 0;
     padding: 20px 0;
     box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
