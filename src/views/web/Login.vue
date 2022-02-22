@@ -259,7 +259,6 @@ button{
         padding: 0;
         
         .title{
-            margin-bottom: 60px;
             h1{
                 font-size: 2.5rem;
             }
