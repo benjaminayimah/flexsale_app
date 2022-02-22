@@ -234,9 +234,21 @@ button{
     display: none;
 }
 @media screen and (max-width: 499px){
+    .social-signin{
+        flex-direction: column !important;
+        button{
+            &:first-child{
+            margin-right: 0 !important;
+            margin-bottom: 15px;
+            }
+            &:last-child{
+                margin-left: 0 !important;
+            }
+        }
+    }
     .or span{
          background-color: $primary-light;
-}
+    }
     #login_page{
         background-color: $primary-light;
         background-image: none;
@@ -291,13 +303,14 @@ button{
   
 }
 .social-signin{
+    flex-direction: row;
     button{
         display: flex;
         justify-content: center;
         align-items: center;
         line-height: 52px;
         border-radius: 14px;
-        border: 2px solid $dark;
+        border: 2px solid $gray-light;
         background-color: $white-color;
         &:first-child{
             margin-right: 8px;
