@@ -295,9 +295,9 @@ button{
         display: flex;
         justify-content: center;
         align-items: center;
-        line-height: 54px;
+        line-height: 52px;
         border-radius: 14px;
-        border: 1px solid $dark;
+        border: 2px solid $gray-light;
         background-color: $white-color;
         &:first-child{
             margin-right: 8px;
