@@ -321,7 +321,7 @@ button{
     }
     span{
         font-weight: 600;
-        color: $gray-color;
+        // color: $gray-color;
     }
 }
 </style>
