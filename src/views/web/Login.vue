@@ -262,10 +262,10 @@ button{
             h1{
                 font-size: 2.5rem;
             }
-            span{
-                font-weight: 400;
-                // font-size: 1rem;
-            }
+            // span{
+            //     font-weight: 400;
+            //      font-size: 1rem;
+            // }
         }
   
         .form-control{
@@ -297,7 +297,7 @@ button{
         align-items: center;
         line-height: 52px;
         border-radius: 14px;
-        border: 2px solid $gray-light;
+        border: 2px solid $dark;
         background-color: $white-color;
         &:first-child{
             margin-right: 8px;
