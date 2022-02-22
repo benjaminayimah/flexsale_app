@@ -240,7 +240,7 @@ button{
     #login_page{
         background-color: $primary-light;
         background-image: none;
-        padding-top: 20%;
+        padding-top: 16%;
         justify-content: flex-start;
         background-image: url('../../assets/images/shapes-mob.svg');
         
