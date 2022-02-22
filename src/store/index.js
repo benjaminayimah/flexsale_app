@@ -297,8 +297,10 @@ export default createStore({
           state.commit('fetchTags', res.data.tags)
           state.commit('fetchProducts', res.data.products)
           state.commit('fetchDiscounts', res.data.discounts)
-          state.commit('setLoader')          
-      }).catch(() => {
+          state.commit('setLoader')        
+      }).catch((e) => {
+        state.commit('setLoader')
+        console.log(e.response)
           state.commit('destroyToken')    
       })      
     },
@@ -326,6 +328,7 @@ export default createStore({
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-all-filters?token='+this.getters.getToken)
       state.commit('fetchFilters', res.data.filters)
+      console.log(res.data)
       state.commit('setLoader') 
     },
     async fetchThisFilter(state, payload){

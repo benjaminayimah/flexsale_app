@@ -56,6 +56,9 @@
         </div>
      </div>
  </div>
+ <div v-else>
+     no store
+ </div>
 
 </template>
 <script>

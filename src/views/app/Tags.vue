@@ -11,7 +11,7 @@
                     <span>Create new</span>
                 </button>
             </div>
-            <tag-items v-for="tag in getTags" :key="tag.id" v-bind:tag="tag" v-bind:filters="getAllFilters" />
+                <tag-items v-for="tag in getTags" :key="tag.id" v-bind:tag="tag" v-bind:filters="getAllFilters" />
         </div>
     </div>
 </template>

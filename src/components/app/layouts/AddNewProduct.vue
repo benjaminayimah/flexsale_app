@@ -265,8 +265,10 @@ export default {
             },
             units: [],
             direct: { quantity: '', batch: ''},
+            profit: '',
+            profitMargin: '',
+            image: '',
             form: {
-                image: '',
                 tempImage: '',
                 name: '',
                 batchNumber: '',
@@ -276,8 +278,6 @@ export default {
                 description: '',
                 supplier: '',
                 prodType: '0',
-                profit: '',
-                profitMargin: '',
                 batch: ''
                 //directStock: false,
             },
@@ -320,9 +320,9 @@ export default {
                     }else {
                         this.doingtempUpload = true
                         this.load = true
-                        this.form.image = this.$refs.img.files[0];
+                        this.image = this.$refs.img.files[0];
                         let formData = new FormData();
-                        formData.append('image', this.form.image);
+                        formData.append('image', this.image);
                         axios.post( this.getHostname+'/api/temp-upload?token='+this.getToken,
                                 formData,
                                 {
@@ -352,7 +352,6 @@ export default {
                 this.form.batch = direct
             }
             console.log(this.form)
-
             axios.post( this.getHostname+'/api/products?token='+this.getToken,
                     this.form,
                     {
@@ -369,6 +368,7 @@ export default {
                     body: res.data.body
                 }
                 this.$store.commit('showAlert', payload)
+                this.resetTempImg()
                 
             }).catch((err) => {
                 if(err.response.status === 422) {
@@ -387,10 +387,16 @@ export default {
                     }
                     this.$store.commit('showAlert', payload)
                 }
-                console.log(err.response.data.errors)
+                //console.log(err.response.data.errors)
                 //window.scrollTo(0,0)
                     
             })
+        },
+        resetTempImg() {
+            this.form.tempImage = ''
+            this.imageUploaded = false
+            this.doingProductUpload = false
+            return
         },
         addToUnit() {
             console.log(this.units)
@@ -468,7 +474,7 @@ export default {
         },
         afterTempUpload(res) {
             this.form.tempImage = res
-            this.form.image = null
+            this.image = null
             this.load = false
             this.imageUploaded = true
             this.doingProductUpload = true
@@ -791,33 +797,8 @@ hr{
     margin: 20px 0;
     border-color: $gray-light;
 }
-.or{
-    padding: 20px 0;
-    text-align: center;
-    position: relative;
-
-    span{
-        font-weight: 600;
-        &::before{
-            content: '';
-            height: 1px;
-            background-color: $gray-light;
-            width: 45%;
-            position: absolute;
-            left: 0;
-            top: 50%;
-
-        }
-        &::after{
-            content: '';
-            height: 1px;
-            background-color: $gray-light;
-            width: 45%;
-            position: absolute;
-            right: 0;
-            top: 50%;
-        }
-    }
+.or span{
+         background-color: $primary-light;
 }
 .stk2{
     max-width: 65px;
