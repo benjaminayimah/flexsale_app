@@ -262,7 +262,10 @@ button{
             h1{
                 font-size: 2.5rem;
             }
-            
+            span{
+                font-weight: 400;
+                // font-size: 1rem;
+            }
         }
   
         .form-control{
