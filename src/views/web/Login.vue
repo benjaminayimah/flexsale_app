@@ -234,6 +234,10 @@ button{
     display: none;
 }
 @media screen and (max-width: 499px){
+    header{
+        margin-bottom: 20px;
+    }
+    
     .social-signin{
         flex-direction: column !important;
         button{
@@ -272,7 +276,7 @@ button{
         
         .title{
             h1{
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
             // span{
             //     font-weight: 400;
