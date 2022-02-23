@@ -352,13 +352,14 @@ button{
                 fill: $primary-color ;
             }
         }
-    }
-    svg{
+        svg{
         margin-right: 10px
+        }
+        span{
+            font-weight: 600;
+            color: $dark;
+        }
     }
-    span{
-        font-weight: 600;
-        // color: $gray-color;
-    }
+    
 }
 </style>
