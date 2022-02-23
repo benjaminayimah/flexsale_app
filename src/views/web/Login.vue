@@ -190,7 +190,7 @@ button{
 
     a{
         color: $primary-color;
-        font-weight: 500;
+        font-weight: 600;
         text-decoration: none;
         &:hover{
             text-decoration: underline;
@@ -205,6 +205,7 @@ button{
        justify-content: center;
        font-weight: 500;
        a{
+           font-weight: 600;
            color: $primary-color;
            text-decoration: none;
             &:hover{
