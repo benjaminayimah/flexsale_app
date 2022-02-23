@@ -55,9 +55,9 @@
                         </button>
                     </div>
                     <ul>
-                        <li><a href="javascript: void">Edit details</a></li>
-                        <li><a href="javascript: void">Update stock</a></li>
-                        <li><a href="javascript: void">Delete</a></li>
+                        <li @click.prevent="doMenu('prod_menu_'+product.id)"><router-link :to="'/product/'+product.id+'/'+product.name">View details</router-link></li>
+                        <li @click.prevent="doMenu('prod_menu_'+product.id)"><a href="javascript: void">Update stock</a></li>
+                        <li @click.prevent="doMenu('prod_menu_'+product.id)"><a href="javascript: void" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: 'product' } )">Delete</a></li>
                     </ul>
                 </div>
             </transition>

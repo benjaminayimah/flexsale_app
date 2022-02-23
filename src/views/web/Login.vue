@@ -51,13 +51,13 @@
                             <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 20.919 21.262">
                                 <path  d="M20.919,11.442c0,6.066-4.154,10.382-10.288,10.382a10.631,10.631,0,1,1,0-21.262A10.223,10.223,0,0,1,17.76,3.345L14.866,6.127C11.081,2.474,4.042,5.218,4.042,11.193a6.659,6.659,0,0,0,6.589,6.713,5.749,5.749,0,0,0,6.036-4.582H10.631V9.667H20.752A9.32,9.32,0,0,1,20.919,11.442Z" transform="translate(0 -0.562)"/>
                             </svg>
-                            <span>Google</span>
+                            <span class="hide-mob">Sign in with</span><span>Google</span>
                         </button>
                         <button @click.prevent="">
                             <svg xmlns="http://www.w3.org/2000/svg"  height="18" viewBox="0 0 11.387 21.262">
                                 <path d="M12.251,11.96l.591-3.848H9.149v-2.5a1.924,1.924,0,0,1,2.169-2.079H13V.26A20.469,20.469,0,0,0,10.017,0C6.977,0,4.989,1.843,4.989,5.179V8.112H1.609V11.96h3.38v9.3h4.16v-9.3Z" transform="translate(-1.609)"/>
                             </svg>
-                            <span>Facebook</span>
+                            <span class="hide-mob">Sign in with</span><span>Facebook</span>
                         </button>
                     </div>
                     <div class="flex create-acct">
@@ -83,8 +83,8 @@ export default {
     data() {
         return {
             form: {
-              email: '',
-              password: ''
+              email: 'benjaminayimah@gmail.com',
+              password: 'ajf1432#@!'
             },
             validation: {
                 error: false,
@@ -148,6 +148,9 @@ p{
     & a{
     color: $dark;
     }
+}
+.hide-mob{
+    display: none;
 }
 
 .login-wrapper{
@@ -237,6 +240,10 @@ button{
     header{
         margin-bottom: 20px;
     }
+    .hide-mob{
+        display: block;
+        margin-right: 5px;
+    }
     
     .social-signin{
         flex-direction: column !important;
@@ -309,12 +316,13 @@ button{
 .social-signin{
     flex-direction: row;
     button{
+        box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
         display: flex;
         justify-content: center;
         align-items: center;
         line-height: 52px;
         border-radius: 14px;
-        border: 2px solid $gray-light;
+        //border: 2px solid $gray-light;
         background-color: $white-color;
         &:first-child{
             margin-right: 8px;

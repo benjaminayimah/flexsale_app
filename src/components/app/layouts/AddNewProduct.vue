@@ -490,13 +490,11 @@ export default {
                 this.form.description = this.getTempContainer.data.description
                 this.form.supplier = this.getTempContainer.data.supplier
                 this.form.prodType = this.getTempContainer.data.prod_type
-                this.form.profit = this.getTempContainer.data.profit
-                this.form.profitMargin = this.getTempContainer.data.profit_margin
                 this.units = this.getTempContainer.array
             }
         },
         clearPreloader() {
-            console.log('cleared')
+            //console.log('cleared')
             for (let i in this.form)
             this.form[i] = ''
         }

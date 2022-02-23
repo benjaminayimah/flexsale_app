@@ -152,17 +152,17 @@ export default createStore({
     showAlert(state, payload) {
       this.commit('dismisAlert')
       if(payload.id === 'success'){
-          state.alert.status.success = true
           state.alert.title = payload.title
           state.alert.body = payload.body
+          state.alert.status.success = true
           state.alert.status.show = true
           setTimeout(() => {
             this.commit('dismisAlert')
           }, 3000);
       }else if(payload.id === 'danger'){
-          state.alert.status.danger = true
           state.alert.title = payload.title
           state.alert.body = payload.body
+          state.alert.status.danger = true
           state.alert.status.show = true
       }   
     },
@@ -255,6 +255,10 @@ export default createStore({
     },
     removeDeletedProduct(state, payload) {
       state.products = state.products.filter(product => product.id != payload)
+      if(state.filters.length > 0) {
+      state.filters = state.filters.filter(product => product.id != payload)
+
+      }
     },
     
 
@@ -333,7 +337,7 @@ export default createStore({
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-all-filters?token='+this.getters.getToken)
       state.commit('fetchFilters', res.data.filters)
-      console.log(res.data)
+      //console.log(res.data)
       state.commit('setLoader') 
     },
     async fetchThisFilter(state, payload){
@@ -408,7 +412,7 @@ export default createStore({
   deleteProduct(state, payload) {
     axios.delete(this.getters.getHostname+'/api/products/'+payload+'?token='+this.getters.getToken)
     .then((res) => {
-      console.log(res.data)
+      //console.log(res.data)
       state.commit('removeDeletedProduct', res.data.id)
       const newPayload = {
           id: 'success',
@@ -417,7 +421,10 @@ export default createStore({
       state.commit('closeDeleteModal')
       state.commit('showAlert', newPayload)
       document.body.classList.remove('fixed-body')
-      router.go(-1)
+      
+      router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter'  ? '' : router.go(-1)
+      //console.log(router.currentRoute.value.name)
+        
     }).catch((err) => {
         console.log(err)
     })

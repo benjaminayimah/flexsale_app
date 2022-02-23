@@ -44,7 +44,7 @@ const routes = [
       { path: '/', component: Products,
       children: [
         { path: '/products', name: 'AllProducts', component: All},
-        { path: '/products/filter/:id/:name', component: Filter},
+        { path: '/products/filter/:id/:name', name: 'ProdFilter', component: Filter},
       ]
     },
     { path: '/tags', name: 'Tags', component: Tags },
