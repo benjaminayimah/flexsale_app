@@ -63,7 +63,7 @@
                         </button>
                     </div>
                     <div class="flex create-acct">
-                          <span>Don't have an account?</span><a href="">Create Account</a>
+                          <span>Don't have an account?</span><a href="">Create one</a>
                         <!--<router-link id="go_hm" :to="{ name: 'Home' }">Back Home</router-link>-->
                     </div>
                   </form>
@@ -85,8 +85,8 @@ export default {
     data() {
         return {
             form: {
-              email: '',
-              password: ''
+              email: 'benjaminayimah@gmail.com',
+              password: 'ajf1432#@!'
             },
             validation: {
                 error: false,
@@ -160,6 +160,9 @@ p{
     min-width: 350px;
     
 }
+.form-row{
+    margin-bottom: 20px;
+}
 #login_card{
     padding: 60px 40px;
     background-color: $white-color;
@@ -202,7 +205,8 @@ button{
    
 }
 .create-acct{
-    margin-top: 20px;
+        flex-wrap: wrap;
+        margin-top: 20px;
        text-align: center;
        justify-content: center;
        font-weight: 500;
