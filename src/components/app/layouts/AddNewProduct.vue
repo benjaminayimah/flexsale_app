@@ -95,7 +95,7 @@
                 </div>
                 <div>
                     <div class="or">
-                        <span>Or</span>
+                        <div>Or</div>
                     </div>
                     <!-- <label class="checkbox-hold">
                         <input v-model="form.directStock" type="checkbox">
@@ -795,7 +795,7 @@ hr{
     margin: 20px 0;
     border-color: $gray-light;
 }
-.or span{
+.or div{
          background-color: $primary-light;
 }
 .stk2{

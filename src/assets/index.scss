@@ -41,12 +41,13 @@ $myFont: 'Urbanist', Helvetica, sans-serif;
     top: 0;
     width: 100%;
   }
-  span{
+  div{
       font-weight: 500;
       background-color: #ffffff;
       padding: 0 10px;
       position: relative;
       color: $gray-color;
+      display: inline;
     }
     
 }
