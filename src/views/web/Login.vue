@@ -85,8 +85,8 @@ export default {
     data() {
         return {
             form: {
-              email: 'benjaminayimah@gmail.com',
-              password: 'ajf1432#@!'
+              email: '',
+              password: ''
             },
             validation: {
                 error: false,
