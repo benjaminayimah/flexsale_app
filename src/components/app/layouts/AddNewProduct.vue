@@ -4,7 +4,7 @@
             <label>Product Image:</label>
             <div class="img-hold">
                 <div v-if="doingtempUpload" class="img-container">
-                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+require('@/assets/images/preview-img.png')+')'}">
+                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getDefaultImage+')'}">
                         <div id="loading_hold">
                             <i class="lazy-loader" :class="{ 'loader' : load }"></i>
                         </div>
@@ -78,10 +78,10 @@
                         <ul v-show="form.prodType == '0'">
                             <li v-for="unit in units" :key="unit.batch">
                                 <div class="unit-pill flex flex-row-js">
-                                    <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batchNumber }}</span>
-                                    <span class="divider" v-show="unit.expiry">|</span>
-                                    <span class="expiry-date text-overflow-ellipsis" v-show="unit.expiry">{{ unit.expiry }}</span>
-                                    <button class="flex align-items-center justify-content-center" @click.prevent="delUnit(unit.batchNumber)">
+                                    <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batch_no }}</span>
+                                    <span class="divider" v-show="unit.expiry_date">|</span>
+                                    <span class="expiry-date text-overflow-ellipsis" v-show="unit.expiry_date">{{ unit.expiry_date }}</span>
+                                    <button class="flex align-items-center justify-content-center" @click.prevent="delUnit(unit.batch_no)">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 20 20">
                                             <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#ffffff">
                                             </path>
@@ -222,8 +222,8 @@
         </div>
         <teleport to="#form_submit_btn_holder">
             <div class="btn-wrap2">
-                <button v-if="!getTempContainer.active" class="button button-primary" @click.prevent="doUpload">Submit</button>
-                <button v-else class="button button-primary" @click.prevent="">Save changes</button>
+                <button v-if="!getTempContainer.active" class="button button-primary" @click.prevent="doSubmit">Submit</button>
+                <button v-else class="button button-primary" @click.prevent="doSubmit">Save changes</button>
             </div>
         </teleport>
     </form>
@@ -236,7 +236,7 @@ import Datepicker from 'vue3-date-time-picker';
 import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewProduct',
-    computed: mapGetters(['getToken', 'getHostname', 'getUser', 'getTempContainer']),
+    computed: mapGetters(['getToken', 'getHostname', 'getUser', 'getTempContainer', 'getDefaultImage']),
     components: { Datepicker },
     // setup() {
     //     const month = ref({ 
@@ -261,7 +261,7 @@ export default {
             duplicate: false,
             unitForm: {
                 batch: '',
-                expiry: ''
+                expiry_date: ''
             },
             units: [],
             direct: { quantity: '', batch: ''},
@@ -351,13 +351,13 @@ export default {
             }
             this.$store.commit('showAlert', payload)
         },
-        doUpload() {
+        doSubmit() {
             let x = this.form
-            if(x.prodType === '0'){
+            if(x.prodType == '0'){
                 x.batch = this.units
             }else{
                 if(this.direct.batch !== '') {
-                    const direct = { batchNumber: this.direct.batch, stock: this.direct.quantity, expiry: this.month2.year+'-'+ ('0'+parseInt(this.month2.month+1)).slice(-2) }
+                    const direct = { batch_no: this.direct.batch, stock: this.direct.quantity, expiry_date: this.month2.year+'-'+ ('0'+parseInt(this.month2.month+1)).slice(-2) }
                     x.batch = direct  
                 }else{
                     x.batch = ''
@@ -368,28 +368,48 @@ export default {
             }else if(x.batch == '') {
                 this.alertMsg('danger', 'Submition error', 'The batch field is required')
             }else {
-                console.log(x.batch)
-                const postUrl = this.getHostname+'/api/products?token='
-                //console.log(this.form)
-                axios.post( postUrl+this.getToken,
-                        this.form,
+                const putUrl = this.getHostname+'/api/products/'+this.getTempContainer.data.id+'?token='+this.getToken
+                if(this.getTempContainer.active) {
+                    axios.put(putUrl, x,
                         {
                             headers: {
                                 'Content-Type': ['application/json']
                             },
                         }
-                ).then((res) => {
-                    console.log(res.data)
-                    this.$store.commit('addToProducts', res.data.product)
-                    this.alertMsg('success', res.data.title, res.data.body)
-                    this.resetTempImg()
-                    
-                }).catch((err) => {
-                    console.log(err.response)  
-                })
+                    ).then((res) => {
+                        console.log(res.data)
+                        // this.$store.commit('addToProducts', res.data.product)
+                        // this.alertMsg('success', res.data.title, res.data.body)
+                        // this.resetTempImg()
+                    }).catch((err) => {
+                        console.log(err.response)  
+                    })
+                }else{
+                    const postUrl = this.getHostname+'/api/products?token='
+                    axios.post(postUrl+this.getToken, x,
+                        {
+                            headers: {
+                                'Content-Type': ['application/json']
+                            },
+                        }
+                    ).then((res) => {
+                        this.$store.commit('addToProducts', res.data.product)
+                        this.alertMsg('success', res.data.title, res.data.body)
+                        this.resetTempImg()
+                    }).catch((err) => {
+                        console.log(err.response)  
+                    })
+                }
             }
             
         },
+        doUpload() {
+            
+        },
+        doUpdate() {
+
+        },
+        
         deleteItem() {
 
         },
@@ -405,14 +425,14 @@ export default {
                 this.error.active = false
             }
             if(this.unitForm.batch !== ''){
-                const newUnit = { batchNumber: this.unitForm.batch, expiry: this.month.year+'-'+ ('0'+parseInt(this.month.month+1)).slice(-2)}
+                const newUnit = { batch_no: this.unitForm.batch, expiry_date: this.month.year+'-'+ ('0'+parseInt(this.month.month+1)).slice(-2)}
                 if(this.units.length === 0) {
                     this.units.push(newUnit)
                     this.resetInput()
                 }
                 else if(this.units.length !== 0) {
                     this.units.forEach(element => {
-                        if(element.batchNumber === this.unitForm.batch) {
+                        if(element.batch_no === this.unitForm.batch) {
                             this.duplicate = true
                             this.error.active = true
                             this.error.message = 'This batch number already exist'
@@ -435,7 +455,7 @@ export default {
             this.duplicate = false
         },
         delUnit(id) {
-            this.units = this.units.filter(filter => filter.batchNumber != id)
+            this.units = this.units.filter(filter => filter.batch_no != id)
 
         },
         deltmp(id) {
@@ -456,7 +476,7 @@ export default {
         },
         
         preventReload(event) {
-            if(this.form.name || this.form.supplier || this.form.description || this.form. batchNumber || this.form.category || this.form.cost || this.form.sellingPrice || this.form.stock || this.doingProductUpload ) {
+            if(this.form.name || this.form.supplier || this.form.description || this.form.batch || this.form.cost || this.form.sellingPrice || this.form.stock || this.doingProductUpload ) {
                 event.returnValue = `Are you sure you want to leave?`;
             }
             
@@ -482,6 +502,7 @@ export default {
             this.doingtempUpload = false
         },
         preloadForEdit() {
+            //console.log(this.getTempContainer)
             if(this.getTempContainer.active){
                 this.form.name = this.getTempContainer.data.name
                 this.form.cost = this.getTempContainer.data.cost
@@ -490,7 +511,17 @@ export default {
                 this.form.description = this.getTempContainer.data.description
                 this.form.supplier = this.getTempContainer.data.supplier
                 this.form.prodType = this.getTempContainer.data.prod_type
-                this.units = this.getTempContainer.array
+                if(this.getTempContainer.data.prod_type === 0){
+                    this.units = this.getTempContainer.array
+                }else{
+                    this.direct.quantity = this.getTempContainer.data.stock
+                    this.direct.batch = this.getTempContainer.array[0].batch_no
+                    let date = this.getTempContainer.array[0].expiry_date
+                    const myArray = date.split('-')
+                    this.month2.year = myArray[0]
+                    this.month2.month = myArray[1] - 1
+
+                }
             }
         },
         clearPreloader() {

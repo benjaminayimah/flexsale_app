@@ -3,7 +3,7 @@
         <hr>
          <div class="li-hold">
             <div class="flex-row">
-                <div class="prd-img bg-img" :style="checkedProduct.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+checkedProduct.image+')'} : { backgroundImage: 'url('+require('@/assets/images/preview-img.png')+')'}"></div>
+                <div class="prd-img bg-img" :style="checkedProduct.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+checkedProduct.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                 <div class="prod-captions">
                     <div class="item-name">{{ checkedProduct.name }}</div>
                     <div><label>Price:</label><span>GH₵500</span></div>
@@ -21,7 +21,7 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'SelectedTagRow',
     props: ['checkedProduct', 'editMode'],
-    computed: mapGetters(['getHostname', 'getUser']),
+    computed: mapGetters(['getHostname', 'getUser', 'getDefaultImage']),
     methods: {
         removeSelectedProduct(id) {
             const obj = {id: id}

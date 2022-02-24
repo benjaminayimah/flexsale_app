@@ -14,7 +14,7 @@
         <div class="card-bottom">
             <div class="bottom-top">
                 <div class="img-col">
-                    <div class="img-holder bg-img" v-for="img in newFilter.slice(0, 5)" :key="img.id" :style="img.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/'+img.image+')' } : { backgroundImage: 'url('+require('@/assets/images/preview-img.png')+')'}"></div>
+                    <div class="img-holder bg-img" v-for="img in newFilter.slice(0, 5)" :key="img.id" :style="img.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/'+img.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                     <div class="img-holder more" v-if="newFilter.length > 5">+{{ newFilter.length - 5}}</div>
                 </div>
                 <!-- <div class="add-col">
@@ -32,7 +32,7 @@
 import { mapGetters } from 'vuex'
 export default {
     name: 'TagItem',
-    computed: mapGetters(['getHostname', 'getUser']),
+    computed: mapGetters(['getHostname', 'getUser', 'getDefaultImage']),
     props: ['filters', 'tag'],
     data() {
         return {

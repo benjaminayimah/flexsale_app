@@ -8,6 +8,7 @@ export default createStore({
     //hostname: 'http://api.flexsale.store',
     token: localStorage.getItem('token') || null,
     windowHeight: '',
+    defaultImage: require('@/assets/images/preview-img.svg'),
     user: {},
     stores: [],
     products: [],
@@ -231,7 +232,7 @@ export default createStore({
       state.thisProduct = payload
     },
     setTempDataContainer(state, payload) {
-       state.checkedProducts = payload.array
+       state.tempDataContainer.array = payload.array
        state.tempDataContainer.data = payload.data
        state.tempDataContainer.active = true
     },
@@ -337,7 +338,7 @@ export default createStore({
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-all-filters?token='+this.getters.getToken)
       state.commit('fetchFilters', res.data.filters)
-      //console.log(res.data)
+      console.log(res.data)
       state.commit('setLoader') 
     },
     async fetchThisFilter(state, payload){
@@ -463,7 +464,8 @@ export default createStore({
     getSelectionSheet: (state) => state.selectionSheet,
     getLoader: (state) => state.loader,
     getTempContainer: (state) => state.tempDataContainer,
-    getDeleteModal: (state) => state.deleteModal
+    getDeleteModal: (state) => state.deleteModal,
+    getDefaultImage: (state) => state.defaultImage
 
 
 

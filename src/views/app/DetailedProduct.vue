@@ -3,7 +3,7 @@
     <!-- <transition name="fade"> -->
         <div v-if="getTempContainer.data.name">
             <div class="header">
-                <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+require('@/assets/images/preview-img.png')+')'}">
+                <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     <div class="cover-image-backdrop"></div>
                     <div class="flex-row action-btn-hold">
                         <!-- <button class="icon-label-btn image-icon menu-toggle-btn flex-row">
@@ -22,7 +22,6 @@
                             <h1>{{ getTempContainer.data.name }}</h1>
                             </div>
                             <div class="flex-row caption-row"><span v-if="getTempContainer.data.batch_no">({{ getTempContainer.data.batch_no }})</span></div>
-                            <p></p>
                         <div class="flex-row caption-row"><label>Created:</label><span>{{ dateTime(getTempContainer.data.created_at) }}</span></div>
                         <div class="flex-row caption-row"><label>By:</label><span>{{ getTempContainer.data.added_by }}</span></div>
                     </div>
@@ -76,7 +75,7 @@ import Backdrop from '../../components/app/includes/Backdrop.vue'
 export default {
   components: { Backdrop },
     name: 'DetailedProduct',
-    computed: mapGetters(['getProducts', 'getHostname', 'getUser', 'getTempContainer', 'getMobile']),
+    computed: mapGetters(['getProducts', 'getHostname', 'getUser', 'getTempContainer', 'getMobile', 'getDefaultImage']),
     data() {
         return {
             product: {},
@@ -132,10 +131,9 @@ export default {
         position: absolute;
         bottom: 0;
         left: 0;
-        height: 70%;
+        height: 45%;
         width: 100%;
-        //background-color: rgba($color: #000000, $alpha: 0.2);
-        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
         border-radius: inherit;
     }
 }
@@ -150,7 +148,7 @@ export default {
     color: #fff;
     position: absolute;
     h1{
-        margin: 0;
+        margin: 0 0 8px 0;
         font-size: 2.2rem;
         font-weight: 800;
     }

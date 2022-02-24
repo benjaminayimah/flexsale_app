@@ -2,7 +2,7 @@
     <li>
         <a href="#" @click.prevent="toggleActive(product.id, product.name, product.batch_no, product.image)" :class="{ 'active' : active}">
             <div class="flex-row">
-                <div class="prd-img bg-img" :style="product.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')' } : { backgroundImage: 'url('+require('@/assets/images/preview-img.png')+')'}"></div>
+                <div class="prd-img bg-img" :style="product.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                 <div class="prod-captions">
                     <div class="item-name">{{ product.name }}</div>
                     <div><label>Price:</label><span>GH₵500</span></div>
@@ -23,7 +23,7 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'AddTagRow',
     props: ['product'],
-    computed: mapGetters(['getCheckedProducts', 'getHostname', 'getUser']),
+    computed: mapGetters(['getCheckedProducts', 'getHostname', 'getUser', 'getDefaultImage']),
     data() {
         return {
             active: false

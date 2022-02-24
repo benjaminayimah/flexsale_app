@@ -4,7 +4,7 @@
         <div class="table-row flex-row-js" >
             <div class="flex-row-st">
                 <div class="img-hold">
-                    <div class="img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+require('@/assets/images/preview-img.png')+')'}">
+                    <div class="img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     </div>
                 </div>
                 <div class="prod-capt-hold">
@@ -76,7 +76,7 @@ export default {
   components: { Backdrop },
     name: 'ProductRow',
     props: ['product'],
-    computed: mapGetters(['getHostname', 'getUser', 'getWindowHeight', 'getMobile']),
+    computed: mapGetters(['getHostname', 'getUser', 'getWindowHeight', 'getMobile', 'getDefaultImage']),
     data() {
         return {
             toggleMenu: false,
