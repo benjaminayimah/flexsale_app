@@ -455,6 +455,9 @@ header, .right-header{
     
   }
 }
+.menu{
+  margin-top: 10px;
+}
 .mob-title{
   animation: fade-in 0.7s
 }

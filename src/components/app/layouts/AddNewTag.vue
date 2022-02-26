@@ -8,10 +8,10 @@
             </span>
         </div>
         <div class="form-row mb-0">
-            <div v-if="this.getCheckedProducts.length > 0">
+            <div v-if="this.getTempContainer.array.length > 0">
                 <div class="header-holder flex-row-js">
                     <div>
-                        <span class="count">{{ getCheckedProducts.length }}</span><span>items in this group</span>
+                        <span class="count">{{ getTempContainer.array.length }}</span><span>items in this tag</span>
                     </div>
                     <div>
                         <button class="flex-row button add-more" @click.prevent="$store.commit('setSelectionSheet')">
@@ -25,7 +25,7 @@
                 <!-- :style="{maxHeight: (getWindowHeight-380)+'px'}" -->
                 <div class="selected-products-hold">
                     <ul style="margin-top:20px">
-                        <selected-tag-row v-for="checked in this.getCheckedProducts" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="getTempContainer.editMode" />
+                        <selected-tag-row v-for="checked in this.getTempContainer.array" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="getTempContainer.editMode" />
                     </ul>
                 </div>
             </div>
@@ -58,7 +58,7 @@ import SelectedTagRow from '../includes/SelectedTagRow.vue'
 import SelectProductsOverlay from '../includes/SelectProductsOverlay.vue'
 export default {
   components: { SelectedTagRow, SelectProductsOverlay },
-    computed: mapGetters(['getCheckedProducts', 'getWindowHeight', 'getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer']),
+    computed: mapGetters(['getWindowHeight', 'getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer']),
     name: 'AddNewTag',
     props: ['thisWidth'],
     data() {
@@ -77,7 +77,7 @@ export default {
     },
     methods: {
         async submitTag() {
-            this.form.products = this.getCheckedProducts
+            this.form.products = this.getTempContainer.array
             axios.post( this.getHostname+'/api/tag?token='+this.getToken, this.form
             ).then((res) => {
                 //console.log(res)
@@ -117,7 +117,7 @@ export default {
             })
         },
         async submitEditTag() {
-            this.form.products = this.getCheckedProducts
+            this.form.products = this.getTempContainer.array
             axios.put( this.getHostname+'/api/tag/'+this.form.id+'?token='+this.getToken, this.form)
             .then((res) => {
                 if(res.data.status === 1) {

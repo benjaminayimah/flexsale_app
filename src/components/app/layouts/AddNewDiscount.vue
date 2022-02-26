@@ -36,10 +36,10 @@
             </div>
         </div>
         <div class="form-row mb-0">
-            <div v-if="this.getCheckedProducts.length > 0">
+            <div v-if="this.getTempContainer.array.length > 0">
                 <div class="header-holder flex-row-js">
                     <div>
-                        <span class="count">{{ getCheckedProducts.length }}</span><span>items in this group</span>
+                        <span class="count">{{ getTempContainer.array.length }}</span><span>items in this discount</span>
                     </div>
                     <div>
                         <button class="flex-row button add-more" @click.prevent="$store.commit('setSelectionSheet')">
@@ -53,7 +53,7 @@
                 <!-- :style="{maxHeight: (getWindowHeight-380)+'px'}" -->
                 <div class="selected-products-hold">
                     <ul style="margin-top:20px">
-                        <selected-tag-row v-for="checked in this.getCheckedProducts" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="getTempContainer.editMode" />
+                        <selected-tag-row v-for="checked in getTempContainer.array" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="getTempContainer.editMode" />
                     </ul>
                 </div>
             </div>
@@ -86,7 +86,7 @@ import SelectedTagRow from '../includes/SelectedTagRow.vue';
 export default {
     name: 'AddNewDiscount',
      components: { Datepicker, SelectProductsOverlay, SelectedTagRow },
-     computed: mapGetters(['getToken', 'getHostname', 'getCheckedProducts', 'getWindowHeight', 'getSelectionSheet', 'getTempContainer']),
+     computed: mapGetters(['getToken', 'getHostname', 'getWindowHeight', 'getSelectionSheet', 'getTempContainer']),
      props: ['thisWidth'],
     data() {
         return {
@@ -104,7 +104,7 @@ export default {
     },
     methods: {
         async submitDiscount() {
-            this.form.products = this.getCheckedProducts
+            this.form.products = this.getTempContainer.array
             console.log(this.form.startDate.toJSON())
             axios.post( this.getHostname+'/api/discount?token='+this.getToken,
                     this.form,
@@ -147,7 +147,7 @@ export default {
             })
         },
         async submitEditDiscount() {
-            this.form.products = this.getCheckedProducts
+            this.form.products = this.getTempContainer.array
             axios.put( this.getHostname+'/api/discount/'+this.form.id+'?token='+this.getToken, this.form)
             .then((res) => {
                 if(res.data.status === 1) {

@@ -23,7 +23,7 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'AddTagRow',
     props: ['product'],
-    computed: mapGetters(['getCheckedProducts', 'getHostname', 'getUser', 'getDefaultImage']),
+    computed: mapGetters(['getHostname', 'getUser', 'getDefaultImage', 'getTempContainer']),
     data() {
         return {
             active: false
@@ -42,8 +42,8 @@ export default {
             
         },
         checkSelected() {
-            for (let i = 0; i < this.getCheckedProducts.length; i++) {
-                if (this.getCheckedProducts[i] && (this.getCheckedProducts[i].id === this.product.id )) {
+            for (let i = 0; i < this.getTempContainer.array.length; i++) {
+                if (this.getTempContainer.array[i] && (this.getTempContainer.array[i].id === this.product.id )) {
                     this.active = true
                 } 
             }

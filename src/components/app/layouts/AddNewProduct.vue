@@ -368,7 +368,8 @@ export default {
             }else if(x.batch == '') {
                 this.alertMsg('danger', 'Submition error', 'The batch field is required')
             }else {
-                const putUrl = this.getHostname+'/api/products/'+this.getTempContainer.data.id+'?token='+this.getToken
+                let id = this.getTempContainer.data.id
+                const putUrl = this.getHostname+'/api/products/'+id+'?token='+this.getToken
                 if(this.getTempContainer.active) {
                     axios.put(putUrl, x,
                         {
@@ -378,9 +379,13 @@ export default {
                         }
                     ).then((res) => {
                         console.log(res.data)
-                        // this.$store.commit('addToProducts', res.data.product)
-                        // this.alertMsg('success', res.data.title, res.data.body)
-                        // this.resetTempImg()
+                        const newData = {
+                            product: res.data.product, units: res.data.units
+                        }
+                        this.$store.commit('updateProduct', newData)
+                        this.alertMsg('success', res.data.title, res.data.body)
+                        this.$store.commit('unsetMainHomeWidth')
+                        this.$router.push({ name: this.$router.currentRoute.value.name, params: { id: res.data.product.id, name: res.data.product.name }, replace: true })
                     }).catch((err) => {
                         console.log(err.response)  
                     })

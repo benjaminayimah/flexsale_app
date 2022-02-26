@@ -270,16 +270,15 @@ textarea{
   height: 55px;
   padding: 0.375rem 1rem;
   font-size: 1rem;
-  font-weight: 400;
   color: $dark;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid $gray-light;
   border-radius: 12px;
   transition: all 0.2s linear;
-  background-clip: padding-box;
   appearance: none;
   outline: 0;
+  font-weight: 500;
   &:hover {
     border: 1px solid $primary-color;
   }
@@ -594,7 +593,7 @@ hr{
 
 .mob-view{
   #mob_logo svg{
-    height: 22px;
+    height: 30px;
   }
   .bt-0{
     transition: 0.3s all linear;

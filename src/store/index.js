@@ -15,7 +15,6 @@ export default createStore({
     thisProduct: {},
     tags: [],
     filters: [],
-    checkedProducts: [],
     selectionSheet: false,
     discounts: [],
     tempDataContainer: { active: false, editMode: false, data: {}, array: [], propertyName: ''},
@@ -133,6 +132,7 @@ export default createStore({
       }else if(payload.addType == 'discount'){
         state.addingProduct.discount = true
       }
+      //for removing rows
       state.tempDataContainer.editMode = true
     },
     unsetMainHomeWidth(state){
@@ -145,8 +145,8 @@ export default createStore({
       document.body.classList.remove('fixed-body')
       let appSection = document.getElementById('app_section')
       appSection.style.left = '0px'
-      if(state.checkedProducts && !state.tempDataContainer.active) {
-        state.checkedProducts = []
+      if(!state.tempDataContainer.active) {
+        state.tempDataContainer.array = []
       }
       state.tempDataContainer.editMode = false
     },
@@ -177,12 +177,14 @@ export default createStore({
       state.deleteModal.active = true
       state.deleteModal.id = payload.id
       state.deleteModal.type = payload.type
+      document.body.classList.add('fixed-body')
     },
     closeDeleteModal(state) {
       state.deleteModal.active = false
       state.deleteModal.deleting = false
       state.deleteModal.id = ''
       state.deleteModal.type = ''
+      document.body.classList.remove('fixed-body')
     },
     doDelete(state) {
       state.deleteModal.deleting = true
@@ -214,22 +216,25 @@ export default createStore({
       state.tags = payload.tags
       state.tempDataContainer.data = payload.data
     },
+    updateProduct(state, payload) {
+      const i = state.products.findIndex(x => x.id === payload.product.id)
+      state.products.splice(i, 1, payload.product);
+      state.tempDataContainer.array = payload.units
+      state.tempDataContainer.data = payload.product
+    },
     updateDiscounts(state, payload) {
       state.discounts = payload.discounts
       state.tempDataContainer.data = payload.discount
     },
     addCheckedProdToArray(state, payload) {
-      state.checkedProducts.push(payload)
+      state.tempDataContainer.array.push(payload)
     },
     removeCheckedProdFromArray(state, payload) {
-      state.checkedProducts = state.checkedProducts.filter(product => product.id !== payload.id)
+      state.tempDataContainer.array = state.tempDataContainer.array.filter(product => product.id !== payload.id)
     },
     fetchFilters(state, payload) {
       state.filters = payload
       //console.log(payload)
-    },
-    fetchThisProduct(state, payload) {
-      state.thisProduct = payload
     },
     setTempDataContainer(state, payload) {
        state.tempDataContainer.array = payload.array
@@ -237,7 +242,7 @@ export default createStore({
        state.tempDataContainer.active = true
     },
     clearTempDataContainer(state) {
-      state.checkedProducts = []
+      state.tempDataContainer.array = []
       state.tempDataContainer.active = false
       state.tempDataContainer.editMode = false
       state.tempDataContainer.data = {}
@@ -421,7 +426,7 @@ export default createStore({
       }
       state.commit('closeDeleteModal')
       state.commit('showAlert', newPayload)
-      document.body.classList.remove('fixed-body')
+      //document.body.classList.remove('fixed-body')
       
       router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter'  ? '' : router.go(-1)
       //console.log(router.currentRoute.value.name)
@@ -456,7 +461,6 @@ export default createStore({
     getAlert: (state) => state.alert,
     getTags: (state) => state.tags,
     getProducts: (state) => state.products,
-    getCheckedProducts: (state) => state.checkedProducts,
     getAllFilters: (state) => state.filters,
     getTagEditMode: (state) => state.tagEditForm,
     getThisProduct: (state) => state.thisProduct,

@@ -16,8 +16,8 @@
                     </div>
                 </div>
                 <div class="mini-body-content">
-                    <ul v-if="getCheckedProducts.length > 0">
-                        <selected-tag-row v-for="checked in this.getCheckedProducts" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="false" />
+                    <ul v-if="getTempContainer.array.length > 0">
+                        <selected-tag-row v-for="checked in getTempContainer.array" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="false" />
                     </ul>
                 </div>
             </div>
@@ -33,7 +33,7 @@ import SelectedTagRow from '../../components/app/includes/SelectedTagRow.vue'
 export default {
   components: { SelectedTagRow },
     name: 'DetailedDiscount',
-    computed: mapGetters(['getCheckedProducts', 'getToken', 'getHostname', 'getTempContainer']),
+    computed: mapGetters(['getToken', 'getHostname', 'getTempContainer']),
     data() {
         return {
             

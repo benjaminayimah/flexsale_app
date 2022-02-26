@@ -49,7 +49,7 @@ const routes = [
     },
     { path: '/tags', name: 'Tags', component: Tags },
     { path: '/tag/:id/:name', name: 'DetailedTag', component: DetailedTag },
-    { path: '/product/:id/:name', component: DetailedProduct ,
+    { path: '/product/:id/:name', component: DetailedProduct,
     children: [
       { path: '/product/:id/:name', name: 'ProductDetailsBasic', component: ProductDetailsBasic},
       { path: '/product/stats/:id/:name', name: 'ProductDetailsStats', component: ProductDetailsStats},

@@ -108,6 +108,9 @@ export default {
         this.setPage()
         this.fetchThisProduct()
     },
+    beforeUpdate() {
+        this.setPage()
+    },
     unmounted() {
         this.$store.commit('clearTempDataContainer')
     },
@@ -135,6 +138,15 @@ export default {
         width: 100%;
         background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
         border-radius: inherit;
+    }
+}
+.menu-toggle-btn{
+    background-color: rgba($color: #000000, $alpha: 0.4) !important;
+    i {
+        background-color: #ffffff !important;
+    }
+    &:hover {
+        background-color: rgba($color: #000000, $alpha: 0.8) !important;
     }
 }
 .cover-caption{
@@ -235,7 +247,7 @@ export default {
 }
 .show-menu{
     right: 13px;
-    top: 55px
+    top: 40px
 }
 .menu-card-mob{
     right: 0;

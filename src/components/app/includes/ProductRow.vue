@@ -54,10 +54,10 @@
                             </svg>
                         </button>
                     </div>
-                    <ul>
-                        <li @click.prevent="doMenu('prod_menu_'+product.id)"><router-link :to="'/product/'+product.id+'/'+product.name">View details</router-link></li>
-                        <li @click.prevent="doMenu('prod_menu_'+product.id)"><a href="javascript: void">Update stock</a></li>
-                        <li @click.prevent="doMenu('prod_menu_'+product.id)"><a href="javascript: void" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: 'product' } )">Delete</a></li>
+                    <ul @mouseup="doMenu('prod_menu_'+product.id)">
+                        <li><router-link :to="'/product/'+product.id+'/'+product.name">View details</router-link></li>
+                        <li><a href="javascript: void">Update stock</a></li>
+                        <li><a href="javascript: void" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: 'product' } )">Delete</a></li>
                     </ul>
                 </div>
             </transition>

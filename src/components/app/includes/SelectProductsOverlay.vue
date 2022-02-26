@@ -12,7 +12,7 @@
                     <div class="selection-header">
                         <div class="header-holder">
                             <div>
-                                <span class="count">{{ getCheckedProducts.length }}</span><span>items are added to your group</span>
+                                <span class="count">{{ getTempContainer.array.length }}</span><span>items are added to your group</span>
                             </div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@ export default {
   components: { AddTagRow, TertiaryBackdrop },
     name: 'SelectProductOverlay',
     props: ['thisWidth', 'windowHeight'],
-    computed: mapGetters(['getSelectionSheet', 'getProducts', 'getCheckedProducts']),
+    computed: mapGetters(['getSelectionSheet', 'getProducts', 'getTempContainer']),
 
 }
 </script>
@@ -75,7 +75,11 @@ export default {
     }
     ul{
         height: 100px;
+        padding-left: 0;
     } 
+}
+.count{
+    color: $primary-color;
 }
 
 </style>
