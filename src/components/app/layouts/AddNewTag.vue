@@ -14,7 +14,7 @@
                         <span class="count">{{ getTempContainer.array.length }}</span><span>items in this tag</span>
                     </div>
                     <div>
-                        <button class="flex-row button add-more" @click.prevent="$store.commit('setSelectionSheet')">
+                        <button class="flex-row button add-more" @click.prevent="$store.commit('doSelectionSheet')">
                             <svg xmlns="http://www.w3.org/2000/svg"  height="13" viewBox="0 0 16.721 16.72">
                                 <path d="M-23237.838-313.921v-6.359h-6.359a1,1,0,0,1-1-1,1,1,0,0,1,1-1h6.359v-6.359a1,1,0,0,1,1-1,1,1,0,0,1,1,1v6.359h6.359a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-6.359v6.359a1,1,0,0,1-1,1A.994.994,0,0,1-23237.838-313.921Z" transform="translate(23245.201 329.643)" fill="#0e142c"/>
                             </svg>
@@ -31,11 +31,11 @@
             </div>
             <div v-else style="margin-bottom: 30px">
                 <label>Products:</label>
-                <button id="tag_big_add" class="button-secondary" @click.prevent="$store.commit('setSelectionSheet')">
+                <button id="tag_big_add" class="button-secondary" @click.prevent="$store.commit('doSelectionSheet')">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582"><path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#566ff4"></path></svg>
                     </div>
-                    <span>Add products to this group</span>
+                    <span>Add products to this tag</span>
                 </button>
                 <span class="validation-err" v-if="validation.error && validation.errors.products">
                     {{ validation.errors.products[0] }}
@@ -90,7 +90,7 @@ export default {
                     this.$store.commit('addToTags', res.data.tag)
                     this.$store.commit('fetchFilters', res.data.filters)
                     this.$store.commit('showAlert', payload)
-                    this.$store.commit('unsetMainHomeWidth')
+                    this.$store.commit('unsetMainHomeWidth', true)
                 }
                 if(res.data.status === 2) {
                     const payload = {
@@ -131,7 +131,7 @@ export default {
                         body: res.data.message
                     }
                     this.$store.commit('showAlert', payload)
-                    this.$store.commit('unsetMainHomeWidth')
+                    this.$store.commit('unsetMainHomeWidth', true)
                     this.$router.push({ name: 'DetailedTag', params: { id: this.form.id, name: this.form.tag }, replace: true })
                 }
                 if(res.data.status === 2) {

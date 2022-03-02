@@ -42,7 +42,7 @@
                         <span class="count">{{ getTempContainer.array.length }}</span><span>items in this discount</span>
                     </div>
                     <div>
-                        <button class="flex-row button add-more" @click.prevent="$store.commit('setSelectionSheet')">
+                        <button class="flex-row button add-more" @click.prevent="$store.commit('doSelectionSheet')">
                             <svg xmlns="http://www.w3.org/2000/svg"  height="13" viewBox="0 0 16.721 16.72">
                                 <path d="M-23237.838-313.921v-6.359h-6.359a1,1,0,0,1-1-1,1,1,0,0,1,1-1h6.359v-6.359a1,1,0,0,1,1-1,1,1,0,0,1,1,1v6.359h6.359a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-6.359v6.359a1,1,0,0,1-1,1A.994.994,0,0,1-23237.838-313.921Z" transform="translate(23245.201 329.643)" fill="#0e142c"/>
                             </svg>
@@ -59,7 +59,7 @@
             </div>
             <div v-else style="margin-bottom: 30px">
                 <label>Products:</label>
-                <button id="discount_big_add" class="button-secondary" @click.prevent="$store.commit('setSelectionSheet')">
+                <button id="discount_big_add" class="button-secondary" @click.prevent="$store.commit('doSelectionSheet')">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582"><path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#566ff4"></path></svg>
                     </div>
@@ -105,7 +105,7 @@ export default {
     methods: {
         async submitDiscount() {
             this.form.products = this.getTempContainer.array
-            console.log(this.form.startDate.toJSON())
+            //console.log(this.form.startDate.toJSON())
             axios.post( this.getHostname+'/api/discount?token='+this.getToken,
                     this.form,
                     {
@@ -115,14 +115,18 @@ export default {
                     }
             ).then((res) => {
                 if(res.data.status === 1) {
-                    this.$store.commit('addToDiscounts', res.data.discount)
+                    const addTo = {
+                        discount: res.data.discount, products: res.data.products
+                    }
+                    this.$store.commit('addToDiscounts', addTo)
+                    //console.log(addTo)
                     const payload = {
                         id: 'success',
                         title: res.data.title,
                         body: res.data.message
                     }
                     this.$store.commit('showAlert', payload)
-                    this.$store.commit('unsetMainHomeWidth')
+                    this.$store.commit('unsetMainHomeWidth', true)
                 }
                 if(res.data.status === 2) {
                     const payload = {
@@ -152,7 +156,7 @@ export default {
             .then((res) => {
                 if(res.data.status === 1) {
                     const newData = {
-                        discount: res.data.discount, discounts: res.data.discounts
+                        discount: res.data.discount, discounts: res.data.discounts, products: res.data.products
                     }
                     this.$store.commit('updateDiscounts', newData)
                     const payload = {
@@ -161,7 +165,7 @@ export default {
                         body: res.data.message
                     }
                     this.$store.commit('showAlert', payload)
-                    this.$store.commit('unsetMainHomeWidth')
+                    this.$store.commit('unsetMainHomeWidth', true)
                     this.$router.push({ name: 'DetailedDiscount', params: { id: res.data.discount.id, name: res.data.discount.name }, replace: true })
                 }
                 if(res.data.status === 2) {

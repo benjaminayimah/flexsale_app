@@ -15,6 +15,24 @@ $button-disabled: #9ea7d8;
 
 $myFont: 'Urbanist', Helvetica, sans-serif;
 
+.h-list-wrap ul li:last-child div, #ovw_content ul li:last-child .a-wrap{
+  padding-right: 20px;
+}
+.activity-wrap .activity-row:last-child i{
+  display: none;
+}
+li:last-child a{
+  border-bottom: none
+}
+.has-discount{
+  text-decoration: line-through;
+  font-size: 0.9rem;
+  color: $gray-color;
+}
+.discount-price{
+  margin-left: 10px;
+  font-weight: 500;
+}
 .lazy-loader{
   height: 25px;
   width: 25px;
@@ -228,6 +246,9 @@ button{
 .flex-wrap{
   flex-wrap: wrap !important;
 }
+.justify-between{
+  justify-content: space-between;
+}
 .align-items-center{
   align-items: center;
 }
@@ -312,6 +333,26 @@ textarea{
 
 .form-check-input[type=radio] {
   border-radius: 50%;
+}
+.cancel-btn{
+  display: flex;
+  background-color: #ffffff;
+  height: 44px;
+  width: 44px;
+  border-radius: 50%;
+  border: none;
+  margin-left: -10px;
+  border: 1px solid transparent;
+  padding: 0;
+//transition: 0.3s all;
+&:hover{
+  background-color: $dark-light;
+}
+&:focus{
+    box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
+    border: 1px solid #0e142c;
+    background-color: #fff;
+  }
 }
 
 //checkbox
@@ -633,7 +674,7 @@ hr{
     padding: 0 15px;
     margin-bottom: 15px;
   }
-  .ovw-content ul{
+  .ovw-content ul, .overview ul{
     margin-left: -5px !important;
   }
   .scroll-button{
@@ -695,6 +736,23 @@ hr{
   .status-alert .alert-wrap .alert{
       margin-top: 10px;
   }
+  .activity-wrap{
+    padding: 0 15px;
+    .act-hold{
+        padding: 20px;
+    }
+    
+}
+.dashboard-title-wrap{
+  padding: 0 15px;
+}
+
+.h-list-wrap ul li:last-child div, #ovw_content ul li:last-child .a-wrap{
+  padding-right: 15px;
+}
+
+
+
   
 
 

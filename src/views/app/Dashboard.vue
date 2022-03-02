@@ -21,7 +21,7 @@
              <div class="ovw-hold" @scroll="ovwScroll">
                  <div class="ovw-content" id="ovw_content">
                      <ul>
-                         <li :id="'ovw'+stat.index" v-for="stat in stats" :key="stat.id" :style="{ transform: 'translateX('+parseInt(stat.index * 170+(transitionVal))+'px )'}">
+                         <li :id="'ovw'+stat.index" v-for="stat in getStats" :key="stat.id" :style="{ transform: 'translateX('+parseInt(stat.index * 170+(transitionVal))+'px )'}">
                              <div class="a-wrap">
                                  <a href="#" class="li-hold">
                                     <div class="overview-content">
@@ -56,27 +56,48 @@
         </div>
      </div>
  </div>
- <div v-else>
-     no store
+ <div class="dash-section-holder">
+    <div class="flex-row-js dashboard-title-wrap">
+        <h1 class="dashboard-title">Suppliers</h1>
+        <a href="" class="see-all">See all (10)</a>
+    </div>
+    <div class="h-list-wrap">
+        <div class="overview">
+            <div class="list-hold">
+                <div class="list-content">
+                    <ul>
+                        <supplier-horizontal-list v-for="supplier in getSuppliers" :key="supplier.id" v-bind:supplier="supplier" />
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
  </div>
+ <div class="dash-section-holder">
+    <div class="flex-row-js dashboard-title-wrap">
+        <h1 class="dashboard-title">Activity log</h1>
+        <a href="" class="see-all">See all logs</a>
+    </div>
+    <div class="activity-wrap">
+        <div class="act-hold flex">
+            <activity-list-row v-for="activity in getActivities" :key="activity.id" v-bind:activity="activity" />
+        </div>
+    </div>
+ </div>
+ 
+
 
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import ActivityListRow from '../../components/app/includes/ActivityListRow.vue'
+import SupplierHorizontalList from '../../components/app/includes/SupplierHorizontalList.vue'
 export default {
+  components: { SupplierHorizontalList, ActivityListRow },
     name: 'Dashboard',
-    computed: mapGetters(['getStores']),
+    computed: mapGetters(['getStores', 'getSuppliers', 'getStats', 'getActivities']),
     data() {
         return {
-            stats: [
-                {id: 1, index: 0, count: '1,200', title: 'Products'},
-                {id: 2, index: 1, count: '200', title: 'Low stocks'},
-                {id: 3, index: 2, count: '50', title: 'Expiry alert'},
-                {id: 4, index: 3, count: '15', title: 'Expiry alert'},
-                {id: 5, index: 4, count: '15', title: 'Expiry alert'},
-                {id: 6, index: 5, count: '15', title: 'Expiry alert'},
-                {id: 7, index: 6, count: '15', title: 'Expiry alert'},
-            ],
             transitionVal: 0,
             leftShow: false,
             rightShow: true,
@@ -95,7 +116,7 @@ export default {
         },
        
         scrollLeft() {
-            let no = this.stats.length -1
+            let no = this.getStats.length -1
             let elem_1 = document.getElementById('ovw'+0).getBoundingClientRect().left + 170
             let lastElem = document.getElementById('ovw'+no).getBoundingClientRect().left + 170
             this.firstVal = elem_1
@@ -104,7 +125,7 @@ export default {
             this.transitionVal += 170
         },
         scrollRight() {
-            let no = this.stats.length -1
+            let no = this.getStats.length -1
             let elem_1 = document.getElementById('ovw'+0).getBoundingClientRect().left - 170
             let lastElem = document.getElementById('ovw'+no).getBoundingClientRect().left - 170
             this.firstVal = elem_1
@@ -133,6 +154,51 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.h-list-wrap{
+    display: block;
+    overflow-y: hidden;
+    align-items: stretch;
+    position: relative;
+    .overview{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        height: 70px;
+        outline: 0;
+        align-items: stretch;
+    }
+}
+
+.list-hold{
+
+    display: flex;
+    position: relative;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    align-items: stretch;
+    &::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none; 
+    scrollbar-width: none;  
+    } 
+    
+    .list-content{
+        display: flex;
+        height: 100%;
+        align-items: stretch;
+        ul{
+            list-style-type: none;
+            padding-left: 10px;
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+        }
+    }
+}
+
+
+
 
 .ovw-wrap{
     display: block;
@@ -199,7 +265,7 @@ export default {
         }
         &:first-child{
             .li-hold{
-                background-color: $primary-color;
+                background-color: rgba(86, 110, 244, 0.8);
                 color: $white-color;
                 svg path{
                     fill: $white-color;
@@ -224,52 +290,6 @@ export default {
     transition: transform 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
 }
 
-/*
-#overview_row{
-    overflow-y: hidden;
-    outline: 0;
-    white-space: nowrap;
-    width: 100%;
-    align-items: stretch;
-    display: flex;
-    &::-webkit-scrollbar {
-    display: none;
-    -ms-overflow-style: none; 
-    scrollbar-width: none;  
-    }
-}
-.overview-content{
-    width: 110px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-.ovw-colum{
-    height: 170px;
-    background-color: $primary-light;
-    border-radius: 18px;
-    padding: 25px 20px;
-    margin-right: 15px;
-    display: flex;
-    color: $dark;
-    svg path{
-        fill: $dark;
-    }
-    &:last-child{
-        margin-right: 0;
-    }
-    &:first-child{
-        background-color: $primary-color;
-        color: $white-color;
-        svg path{
-            fill: $white-color;
-        }
-    }
-}
-.flex-row-st{
-    padding: 0 30px;
-}
-*/
 .stat-count{
     font-size: 1.3rem;
     font-weight: 700;
@@ -331,6 +351,40 @@ export default {
     }
 
 }
+.dash-section-holder{
+    margin: 40px 0;
+}
+.dashboard-title-wrap{
+    padding: 0 20px;
+    margin-bottom: 26px;
+    .dashboard-title{
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+    .see-all{
+        font-weight: 600;
+        color: $primary-color;
+        text-decoration: none;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+}
+.activity-wrap{
+    padding: 0 20px;
+    .act-hold{
+        background-color: rgba(86, 110, 244, 0.80);
+        min-height: 340px;
+        border-radius: 20px;
+        padding: 40px;
+        flex-direction: column;
+    }
+    
+}
+h1{
+    margin: 0;
+}
+
 
 
 </style>

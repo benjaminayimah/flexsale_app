@@ -3,7 +3,7 @@
     <div id="tags" class="main-page-body">
         <div class="info-card">
             <div class="card-outer">
-                <button class="add-new flex-column" @click.prevent="$store.commit('getMainHomeWidth', 'tag')">
+                <button class="add-new flex-column" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'tag'})">
                     <i class="flex-column">
                         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582" data-v-b2891468=""><path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff" data-v-b2891468=""></path>
                         </svg>

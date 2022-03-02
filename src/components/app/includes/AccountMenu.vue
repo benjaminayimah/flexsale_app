@@ -16,21 +16,21 @@
                 </div>
                 <div id="stores">
                   <div v-for="store in getStores" :key="store.id">
-                    <div class="store-info-hold active" v-if="store.id == getUser.current">
-                        <div class="avatar">
-                          <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
-                        </div>
-                        <div class="acct-label">
-                            <div class="user-details">
-                                <div class="user-name"><strong>{{ store.name }}</strong></div>
-                                <div class="shop">{{ store.address }}</div>
-                            </div>
-                            <div class="acct-elipse" v-if="store.id == getUser.current">
-                                <svg xmlns="http://www.w3.org/2000/svg"  height="13" viewBox="0 0 27.028 19.354">
-                                  <path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"/>
-                                </svg>
-                            </div>
-                        </div> 
+                      <div v-if="store.id == getUser.current" class="store-info-hold active">
+                          <div class="avatar">
+                            <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
+                          </div>
+                          <div class="acct-label">
+                              <div class="user-details">
+                                  <div class="user-name"><strong>{{ store.name }}</strong></div>
+                                  <div class="shop">{{ store.address }}</div>
+                              </div>
+                              <div class="acct-elipse">
+                                  <svg xmlns="http://www.w3.org/2000/svg"  height="13" viewBox="0 0 27.028 19.354">
+                                    <path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"/>
+                                  </svg>
+                              </div>
+                          </div> 
                       </div>
                     </div>
                     <div v-for="store in getStores" :key="store.id">

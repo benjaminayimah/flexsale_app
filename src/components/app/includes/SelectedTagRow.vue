@@ -6,8 +6,13 @@
                 <div class="prd-img bg-img" :style="checkedProduct.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+checkedProduct.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                 <div class="prod-captions">
                     <div class="item-name">{{ checkedProduct.name }}</div>
-                    <div><label>Price:</label><span>GH₵500</span></div>
-                    <div>{{ checkedProduct.batch_no }}</div>
+                    <div class="flex">
+                        <label>Price:</label>
+                        <div :class="{ 'has-discount': checkedProduct.discount !== null && checkedProduct.selling_price != 0}"><span>{{ getCurrency }}</span>{{ checkedProduct.selling_price }}</div>
+                        <div class="discount-price" v-if="checkedProduct.discount !== null && checkedProduct.selling_price != 0"><span>{{ getCurrency }}</span><span>{{ computePrice }}</span></div>
+                    </div>
+                    <div><label>Stock:</label><span>{{ checkedProduct.stock }}</span></div>
+
                 </div>
             </div>
             <button v-if="editMode" class="button" @click.prevent="removeSelectedProduct(checkedProduct.id)">
@@ -21,7 +26,25 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'SelectedTagRow',
     props: ['checkedProduct', 'editMode'],
-    computed: mapGetters(['getHostname', 'getUser', 'getDefaultImage']),
+    computed: {
+        ...mapGetters(['getHostname', 'getUser', 'getDefaultImage', 'getDiscounts', 'getCurrency']),
+        computeDiscount: function () {
+            return this.getDiscounts.filter(discount => discount.id == this.checkedProduct.discount)
+        },
+        computePrice() {
+            if(this.checkedProduct.discount !== null && this.computeDiscount.length > 0) {
+                if(this.computeDiscount[0].percentage == 1 && this.checkedProduct.selling_price > 0 ) {
+                    let price = this.checkedProduct.selling_price - ((this.computeDiscount[0].value)/100) * this.checkedProduct.selling_price
+                    return price
+                }else{
+                    let price = this.checkedProduct.selling_price - this.computeDiscount[0].value
+                    return price
+                }
+            }else {
+                return false
+            }
+        }
+    },
     methods: {
         removeSelectedProduct(id) {
             const obj = {id: id}

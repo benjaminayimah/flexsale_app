@@ -1,16 +1,19 @@
 <template>
     <li>
-        <a href="#" @click.prevent="toggleActive(product.id, product.name, product.batch_no, product.image)" :class="{ 'active' : active}">
+        <a href="#" @click.prevent="toggleActive(product.id, product.name, product.image, product.stock, product.selling_price, product.discount)" :class="{ 'active' : active}">
             <div class="flex-row">
                 <div class="prd-img bg-img" :style="product.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                 <div class="prod-captions">
                     <div class="item-name">{{ product.name }}</div>
-                    <div><label>Price:</label><span>GH₵500</span></div>
-                    <div>{{ product.batch_no }}</div>
+                    <div class="flex">
+                        <div :class="{ 'has-discount': product.discount !== null && product.selling_price != 0}"><span>{{ getCurrency }}</span>{{ product.selling_price }}</div>
+                        <div class="discount-price" v-if="product.discount !== null && product.selling_price != 0"><span>{{ getCurrency }}</span><span>{{ computePrice }}</span></div>
+                    </div>
+                    <div><label>Stock:</label>{{ product.stock }}</div>
                 </div>
             </div>
             <button class="button" @click.prevent="">
-                <svg xmlns="http://www.w3.org/2000/svg"  height="18" viewBox="0 0 28.454 20.383">
+                <svg xmlns="http://www.w3.org/2000/svg"  height="15" viewBox="0 0 28.454 20.383">
                     <path d="M1126.264,386.512l-9.779-10.489,2.194-2.046,7.686,8.243,16.478-16.092,2.1,2.146Z" transform="translate(-1116.485 -366.129)" />
                 </svg>
             </button>
@@ -23,15 +26,33 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'AddTagRow',
     props: ['product'],
-    computed: mapGetters(['getHostname', 'getUser', 'getDefaultImage', 'getTempContainer']),
+    computed: {
+        ...mapGetters(['getHostname', 'getUser', 'getDefaultImage', 'getTempContainer', 'getDiscounts', 'getCurrency']),
+        computeDiscount: function () {
+            return this.getDiscounts.filter(discount => discount.id == this.product.discount)
+        },
+        computePrice() {
+            if(this.product.discount !== null && this.computeDiscount.length > 0) {
+                if(this.computeDiscount[0].percentage == 1 && this.product.selling_price > 0 ) {
+                    let price = this.product.selling_price - ((this.computeDiscount[0].value)/100) * this.product.selling_price
+                    return price
+                }else{
+                    let price = this.product.selling_price - this.computeDiscount[0].value
+                    return price
+                }
+            }else {
+                return false
+            }
+        }
+    },
     data() {
         return {
             active: false
         }
     },
     methods: {
-        toggleActive(id, name, batch_no, image) {
-            const checkedArray = { id: id, name: name, batch_no: batch_no, image: image }
+        toggleActive(id, name, image, stock, price, discount) {
+            const checkedArray = { id: id, name: name, image: image, stock: stock, selling_price: price, discount: discount}
             if(!this.active) {
                 this.active = true
                 this.$store.commit('addCheckedProdToArray', checkedArray)
@@ -71,9 +92,8 @@ li{
         text-decoration: none;
         justify-content: space-between;
         padding: 15px;
-        border-radius: 12px;
         transition: 0.2s all;
-        //border: 1px $dark-light solid;
+        border: 1px transparent solid;
         transition: 0.3s all;
         &:hover{
             background-color: hsla(223, 19%, 93%, 0.4);
@@ -122,7 +142,8 @@ li{
 
 }
 .active{
-    border: 1px $primary-color solid !important;
+    // border: 1px $primary-color solid !important;
+    background-color: $primary-light !important;
     .button{
         background-color: $primary-color !important;
     }

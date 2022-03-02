@@ -9,6 +9,7 @@ export default createStore({
     token: localStorage.getItem('token') || null,
     windowHeight: '',
     defaultImage: require('@/assets/images/preview-img.svg'),
+    currency: 'GH₵',
     user: {},
     stores: [],
     products: [],
@@ -18,6 +19,7 @@ export default createStore({
     selectionSheet: false,
     discounts: [],
     tempDataContainer: { active: false, editMode: false, data: {}, array: [], propertyName: ''},
+    tempArrayCopy: [],
     currentStore: {},
     mobile: false,
     tablet: false,
@@ -29,7 +31,40 @@ export default createStore({
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
-    addingProduct: { status: false, width: '', product: false, tag: false, discount: false}
+    addingProduct: { status: false, width: '', product: false, tag: false, discount: false},
+
+    stats: [
+      {id: 1, index: 0, count: '1,200', title: 'Products'},
+      {id: 2, index: 1, count: '200', title: 'Low stocks'},
+      {id: 3, index: 2, count: '50', title: 'Expiry alert'},
+      {id: 4, index: 3, count: '15', title: 'Expiry alert'},
+      {id: 5, index: 4, count: '15', title: 'Expiry alert'},
+      {id: 6, index: 5, count: '15', title: 'Expiry alert'},
+      {id: 7, index: 6, count: '15', title: 'Expiry alert'},
+  ],
+  suppliers: [
+      {id: 1, index: 0, name: 'Jon Doe', image: 'profile-1.png'},
+      {id: 2, index: 1, name: 'Walter White', image: 'profile-2.png'},
+      {id: 3, index: 2, name: 'Jane Smith', image: 'profile-3.png'},
+      {id: 4, index: 3, name: 'monicca brown', image: ''},
+      {id: 5, index: 4, name: 'monicca brown', image: 'profile-4.png'},
+      {id: 6, index: 5, name: 'Tyler Cooper', image: 'profile-5.png'},
+      {id: 7, index: 6, name: 'Harisson Smichel', image: ''},
+      {id: 8, index: 7, name: 'Harisson Smichel', image: 'profile-6.png'},
+      {id: 9, index: 8, name: 'Jadon Sancho', image: 'profile-7.png'},
+      {id: 10, index: 9, name: 'Sarah', image: ''},
+      {id: 11, index: 10, name: 'Sarah', image: 'profile-8.png'},
+      {id: 12, index: 11, name: 'Chris Sharw', image: 'profile-9.png'},
+      {id: 13, index: 12, name: 'Dominic Campbel', image: 'profile-10.png'},
+  ],
+  activities: [
+    {id: 1, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+    {id: 2, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+    {id: 3, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+    {id: 4, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+    {id: 5, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+  ]
+
   },
   mutations: {
     //authentication
@@ -108,7 +143,7 @@ export default createStore({
     unSetMobileTitle(state) {
       state.navPage.mobile = false
     },
-    setSelectionSheet(state) {
+    doSelectionSheet(state) {
       state.selectionSheet = !state.selectionSheet
     },
     setLoader(state) {
@@ -119,23 +154,29 @@ export default createStore({
       let appSection = document.getElementById('app_section')
       appSection.style.left = appSection.offsetLeft+'px'
       document.body.classList.add('fixed-body')
-      const thispayload = { dimension: homeWidth, addType: payload }
+      const thispayload = { dimension: homeWidth, type: payload.type, mode:payload.mode }
       this.commit('setMainHomeWidth', thispayload)
     },
     setMainHomeWidth(state, payload) {
       state.addingProduct.width = payload.dimension
       state.addingProduct.status = true
-      if(payload.addType == 'product'){
+      if(payload.type == 'product'){
         state.addingProduct.product = true
-      }else if(payload.addType == 'tag'){
+      }else if(payload.type == 'tag'){
         state.addingProduct.tag = true
-      }else if(payload.addType == 'discount'){
+      }else if(payload.type == 'discount'){
         state.addingProduct.discount = true
       }
+      if(payload.mode == 'edit') {
+        state.tempDataContainer.editMode = true
+        const newArray = state.tempDataContainer.array.slice();
+        state.tempArrayCopy = newArray
+
+      }
+      //copy to tempArrayCopy
       //for removing rows
-      state.tempDataContainer.editMode = true
     },
-    unsetMainHomeWidth(state){
+    unsetMainHomeWidth(state, payload){
       // this.commit('dismisAlert')
       state.addingProduct.status = false
       state.addingProduct.tag = false
@@ -148,7 +189,14 @@ export default createStore({
       if(!state.tempDataContainer.active) {
         state.tempDataContainer.array = []
       }
-      state.tempDataContainer.editMode = false
+      if(state.tempDataContainer.editMode) {
+        state.tempDataContainer.editMode = false
+        if(state.tempArrayCopy.length > 0 && payload !== true) {
+          const oldArray = state.tempArrayCopy.slice();
+          state.tempDataContainer.array = oldArray
+        }
+        state.tempArrayCopy = []
+      }
     },
     showAlert(state, payload) {
       this.commit('dismisAlert')
@@ -210,7 +258,13 @@ export default createStore({
       state.tags.push(payload)
     },
     addToDiscounts(state, payload) {
-      state.discounts.push(payload)
+      state.discounts.push(payload.discount)
+      if(payload.products.length > 0){
+        payload.products.forEach(element => {
+          const i = state.products.findIndex(x => x.id === element.id)
+          state.products.splice(i, 1, element)
+        });
+      }
     },
     updateTags(state, payload) {
       state.tags = payload.tags
@@ -225,6 +279,14 @@ export default createStore({
     updateDiscounts(state, payload) {
       state.discounts = payload.discounts
       state.tempDataContainer.data = payload.discount
+      state.products = payload.products
+      let oldChecked = state.tempDataContainer.array
+      if(oldChecked.length > 0) {
+          oldChecked.forEach(element => {
+          element.discount = payload.discount.id
+        });
+      }
+
     },
     addCheckedProdToArray(state, payload) {
       state.tempDataContainer.array.push(payload)
@@ -256,14 +318,20 @@ export default createStore({
       state.filters = state.filters.filter(filter => filter.tag_id != payload);
     },
     removeDeletedDiscount(state, payload) {
-      state.discounts = state.discounts.filter(discount => discount.id != payload)
+      state.discounts = state.discounts.filter(discount => discount.id != payload.disID)
+      let oldChecked = payload.array
+      if(oldChecked.length > 0) {
+          oldChecked.forEach(element => {
+          const i = state.products.findIndex(x => x.id === element.id)
+          state.products[i].discount = null
+        });
+      }
 
     },
     removeDeletedProduct(state, payload) {
       state.products = state.products.filter(product => product.id != payload)
       if(state.filters.length > 0) {
-      state.filters = state.filters.filter(product => product.id != payload)
-
+        state.filters = state.filters.filter(product => product.id != payload)
       }
     },
     
@@ -303,21 +371,21 @@ export default createStore({
         console.log(err.response)
       })
   },*/
-    getAuthUser(state, payload) {  
+  async getAuthUser(state) {  
       state.commit('setLoader')          
-      axios.post(this.getters.getHostname+'/api/user?token='+payload)
-      .then((res) => {
+        try {
+          const res = await axios.post(this.getters.getHostname+'/api/user?token='+this.getters.getToken)
           state.commit('setUser', res.data.user)
           state.commit('setStore', res.data.stores)
           state.commit('fetchTags', res.data.tags)
           state.commit('fetchProducts', res.data.products)
           state.commit('fetchDiscounts', res.data.discounts)
-          state.commit('setLoader')        
-      }).catch((e) => {
-        state.commit('setLoader')
-        console.log(e.response)
-          state.commit('destroyToken')    
-      })      
+          state.commit('setLoader') 
+        } catch (e) {
+          state.commit('setLoader')
+          console.log(e.response)
+          state.commit('destroyToken') 
+        }      
     },
 
     async getLogout(state){
@@ -343,7 +411,7 @@ export default createStore({
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-all-filters?token='+this.getters.getToken)
       state.commit('fetchFilters', res.data.filters)
-      console.log(res.data)
+      //console.log(res.data)
       state.commit('setLoader') 
     },
     async fetchThisFilter(state, payload){
@@ -402,8 +470,10 @@ export default createStore({
   deleteDiscount(state, payload) {
     axios.delete(this.getters.getHostname+'/api/discount/'+payload+'?token='+this.getters.getToken)
     .then((res) => {
-        console.log(res.data)
-        state.commit('removeDeletedDiscount', res.data.id)
+        const payload = {
+          disID: res.data.id, array: res.data.products 
+        }
+        state.commit('removeDeletedDiscount', payload)
         const newPayload = {
             id: 'success',
             body: res.data.status
@@ -469,7 +539,13 @@ export default createStore({
     getLoader: (state) => state.loader,
     getTempContainer: (state) => state.tempDataContainer,
     getDeleteModal: (state) => state.deleteModal,
-    getDefaultImage: (state) => state.defaultImage
+    getDefaultImage: (state) => state.defaultImage,
+    getCurrency: (state) => state.currency,
+    getSuppliers: (state) => state.suppliers,
+    getStats: (state) => state.stats,
+    getActivities: (state) => state.activities,
+    getTempArrayCopy: (state) => state.tempArrayCopy
+    
 
 
 

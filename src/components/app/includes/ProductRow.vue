@@ -11,12 +11,13 @@
                     <div class="itm-name">{{ product.name }}</div>
                     <div class="flex-row-st">
                         <label>Price:</label>
-                        <div class="itm-price"><span>GH₵</span>500</div>
+                        <div class="itm-price" :class="{ 'has-discount': product.discount !== null && product.selling_price != 0 }"><span>{{ getCurrency }}</span>{{ product.selling_price }}</div>
+                        <div class="discount-price" v-if="product.discount !== null  && product.selling_price != 0 && computePrice !== false"><span>{{ getCurrency }}</span><span>{{ computePrice }}</span></div>
                     </div>
                     <div class="flex-row-st">
                         <div class="flex-row-st">
-                            <label>Qty:</label>
-                            <div class="qty">500</div>
+                            <label>Stock:</label>
+                            <div class="qty">{{ product.stock }}</div>
                         </div>
                         
                         <div class="edit-action">
@@ -76,13 +77,39 @@ export default {
   components: { Backdrop },
     name: 'ProductRow',
     props: ['product'],
-    computed: mapGetters(['getHostname', 'getUser', 'getWindowHeight', 'getMobile', 'getDefaultImage']),
+    computed: {
+        ... mapGetters(['getHostname', 'getUser', 'getWindowHeight', 'getMobile', 'getDefaultImage', 'getCurrency', 'getDiscounts']),
+        computeDiscount: function () {
+            if(this.getDiscounts.length > 0) {
+                return this.getDiscounts.filter(discount => discount.id == this.product.discount)
+            }else{
+                return false
+            }
+        },
+        computePrice() {
+            if(this.product.discount !== null && this.computeDiscount.length > 0) {
+                if(this.computeDiscount[0].percentage == 1 && this.product.selling_price > 0 ) {
+                    let price = this.product.selling_price - ((this.computeDiscount[0].value)/100) * this.product.selling_price
+                    //console.log(this.computeDiscount[0].percentage)
+                    return price
+                }else{
+                    let price = this.product.selling_price - this.computeDiscount[0].value
+                    return price
+                }
+            }else {
+                return false
+            }
+        }
+    },
     data() {
         return {
             toggleMenu: false,
             classAbove: false
 
         }
+    },
+    created() {
+        
     },
     methods: {
         doMenu(id) {
@@ -144,6 +171,7 @@ export default {
         }
     }
 }
+
 .batch-no{
     padding: 20px;
 }

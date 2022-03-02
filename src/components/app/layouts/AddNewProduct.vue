@@ -71,7 +71,7 @@
                         <div class="unit-input-hold">
                             <Datepicker v-model="month" monthPicker :disabled="form.prodType == '0' ? false : true"></Datepicker>
                         </div>
-                        <button class="button add-unit-btn button-primary" :disabled="form.prodType == '0' ? false : true" @click.prevent="addToUnit">Add</button>
+                        <button class="button add-unit-btn button-primary" :disabled="form.prodType == '0' ? false : true" @click.prevent="addToUnit(this.unitForm.batch)">Add</button>
                     </div>
                     <span v-if="error.active" class="err">{{ error.message }}</span>
                     <div class="unit-added-wrap" v-if="units.length > 0">
@@ -114,7 +114,7 @@
                         </div>
                         <div style="margin-right:10px">
                             <label>Batch No.:</label>
-                            <input type="text" name="stockNumber" v-model="direct.batch" :disabled="form.prodType == '1' ? false : true" class="form-control" placeholder="Batch number">
+                            <input type="text" name="stockNumber" @blur="addToUnit(this.direct.batch)" v-model="direct.batch" :disabled="form.prodType == '1' ? false : true" class="form-control" placeholder="Batch number">
                         </div>
                         <div class="unit-input-hold" style="margin:0; padding: 10px 0">
                             <label>Expiry date:</label>
@@ -151,7 +151,7 @@
             <label>Supply Cost per unit:</label>
             <div class="form-row-col">
                 <div class="col-2 pl-0">
-                    <input v-model="form.cost" type="text" name="costPrice" class="form-control" placeholder="100">
+                    <input v-model="form.cost" type="number" name="costPrice" class="form-control" placeholder="100">
                 </div>
             </div>
         </div>
@@ -159,7 +159,7 @@
             <label>Selling price per unit:</label>
             <div class="form-row-col">
                 <div class="col-2">
-                    <input v-model="form.sellingPrice" type="text" name="sellingPrice" class="form-control" placeholder="100">
+                    <input v-model="form.sellingPrice" type="number" name="sellingPrice" class="form-control" placeholder="100">
                 </div>
                 <div class="col-2">
                     <div class="profit-row">
@@ -384,7 +384,7 @@ export default {
                         }
                         this.$store.commit('updateProduct', newData)
                         this.alertMsg('success', res.data.title, res.data.body)
-                        this.$store.commit('unsetMainHomeWidth')
+                        this.$store.commit('unsetMainHomeWidth', true)
                         this.$router.push({ name: this.$router.currentRoute.value.name, params: { id: res.data.product.id, name: res.data.product.name }, replace: true })
                     }).catch((err) => {
                         console.log(err.response)  
@@ -408,52 +408,58 @@ export default {
             }
             
         },
-        doUpload() {
-            
-        },
-        doUpdate() {
-
-        },
-        
-        deleteItem() {
-
-        },
         resetTempImg() {
             this.form.tempImage = ''
             this.imageUploaded = false
             this.doingProductUpload = false
             return
         },
-        addToUnit() {
-            console.log(this.units)
+        addToUnit(id) {
             if(this.error.active === true) {
                 this.error.active = false
             }
-            if(this.unitForm.batch !== ''){
-                const newUnit = { batch_no: this.unitForm.batch, expiry_date: this.month.year+'-'+ ('0'+parseInt(this.month.month+1)).slice(-2)}
-                if(this.units.length === 0) {
-                    this.units.push(newUnit)
-                    this.resetInput()
-                }
-                else if(this.units.length !== 0) {
-                    this.units.forEach(element => {
-                        if(element.batch_no === this.unitForm.batch) {
-                            this.duplicate = true
-                            this.error.active = true
-                            this.error.message = 'This batch number already exist'
-                            return false
-                        }
-                    });
-                    if(!this.duplicate) {
-                        this.units.push(newUnit)
-                        this.resetInput()
-                    }else{
-                        this.duplicate = false
-                    } 
-                }
-                
+            if(id !== '') {
+                axios.post(this.getHostname+'/api/check-unit?token='+this.getToken, {batch_no: id})
+                .then((res) => {
+                    console.log(res.data)
+                    if(res.data.status === 1){
+                        this.form.prodType == '0' ? this.doUnitLocalCheck() : ''
+                    }else if(res.data.status === 2){
+                        this.showUnitError()
+                    }
+                })
+                .catch((e) => {
+                    console.log(e.response)
+                })
             }
             
+        },
+        doUnitLocalCheck() {
+            const newUnit = { batch_no: this.unitForm.batch, expiry_date: this.month.year+'-'+ ('0'+parseInt(this.month.month+1)).slice(-2)}
+            if(this.units.length === 0) {
+                this.units.push(newUnit)
+                this.resetInput()
+            }
+            else if(this.units.length !== 0) {
+                this.units.forEach(element => {
+                    if(element.batch_no === this.unitForm.batch) {
+                        this.showUnitError()
+                        return false
+                    }
+                });
+                if(!this.duplicate) {
+                    this.units.push(newUnit)
+                    this.resetInput()
+                }else{
+                    this.duplicate = false
+                } 
+            }
+        },
+        showUnitError() {
+            this.duplicate = true
+            this.error.active = true
+            this.error.message = 'This batch number already exist'
+            return
         },
         resetInput() {
             this.unitForm.batch = ''

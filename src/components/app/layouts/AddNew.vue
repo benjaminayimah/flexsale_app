@@ -136,26 +136,7 @@ export default {
     }
     
 }
-.cancel-btn{
-    display: flex;
-    background-color: #ffffff;
-    height: 44px;
-    width: 44px;
-    border-radius: 50%;
-    border: none;
-    margin-left: -10px;
-    border: 1px solid transparent;
-    padding: 0;
-  //transition: 0.3s all;
-  &:hover{
-    background-color: $dark-light;
-  }
-  &:focus{
-      box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
-      border: 1px solid #0e142c;
-      background-color: #fff;
-  }
-}
+
 .form-wrap{
     padding: 20px 0 120px 0;
     width: 75%;

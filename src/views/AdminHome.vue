@@ -19,7 +19,7 @@
               <div id="left_add_new_pd" :class="{ 'desktop-mode': getDesktop}">
                 <div class="left-new-wrap flex-column" :class="{ 'jc' : getTablet }">
                   <div class="left-new-hold flex-column">
-                    <button class="flex-column rounded-btn-light" @click.prevent="$store.commit('getMainHomeWidth', 'product')">
+                    <button class="flex-column rounded-btn-light" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'product'})">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20.291 20.29">
                         <path d="M-4280.267-699.712a2.84,2.84,0,0,1-2.837-2.838v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a1.339,1.339,0,0,0,1.337,1.338h14.615a1.34,1.34,0,0,0,1.338-1.338v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a2.842,2.842,0,0,1-2.839,2.838Zm6.558-7.013v-10.717l-3.939,3.94a.751.751,0,0,1-1.061,0,.751.751,0,0,1,0-1.061l5.22-5.22a.748.748,0,0,1,.531-.219h.018a.745.745,0,0,1,.33.085h0l.012.006.007,0,.007,0,.01.006,0,0,.014.009h0a.762.762,0,0,1,.126.1l5.22,5.22a.751.751,0,0,1,0,1.061.748.748,0,0,1-.531.219.749.749,0,0,1-.53-.219l-3.939-3.94v10.718a.749.749,0,0,1-.749.749A.749.749,0,0,1-4273.709-706.725Z" transform="translate(4283.104 720.002)" fill="#566ff4"/>
                       </svg>
@@ -135,7 +135,6 @@
 <script>
 import AccountMenu from '../components/app/includes/AccountMenu.vue'
 import { mapGetters } from 'vuex'
-import { mapActions } from 'vuex'
 import MainMenu from '../components/app/includes/MainMenu.vue'
 import Logo from '../components/app/includes/Logo.vue'
 import MobNav from '../components/app/includes/MobNav.vue'
@@ -147,14 +146,14 @@ import DeleteModal from '../components/app/includes/DeleteModal.vue'
 export default {
   components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal },
     name: 'AdminHome',
-    computed: mapGetters(['getToken', 'getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight']),
+    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight']),
     data() {
       return {
         windowHeight: ''
       }
     },
     created() {
-      this.fetchUser()
+      this.$store.dispatch('getAuthUser')
       window.addEventListener('resize', this.windowSize )
       window.addEventListener('scroll', this.pageScroll)
       this.$store.commit('computeWindow')
@@ -165,15 +164,7 @@ export default {
     document.removeEventListener('scroll', this.pageScroll )
   },
   methods: {
-    ...mapActions({
-            user: 'getAuthUser'
-      }),
-      fetchUser(){
-            this.user(this.getToken)
-      },
-      
     windowSize() {
-      
       setTimeout(()=> {
         this.$store.commit('computeWindow')
         this.windowDimension() 
@@ -181,9 +172,10 @@ export default {
         if(elem.length > 0){
             return this.$store.commit('setDynamicFloatingDiv', elem[0])
         }
-        this.getAddingProduct.status ? this.$store.commit('getMainHomeWidth') : ''
+        const payload = { mode: 'me', type: 'me'}
+        this.getAddingProduct.status ? this.$store.commit('getMainHomeWidth', payload) : ''
       }, 100)
-      
+      //'getMainHomeWidth', payload = { mode: 'add', type: 'product'}
       //console.log(document.getElementById('app_section').offsetWidth)
     },
     pageScroll(){
@@ -297,7 +289,7 @@ main{
   min-width: 300px
 }
 .main-body{
-    min-height: 100vh;
+    //min-height: 100vh;
 }
 .main-body-content{
   height: 100%;

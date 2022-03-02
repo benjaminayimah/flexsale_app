@@ -8,14 +8,14 @@
                     <i></i>
                 </button> -->
                 <div class="card-content text-overflow-ellipsis">{{ tag.name }}</div>
-                <span class="text-overflow-ellipsis">{{ newFilter.length }} Items</span>
+                <span class="text-overflow-ellipsis">{{ filteredItems.length }} Items</span>
             </div>
         </router-link>
         <div class="card-bottom">
             <div class="bottom-top">
                 <div class="img-col">
-                    <div class="img-holder bg-img" v-for="img in newFilter.slice(0, 5)" :key="img.id" :style="img.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/'+img.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
-                    <div class="img-holder more" v-if="newFilter.length > 5">+{{ newFilter.length - 5}}</div>
+                    <div class="img-holder bg-img" v-for="img in filteredItems.slice(0, 5)" :key="img.id" :style="img.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/'+img.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
+                    <div class="img-holder more" v-if="filteredItems.length > 5">+{{ filteredItems.length - 5}}</div>
                 </div>
                 <!-- <div class="add-col">
                     <button class="rounded-btn-light">
@@ -32,24 +32,13 @@
 import { mapGetters } from 'vuex'
 export default {
     name: 'TagItem',
-    computed: mapGetters(['getHostname', 'getUser', 'getDefaultImage']),
     props: ['filters', 'tag'],
-    data() {
-        return {
-            newFilter: []
+    computed: {
+        ...mapGetters(['getHostname', 'getUser', 'getDefaultImage']),
+        filteredItems: function (){
+            return this.filters.filter(item => item.tag_id == this.tag.id)
         }
     },
-    methods: {
-        filterThisItem() {
-            this.newFilter = this.filters.filter(filter => filter.tag_id == this.tag.id);
-        }
-    },
-    created() {
-        this.filterThisItem()
-    },
-    beforeUpdate() {
-        this.filterThisItem()
-    }
 }
 </script>
 <style scoped lang="scss">

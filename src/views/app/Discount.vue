@@ -2,12 +2,12 @@
     <h1 id="page_title">{{ title }}</h1>
     <div class="main-page-body">
         <div class="add-wrap">
-            <button class="button button-primary" @click.prevent="$store.commit('getMainHomeWidth', 'discount')">
+            <button class="button button-primary" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'discount'})">
                 <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 20.582 20.582">
                     <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff">
                     </path>
                 </svg>
-                New Discount
+                <span>Create new</span>
             </button>
         </div>
         <ul>
@@ -49,7 +49,7 @@ ul{
     justify-content: flex-end;
     margin-bottom: 20px;
     button {
-        height: 54px;
+        height: 52px;
         svg{
             margin-right: 5px;
         }
