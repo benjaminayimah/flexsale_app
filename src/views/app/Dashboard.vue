@@ -354,22 +354,7 @@ export default {
 .dash-section-holder{
     margin: 40px 0;
 }
-.dashboard-title-wrap{
-    padding: 0 20px;
-    margin-bottom: 26px;
-    .dashboard-title{
-        font-weight: 700;
-        font-size: 1.2rem;
-    }
-    .see-all{
-        font-weight: 600;
-        color: $primary-color;
-        text-decoration: none;
-        &:hover{
-            text-decoration: underline;
-        }
-    }
-}
+
 .activity-wrap{
     padding: 0 20px;
     .act-hold{

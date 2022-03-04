@@ -91,7 +91,7 @@ export default {
             this.$store.dispatch('fetchThisProduct', this.$route.params.id)
         },
         dateTime(value) {
-        return moment(value).format('MMM DD, YYYY hh:mm a')
+            return moment(value).format('MMM DD, YYYY hh:mm a')
         },
         doMenu() {
             if(this.toggleMenu == false) {

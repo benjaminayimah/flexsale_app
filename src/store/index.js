@@ -63,7 +63,12 @@ export default createStore({
     {id: 3, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
     {id: 4, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
     {id: 5, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-  ]
+  ],
+  todaysales: [
+    {id: 1, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+    {id: 2, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+
+  ],
 
   },
   mutations: {
@@ -544,7 +549,8 @@ export default createStore({
     getSuppliers: (state) => state.suppliers,
     getStats: (state) => state.stats,
     getActivities: (state) => state.activities,
-    getTempArrayCopy: (state) => state.tempArrayCopy
+    getTempArrayCopy: (state) => state.tempArrayCopy,
+    getTodaysales: (state) => state.todaysales,
     
 
 

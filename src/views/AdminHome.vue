@@ -104,7 +104,7 @@
               <div class="right-header">
                 <div class="header-wrap">
                   <div class="right-header-hold">
-                    <div class="header-content">
+                    <div class="header-content-2">
                       <div class="form-row" id="search_hold">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
                           <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"/>
@@ -115,9 +115,9 @@
                   </div>
                 </div>
               </div>
-              <div class="main-body">
+              <div class="main-body" id="main-right-wrap">
                 <div class="main-body-content">
-                  Right
+                  <right-body-content />
                 </div>
               </div>
             </div>
@@ -143,8 +143,9 @@ import BackButton from '../components/app/includes/BackButton.vue'
 import Alerts from '../components/app/includes/Alerts.vue'
 import Loader from '../components/app/includes/Loader.vue'
 import DeleteModal from '../components/app/includes/DeleteModal.vue'
+import RightBodyContent from '../components/app/layouts/RightBodyContent.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent },
     name: 'AdminHome',
     computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight']),
     data() {
@@ -231,7 +232,6 @@ $tablet: 100px;
   padding: 15px 0 ;
   width: 70px;
 }
-
 
 section{
   display: flex;
@@ -350,6 +350,16 @@ header, .right-header{
   justify-content: space-between;
   width: 100%;
   padding: 0 30px;
+  height: 80px;
+  align-items: center;
+  overflow: hidden;
+}
+.header-content-2{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 15px;
   height: 80px;
   align-items: center;
   overflow: hidden;
