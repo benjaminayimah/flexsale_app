@@ -115,7 +115,7 @@
                   </div>
                 </div>
               </div>
-              <div class="main-body" id="main-right-wrap">
+              <div class="main-body">
                 <div class="main-body-content">
                   <right-body-content />
                 </div>
@@ -127,6 +127,9 @@
         
     </main>
     <delete-modal />
+    <div class="flex" id="sale_holder" v-if="getSale.active">
+        <new-sale v-for="newsale in getSale.array" :key="newsale.id" v-bind:sale="getSale" />
+      </div>
 </section>
     
     
@@ -144,10 +147,11 @@ import Alerts from '../components/app/includes/Alerts.vue'
 import Loader from '../components/app/includes/Loader.vue'
 import DeleteModal from '../components/app/includes/DeleteModal.vue'
 import RightBodyContent from '../components/app/layouts/RightBodyContent.vue'
+import NewSale from '../components/app/includes/NewSale.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale },
     name: 'AdminHome',
-    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight']),
+    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale']),
     data() {
       return {
         windowHeight: ''

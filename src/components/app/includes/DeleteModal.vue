@@ -82,11 +82,17 @@ export default {
         }
         .cancel-btn{
             margin-top: 10px;
+            margin-left: 0;
             background-color: transparent;
             color: $primary-color;
             font-weight: 500;
             &:hover {
                 text-decoration: underline;
+            }
+            &:active {
+                border: 1px solid $primary-color;
+                box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+                background-color: $primary-light;
             }
         }
     }

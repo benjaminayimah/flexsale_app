@@ -32,7 +32,10 @@ export default createStore({
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
     addingProduct: { status: false, width: '', product: false, tag: false, discount: false},
+    sale: { active: false, minimize: false, maximize: false, array: []
+    },
 
+    submitting: true,
     stats: [
       {id: 1, index: 0, count: '1,200', title: 'Products'},
       {id: 2, index: 1, count: '200', title: 'Low stocks'},
@@ -67,7 +70,9 @@ export default createStore({
   todaysales: [
     {id: 1, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
     {id: 2, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-
+    // {id: 3, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+    // {id: 4, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+    // {id: 5, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
   ],
 
   },
@@ -307,6 +312,7 @@ export default createStore({
        state.tempDataContainer.array = payload.array
        state.tempDataContainer.data = payload.data
        state.tempDataContainer.active = true
+       state.submitting = false
     },
     clearTempDataContainer(state) {
       state.tempDataContainer.array = []
@@ -362,6 +368,21 @@ export default createStore({
       payload.classList.remove('this-will-change')
 
     },
+    addToSale(state) {
+      const payload = { id: 1, title: 'New sale: 001'}
+      state.sale.array.push(payload)
+      state.sale.active = true
+    },
+    closeSale(state) {
+      state.sale.array = []
+      state.sale.active = false
+      state.sale.maximize = false
+      state.sale.minimize = false
+    },
+    maximizeSale(state) {
+      state.sale.maximize = !state.sale.maximize
+    }
+
   },
   actions: {
     //authentication && Logout
@@ -551,6 +572,11 @@ export default createStore({
     getActivities: (state) => state.activities,
     getTempArrayCopy: (state) => state.tempArrayCopy,
     getTodaysales: (state) => state.todaysales,
+    getSale: (state) => state.sale,
+
+
+
+    getSubmitting: (state) => state.submitting
     
 
 

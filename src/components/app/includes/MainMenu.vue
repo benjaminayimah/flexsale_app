@@ -151,6 +151,15 @@ ul{
   }
 li{
     list-style-type: none;
+    position: relative;
+    &:hover a{
+        background-color: $dark-light;
+    }
+    &:hover label{
+        left: 64px;
+        visibility: visible;
+        opacity: 1;
+    }
 }
 li a {
     display: flex;
@@ -162,13 +171,10 @@ li a {
     font-weight: 500;
     font-size: 1.15rem;
     line-height: 22px;
-    transition: 0.2s linear all;
+    transition: 0.2s linear background-color;
     position: relative;
     align-items: center;
     height: 62px;
-}
-li:hover a{
-    background-color: $dark-light;
 }
 li span {
 margin-left: 20px;
@@ -181,7 +187,17 @@ li svg path {
 li label{
     font-size: 0.8rem;
     text-align: center;
-    display: none;
+    position: absolute;
+    top: 0;
+    padding: 15px  20px;
+    box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
+    background-color: $white-color;
+    border-radius: 18px;
+    left: 50px;
+    visibility: hidden;
+    transition: 0.2s linear all;
+    opacity: 0;
+
 }
 .more{
     width: 220px;

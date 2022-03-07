@@ -63,7 +63,7 @@
                     <ul v-if="getTempContainer.array.length > 0">
                         <selected-tag-row v-for="checked in getTempContainer.array" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="false" />
                     </ul>
-                     <div v-else class="flex-col empty-state">
+                     <div v-else-if="getSubmitting === false && getTempContainer.array.length < 1" class="flex-col empty-state">
                          <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 204 204">
                             <g transform="translate(60.818 60.818)">
                                 <path  d="M102,0A102,102,0,1,1,0,102,102,102,0,0,1,102,0Z" transform="translate(-60.818 -60.818)" fill="#d7dcfa"/>
@@ -93,7 +93,7 @@ import SelectedTagRow from '../../components/app/includes/SelectedTagRow.vue'
 export default {
   components: { SelectedTagRow },
     name: 'DetailedDiscount',
-    computed: mapGetters(['getToken', 'getHostname', 'getTempContainer', 'getCurrency']),
+    computed: mapGetters(['getToken', 'getHostname', 'getTempContainer', 'getCurrency', 'getSubmitting']),
     data() {
         return {
             

@@ -69,10 +69,10 @@ li:last-child a{
     }
     
 }
-#main-right-wrap{
+#right_top{
   position: sticky;
   -webkit-position: sticky;
-  top: -10px;
+  top: 3px;
 }
 .dashboard-title-wrap{
   padding: 0 20px;
@@ -118,6 +118,7 @@ ul{
 .mb-0{
   margin-bottom: 0 !important;
 }
+
 #form_submit_btn_holder{
   bottom: 0; 
   position: fixed; 
@@ -309,6 +310,11 @@ button{
   display: flex;
   justify-content: flex-end;
 }
+.flex-space-between{
+  justify-content: space-between;
+  display: flex;
+}
+
 .flex-row-js{
   display: flex;
   flex-direction: row;

@@ -41,7 +41,7 @@
                                 </button>
                             </div>
                             <ul>
-                                <li @click.prevent="doMenu()"><a href="javascript: void" @click.prevent="$store.commit('getMainHomeWidth', 'product')">Edit product</a></li>
+                                <li @click.prevent="doMenu()"><a href="javascript: void" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product'})">Edit product</a></li>
                                 <li><a href="javascript: void">Update stock</a></li>
                                 <li @click.prevent="doMenu()"><a href="javascript: void" @click.prevent="$store.commit('setDeleteModal', { id: $route.params.id, type: 'product' } )">Delete</a></li>
                             </ul>
