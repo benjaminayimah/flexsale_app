@@ -114,7 +114,7 @@ export default {
   props: ['sale'],
     data() {
         return {
-            preview: true,
+            preview: false,
             thisSale: [
                 {id: 1, name: 'Milk', qty: 3, price: '20'},
                 {id: 2, name: 'Oil', qty: 1, price: '30'},
