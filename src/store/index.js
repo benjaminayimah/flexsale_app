@@ -380,7 +380,16 @@ export default createStore({
       state.sale.minimize = false
     },
     maximizeSale(state) {
+      if(state.sale.minimize){
+        state.sale.minimize = false
+      }
       state.sale.maximize = !state.sale.maximize
+    },
+    minimizeSale(state) {
+      if(state.sale.maximize) {
+        state.sale.maximize = false
+      }
+      state.sale.minimize = !state.sale.minimize
     }
 
   },

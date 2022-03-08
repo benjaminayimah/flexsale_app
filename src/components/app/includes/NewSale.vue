@@ -5,7 +5,7 @@
             <div class="header flex-row-js">
                 <div class="title">New sale: 001</div>
                 <div class="flex">
-                    <button class="menu-toggle-btn">
+                    <button class="menu-toggle-btn" @click.prevent="$store.commit('minimizeSale')">
                         <svg xmlns="http://www.w3.org/2000/svg" height="1.5" viewBox="0 0 17.998 1.636">
                             <path d="M18,.636H0V-1H18Z" transform="translate(0 1)" fill="#fff"/>
                         </svg>
@@ -22,7 +22,7 @@
                     </button>
                 </div>
             </div>
-            <div class="body">
+            <div class="body" v-if="!sale.minimize" >
                 <div class="flex-col flex-space-between">
                     <div class="sale-main-body">
                         <div class="sales-top">
@@ -225,7 +225,7 @@ export default {
     .header{
         border-top-right-radius: 18px;
         border-top-left-radius: 18px;
-        background-color: $gray-color;
+        background-color: $dark;
         color: #ffffff;
         //height: 40px;
         padding: 10px 20px;
@@ -283,9 +283,9 @@ export default {
 .sale-normal{
     bottom: 0;
     right: 0;
-    width: 600px;
+    width: 528px;
     .body{
-        height: 590px;
+        height: 690px;
     }
 }
 .sale-maximize{

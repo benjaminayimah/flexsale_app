@@ -75,7 +75,7 @@ export default {
     color: $primary-color;
 }
 .button-primary{
-    height: 42px;
+    height: 40px;
     border-radius: 12px;
 }
 
