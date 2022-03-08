@@ -7,14 +7,14 @@
                     <div class="selection-header">
                         <div class="header-holder">
                             <div class="flex align-items-center justify-between">
-                                
-                                <div class="flex"><span class="count">{{ getTempContainer.array.length }}</span><span>items selected</span></div>
-                                <!-- <button class="button button-primary" @click.prevent="$store.commit('doSelectionSheet')">Done</button> -->
                                 <button @click.prevent="$store.commit('doSelectionSheet')" class="button button-secondary cancel-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
                                         <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
                                     </svg>
                                 </button>
+                                <div class="flex"><span class="count">{{ getTempContainer.array.length }}</span><span>items selected</span></div>
+                                <button class="button button-primary" @click.prevent="$store.commit('doSelectionSheet')">Done</button>
+                                
                             </div>
                         </div>
                     </div>

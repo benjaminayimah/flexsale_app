@@ -6,7 +6,7 @@ $dark: #0e142c;
 $gray-color: #7e8596;
 $gray-light: #D4D8DE;
 $dark-light: #e9ebf0;
-$accent-color: #1dbef4;
+$accent-color: #ffab23;
 $white-color: #ffffff;
 $danger: #e63232;
 $success: #20C647;
@@ -243,6 +243,7 @@ button{
   background-color:$button-disabled;
   &:hover {
     background-color: $button-disabled;
+    cursor: default
   }
 }
 .button-alt{

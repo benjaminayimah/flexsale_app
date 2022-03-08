@@ -12,7 +12,7 @@
                     <div class="flex-row-st">
                         <label>Price:</label>
                         <div class="itm-price" :class="{ 'has-discount': product.discount !== null && product.selling_price != 0 }"><span>{{ getCurrency }}</span>{{ product.selling_price }}</div>
-                        <div class="discount-price" v-if="product.discount !== null  && product.selling_price != 0 && computePrice !== false"><span>{{ getCurrency }}</span><span>{{ computePrice }}</span></div>
+                        <div class="discount-price" v-if="product.discount !== null  && product.selling_price != 0 && computePrice !== false"><span>{{ getCurrency }}</span><span>{{ computePrice.toFixed(2) }}</span></div>
                     </div>
                     <div class="flex-row-st">
                         <div class="flex-row-st">

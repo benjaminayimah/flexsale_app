@@ -9,7 +9,7 @@
                     <div class="flex">
                         <label>Price:</label>
                         <div :class="{ 'has-discount': checkedProduct.discount !== null && checkedProduct.selling_price != 0}"><span>{{ getCurrency }}</span>{{ checkedProduct.selling_price }}</div>
-                        <div class="discount-price" v-if="checkedProduct.discount !== null && checkedProduct.selling_price != 0"><span>{{ getCurrency }}</span><span>{{ computePrice }}</span></div>
+                        <div class="discount-price" v-if="checkedProduct.discount !== null && checkedProduct.selling_price != 0"><span>{{ getCurrency }}</span><span>{{ computePrice.toFixed(2) }}</span></div>
                     </div>
                     <div><label>Stock:</label><span>{{ checkedProduct.stock }}</span></div>
 

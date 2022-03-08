@@ -43,7 +43,7 @@
         <div v-if="getTempContainer.data.discount !== null" class="flex has-discount-wrap">
             <div class="item-value" v-if="this.getTempContainer.data.selling_price != 0">
                 <span class="currency">{{ getCurrency }}</span>
-                <div>{{ computePrice }}</div>
+                <div>{{ computePrice.toFixed(2) }}</div>
             </div>
             <!-- <div>{{ computeDiscount[0].name }}</div> -->
             <div class="flex discount-value-wrap">
@@ -69,7 +69,7 @@
         <div class="item-value">
             <span class="currency">{{ getCurrency }}</span>
             <span v-if="getTempContainer.data.discount !== null">{{ (computePrice - getTempContainer.data.cost).toFixed(2) }}</span>
-            <span v-else>{{ getTempContainer.data.selling_price - getTempContainer.data.cost }}</span>
+            <span v-else>{{ (getTempContainer.data.selling_price - getTempContainer.data.cost).toFixed(2) }}</span>
         </div>
     </div>
     <div class="flex lign-items-center item-row" v-if="getTempContainer.data.selling_price && getTempContainer.data.cost">
@@ -128,10 +128,6 @@ export default {
             profit: ''
             
         }
-    },
-    created() {
-        console.log(this.getTempContainer)
-        console.log(this.computeDiscount)
     }
 }
 </script>

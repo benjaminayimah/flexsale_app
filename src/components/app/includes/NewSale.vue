@@ -27,27 +27,30 @@
                     <div class="sale-main-body">
                         <div class="sales-top">
                             <form action="">
-                                <div class="form-row product-search flex align-items-center">
-                                    <svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
-                                        <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"></path>
-                                    </svg>
-                                    <input type="text" name="searchField" v-model="searchInput" class="form-control" placeholder="Search for product...">
-                                    <button class="button button-secondary submit-btn" @click.prevent="doSearch">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                                            <path  d="M12,4,10.59,5.41,16.17,11H4v2H16.17l-5.58,5.59L12,20l8-8Z" transform="translate(-4 -4)"/>
+                                <div class="form-row product-search">
+                                    <label class="input-label flex align-items-center">
+                                        <svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
+                                            <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"></path>
                                         </svg>
-                                    </button>
+                                        <input type="text" name="searchField" v-model="searchInput" class="form-control" placeholder="Search for product by Batch number...">
+                                        <button class="button button-secondary submit-btn" @click.prevent="doSearch">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                <path  d="M12,4,10.59,5.41,16.17,11H4v2H16.17l-5.58,5.59L12,20l8-8Z" transform="translate(-4 -4)"/>
+                                            </svg>
+                                        </button>
+                                    </label>
+                                    
                                 </div>
                             </form>
-                            <div v-show="preview" class="preview-hold flex-row-js">
+                            <div v-for="result in searchResult" :key="result.id" class="preview-hold flex-row-js">
                                 <div class="flex align-items-center">
-                                    <div class="prod-image bg-img"></div>
-                                    <div class="flex-col align-items-center sale-captions">
-                                        <div class="item-value">Product</div>
-                                        <div><span class="currency">{{ getCurrency }}</span><span class="value">90</span></div>
+                                    <div class="prod-image bg-img" :style="result.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+result.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
+                                    <div class="flex-col sale-captions">
+                                        <div class="item-value text-overflow-ellipsis">{{ result.name }}</div>
+                                        <div><span class="currency">{{ getCurrency }}</span><span class="value">{{ computePrice(result.selling_price, result.discount).toFixed(2) }}</span></div>
                                     </div>
                                 </div>
-                                <button class="button">
+                                <button class="button" @click.prevent="addToSale">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 12.429 14.5">
                                         <path  d="M18.552,12.874l-5.179,5.179a1.036,1.036,0,0,1-1.465,0L6.73,12.874a1.036,1.036,0,0,1,1.465-1.465l3.411,3.411V4.892a1.036,1.036,0,0,1,2.071,0V14.82l3.411-3.411a1.036,1.036,0,0,1,1.465,1.465Z" transform="translate(-6.427 -3.856)" fill="#566ff4"/>
                                     </svg>
@@ -65,15 +68,23 @@
                             </thead>
                             <tbody>
                                 <tr v-for="item in thisSale" :key="item.id">
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.qty }}</td>
-                                    <td class="flex flex-end align-items-center">
-                                        <span>{{ item.price }}</span>
-                                        <button @click.prevent="removeItem(item.id)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 14 14">
-                                                <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)"></path>
-                                            </svg>
-                                        </button>
+                                    <td>
+                                        <div class="flex">
+                                            <div class="text-overflow-ellipsis" style="max-width:50%">{{ item.name }}</div>
+                                            <div class="at-price">@{{ getCurrency }}{{ item.unit_price.toFixed(2) }}</div>
+                                        </div>
+                                        <!-- <span class="text-overflow-ellipsis">{{ item.name }}</span><span class="at-price">@{{ getCurrency }}{{ item.unit_price.toFixed(2) }}</span> -->
+                                    </td>
+                                    <td><span class="x">x</span>{{ item.qty }}</td>
+                                    <td>
+                                        <div class="flex flex-end align-items-center">
+                                            <span>{{ item.price.toFixed(2) }}</span>
+                                            <button @click.prevent="removeItem(item.id)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 14 14">
+                                                    <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -89,10 +100,10 @@
                             <div class="flex total-hold">
                                 <label>Total Amount:</label>
                                 <span class="currency">{{ getCurrency }}</span>
-                                <span class="sale-total">{{ total }}</span>
+                                <span class="sale-total">{{ computeTotal.toFixed(2) }}</span>
                             </div>
                         </div>
-                        <button class="button button-primary add-sale-btn" @click.prevent="$store.commit('addToSale')">
+                        <button class="button button-primary add-sale-btn" @click.prevent="doSubmitSale" :class="{ 'button-disabled' : thisSale.length < 1 }" :disabled="thisSale.length < 1 ? true : false">
                             <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 12.229 21.624">
                                 <path d="M12.9,12.49c-2.727-.709-3.6-1.442-3.6-2.583,0-1.309,1.213-2.222,3.244-2.222,2.138,0,2.931,1.021,3,2.523H18.2a4.789,4.789,0,0,0-3.856-4.577V3h-3.6V5.595c-2.331.5-4.2,2.018-4.2,4.337,0,2.775,2.295,4.157,5.646,4.961,3,.721,3.6,1.778,3.6,2.9,0,.829-.589,2.15-3.244,2.15-2.475,0-3.448-1.105-3.58-2.523H6.32c.144,2.631,2.114,4.109,4.421,4.6v2.607h3.6V22.041c2.343-.444,4.2-1.8,4.2-4.265C18.549,14.365,15.63,13.2,12.9,12.49Z" transform="translate(-6.32 -3)" fill="#fff"/>
                             </svg>
@@ -105,32 +116,99 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+
 import TertiaryBackdrop from './TertiaryBackdrop.vue'
 import { mapGetters } from 'vuex'
 export default {
     name: 'NewSale',
   components: { TertiaryBackdrop },
-  computed: mapGetters(['getCurrency']),
+  computed: {
+      ...mapGetters(['getCurrency', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage']),
+      computeTotal() {
+          return this.thisSale.reduce((acc, item) => acc + item.price, 0);
+      }
+  },
   props: ['sale'],
     data() {
         return {
-            preview: false,
-            thisSale: [
-                {id: 1, name: 'Milk', qty: 3, price: '20'},
-                {id: 2, name: 'Oil', qty: 1, price: '30'},
-                {id: 3, name: 'Vegetable', qty: 4, price: '50'}
-            ],
-            searchInput: '',
-            total: '400'
+            searchResult: [],
+            thisSale: [],
+            searchInput: ''
         }
     },
     methods: {
         removeItem(id) {
             this.thisSale = this.thisSale.filter(filter => filter.id != id)
         },
-        doSearch() {
-            //const thisProduct = this.getProducts.filter(product ==)
+        async doSearch() {
+            const item = this.searchInput
+            if(item != '') {
+                try {
+                    const res = await axios.post(this.getHostname+'/api/fetch-item?token='+this.getToken, { item: item })
+                    this.searchResult = res.data.item
+                } catch (e) {
+                    console.log(e.response)
+                }
+            }
+        },
+        checkUnitQty(id) {
+            if(this.thisSale.length > 0) {
+                let i = this.thisSale.filter(item => item.prod_id == id)
+                if(i.length > 0) {
+                    this.thisSale = this.thisSale.filter(item => item.prod_id != id)
+                    return i[0].qty
+                }
+                else
+                return 0
+            }else{
+                return 0
+            }
+        },
+        computePrice(price, discount) {
+            if(discount !== null && this.getDiscounts.length > 0) {
+                let discount_price = this.getDiscounts.filter(dis => dis.id == discount)
+                if(discount_price[0].percentage == 1) {
+                    let newPrice = Number(price) - ((discount_price[0].value)/100) * price
+                    return Number(newPrice)
+                }else{
+                    let newPrice = Number(price) - Number(discount_price[0].value)
+                    return Number(newPrice)
+                }
+            }else{
+                return Number(price)
+            }
+        },
+        addToSale() {
+            let items = this.searchResult
+            for (let i = 0; i < items.length; i++) {
+                const element = items[i];
+                const qty = parseInt(this.checkUnitQty(element.product_id) + 1)
+                const price = this.computePrice(element.selling_price, element.discount)
+                let unitTotal = price * qty
+                const payload = {
+                    id: element.id, image: element.image, qty: qty, name: element.name, unit_price: Number(price), price: Number(unitTotal), og_price: element.selling_price, prod_id: element.product_id, discount: element.discount, batch_no: element.batch_no
+                }
+                this.thisSale.push(payload)
+            }
+            this.searchResult = []
+            this.searchInput = ''
+            
+        },
+        doSubmitSale() {
+            if(this.thisSale.length > 0) {
+                let date = new Date()
+                const receipt = '' + date.getFullYear() + parseInt(date.getMonth()+1) + date.getDate()  + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds()
+                axios.post(this.getHostname+'/api/perform-sale?token='+this.getToken,
+                { items: this.thisSale, total: this.computeTotal, receipt: receipt })
+                .then((res) => {
+                    console.log(res.data)
+                }).catch((err) => {
+                    console.log(err.response) 
+                }) 
+            }
         }
+
     }
 }
 </script>
@@ -147,7 +225,7 @@ export default {
     .header{
         border-top-right-radius: 18px;
         border-top-left-radius: 18px;
-        background-color: $dark;
+        background-color: $gray-color;
         color: #ffffff;
         //height: 40px;
         padding: 10px 20px;
@@ -177,12 +255,12 @@ export default {
         }
         .menu-toggle-btn{
             transform: rotate(90deg);
+            i{
+                height: 3px;
+                width: 3px;
+            }
         }
-        label{
-            margin: 0 10px 0 0;
-            font-size: inherit;
-            font-weight: 500;
-        }
+        
         .sale-total{
             font-weight: 700;
             font-size: inherit;
@@ -194,6 +272,11 @@ export default {
         .total-hold{
             padding: 0 32px;
             font-size: 18px;
+            label{
+                margin: 0 10px 0 0;
+                font-size: inherit;
+                font-weight: 500;
+            }
         }
     }
 }
@@ -216,10 +299,16 @@ export default {
     }
 }
 .product-search{
-    input{
-        border-radius: 0.9rem;
-        background-color: $white-color;
-        padding: 10px 20px 10px 50px;
+    .form-control {
+        border: 1px solid #ffffff;
+        &:hover {
+            border: 1px solid $primary-color;
+        }
+        &:focus {
+            box-shadow: none;
+            border: 1px solid $primary-color;
+        }
+
     }
     .search-svg{
         position: absolute;
@@ -236,11 +325,28 @@ export default {
         padding: 0;
         border-radius: 20px;
         border: none;
+        background-color: transparent;
         path{
             fill: $primary-color;
         }
         &:hover{
             background-color: $primary-light;
+        }
+        &:active{
+            border: 1px solid $primary-color;
+            background-color: $white-color;
+        }
+    }
+    .input-label{
+        input{
+            border-radius: 0.9rem;
+            background-color: $dark-light;
+            padding: 10px 20px 10px 50px;
+        }
+        &:hover {
+            path{
+                fill: $primary-color;
+            }
         }
     }
     
@@ -282,7 +388,7 @@ table{
             text-align: left;
             padding: 12px 0;
             &:first-child{
-                width: 50%;
+                width: 60%;
             }
             &:nth-child(2){
                 text-align: center;
@@ -297,9 +403,7 @@ table{
 }
 .sales-top{
     position: relative;
-    
     border-radius: 14px;
-    
     margin-bottom: 20px;
     
     .preview-hold{
@@ -312,14 +416,14 @@ table{
        .prod-image{
             height: 55px;
             width: 55px;
-            background-color: $dark;
             border-radius: 10px;
         }
        button{
            color: $primary-color;
            background-color: transparent;
            font-weight: 700;
-           height: 50px;
+           height: 55px;
+           
            svg{
                margin-right: 4px;
            }
@@ -336,5 +440,11 @@ table{
        }
     }
 }
-
+.at-price{
+    color: $gray-color;
+    margin-left: 5px;
+}
+.x{
+    color: $gray-color;
+}
 </style>
