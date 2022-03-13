@@ -32,7 +32,7 @@
                                         <svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
                                             <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"></path>
                                         </svg>
-                                        <input type="text" name="searchField" v-model="searchInput" class="form-control" placeholder="Search for product by Batch number...">
+                                        <input type="text" name="searchField" v-model="searchInput" @click="hideError" class="form-control" placeholder="Search for product by Batch number...">
                                         <button class="button button-secondary submit-btn" @click.prevent="doSearch">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                                                 <path  d="M12,4,10.59,5.41,16.17,11H4v2H16.17l-5.58,5.59L12,20l8-8Z" transform="translate(-4 -4)"/>
@@ -42,12 +42,22 @@
                                     
                                 </div>
                             </form>
+                            <transition name="fade">
+                                <div v-if="error.active" class="error-alert flex-row-js">
+                                    <span>{{ error.msg }}</span>
+                                    <button @click.prevent="hideError" class="alert-close flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 14 14">
+                                            <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#C18383"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </transition>
                             <div v-for="result in searchResult" :key="result.id" class="preview-hold flex-row-js">
                                 <div class="flex align-items-center">
                                     <div class="prod-image bg-img" :style="result.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+result.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                                     <div class="flex-col sale-captions">
                                         <div class="item-value text-overflow-ellipsis">{{ result.name }}</div>
-                                        <div><span class="currency">{{ getCurrency }}</span><span class="value">{{ computePrice(result.selling_price, result.discount).toFixed(2) }}</span></div>
+                                        <div><span class="currency">{{ getCurrency }}</span><span class="value">{{ Intl.NumberFormat('en-US').format(computePrice(result.selling_price, result.discount).toFixed(2)) }}</span></div>
                                     </div>
                                 </div>
                                 <button class="button" @click.prevent="addToSale">
@@ -71,14 +81,14 @@
                                     <td>
                                         <div class="flex">
                                             <div class="text-overflow-ellipsis" style="max-width:50%">{{ item.name }}</div>
-                                            <div class="at-price">@{{ getCurrency }}{{ item.unit_price.toFixed(2) }}</div>
+                                            <div class="at-price">@{{ getCurrency }}{{ Intl.NumberFormat('en-US').format(item.unit_price.toFixed(2)) }}</div>
                                         </div>
                                         <!-- <span class="text-overflow-ellipsis">{{ item.name }}</span><span class="at-price">@{{ getCurrency }}{{ item.unit_price.toFixed(2) }}</span> -->
                                     </td>
                                     <td><span class="x">x</span>{{ item.qty }}</td>
                                     <td>
                                         <div class="flex flex-end align-items-center">
-                                            <span>{{ item.price.toFixed(2) }}</span>
+                                            <span>{{ Intl.NumberFormat('en-US').format(item.price.toFixed(2)) }}</span>
                                             <button @click.prevent="removeItem(item.id)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 14 14">
                                                     <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)"></path>
@@ -100,7 +110,7 @@
                             <div class="flex total-hold">
                                 <label>Total Amount:</label>
                                 <span class="currency">{{ getCurrency }}</span>
-                                <span class="sale-total">{{ computeTotal.toFixed(2) }}</span>
+                                <span class="sale-total">{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</span>
                             </div>
                         </div>
                         <button class="button button-primary add-sale-btn" @click.prevent="doSubmitSale" :class="{ 'button-disabled' : thisSale.length < 1 }" :disabled="thisSale.length < 1 ? true : false">
@@ -127,14 +137,34 @@ export default {
       ...mapGetters(['getCurrency', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage']),
       computeTotal() {
           return this.thisSale.reduce((acc, item) => acc + item.price, 0);
-      }
-  },
-  props: ['sale'],
+      },
+    //   computedItems() {
+    //       if(this.thisSale.length > 0) {
+    //           let i = this.thisSale.filter(item => item.prod_id == id)
+    //           if(i.length > 0) {
+    //                 this.thisSale = this.thisSale.filter(item => item.prod_id != id)
+    //                 return i[0].qty
+    //             }
+              
+    //         }
+    //     },
+    //     checkUnitQty(id) {
+    //         if(this.thisSale.length > 0) {
+    //             let i = this.thisSale.filter(item => item.prod_id == id)
+    //             if(i.length > 0) {
+    //                 this.thisSale = this.thisSale.filter(item => item.prod_id != id)
+    //                 return i[0].qty
+    //             }
+    //         }
+    //     },
+    },
+    props: ['sale'],
     data() {
         return {
             searchResult: [],
             thisSale: [],
-            searchInput: ''
+            searchInput: '',
+            error: { active: false, msg: ''}
         }
     },
     methods: {
@@ -146,25 +176,37 @@ export default {
             if(item != '') {
                 try {
                     const res = await axios.post(this.getHostname+'/api/fetch-item?token='+this.getToken, { item: item })
+                    if(res.data.item.length < 1 ){
+                        this.showError('Item not found')
+                    }
                     this.searchResult = res.data.item
                 } catch (e) {
-                    console.log(e.response)
+                    this.showError(e.response.data.error)
                 }
             }
         },
-        checkUnitQty(id) {
-            if(this.thisSale.length > 0) {
-                let i = this.thisSale.filter(item => item.prod_id == id)
-                if(i.length > 0) {
-                    this.thisSale = this.thisSale.filter(item => item.prod_id != id)
-                    return i[0].qty
-                }
-                else
-                return 0
-            }else{
-                return 0
-            }
+        showError(msg) {
+            this.error.active = true
+            this.error.msg = msg
+            return
         },
+        hideError() {
+            this.error.active ? this.error.active = false : ''
+            this.error.msg = ''
+        },
+        // checkUnitQty(id) {
+        //     if(this.thisSale.length > 0) {
+        //         let i = this.thisSale.filter(item => item.prod_id == id)
+        //         if(i.length > 0) {
+        //             this.thisSale = this.thisSale.filter(item => item.prod_id != id)
+        //             return i[0].qty
+        //         }
+        //         else
+        //         return 0
+        //     }else{
+        //         return 0
+        //     }
+        // },
         computePrice(price, discount) {
             if(discount !== null && this.getDiscounts.length > 0) {
                 let discount_price = this.getDiscounts.filter(dis => dis.id == discount)
@@ -183,11 +225,11 @@ export default {
             let items = this.searchResult
             for (let i = 0; i < items.length; i++) {
                 const element = items[i];
-                const qty = parseInt(this.checkUnitQty(element.product_id) + 1)
+                const qty = 1
                 const price = this.computePrice(element.selling_price, element.discount)
                 let unitTotal = price * qty
                 const payload = {
-                    id: element.id, image: element.image, qty: qty, name: element.name, unit_price: Number(price), price: Number(unitTotal), og_price: element.selling_price, prod_id: element.product_id, discount: element.discount, batch_no: element.batch_no
+                    id: element.id, image: element.image, qty: qty, name: element.name, unit_price: Number(price), price: Number(unitTotal), og_price: element.selling_price, prod_id: element.product_id, discount: element.discount, batch_no: element.batch_no, prod_type: element.prod_type
                 }
                 this.thisSale.push(payload)
             }
@@ -200,9 +242,14 @@ export default {
                 let date = new Date()
                 const receipt = '' + date.getFullYear() + parseInt(date.getMonth()+1) + date.getDate()  + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds()
                 axios.post(this.getHostname+'/api/perform-sale?token='+this.getToken,
-                { items: this.thisSale, total: this.computeTotal, receipt: receipt })
+                { items: this.thisSale, total: this.computeTotal, receipt: receipt, currency: this.getCurrency  })
                 .then((res) => {
                     console.log(res.data)
+                    const payload = {
+                        sale: res.data.sale, saleItems: res.data.sale_items, items: res.data.items, product: res.data.product
+                    }
+                    this.$store.commit('addToTodaysSale', payload)
+                    this.thisSale = []
                 }).catch((err) => {
                     console.log(err.response) 
                 }) 
@@ -225,7 +272,7 @@ export default {
     .header{
         border-top-right-radius: 18px;
         border-top-left-radius: 18px;
-        background-color: $dark;
+        background-color: #646979;
         color: #ffffff;
         //height: 40px;
         padding: 10px 20px;
@@ -342,8 +389,11 @@ export default {
             border-radius: 0.9rem;
             background-color: $dark-light;
             padding: 10px 20px 10px 50px;
+            &:focus{
+                background-color: $white-color;
+            }
         }
-        &:hover {
+        &:hover, &:focus-within {
             path{
                 fill: $primary-color;
             }
@@ -446,5 +496,24 @@ table{
 }
 .x{
     color: $gray-color;
+}
+.error-alert{
+    padding: 10px 20px;
+    background-color: rgba(230, 50, 50, 0.1);
+    border-radius: 8px;
+    border: 1px solid $danger;
+    span{
+        color: $danger;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+}
+.alert-close{
+    &:hover{
+        background-color: rgba(230, 50, 50, 0.1);
+        path {
+            fill: #9A5D5D;
+        }
+    }
 }
 </style>

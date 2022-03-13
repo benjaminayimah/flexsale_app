@@ -109,26 +109,7 @@ export default {
       }
     }
   }
-  .alert-close{
-        background-image: url('/images/close.svg');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        margin-right: -8px;
-        transition: 0.3s all;
-        height: 38px;
-        width: 38px;
-        border-radius: 50%;
-        background-color: $white-color;
-        &:hover {
-            background-color: $dark-light;
-        }
-        &:focus{
-            box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
-            border: 1px solid #0e142c9d;
-            background-color: #fff;
-        }
-    }
+  
   
 }
 .slide-enter-from,

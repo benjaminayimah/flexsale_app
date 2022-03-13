@@ -56,6 +56,9 @@
         </div>
      </div>
  </div>
+ <!-- <input type="date" value="2022-09-01">
+ <input type="time" value="00:00:00">
+ <input type="color" title="Color" value="#00ff00"> -->
  <div class="dash-section-holder">
     <div class="flex-row-js dashboard-title-wrap">
         <h1 class="dashboard-title">Suppliers</h1>

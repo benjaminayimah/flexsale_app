@@ -4,7 +4,7 @@
             <div class="flex-col" id="right_top">
                 <div class="flex-row-js">
                     <div class="flex-col">
-                        <div class="flex align-items-center"><span>{{ getCurrency }}</span><h1>24,390.00</h1></div>
+                        <div class="flex align-items-center"><span>{{ getCurrency }}</span><h1>{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</h1></div>
                         <label>Today’s sales</label>
                     </div>
                     <button class="menu-toggle-btn">
@@ -25,8 +25,11 @@
                 <h1 class="dashboard-title">Recent sales</h1>
                 <a href="" class="see-all">See all</a>
             </div>
-            <div class="flex-col" id="dash_sales">
+            <div class="flex-col" id="dash_sales" v-if="getTodaysales.length > 0">
                 <today-sales-row v-for="sale in getTodaysales" :key="sale.id" v-bind:sale="sale" />
+            </div>
+            <div v-else>
+                No sales today
             </div>
         </div>
     </div>
@@ -37,7 +40,12 @@ import TodaySalesRow from '../includes/TodaySalesRow.vue'
 export default {
     name: 'RightBodyContent',
     components: { TodaySalesRow },
-    computed: mapGetters(['getCurrency', 'getTodaysales', 'getWindowHeight'])
+    computed: {
+        ...mapGetters(['getCurrency', 'getTodaysales', 'getWindowHeight']),
+        computeTotal() {
+          return this.getTodaysales.reduce((acc, item) => acc + Number(item.total_paid), 0);
+        },
+    }
 }
 </script>
 <style scoped lang="scss">

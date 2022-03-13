@@ -6,7 +6,8 @@
     <div class="flex lign-items-center item-row">
         <div class="item-label">Total stock:</div>
         <div class="item-value">
-            <span>{{ getTempContainer.data.stock }}</span>
+            <span v-if="getTempContainer.data.prod_type == 0">{{ getTempContainer.array.length }}</span>
+            <span v-else>{{ getTempContainer.data.stock }}</span>
         </div>
     </div>
     <div class="flex lign-items-cente item-row">
@@ -43,7 +44,7 @@
         <div v-if="getTempContainer.data.discount !== null" class="flex has-discount-wrap">
             <div class="item-value" v-if="this.getTempContainer.data.selling_price != 0">
                 <span class="currency">{{ getCurrency }}</span>
-                <div>{{ computePrice.toFixed(2) }}</div>
+                <div>{{ Intl.NumberFormat('en-US').format(computePrice.toFixed(2)) }}</div>
             </div>
             <!-- <div>{{ computeDiscount[0].name }}</div> -->
             <div class="flex discount-value-wrap">
@@ -68,15 +69,15 @@
         <div class="item-label">Profit:</div>
         <div class="item-value">
             <span class="currency">{{ getCurrency }}</span>
-            <span v-if="getTempContainer.data.discount !== null">{{ (computePrice - getTempContainer.data.cost).toFixed(2) }}</span>
-            <span v-else>{{ (getTempContainer.data.selling_price - getTempContainer.data.cost).toFixed(2) }}</span>
+            <span v-if="getTempContainer.data.discount !== null">{{ Intl.NumberFormat('en-US').format((computePrice - getTempContainer.data.cost).toFixed(2)) }}</span>
+            <span v-else>{{ Intl.NumberFormat('en-US').format((getTempContainer.data.selling_price - getTempContainer.data.cost).toFixed(2)) }}</span>
         </div>
     </div>
     <div class="flex lign-items-center item-row" v-if="getTempContainer.data.selling_price && getTempContainer.data.cost">
         <div class="item-label">Profit Margin:</div>
         <div class="item-value">
-            <span v-if="getTempContainer.data.discount !== null">{{ (((computePrice - getTempContainer.data.cost) / computePrice)*100).toFixed(2) }}%</span>
-            <span v-else>{{ (((getTempContainer.data.selling_price - getTempContainer.data.cost) / getTempContainer.data.selling_price)*100).toFixed(2) }}%</span>
+            <span v-if="getTempContainer.data.discount !== null">{{ Intl.NumberFormat('en-US').format((((computePrice - getTempContainer.data.cost) / computePrice)*100).toFixed(2)) }}%</span>
+            <span v-else>{{ Intl.NumberFormat('en-US').format((((getTempContainer.data.selling_price - getTempContainer.data.cost) / getTempContainer.data.selling_price)*100).toFixed(2)) }}%</span>
             
         </div>
     </div>

@@ -7,7 +7,7 @@
                     <div class="item-name">{{ product.name }}</div>
                     <div class="flex">
                         <div :class="{ 'has-discount': product.discount !== null && product.selling_price != 0}"><span>{{ getCurrency }}</span>{{ product.selling_price }}</div>
-                        <div class="discount-price" v-if="product.discount !== null && product.selling_price != 0"><span>{{ getCurrency }}</span><span>{{ computePrice.toFixed(2) }}</span></div>
+                        <div class="discount-price" v-if="product.discount !== null && product.selling_price != 0"><span>{{ getCurrency }}</span><span>{{ Intl.NumberFormat('en-US').format(computePrice.toFixed(2)) }}</span></div>
                     </div>
                     <div><label>Stock:</label>{{ product.stock }}</div>
                 </div>

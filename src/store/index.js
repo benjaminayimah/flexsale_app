@@ -34,48 +34,44 @@ export default createStore({
     addingProduct: { status: false, width: '', product: false, tag: false, discount: false},
     sale: { active: false, minimize: false, maximize: false, array: []
     },
+    todaysales: [],
+    todaysaleItems: [],
 
     submitting: true,
     stats: [
-      {id: 1, index: 0, count: '1,200', title: 'Products'},
-      {id: 2, index: 1, count: '200', title: 'Low stocks'},
-      {id: 3, index: 2, count: '50', title: 'Expiry alert'},
-      {id: 4, index: 3, count: '15', title: 'Expiry alert'},
-      {id: 5, index: 4, count: '15', title: 'Expiry alert'},
-      {id: 6, index: 5, count: '15', title: 'Expiry alert'},
-      {id: 7, index: 6, count: '15', title: 'Expiry alert'},
-  ],
-  suppliers: [
-      {id: 1, index: 0, name: 'Jon Doe', image: 'profile-1.png'},
-      {id: 2, index: 1, name: 'Walter White', image: 'profile-2.png'},
-      {id: 3, index: 2, name: 'Jane Smith', image: 'profile-3.png'},
-      {id: 4, index: 3, name: 'monicca brown', image: ''},
-      {id: 5, index: 4, name: 'monicca brown', image: 'profile-4.png'},
-      {id: 6, index: 5, name: 'Tyler Cooper', image: 'profile-5.png'},
-      {id: 7, index: 6, name: 'Harisson Smichel', image: ''},
-      {id: 8, index: 7, name: 'Harisson Smichel', image: 'profile-6.png'},
-      {id: 9, index: 8, name: 'Jadon Sancho', image: 'profile-7.png'},
-      {id: 10, index: 9, name: 'Sarah', image: ''},
-      {id: 11, index: 10, name: 'Sarah', image: 'profile-8.png'},
-      {id: 12, index: 11, name: 'Chris Sharw', image: 'profile-9.png'},
-      {id: 13, index: 12, name: 'Dominic Campbel', image: 'profile-10.png'},
-  ],
-  activities: [
-    {id: 1, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-    {id: 2, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-    {id: 3, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-    {id: 4, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-    {id: 5, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-  ],
-  todaysales: [
-    {id: 1, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-    {id: 2, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-    // {id: 3, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-    // {id: 4, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-    // {id: 5, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-  ],
-
+        {id: 1, index: 0, count: '1,200', title: 'Products'},
+        {id: 2, index: 1, count: '200', title: 'Low stocks'},
+        {id: 3, index: 2, count: '50', title: 'Expiry alert'},
+        {id: 4, index: 3, count: '15', title: 'Expiry alert'},
+        {id: 5, index: 4, count: '15', title: 'Expiry alert'},
+        {id: 6, index: 5, count: '15', title: 'Expiry alert'},
+        {id: 7, index: 6, count: '15', title: 'Expiry alert'},
+    ],
+    suppliers: [
+        {id: 1, index: 0, name: 'Jon Doe', image: 'profile-1.png'},
+        {id: 2, index: 1, name: 'Walter White', image: 'profile-2.png'},
+        {id: 3, index: 2, name: 'Jane Smith', image: 'profile-3.png'},
+        {id: 4, index: 3, name: 'monicca brown', image: ''},
+        {id: 5, index: 4, name: 'monicca brown', image: 'profile-4.png'},
+        {id: 6, index: 5, name: 'Tyler Cooper', image: 'profile-5.png'},
+        {id: 7, index: 6, name: 'Harisson Smichel', image: ''},
+        {id: 8, index: 7, name: 'Harisson Smichel', image: 'profile-6.png'},
+        {id: 9, index: 8, name: 'Jadon Sancho', image: 'profile-7.png'},
+        {id: 10, index: 9, name: 'Sarah', image: ''},
+        {id: 11, index: 10, name: 'Sarah', image: 'profile-8.png'},
+        {id: 12, index: 11, name: 'Chris Sharw', image: 'profile-9.png'},
+        {id: 13, index: 12, name: 'Dominic Campbel', image: 'profile-10.png'},
+    ],
+    activities: [
+      {id: 1, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+      {id: 2, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+      {id: 3, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+      {id: 4, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+      {id: 5, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+    ],
   },
+  
+
   mutations: {
     //authentication
       setAuthToken(state, payload){
@@ -267,6 +263,26 @@ export default createStore({
     addToTags(state, payload) {
       state.tags.push(payload)
     },
+    fetchTodaysSales(state, payload) {
+      state.todaysales = payload.sales
+      state.todaysaleItems = payload.saleItems
+    },
+    addToTodaysSale(state, payload) {
+      state.todaysales.push(payload.sale)
+      state.todaysaleItems = payload.saleItems
+      const tmp = state.tempDataContainer
+      for (let i = 0; i < payload.items.length; i++) {
+        const element = payload.items[i];
+        if(tmp.active && tmp.array.length > 0 && tmp.propertyName == 'fetchThisProduct' && element.prod_type == 0) {
+          tmp.array = tmp.array.filter(item => item.id != element.id)
+        }
+      }
+      const j = state.products.findIndex(x => x.id == payload.product.id)
+      state.products.splice(j, 1, payload.product);
+      if(tmp.active && tmp.propertyName == 'fetchThisProduct') {
+        tmp.data = payload.product
+      }
+    },
     addToDiscounts(state, payload) {
       state.discounts.push(payload.discount)
       if(payload.products.length > 0){
@@ -311,6 +327,7 @@ export default createStore({
     setTempDataContainer(state, payload) {
        state.tempDataContainer.array = payload.array
        state.tempDataContainer.data = payload.data
+       state.tempDataContainer.propertyName = payload.propertyName
        state.tempDataContainer.active = true
        state.submitting = false
     },
@@ -318,11 +335,12 @@ export default createStore({
       state.tempDataContainer.array = []
       state.tempDataContainer.active = false
       state.tempDataContainer.editMode = false
+      state.tempDataContainer.propertyName = ''
       state.tempDataContainer.data = {}
     },
 
     clrThisProduct(state) {
-      state.thisProduct = ''
+      state.thisProduct = []
     },
     removeDeletedTags(state, payload) {
       state.tags = state.tags.filter(tag => tag.id != payload)
@@ -415,7 +433,8 @@ export default createStore({
           state.commit('fetchTags', res.data.tags)
           state.commit('fetchProducts', res.data.products)
           state.commit('fetchDiscounts', res.data.discounts)
-          state.commit('setLoader') 
+          state.commit('fetchTodaysSales', { sales: res.data.sales, saleItems: res.data.sales_items })
+          state.commit('setLoader')
         } catch (e) {
           state.commit('setLoader')
           console.log(e.response)
@@ -453,7 +472,7 @@ export default createStore({
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-this-filter?token='+this.getters.getToken, {id: payload})
       if(res.data.tag){
-        const newData = { data: res.data.tag, array: res.data.filters}
+        const newData = { data: res.data.tag, array: res.data.filters, propertyName: 'fetchThisFilter' }
         state.commit('setTempDataContainer', newData)
       }else{
         console.log('does not exist')
@@ -466,7 +485,7 @@ export default createStore({
        if(res.data.product) {
          //console.log(res.data)
         // state.commit('fetchThisProduct', res.data.product)
-        const newData = { data: res.data.product, array: res.data.units}
+        const newData = { data: res.data.product, array: res.data.units, propertyName: 'fetchThisProduct'}
         state.commit('setTempDataContainer', newData)
        }else{
          console.log('does not exist')
@@ -477,7 +496,7 @@ export default createStore({
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-this-discount?token='+this.getters.getToken, {id: payload})
       if(res.data.discount){
-        const newData = { data: res.data.discount, array: res.data.products}
+        const newData = { data: res.data.discount, array: res.data.products, propertyName: 'fetchThisDiscount'}
         state.commit('setTempDataContainer', newData)
       }else{
         console.log('does not exist')
@@ -581,6 +600,7 @@ export default createStore({
     getActivities: (state) => state.activities,
     getTempArrayCopy: (state) => state.tempArrayCopy,
     getTodaysales: (state) => state.todaysales,
+    getTodaysaleItems: (state) => state.todaysaleItems,
     getSale: (state) => state.sale,
 
 

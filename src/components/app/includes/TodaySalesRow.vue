@@ -1,20 +1,20 @@
 <template>
     <div class="sale-row flex-col">
-        <div class="sale-inner flex-row-js" v-for="sale in mySale" :key="sale.id">
+        <div class="sale-inner flex-row-js" v-for="sale in computeSaleItems" :key="sale.id">
             <div class="flex">
-                <span>{{ sale.name }}</span>
-                <span class="qty">x{{ sale.qty }}</span>
+                <span>{{ sale.product_name }}</span>
+                <span class="qty">x{{ sale.quantity }}</span>
             </div>
             <div class="flex">
                 <span class="currency">{{ getCurrency }}</span>
-                <span class="amount">{{ sale.amount }}</span>
+                <span class="amount">{{ Intl.NumberFormat('en-US').format(Number(sale.total_paid).toFixed(2)) }}</span>
             </div>
         </div>
         <div class="total flex-end">
             <label>Total:</label>
             <div class="flex">
                 <span class="currency">{{ getCurrency }}</span>
-                <span>83,730</span>
+                <span>{{ Intl.NumberFormat('en-US').format(Number(sale.total_paid).toFixed(2)) }}</span>
             </div>
         </div>
     </div>
@@ -23,7 +23,14 @@
 import { mapGetters } from 'vuex'
 export default {
     name: 'TodaySalesRow',
-    computed: mapGetters(['getCurrency']),
+    props: ['sale'],
+    computed: {
+        ...mapGetters(['getCurrency', 'getTodaysaleItems']),
+        computeSaleItems() {
+            return this.getTodaysaleItems.filter(item => item.sale_id == this.sale.id)
+        }
+
+    },
     data() {
         return {
             mySale: [
