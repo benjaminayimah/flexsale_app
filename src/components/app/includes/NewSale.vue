@@ -39,7 +39,6 @@
                                             </svg>
                                         </button>
                                     </label>
-                                    
                                 </div>
                             </form>
                             <transition name="fade">
@@ -52,20 +51,31 @@
                                     </button>
                                 </div>
                             </transition>
-                            <div v-for="result in searchResult" :key="result.id" class="preview-hold flex-row-js">
+                            <div v-if="searchResult != ''" class="preview-hold flex-row-js">
                                 <div class="flex align-items-center">
-                                    <div class="prod-image bg-img" :style="result.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+result.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
-                                    <div class="flex-col sale-captions">
-                                        <div class="item-value text-overflow-ellipsis">{{ result.name }}</div>
-                                        <div><span class="currency">{{ getCurrency }}</span><span class="value">{{ Intl.NumberFormat('en-US').format(computePrice(result.selling_price, result.discount).toFixed(2)) }}</span></div>
+                                    <div class="prod-image bg-img" :style="searchResult.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+searchResult.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
+                                    <div class="flex-col sale-captions" style="max-width: 140px">
+                                        <div class="item-value text-overflow-ellipsis">{{ searchResult.name }}</div>
+                                        <div><span class="currency">{{ getCurrency }}</span><span class="value">{{ Intl.NumberFormat('en-US').format(computePrice(searchResult.selling_price, searchResult.discount).toFixed(2)) }}</span></div>
                                     </div>
                                 </div>
-                                <button class="button" @click.prevent="addToSale">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 12.429 14.5">
-                                        <path  d="M18.552,12.874l-5.179,5.179a1.036,1.036,0,0,1-1.465,0L6.73,12.874a1.036,1.036,0,0,1,1.465-1.465l3.411,3.411V4.892a1.036,1.036,0,0,1,2.071,0V14.82l3.411-3.411a1.036,1.036,0,0,1,1.465,1.465Z" transform="translate(-6.427 -3.856)" fill="#566ff4"/>
-                                    </svg>
-                                    ADD
-                                </button>
+                                <div class="flex align-items-center" v-if="searchResult.prod_type === 1">
+                                    <label>Qty:</label>
+                                    <input type="number" class="form-control qty-input">
+                                </div>
+                                <div class="flex align-items-center">
+                                    <button class="button add-btn" @click.prevent="addToSale(searchResult)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 12.429 14.5">
+                                            <path  d="M18.552,12.874l-5.179,5.179a1.036,1.036,0,0,1-1.465,0L6.73,12.874a1.036,1.036,0,0,1,1.465-1.465l3.411,3.411V4.892a1.036,1.036,0,0,1,2.071,0V14.82l3.411-3.411a1.036,1.036,0,0,1,1.465,1.465Z" transform="translate(-6.427 -3.856)" fill="#566ff4"/>
+                                        </svg>
+                                        ADD
+                                    </button>
+                                    <button class="button clear-btn" @click.prevent="clearSearch">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 14 14">
+                                            <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#C18383"></path>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <table>
@@ -138,52 +148,61 @@ export default {
       computeTotal() {
           return this.thisSale.reduce((acc, item) => acc + item.price, 0);
       },
-    //   computedItems() {
-    //       if(this.thisSale.length > 0) {
-    //           let i = this.thisSale.filter(item => item.prod_id == id)
-    //           if(i.length > 0) {
-    //                 this.thisSale = this.thisSale.filter(item => item.prod_id != id)
-    //                 return i[0].qty
-    //             }
+      computedItems() {
+          if(this.thisSale.length > 0) {
+              const newSales = this.thisSale.slice();
               
-    //         }
-    //     },
-    //     checkUnitQty(id) {
-    //         if(this.thisSale.length > 0) {
-    //             let i = this.thisSale.filter(item => item.prod_id == id)
-    //             if(i.length > 0) {
-    //                 this.thisSale = this.thisSale.filter(item => item.prod_id != id)
-    //                 return i[0].qty
-    //             }
-    //         }
-    //     },
+              return newSales
+          }else
+            return []
+        },
+        // checkUnitQty(id) {
+        //     if(this.thisSale.length > 0) {
+        //         let i = this.thisSale.filter(item => item.prod_id == id)
+        //         if(i.length > 0) {
+        //             this.thisSale = this.thisSale.filter(item => item.prod_id != id)
+        //             return i[0].qty
+        //         }
+        //     }
+        // },
     },
     props: ['sale'],
     data() {
         return {
-            searchResult: [],
+            searchResult: '',
             thisSale: [],
+            saleCopy: [],
             searchInput: '',
             error: { active: false, msg: ''}
         }
     },
+    // updated() {
+    //     console.log(this.computedItems)
+    // },
     methods: {
         removeItem(id) {
             this.thisSale = this.thisSale.filter(filter => filter.id != id)
+            this.saleCopy = this.saleCopy.filter(filter => filter.id != id)
         },
         async doSearch() {
             const item = this.searchInput
             if(item != '') {
                 try {
                     const res = await axios.post(this.getHostname+'/api/fetch-item?token='+this.getToken, { item: item })
-                    if(res.data.item.length < 1 ){
+                    if(res.data.item == null){
                         this.showError('Item not found')
+                        this.clearSearch()
                     }
+                    else
                     this.searchResult = res.data.item
                 } catch (e) {
                     this.showError(e.response.data.error)
                 }
             }
+        },
+        clearSearch() {
+            this.searchResult = ''
+            return
         },
         showError(msg) {
             this.error.active = true
@@ -194,19 +213,19 @@ export default {
             this.error.active ? this.error.active = false : ''
             this.error.msg = ''
         },
-        // checkUnitQty(id) {
-        //     if(this.thisSale.length > 0) {
-        //         let i = this.thisSale.filter(item => item.prod_id == id)
-        //         if(i.length > 0) {
-        //             this.thisSale = this.thisSale.filter(item => item.prod_id != id)
-        //             return i[0].qty
-        //         }
-        //         else
-        //         return 0
-        //     }else{
-        //         return 0
-        //     }
-        // },
+        checkUnitQty(id) {
+            if(this.thisSale.length > 0) {
+                let i = this.thisSale.filter(item => item.prod_id == id)
+                if(i.length > 0) {
+                    this.thisSale = this.thisSale.filter(item => item.prod_id != id)
+                    return i[0].qty
+                }
+                else
+                return 0
+            }else{
+                return 0
+            }
+        },
         computePrice(price, discount) {
             if(discount !== null && this.getDiscounts.length > 0) {
                 let discount_price = this.getDiscounts.filter(dis => dis.id == discount)
@@ -221,35 +240,44 @@ export default {
                 return Number(price)
             }
         },
-        addToSale() {
-            let items = this.searchResult
-            for (let i = 0; i < items.length; i++) {
-                const element = items[i];
-                const qty = 1
-                const price = this.computePrice(element.selling_price, element.discount)
+        addToSale(searchResult) {
+            //let items = this.searchResult
+            this.saleCopy.push(searchResult)
+                let qty = this.checkUnitQty(searchResult.product_id) + 1
+                const price = this.computePrice(searchResult.selling_price, searchResult.discount)
                 let unitTotal = price * qty
                 const payload = {
-                    id: element.id, image: element.image, qty: qty, name: element.name, unit_price: Number(price), price: Number(unitTotal), og_price: element.selling_price, prod_id: element.product_id, discount: element.discount, batch_no: element.batch_no, prod_type: element.prod_type
+                    id: searchResult.id, image: searchResult.image, qty: qty, name: searchResult.name, unit_price: Number(price), price: Number(unitTotal), og_price: searchResult.selling_price, prod_id: searchResult.product_id, discount: searchResult.discount, batch_no: searchResult.batch_no, prod_type: searchResult.prod_type
                 }
                 this.thisSale.push(payload)
-            }
-            this.searchResult = []
+            
+            this.searchResult = ''
             this.searchInput = ''
             
         },
         doSubmitSale() {
             if(this.thisSale.length > 0) {
+                const items = []
+                this.saleCopy.forEach(element => {
+                    let qty = 1
+                    const price = this.computePrice(element.selling_price, element.discount)
+                    let unitTotal = price * qty
+                    const itemPayload = {
+                        id: element.id, image: element.image, qty: qty, name: element.name, unit_price: Number(price), price: Number(unitTotal), og_price: element.selling_price, prod_id: element.product_id, discount: element.discount, batch_no: element.batch_no, prod_type: element.prod_type
+                    }
+                    items.push(itemPayload)
+                });
                 let date = new Date()
                 const receipt = '' + date.getFullYear() + parseInt(date.getMonth()+1) + date.getDate()  + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds()
                 axios.post(this.getHostname+'/api/perform-sale?token='+this.getToken,
-                { items: this.thisSale, total: this.computeTotal, receipt: receipt, currency: this.getCurrency  })
+                { items: items, total: this.computeTotal, receipt: receipt, currency: this.getCurrency  })
                 .then((res) => {
-                    console.log(res.data)
                     const payload = {
                         sale: res.data.sale, saleItems: res.data.sale_items, items: res.data.items, product: res.data.product
                     }
                     this.$store.commit('addToTodaysSale', payload)
                     this.thisSale = []
+                    this.saleCopy = []
                 }).catch((err) => {
                     console.log(err.response) 
                 }) 
@@ -463,20 +491,37 @@ table{
        position: absolute;
        width: 100%;
        box-shadow: 3px 10px 20px 7px rgb(7 10 46 / 11%);
+       .qty-input{
+           width: 70px;
+           height: 50px;
+           margin-left: 8px;
+       }
        .prod-image{
             height: 55px;
             width: 55px;
             border-radius: 10px;
         }
+        .add-btn{
+            width: 100px;
+            background-color: $primary-light;
+            &:hover {
+                svg{
+                    margin-top: 5px;
+                }
+            }
+            &:active{
+                border: 1px solid $primary-color;
+                box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+            }
+            svg{
+                transition: 0.3s all;
+                margin-right: 4px;
+            }
+        }
        button{
            color: $primary-color;
-           background-color: transparent;
            font-weight: 700;
-           height: 55px;
-           
-           svg{
-               margin-right: 4px;
-           }
+           height: 55px;   
            &:hover{
                background-color: $primary-light;
            }
@@ -514,6 +559,22 @@ table{
         path {
             fill: #9A5D5D;
         }
+    }
+}
+
+.clear-btn{
+    margin-left: 8px;
+    height: 38px !important;
+    width: 38px;
+    padding: 0 !important;
+    background-color: transparent;
+    transition: 0.3s all;
+    border-radius: 50%;
+    path{
+        fill: $danger;
+    }
+    &:hover{
+        background-color: rgba(230, 50, 50, 0.1) !important;
     }
 }
 </style>

@@ -273,13 +273,13 @@ export default createStore({
       const tmp = state.tempDataContainer
       for (let i = 0; i < payload.items.length; i++) {
         const element = payload.items[i];
-        if(tmp.active && tmp.array.length > 0 && tmp.propertyName == 'fetchThisProduct' && element.prod_type == 0) {
+        if(tmp.active && tmp.array.length > 0 && tmp.propertyName == 'product' && element.prod_type == 0) {
           tmp.array = tmp.array.filter(item => item.id != element.id)
         }
       }
       const j = state.products.findIndex(x => x.id == payload.product.id)
       state.products.splice(j, 1, payload.product);
-      if(tmp.active && tmp.propertyName == 'fetchThisProduct') {
+      if(tmp.active && tmp.propertyName == 'product') {
         tmp.data = payload.product
       }
     },
@@ -472,7 +472,7 @@ export default createStore({
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-this-filter?token='+this.getters.getToken, {id: payload})
       if(res.data.tag){
-        const newData = { data: res.data.tag, array: res.data.filters, propertyName: 'fetchThisFilter' }
+        const newData = { data: res.data.tag, array: res.data.filters, propertyName: 'tag' }
         state.commit('setTempDataContainer', newData)
       }else{
         console.log('does not exist')
@@ -485,7 +485,7 @@ export default createStore({
        if(res.data.product) {
          //console.log(res.data)
         // state.commit('fetchThisProduct', res.data.product)
-        const newData = { data: res.data.product, array: res.data.units, propertyName: 'fetchThisProduct'}
+        const newData = { data: res.data.product, array: res.data.units, propertyName: 'product'}
         state.commit('setTempDataContainer', newData)
        }else{
          console.log('does not exist')
@@ -496,7 +496,7 @@ export default createStore({
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-this-discount?token='+this.getters.getToken, {id: payload})
       if(res.data.discount){
-        const newData = { data: res.data.discount, array: res.data.products, propertyName: 'fetchThisDiscount'}
+        const newData = { data: res.data.discount, array: res.data.products, propertyName: 'discount'}
         state.commit('setTempDataContainer', newData)
       }else{
         console.log('does not exist')

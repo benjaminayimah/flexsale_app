@@ -66,7 +66,7 @@
                         <div>If there are several units in this product, you may proceed to add the individual units here.</div>
                     <div class="flex-row align-content-center">
                         <div class="unit-input-hold">
-                            <input type="text" name="BatchNumber" :disabled="form.prodType == '0' ? false : true" v-model="unitForm.batch" class="form-control" placeholder="Batch number">
+                            <input type="text" name="BatchNumber" @click="dismisUnitError" :disabled="form.prodType == '0' ? false : true" v-model="unitForm.batch" class="form-control" placeholder="Batch number">
                         </div>
                         <div class="unit-input-hold">
                             <Datepicker v-model="month" monthPicker :disabled="form.prodType == '0' ? false : true"></Datepicker>
@@ -77,12 +77,12 @@
                     <div class="unit-added-wrap" v-if="units.length > 0">
                         <ul v-show="form.prodType == '0'">
                             <li v-for="unit in units" :key="unit.batch">
-                                <div class="unit-pill flex flex-row-js">
+                                <div class="unit-pill flex align-items-center">
                                     <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batch_no }}</span>
                                     <span class="divider" v-show="unit.expiry_date">|</span>
                                     <span class="expiry-date text-overflow-ellipsis" v-show="unit.expiry_date">{{ unit.expiry_date }}</span>
                                     <button class="flex align-items-center justify-content-center" @click.prevent="delUnit(unit.batch_no)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 20 20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
                                             <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#ffffff">
                                             </path>
                                         </svg>
@@ -461,6 +461,13 @@ export default {
             this.error.message = 'This batch number already exist'
             return
         },
+        dismisUnitError() {
+            if(this.error.active) {
+                this.duplicate = false
+                this.error.active = false
+                this.error.message = ''
+            }
+        },
         resetInput() {
             this.unitForm.batch = ''
             this.duplicate = false
@@ -541,9 +548,7 @@ export default {
             this.form[i] = ''
         }
         
-
-
-                
+        
     },
 
     mounted() {
@@ -788,43 +793,52 @@ label{
 }
 ul{
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
 }
 li{
-    max-width: 86%;
+    display: flex;
     list-style-type: none;
-    padding: 0 15px 15px 0;
+    padding: 0 10px 10px 0;
+    position: relative;
     .unit-pill{
         //border: 1px solid #e2e4e7;
         border-radius: 27px;
-        padding: 0 6px 0 18px;
-        background-color: $primary-color;
-    span{
-        align-items: center;
-        display: flex;
-        //margin-right: 20px;
-        height: 44px;
+        padding: 0 10px;
+        background-color: $white-color;
+        box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
+        span{
+            align-items: center;
+            display: flex;
+            font-size: 15px;
+            height: 38px;
         &:last-child{
             padding-right: 18px;
         }
     }
     .pill-batch-no{
-        color: #ffffff;
-        font-weight: 500;
+        color: $dark;
+        font-weight: 600;
     }
     .divider{
-        color: $dark-light;
+        color: $gray-color;
+        margin: 0 5px;
     }
     .expiry-date{
-        color: #ffffff;
+        color: #7e8596;
     }
     button{
-        width: 34px;
-        height: 34px;
+        width: 26px;
+        height: 26px;
         border-radius: 50%;
+        margin-left: 5px;
         display: flex;
-        background-color: transparent;
+        position: absolute;
+        right: 0;
+        top: -8px;
+        background-color: $gray-color;
             &:hover{
-                background-color: rgba(14, 20, 44, 0.1);
+                background-color:#FA4848;
             }
         }
     }

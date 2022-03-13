@@ -11,12 +11,12 @@
         </div>
     </div>
     <div class="flex lign-items-cente item-row">
-        <div class="item-label">Units (Batch number / expiration date):</div>
+        <div class="item-label">Units (Batch number | Expiration date):</div>
     </div>
     <div class="units-wrap item-row">
         <div class="flex flex-wrap">
             <li v-for="unit in getTempContainer.array.slice(0, 6)" :key="unit.id">
-                <div class="unit-pill flex flex-row-js">
+                <div class="unit-pill flex">
                     <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batch_no }}</span>
                     <span class="divider">|</span>
                     <span class="expiry-date text-overflow-ellipsis">{{ unit.expiry_date }}</span>
@@ -27,7 +27,9 @@
                     </button>
                 </div>
             </li>
-            <a href="" v-if="getTempContainer.array.length > 6">View all</a>
+        </div>
+        <div v-if="getTempContainer.array.length > 6">
+            <a href="" >View all</a>
         </div>
     </div>
     <hr>
@@ -172,26 +174,27 @@ a{
 }
 .units-wrap{
     li{
-        width: 50%;
         list-style-type: none;
-        padding: 0 15px 15px 0;
+        padding: 0 10px 10px 0;
     }
 }
 .unit-pill{
-    border: 1px solid #D4D8DE;
+    //border: 1px solid $dark;
     border-radius: 27px;
-    padding: 4px 4px 4px 18px;
+    padding: 0 10px;
+    background-color: $primary-light;
     span{
         align-items: center;
         display: flex;
         //margin-right: 20px;
         height: 38px;
-        &:last-child{
-            padding-right: 18px;
-        }
+        color: $dark;
+        font-weight: 600;
+        font-size: 15px;
     }
     .divider{
         color: $gray-color;
+        margin: 0 5px;
     }
     .expiry-date{
         color: $gray-color;
