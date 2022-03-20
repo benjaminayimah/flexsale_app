@@ -93,6 +93,7 @@ li:last-child a{
 .currency{
   font-size: 14px;
   margin-right: 4px;
+  color: $gray-color;
 }
 
 @keyframes load{
@@ -471,8 +472,12 @@ textarea{
 
 .table-body {
   .table-menu{
+    position: sticky;
+    top: 80px;
+    background-color: $white-color;
+    z-index: 10;
     margin: 25px 0;
-    height: 44px;
+    height: 70px;
      ul{
         padding: 0;
         margin: 0;
@@ -516,7 +521,7 @@ textarea{
             color: $dark;
             border-radius: 20px;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             }
         }
     }
@@ -816,6 +821,22 @@ hr{
 .h-list-wrap ul li:last-child div, #ovw_content ul li:last-child .a-wrap{
   padding-right: 15px;
 }
+.table-body {
+  .table-menu{
+    top: 59px;
+    height: 60px;
+  }
+}
+.noti-help li:hover{
+  a{
+    background-color: transparent;
+  }
+  i{
+    border-color: $white-color;
+  }
+}
+
+
 
 
 

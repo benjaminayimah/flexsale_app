@@ -13,16 +13,17 @@
     <div class="flex lign-items-cente item-row">
         <div class="item-label">Units (Batch number | Expiration date):</div>
     </div>
-    <div class="units-wrap item-row">
+    <div class="units-wrap item-row" v-if="getTempContainer.array.length > 0">
         <div class="flex flex-wrap">
             <li v-for="unit in getTempContainer.array.slice(0, 6)" :key="unit.id">
                 <div class="unit-pill flex">
                     <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batch_no }}</span>
                     <span class="divider">|</span>
                     <span class="expiry-date text-overflow-ellipsis">{{ unit.expiry_date }}</span>
-                    <button v-if="editMode" class="flex align-items-center justify-content-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="3" viewBox="0 0 22 4">
-                            <path d="M5001-4120a2,2,0,0,1,2-2,2,2,0,0,1,2,2,2,2,0,0,1-2,2A2,2,0,0,1,5001-4120Zm-9,0a2,2,0,0,1,2-2,2,2,0,0,1,2,2,2,2,0,0,1-2,2A2,2,0,0,1,4992-4120Zm-9,0a2,2,0,0,1,2-2,2,2,0,0,1,2,2,2,2,0,0,1-2,2A2,2,0,0,1,4983-4120Z" transform="translate(-4983 4122)" fill="#434752"/>
+                    <button v-if="unit.active == 0" class="flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 21.5 23.166">
+                            <path d="M-162.427-433a2.727,2.727,0,0,1-2.714-2.539l-.912-13.682,1.5-.1.912,13.683a1.222,1.222,0,0,0,1.217,1.138h9.118a1.222,1.222,0,0,0,1.217-1.139l.912-13.682,1.5.1-.912,13.682A2.727,2.727,0,0,1-153.309-433Zm-6.039-18v-1.5h6.4v-3.666h8.394v3.666h6.705v1.5Zm13.295-1.5v-2.165h-5.394v2.165Z" transform="translate(168.466 456.167)" fill="#e63232">
+                            </path>
                         </svg>
                     </button>
                 </div>
@@ -30,6 +31,14 @@
         </div>
         <div v-if="getTempContainer.array.length > 6">
             <a href="" >View all</a>
+        </div>
+    </div>
+    <div v-else>
+        <div class="flex-collumn">
+            <div>
+                <strong>No product found</strong>
+            </div>
+            <div>Add units to this product</div>
         </div>
     </div>
     <hr>
@@ -40,10 +49,10 @@
         <div class="item-label">Unit Cost:</div>
         <div class="item-value"><span class="currency">{{ getCurrency }}</span>{{ getTempContainer.data.cost }}</div>
     </div>
-    <div class="flex lign-items-center item-row" v-if="getTempContainer.data.selling_price">
+    <div class="flex lign-items-center item-row flex-wrap" v-if="getTempContainer.data.selling_price">
         <div class="item-label">Selling Price:</div>
-        <div class="item-value"><span :class="{ 'has-discount': getTempContainer.data.discount !== null && getTempContainer.data.selling_price != 0 }"><span class="currency">{{ getCurrency }}</span>{{ getTempContainer.data.selling_price }}</span></div>
-        <div v-if="getTempContainer.data.discount !== null" class="flex has-discount-wrap">
+        <div class="item-value"><span :class="{ 'has-discount': getTempContainer.data.discount !== null && getTempContainer.data.selling_price != 0 && computePrice !== 0}"><span class="currency">{{ getCurrency }}</span>{{ getTempContainer.data.selling_price }}</span></div>
+        <div v-if="getTempContainer.data.discount !== null && computePrice !== 0" class="flex has-discount-wrap">
             <div class="item-value" v-if="this.getTempContainer.data.selling_price != 0">
                 <span class="currency">{{ getCurrency }}</span>
                 <div>{{ Intl.NumberFormat('en-US').format(computePrice.toFixed(2)) }}</div>
@@ -71,16 +80,15 @@
         <div class="item-label">Profit:</div>
         <div class="item-value">
             <span class="currency">{{ getCurrency }}</span>
-            <span v-if="getTempContainer.data.discount !== null">{{ Intl.NumberFormat('en-US').format((computePrice - getTempContainer.data.cost).toFixed(2)) }}</span>
+            <span v-if="getTempContainer.data.discount !== null && computePrice !== 0">{{ Intl.NumberFormat('en-US').format((computePrice - getTempContainer.data.cost).toFixed(2)) }}</span>
             <span v-else>{{ Intl.NumberFormat('en-US').format((getTempContainer.data.selling_price - getTempContainer.data.cost).toFixed(2)) }}</span>
         </div>
     </div>
     <div class="flex lign-items-center item-row" v-if="getTempContainer.data.selling_price && getTempContainer.data.cost">
         <div class="item-label">Profit Margin:</div>
         <div class="item-value">
-            <span v-if="getTempContainer.data.discount !== null">{{ Intl.NumberFormat('en-US').format((((computePrice - getTempContainer.data.cost) / computePrice)*100).toFixed(2)) }}%</span>
+            <span v-if="getTempContainer.data.discount !== null && computePrice !== 0">{{ Intl.NumberFormat('en-US').format((((computePrice - getTempContainer.data.cost) / computePrice)*100).toFixed(2)) }}%</span>
             <span v-else>{{ Intl.NumberFormat('en-US').format((((getTempContainer.data.selling_price - getTempContainer.data.cost) / getTempContainer.data.selling_price)*100).toFixed(2)) }}%</span>
-            
         </div>
     </div>
     <hr>
@@ -108,7 +116,7 @@ export default {
             return this.getDiscounts.filter(discount => discount.id == this.getTempContainer.data.discount)
         },
         computePrice() {
-            if(this.getTempContainer.data.discount !== null ) {
+            if(this.getTempContainer.data.discount !== null && this.computeDiscount.length > 0 && this.computeDiscount[0].active == 1 ) {
                 if(this.computeDiscount[0].percentage === 1) {
                     let price = this.getTempContainer.data.selling_price - ((this.computeDiscount[0].value)/100) * this.getTempContainer.data.selling_price
                     return price
@@ -117,7 +125,7 @@ export default {
                     return price
                 }
             }else {
-                return false
+                return 0
             }
         }
         // filteredProducts: function () {
@@ -179,10 +187,11 @@ a{
     }
 }
 .unit-pill{
-    //border: 1px solid $dark;
+    border: 1px solid $gray-light;
     border-radius: 27px;
     padding: 0 10px;
-    background-color: $primary-light;
+    background-color: #fff;
+    //box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
     span{
         align-items: center;
         display: flex;

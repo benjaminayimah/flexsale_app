@@ -94,11 +94,6 @@ export default {
   components: { SelectedTagRow },
     name: 'DetailedDiscount',
     computed: mapGetters(['getToken', 'getHostname', 'getTempContainer', 'getCurrency', 'getSubmitting']),
-    data() {
-        return {
-            
-        }
-    },
     methods: {
         setPage() {
             const title = { title: this.$route.params.name, back: true}

@@ -69,7 +69,8 @@
                             <input type="text" name="BatchNumber" @click="dismisUnitError" :disabled="form.prodType == '0' ? false : true" v-model="unitForm.batch" class="form-control" placeholder="Batch number">
                         </div>
                         <div class="unit-input-hold">
-                            <Datepicker v-model="month" monthPicker :disabled="form.prodType == '0' ? false : true"></Datepicker>
+                            <!-- <Datepicker v-model="month" monthPicker :disabled="form.prodType == '0' ? false : true"></Datepicker> -->
+                            <input type="date" v-model="expiryDate1" class="form-control" :disabled="form.prodType == '0' ? false : true">
                         </div>
                         <button class="button add-unit-btn button-primary" :disabled="form.prodType == '0' ? false : true" @click.prevent="addToUnit(this.unitForm.batch)">Add</button>
                     </div>
@@ -118,7 +119,8 @@
                         </div>
                         <div class="unit-input-hold" style="margin:0; padding: 10px 0">
                             <label>Expiry date:</label>
-                            <Datepicker v-model="month2" monthPicker :disabled="form.prodType == '1' ? false : true"></Datepicker>
+                            <!-- <Datepicker v-model="month2" monthPicker :disabled="form.prodType == '1' ? false : true"></Datepicker> -->
+                            <input type="date" v-model="expiryDate2" class="form-control" :disabled="form.prodType == '1' ? false : true">
                         </div>
                     </div>
                 </div>
@@ -230,33 +232,12 @@
 </template>
 <script>
 import axios from 'axios'
-import 'vue3-date-time-picker/dist/main.css'
-import Datepicker from 'vue3-date-time-picker';
-//import { ref } from 'vue';
 import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewProduct',
     computed: mapGetters(['getToken', 'getHostname', 'getUser', 'getTempContainer', 'getDefaultImage']),
-    components: { Datepicker },
-    // setup() {
-    //     const month = ref({ 
-    //         month: new Date().getMonth(),
-    //         year: new Date().getFullYear()
-    //     });
-    //     return {
-    //         month,
-    //     }
-    // },
     data() {
         return {
-            month: {
-                month: new Date().getMonth(),
-                year: new Date().getFullYear()
-             },
-             month2: {
-                month: new Date().getMonth(),
-                year: new Date().getFullYear()
-             },
             doingProductUpload: false,
             duplicate: false,
             unitForm: {
@@ -265,6 +246,8 @@ export default {
             },
             units: [],
             direct: { quantity: '', batch: ''},
+            expiryDate1: new Date().toISOString().slice(0,10),
+            expiryDate2: new Date().toISOString().slice(0,10),
             profit: '',
             profitMargin: '',
             image: '',
@@ -357,7 +340,7 @@ export default {
                 x.batch = this.units
             }else{
                 if(this.direct.batch !== '') {
-                    const direct = { batch_no: this.direct.batch, stock: this.direct.quantity, expiry_date: this.month2.year+'-'+ ('0'+parseInt(this.month2.month+1)).slice(-2) }
+                    const direct = { batch_no: this.direct.batch, stock: this.direct.quantity, expiry_date: this.expiryDate2}
                     x.batch = direct  
                 }else{
                     x.batch = ''
@@ -435,7 +418,7 @@ export default {
             
         },
         doUnitLocalCheck() {
-            const newUnit = { batch_no: this.unitForm.batch, expiry_date: this.month.year+'-'+ ('0'+parseInt(this.month.month+1)).slice(-2)}
+            const newUnit = { batch_no: this.unitForm.batch, expiry_date: this.expiryDate1}
             if(this.units.length === 0) {
                 this.units.push(newUnit)
                 this.resetInput()

@@ -11,8 +11,8 @@
                     <div class="itm-name">{{ product.name }}</div>
                     <div class="flex-row-st">
                         <label>Price:</label>
-                        <div class="itm-price" :class="{ 'has-discount': product.discount !== null && product.selling_price != 0 }"><span>{{ getCurrency }}</span>{{ product.selling_price }}</div>
-                        <div class="discount-price" v-if="product.discount !== null  && product.selling_price != 0 && computePrice !== false"><span>{{ getCurrency }}</span><span>{{ Intl.NumberFormat('en-US').format(computePrice.toFixed(2)) }}</span></div>
+                        <div class="itm-price" :class="{ 'has-discount': product.discount !== null && product.selling_price != 0 && computePrice !== 0 }"><span>{{ getCurrency }}</span>{{ product.selling_price }}</div>
+                        <div class="discount-price" v-if="product.discount !== null  && product.selling_price != 0 && computePrice !== 0"><span class="currency">{{ getCurrency }}</span><span>{{ Intl.NumberFormat('en-US').format(computePrice.toFixed(2)) }}</span></div>
                     </div>
                     <div class="flex-row-st">
                         <div class="flex-row-st">
@@ -87,7 +87,7 @@ export default {
             }
         },
         computePrice() {
-            if(this.product.discount !== null && this.computeDiscount.length > 0) {
+            if(this.product.discount !== null && this.computeDiscount.length > 0 && this.computeDiscount[0].active == 1 ) {
                 if(this.computeDiscount[0].percentage == 1 && this.product.selling_price > 0 ) {
                     let price = this.product.selling_price - ((this.computeDiscount[0].value)/100) * this.product.selling_price
                     //console.log(this.computeDiscount[0].percentage)
@@ -97,7 +97,7 @@ export default {
                     return price
                 }
             }else {
-                return false
+                return 0
             }
         }
     },

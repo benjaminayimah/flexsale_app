@@ -4,7 +4,7 @@
             <div class="flex-col" id="right_top">
                 <div class="flex-row-js">
                     <div class="flex-col">
-                        <div class="flex align-items-center"><span>{{ getCurrency }}</span><h1>{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</h1></div>
+                        <div class="flex align-items-center"><span class="currency">{{ getCurrency }}</span><h1>{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</h1></div>
                         <label>Today’s sales</label>
                     </div>
                     <button class="menu-toggle-btn">

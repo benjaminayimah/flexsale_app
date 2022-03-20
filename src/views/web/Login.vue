@@ -69,6 +69,10 @@
                           <span>Don't have an account?</span><a href="">Create one</a>
                         <!--<router-link id="go_hm" :to="{ name: 'Home' }">Back Home</router-link>-->
                     </div>
+                            <input type="date" class="form-control">
+                            <input type="time" class="form-control">
+
+
                   </form>
                   </div>
               </div>

@@ -28,11 +28,11 @@
         <div class="form-row-col">
             <div class="col-2 pl-0">
                 <label>Start date:</label>
-                <Datepicker v-model="form.startDate" :monthChangeOnScroll="false" />
+                <input type="date" v-model="form.startDate" class="form-control">
             </div>
             <div class="col-2 pr-0">
                 <label>End date:</label>
-                <Datepicker v-model="form.endDate" :monthChangeOnScroll="false" />
+                <input type="date" v-model="form.endDate" class="form-control">
             </div>
         </div>
         <div class="form-row mb-0">
@@ -78,14 +78,12 @@
 </template>
 <script>
 import axios from 'axios'
-import 'vue3-date-time-picker/dist/main.css'
-import Datepicker from 'vue3-date-time-picker';
 import { mapGetters } from 'vuex'
 import SelectProductsOverlay from '../includes/SelectProductsOverlay.vue';
 import SelectedTagRow from '../includes/SelectedTagRow.vue';
 export default {
     name: 'AddNewDiscount',
-     components: { Datepicker, SelectProductsOverlay, SelectedTagRow },
+     components: { SelectProductsOverlay, SelectedTagRow },
      computed: mapGetters(['getToken', 'getHostname', 'getWindowHeight', 'getSelectionSheet', 'getTempContainer']),
      props: ['thisWidth'],
     data() {
@@ -94,8 +92,8 @@ export default {
                 name: '',
                 type: '1',
                 amount: '',
-                startDate: new Date(),
-                endDate: new Date(),
+                startDate: new Date().toISOString().slice(0,10),
+                endDate: new Date().toISOString().slice(0,10),
                 products: [],
                 id: ''
             },

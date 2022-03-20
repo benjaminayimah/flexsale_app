@@ -9,7 +9,7 @@ export default createStore({
     token: localStorage.getItem('token') || null,
     windowHeight: '',
     defaultImage: require('@/assets/images/preview-img.svg'),
-    currency: 'GH₵',
+    currency: 'GHS',
     user: {},
     stores: [],
     products: [],

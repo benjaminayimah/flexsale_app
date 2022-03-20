@@ -8,8 +8,8 @@
                     <div class="item-name">{{ checkedProduct.name }}</div>
                     <div class="flex">
                         <label>Price:</label>
-                        <div :class="{ 'has-discount': checkedProduct.discount !== null && checkedProduct.selling_price != 0}"><span>{{ getCurrency }}</span>{{ checkedProduct.selling_price }}</div>
-                        <div class="discount-price" v-if="checkedProduct.discount !== null && checkedProduct.selling_price != 0"><span>{{ getCurrency }}</span><span>{{ Intl.NumberFormat('en-US').format(computePrice.toFixed(2)) }}</span></div>
+                        <div :class="{ 'has-discount': checkedProduct.discount !== null && checkedProduct.selling_price != 0 &&  computePrice !== 0  }"><span class="currency">{{ getCurrency }}</span>{{ checkedProduct.selling_price }}</div>
+                        <div class="discount-price" v-if="checkedProduct.discount !== null && checkedProduct.selling_price != 0 &&  computePrice !== 0"><span class="currency">{{ getCurrency }}</span><span>{{ Intl.NumberFormat('en-US').format(computePrice.toFixed(2)) }}</span></div>
                     </div>
                     <div><label>Stock:</label><span>{{ checkedProduct.stock }}</span></div>
 
@@ -32,7 +32,7 @@ export default {
             return this.getDiscounts.filter(discount => discount.id == this.checkedProduct.discount)
         },
         computePrice() {
-            if(this.checkedProduct.discount !== null && this.computeDiscount.length > 0) {
+            if(this.checkedProduct.discount !== null && this.computeDiscount.length > 0 && this.computeDiscount[0].active == 1 ) {
                 if(this.computeDiscount[0].percentage == 1 && this.checkedProduct.selling_price > 0 ) {
                     let price = this.checkedProduct.selling_price - ((this.computeDiscount[0].value)/100) * this.checkedProduct.selling_price
                     return price
@@ -41,7 +41,7 @@ export default {
                     return price
                 }
             }else {
-                return false
+                return 0
             }
         }
     },

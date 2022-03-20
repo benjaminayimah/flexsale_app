@@ -51,7 +51,7 @@
                                     </button>
                                 </div>
                             </transition>
-                            <div v-if="searchResult != ''" class="preview-hold flex-row-js">
+                            <div v-if="searchResult != ''" class="preview-hold flex-row-js" :class="{ 'expired-product': searchResult.active == 0}">
                                 <div class="flex align-items-center">
                                     <div class="prod-image bg-img" :style="searchResult.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+searchResult.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                                     <div class="flex-col sale-captions" style="max-width: 140px">
@@ -59,17 +59,22 @@
                                         <div><span class="currency">{{ getCurrency }}</span><span class="value">{{ Intl.NumberFormat('en-US').format(computePrice(searchResult.selling_price, searchResult.discount).toFixed(2)) }}</span></div>
                                     </div>
                                 </div>
-                                <div class="flex align-items-center" v-if="searchResult.prod_type === 1">
+                                
+                                <div class="flex align-items-center" v-if="searchResult.prod_type === 1 && searchResult.active !== 0">
                                     <label>Qty:</label>
                                     <input type="number" class="form-control qty-input">
                                 </div>
                                 <div class="flex align-items-center">
-                                    <button class="button add-btn" @click.prevent="addToSale(searchResult)">
+                                    <span class="expired" v-if="searchResult.active == 0">
+                                        Expired product
+                                    </span>
+                                    <button v-else class="button add-btn" @click.prevent="addToSale(searchResult)">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 12.429 14.5">
                                             <path  d="M18.552,12.874l-5.179,5.179a1.036,1.036,0,0,1-1.465,0L6.73,12.874a1.036,1.036,0,0,1,1.465-1.465l3.411,3.411V4.892a1.036,1.036,0,0,1,2.071,0V14.82l3.411-3.411a1.036,1.036,0,0,1,1.465,1.465Z" transform="translate(-6.427 -3.856)" fill="#566ff4"/>
                                         </svg>
                                         ADD
                                     </button>
+
                                     <button class="button clear-btn" @click.prevent="clearSearch">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 14 14">
                                             <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#C18383"></path>
@@ -176,9 +181,6 @@ export default {
             error: { active: false, msg: ''}
         }
     },
-    // updated() {
-    //     console.log(this.computedItems)
-    // },
     methods: {
         removeItem(id) {
             this.thisSale = this.thisSale.filter(filter => filter.id != id)
@@ -229,12 +231,14 @@ export default {
         computePrice(price, discount) {
             if(discount !== null && this.getDiscounts.length > 0) {
                 let discount_price = this.getDiscounts.filter(dis => dis.id == discount)
-                if(discount_price[0].percentage == 1) {
+                if(discount_price[0].percentage == 1 && discount_price[0].active == 1) {
                     let newPrice = Number(price) - ((discount_price[0].value)/100) * price
                     return Number(newPrice)
-                }else{
+                }else if(discount_price[0].percentage == 1 && discount_price[0].active == 1){
                     let newPrice = Number(price) - Number(discount_price[0].value)
                     return Number(newPrice)
+                }else{
+                    return Number(price)
                 }
             }else{
                 return Number(price)
@@ -571,10 +575,18 @@ table{
     transition: 0.3s all;
     border-radius: 50%;
     path{
-        fill: $danger;
-    }
-    &:hover{
-        background-color: rgba(230, 50, 50, 0.1) !important;
+        fill: $primary-color;
     }
 }
+.expired-product{
+    border-top: 2px $danger solid;
+    .expired{
+        background-color: rgba(230, 50, 50, 0.1);
+        color: $danger;
+        border-radius: 8px;
+        padding: 12px;
+        font-weight: 600;
+    }
+}
+
 </style>

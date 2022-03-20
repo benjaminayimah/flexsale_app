@@ -7,6 +7,7 @@ import AdminHome from '@/views/AdminHome.vue'
 //import WebHome from '@/views/WebHome.vue'
 import Dashboard from '@/views/app/Dashboard.vue'
 import Products from '@/views/app/Products.vue'
+import Notifications from '@/views/app/Notifications.vue'
 import Tags from '@/views/app/Tags.vue'
 import All from '@/components/app/layouts/AllProducts.vue'
 import Filter from '@/components/app/layouts/ProductFilter.vue'
@@ -47,6 +48,7 @@ const routes = [
         { path: '/products/filter/:id/:name', name: 'ProdFilter', component: Filter},
       ]
     },
+    { path: '/notifications', name: 'Notifications', component: Notifications },
     { path: '/tags', name: 'Tags', component: Tags },
     { path: '/tag/:id/:name', name: 'DetailedTag', component: DetailedTag },
     { path: '/product/:id/:name', component: DetailedProduct,

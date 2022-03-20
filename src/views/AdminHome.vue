@@ -29,7 +29,6 @@
                 </div>
               </div>
             </div>
-            
             <account-menu />
           </div>
         </div>
@@ -54,20 +53,20 @@
                         <span class="page-title-span text-overflow-ellipsis">{{ getCurrentpage.title }}</span>
                       </div>
                       <div class="noti-help">
-                        <li class="ml-0" v-if="getHideRight || getMobile">
+                        <li class="ml-0" v-if="(getHideRight || getMobile) && !getCurrentpage.back">
                           <a href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
                               <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)"/>
                             </svg>
                           </a>
                         </li>
-                        <li><a href="javascript: void">
+                        <li><router-link :to="{ name: 'Notifications'}">
                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
                             <g transform="translate(-6.775 -3.93)">
                               <path d="M-1239.676-30.952a.746.746,0,0,1,.795-.874.794.794,0,0,1,.795.561,1.317,1.317,0,0,0,.313.6,1.285,1.285,0,0,0,1.008.324,1.26,1.26,0,0,0,1.008-.324,1.317,1.317,0,0,0,.313-.6.794.794,0,0,1,.795-.561.749.749,0,0,1,.795.874,2.73,2.73,0,0,1-2.909,2.04A2.735,2.735,0,0,1-1239.676-30.952Zm2.959-1.919h-8.784a1.089,1.089,0,0,1-.995-1.748c.964-1.122,2.86-1.77,2.86-6.769,0-5.13,2.571-7.187,4.98-7.687.226-.05.388-.121.388-.324v-.16a1.446,1.446,0,0,1,1.5-1.352h.038a1.445,1.445,0,0,1,1.5,1.352v.16c0,.209.163.275.388.324,2.4.495,4.981,2.557,4.981,7.687,0,5,1.9,5.653,2.859,6.769a1.087,1.087,0,0,1-.976,1.748Zm-.419-15.385a2.278,2.278,0,0,1-1.164.578,4.062,4.062,0,0,0-2.421,1.518,7.641,7.641,0,0,0-1.308,4.772,11.131,11.131,0,0,1-.894,4.85,6.65,6.65,0,0,1-1.314,1.837.239.239,0,0,0,.206.4h14.591a.226.226,0,0,0,.194-.374,6.717,6.717,0,0,1-1.345-1.864,11.116,11.116,0,0,1-.9-4.85,7.646,7.646,0,0,0-1.307-4.772,4.062,4.062,0,0,0-2.421-1.518,2.368,2.368,0,0,1-1.177-.588.509.509,0,0,0-.361-.143A.547.547,0,0,0-1237.136-48.256Z" transform="translate(1253.524 54.842)"/>
                             </g>
                           </svg>
-                          <i></i></a>
+                          <i></i></router-link>
                         </li>
                         <li v-if="!getMobile"><a href="javascript: void">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.25 26.249">
@@ -124,7 +123,6 @@
             <!-- end -->
           </div>
         </div>
-        
     </main>
     <delete-modal />
     <div class="flex" id="sale_holder" v-if="getSale.active">
@@ -292,9 +290,6 @@ main{
   width: 350px;
   min-width: 300px
 }
-.main-body{
-    //min-height: 100vh;
-}
 .main-body-content{
   height: 100%;
 }
@@ -368,7 +363,6 @@ header, .right-header{
   align-items: center;
   overflow: hidden;
 }
-
 .page-title{
   font-weight: 700;
   font-size: 1.2rem;
@@ -384,6 +378,14 @@ header, .right-header{
   align-items: center;
   margin-left: 5px;
   min-width: 48px;
+  &:hover{
+    a{
+      background-color: $dark-light;
+    }
+    i{
+      border-color: $dark-light;
+    }
+  }
   a{
     color: $dark;
     text-decoration: none;
@@ -392,7 +394,6 @@ header, .right-header{
     position: relative;
     display: flex;
     align-items: center;
-    transition: 0.2s linear all;
     span{
       margin-left: 5px;
     }
@@ -407,9 +408,6 @@ header, .right-header{
       right: 10px;
     }
   }
-}
-.noti-help li:hover a{
-  background-color: $dark-light;
 }
 .form-control{
   border: 1px solid #ffffff;
