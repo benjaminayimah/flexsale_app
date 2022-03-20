@@ -28,13 +28,6 @@
                           <span>{{ validation.message }}</span>
                         </div>
                     <form action="">
-                        <div class="form-row">
-                            <input type="date" class="form-control" value="2022-03-21">
-                        </div>
-                        <div class="form-row">
-                            <input type="time" class="form-control" value="12:00">
-
-                        </div>
                       <div class="form-row">
                           <!-- <label>Email:</label> -->
                           <input v-model="form.email" @mousedown="resertForm" type="email" name="email" class="form-control" placeholder="Enter email">
