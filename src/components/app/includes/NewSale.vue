@@ -1,29 +1,31 @@
 <template>
 <tertiary-backdrop v-if="sale.maximize" />
-    <div class="sale-holder" :class="sale.maximize ? 'sale-maximize' : 'sale-normal'">
+    <div class="sale-holder" :class="[sale.maximize ? 'sale-maximize' : 'sale-normal', sale.minimize ? 'minimized': '']">
         <div class="inner">
             <div class="header flex-row-js">
-                <div class="title">New sale: 001</div>
                 <div class="flex">
-                    <button class="menu-toggle-btn" @click.prevent="$store.commit('minimizeSale')">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="1.5" viewBox="0 0 17.998 1.636">
-                            <path d="M18,.636H0V-1H18Z" transform="translate(0 1)" fill="#fff"/>
+                    <button class="menu-toggle-btn" @click.prevent="$store.commit('closeSale')" title="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.439 15.434">
+                            <path d="M17890.436-3025a1,1,0,0,1,.707.293,1,1,0,0,1,.293.707,1,1,0,0,1-.293.707l-6.012,6.01,6.012,6.01a1,1,0,0,1,.293.707,1,1,0,0,1-.293.707,1,1,0,0,1-1.414,0l-6.012-6.01-6.014,6.01a1,1,0,0,1-1.414,0,1,1,0,0,1-.293-.707,1,1,0,0,1,.293-.707l6.014-6.01-6.014-6.01a1,1,0,0,1-.293-.707,1,1,0,0,1,.293-.707,1,1,0,0,1,1.414,0l6.014,6.01,6.012-6.01A1,1,0,0,1,17890.436-3025Z" transform="translate(-17875.996 3024.998)" fill="#fff"/>
                         </svg>
                     </button>
-                    <button class="menu-toggle-btn" @click.prevent="$store.commit('maximizeSale')">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 18.837 20.331">
-                            <path d="M8.647,16.988l.228-1.435,3.912.62-4.266-5.3,1.132-.911,4.42,5.492.71-4.484,1.435.228-1.08,6.819ZM2.146,2.563,1.435,7.047,0,6.819,1.08,0,7.571,1.028,7.344,2.463l-3.912-.62L7.7,7.144l-1.132.911Z" transform="translate(18.837 17.794) rotate(171)" fill="#fff"/>
+                    <button class="menu-toggle-btn" @click.prevent="$store.commit('maximizeSale')"  :title="sale.maximize ? 'Restore' : 'Maximize'">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 17.518 16.604">
+                            <path v-if="sale.maximize" d="M16035.078-3360.094v-7.606h7.518a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-4.356l3.981,3.4-1.332,1.49-3.81-3.241v3.958a1,1,0,0,1-1,1A1,1,0,0,1,16035.078-3360.094Zm-9-8a1,1,0,0,1-1-1,1,1,0,0,1,1-1h4.356l-3.986-3.4,1.337-1.49,3.809,3.241v-3.958a1,1,0,0,1,1-1,1,1,0,0,1,1,1v7.606Z" transform="translate(-16025.076 3376.698)" fill="#fff"/>
+                            <path v-else  d="M16035.078-3360.094a1,1,0,0,1-1-1,1,1,0,0,1,1-1h4.355l-4.767-4.284,1.337-1.49,4.59,4.127v-3.958a1,1,0,0,1,1-1,1,1,0,0,1,1,1v7.605Zm-10-9v-7.6h7.521a1,1,0,0,1,.994,1,1,1,0,0,1-.994,1h-4.356l4.759,4.284-1.332,1.486-4.59-4.123v3.954a1,1,0,0,1-1,1A1,1,0,0,1,16025.077-3369.1Z" transform="translate(-16025.077 3376.697)" fill="#fff"/>
                         </svg>
                     </button>
-                    <button class="menu-toggle-btn" @click.prevent="$store.commit('closeSale')">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 17.346 17.346">
-                        <path d="M8.673,9.724,1.052,17.346,0,16.3,7.622,8.673,0,1.051,1.051,0,8.673,7.622,16.3,0l1.051,1.051L9.724,8.673,17.346,16.3,16.3,17.346Z" fill="#fff"/>
+                    <button class="menu-toggle-btn minimize-btn" @click.prevent="$store.commit('minimizeSale')" :title="sale.minimize ? 'Restore' : 'Minimize'">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="8" viewBox="0 0 21.413 8.868">
+                            <path d="M9.956,17.651l9.111,6.271,9.525-6.271" transform="translate(-8.565 -16.261)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="2"/>
                         </svg>
                     </button>
                 </div>
+                <div class="title w-100" @click.prevent="$store.commit('minimizeSale')" >New Sale</div>
+
             </div>
-            <div class="body" v-if="!sale.minimize" >
-                <div class="flex-col flex-space-between">
+            <div class="body" :class="!sale.minimize ? 'default-minimize-sale': ''" >
+                <div v-if="!sale.minimize" class="flex-col flex-space-between">
                     <div class="sale-main-body">
                         <div class="sales-top">
                             <form action="">
@@ -304,24 +306,42 @@ export default {
     .header{
         border-top-right-radius: 18px;
         border-top-left-radius: 18px;
-        background-color: #646979;
+        background-color: #4f5361;
         color: #ffffff;
-        //height: 40px;
-        padding: 10px 20px;
+        height: 46px;
+        padding: 0 20px;
+        transition: 0.3s background-color;
+        &:hover{
+            background-color: #30333d;
+        }
         button{
-            height: 30px;
-            width: 30px;
+            height: 35px;
+            width: 35px;
             margin-left: 2px;
             &:hover{
-                background-color: #ffffff1f;
+                background-color: #ffffff28;
+            }
+            &:active{
+                background-color: #0000002c;
             }
         }
         .title{
             font-weight: 500;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            justify-content: flex-end;
         }
     }
-    .body{
+    .default-minimize-sale{
         padding: 20px;
+        height: 690px !important;
+    }
+    .body{
+        height: 0;
+        transition: 0.3s ease-out height;
         .flex-col{
             height: 100%;
         }
@@ -363,9 +383,7 @@ export default {
     bottom: 0;
     right: 0;
     width: 528px;
-    .body{
-        height: 690px;
-    }
+   
 }
 .sale-maximize{
     width: 60%;
@@ -588,5 +606,9 @@ table{
         font-weight: 600;
     }
 }
-
+.minimized{
+    .minimize-btn{
+        transform: scaleY(-1);
+    }
+}
 </style>

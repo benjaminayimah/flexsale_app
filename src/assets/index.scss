@@ -600,13 +600,18 @@ hr{
   border-right: none;
   border-left: none;
 }
-.router-link-exact-active, #mob_nav .router-link-exact-active{
+#main_nav .router-link-exact-active, #mob_nav .router-link-exact-active{
   & span{
       color: $primary-color;
       font-weight: 600;
   }
   & svg path{
        fill: $primary-color;
+  }
+}
+.noti-help .router-link-exact-active{
+  & svg path{
+       fill: $dark;
   }
 }
 
@@ -835,7 +840,6 @@ hr{
     border-color: $white-color;
   }
 }
-
 
 
 
