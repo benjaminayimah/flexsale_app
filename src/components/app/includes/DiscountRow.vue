@@ -15,10 +15,11 @@
                     </div>
                 </div>
                 <div class="discount-period">
-                    <div class="flex-row-st align-items-center" :class="item[0].active == 1 ? 'active' : 'ended'">
+                    <div class="flex-row-st align-items-center" :class="[{'active' : item[0].active == 1 },{'ended' : item[0].active == 0 },{ 'inactive' : item[0].active == 2 }]">
                         <i></i>
-                        <span v-if="item[0].active == 1">Active</span>
-                        <span v-else>Ended</span>
+                        <span v-if="item[0].active == '1'">Active</span>
+                        <span v-else-if="item[0].active == '0'">Ended</span>
+                        <span v-else>Inactive</span>
                     </div>
                     <div class="period">
                         <span>{{ dateTime(item[0].start) }}</span><span class="dash">-</span><span>{{ dateTime(item[0].end) }}</span>
@@ -65,19 +66,20 @@ a{
     width: 100%;
     align-items: center;
 }
-.ended i{
+i{
     height: 8px;
     width: 8px;
-    background-color: $danger;
     border-radius: 50%;
     margin-right: 10px;
 }
+.ended i{
+    background-color: $danger;
+}
 .active i{
-    height: 8px;
-    width: 8px;
     background-color: $success;
-    border-radius: 50%;
-    margin-right: 10px;
+}
+.inactive i{
+    background-color: $gray-color;
 }
 .a-first{
     display: flex;

@@ -117,7 +117,7 @@ export default {
                         discount: res.data.discount, products: res.data.products
                     }
                     this.$store.commit('addToDiscounts', addTo)
-                    //console.log(addTo)
+                    //console.log(res.data)
                     const payload = {
                         id: 'success',
                         title: res.data.title,

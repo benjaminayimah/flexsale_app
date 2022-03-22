@@ -30,11 +30,14 @@
                             <div class="flex align-items-center head-col-row">
                                 <label>Status:</label>
                                 <span class="-text">
-                                    <span v-if="getTempContainer.data.active">
+                                    <span v-if="getTempContainer.data.active == '1'">
                                         Active
                                     </span>
-                                    <span v-else>
+                                    <span v-else-if="getTempContainer.data.active == '0'">
                                         Expired
+                                    </span>
+                                    <span v-else>
+                                        Inactive
                                     </span>
                                 </span>
                             </div>

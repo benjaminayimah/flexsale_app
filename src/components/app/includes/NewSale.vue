@@ -22,7 +22,6 @@
                     </button>
                 </div>
                 <div class="title w-100" @click.prevent="$store.commit('minimizeSale')" >New Sale</div>
-
             </div>
             <div class="body" :class="!sale.minimize ? 'default-minimize-sale': ''" >
                 <div v-if="!sale.minimize" class="flex-col flex-space-between">
@@ -149,8 +148,9 @@ import TertiaryBackdrop from './TertiaryBackdrop.vue'
 import { mapGetters } from 'vuex'
 export default {
     name: 'NewSale',
-  components: { TertiaryBackdrop },
-  computed: {
+    components: { TertiaryBackdrop },
+     props: ['sale'],
+    computed: {
       ...mapGetters(['getCurrency', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage']),
       computeTotal() {
           return this.thisSale.reduce((acc, item) => acc + item.price, 0);
@@ -163,17 +163,7 @@ export default {
           }else
             return []
         },
-        // checkUnitQty(id) {
-        //     if(this.thisSale.length > 0) {
-        //         let i = this.thisSale.filter(item => item.prod_id == id)
-        //         if(i.length > 0) {
-        //             this.thisSale = this.thisSale.filter(item => item.prod_id != id)
-        //             return i[0].qty
-        //         }
-        //     }
-        // },
     },
-    props: ['sale'],
     data() {
         return {
             searchResult: '',
@@ -249,14 +239,13 @@ export default {
         addToSale(searchResult) {
             //let items = this.searchResult
             this.saleCopy.push(searchResult)
-                let qty = this.checkUnitQty(searchResult.product_id) + 1
-                const price = this.computePrice(searchResult.selling_price, searchResult.discount)
-                let unitTotal = price * qty
-                const payload = {
-                    id: searchResult.id, image: searchResult.image, qty: qty, name: searchResult.name, unit_price: Number(price), price: Number(unitTotal), og_price: searchResult.selling_price, prod_id: searchResult.product_id, discount: searchResult.discount, batch_no: searchResult.batch_no, prod_type: searchResult.prod_type
-                }
-                this.thisSale.push(payload)
-            
+            let qty = this.checkUnitQty(searchResult.product_id) + 1
+            const price = this.computePrice(searchResult.selling_price, searchResult.discount)
+            let unitTotal = price * qty
+            const payload = {
+                id: searchResult.id, image: searchResult.image, qty: qty, name: searchResult.name, unit_price: Number(price), price: Number(unitTotal), og_price: searchResult.selling_price, prod_id: searchResult.product_id, discount: searchResult.discount, batch_no: searchResult.batch_no, prod_type: searchResult.prod_type
+            }
+            this.thisSale.push(payload)
             this.searchResult = ''
             this.searchInput = ''
             

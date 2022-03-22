@@ -361,7 +361,6 @@ export default {
                             },
                         }
                     ).then((res) => {
-                        console.log(res.data)
                         const newData = {
                             product: res.data.product, units: res.data.units
                         }
@@ -517,11 +516,7 @@ export default {
                 }else{
                     this.direct.quantity = this.getTempContainer.data.stock
                     this.direct.batch = this.getTempContainer.array[0].batch_no
-                    let date = this.getTempContainer.array[0].expiry_date
-                    const myArray = date.split('-')
-                    this.month2.year = myArray[0]
-                    this.month2.month = myArray[1] - 1
-
+                    this.expiryDate2 = this.getTempContainer.array[0].expiry_date
                 }
             }
         },
