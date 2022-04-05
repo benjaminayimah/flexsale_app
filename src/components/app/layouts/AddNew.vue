@@ -15,6 +15,7 @@
                                 <h1 class="text-overflow-ellipsis" v-if="getAddingProduct.product && !getTempContainer.active">Add New Product</h1>
                                 <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.tag && !getTempContainer.active">Create Product Tag</h1>
                                 <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.discount && !getTempContainer.active">Create New Discount</h1>
+                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.admin && !getTempContainer.active">Add New User</h1>
                                 <h1 class="text-overflow-ellipsis" v-else>Edit {{ getTempContainer.propertyName }}</h1>
                             </div>
                             <div class="btn-wrap flex-row">
@@ -33,6 +34,7 @@
                         <add-new-product v-if="getAddingProduct.product" />
                         <add-new-tag v-else-if="getAddingProduct.tag" v-bind:thisWidth="thisWidth" />
                         <add-new-discount v-else-if="getAddingProduct.discount" v-bind:thisWidth="thisWidth" />
+                        <add-new-user v-else-if="getAddingProduct.admin" />
                     </div>
                 </div>
             </div>
@@ -47,8 +49,9 @@ import AddNewTag from './AddNewTag.vue'
 import SecondaryBackdrop from '../includes/SecondaryBackdrop.vue'
 import AddNewProduct from './AddNewProduct.vue'
 import AddNewDiscount from './AddNewDiscount.vue'
+import AddNewUser from './AddNewUser.vue'
 export default {
-  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount },
+  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser },
     name: 'AddNew',
     computed: mapGetters(['getAddingProduct', 'getTempContainer']),
     props: ['thisWidth'],

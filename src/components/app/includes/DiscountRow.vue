@@ -1,6 +1,6 @@
 <template>
     <li>
-        <router-link :to="'/discounts/'+item[0].id+'/'+item[0].name">
+        <router-link :to="{ name: 'DetailedDiscount', params: { id: item[0].id, name: item[0].name } }">
             <div class="a-wrap">
                 <div class="a-first">
                     <div class="discount-name">

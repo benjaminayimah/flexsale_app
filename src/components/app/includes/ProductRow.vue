@@ -1,10 +1,10 @@
 <template>
 <li style="position: relative">
-    <router-link :to="'/product/'+product.id+'/'+product.name" class="a-row" >
+    <router-link :to="{ name: 'ProductDetailsBasic', params: { id: product.id, name: product.name }}" class="a-row" >
         <div class="table-row flex-row-js" >
             <div class="flex-row-st">
                 <div class="img-hold">
-                    <div class="img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
+                    <div class="img bg-img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     </div>
                 </div>
                 <div class="prod-capt-hold">
@@ -19,7 +19,6 @@
                             <label>Stock:</label>
                             <div class="qty">{{ product.stock }}</div>
                         </div>
-                        
                         <div class="edit-action">
                             <a href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 14.62 16.711">
@@ -30,7 +29,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="batch-no">{{ product.batch_no }} </div>
             </div>
             <div class="menu-toggle">
                 <button class="menu-toggle-btn" :id="'prod_menu_'+product.id" @click.prevent="doMenu('prod_menu_'+product.id)">
@@ -39,24 +37,23 @@
                     <i></i>
                 </button>
             </div>
-    
             <teleport to="body">
                 <transition name="fade">
-                    <backdrop v-if="toggleMenu" @mousedown="doMenu('prod_menu_'+product.id)" />
+                    <backdrop v-if="toggleMenu" @mousedown="dismissMenu" />
                 </transition>
             </teleport>
             <transition :name="getMobile? 'slide' : ''">
                 <div class="menu" v-if="toggleMenu" :class="[{ 'class-above' : classAbove && !getMobile}, { 'class-below' : !classAbove && !getMobile}, { 'menu-card-mob': getMobile}]">
                     <div class="title" v-show="getMobile">
                         <div>Menu</div>
-                        <button @click.prevent="doMenu('prod_menu_'+product.id)">
+                        <button @click.prevent="dismissMenu">
                             <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
                                 <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
                             </svg>
                         </button>
                     </div>
-                    <ul @mouseup="doMenu('prod_menu_'+product.id)">
-                        <li><router-link :to="'/product/'+product.id+'/'+product.name">View details</router-link></li>
+                    <ul @mouseup="dismissMenu">
+                        <li><router-link :to="{ name: 'ProductDetailsBasic', params: { id: product.id, name: product.name }}">View details</router-link></li>
                         <li><a href="javascript: void">Update stock</a></li>
                         <li><a href="javascript: void" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: 'product' } )">Delete</a></li>
                     </ul>
@@ -64,11 +61,7 @@
             </transition>
         </div>
     </router-link>
-</li>
-
-
-
-    
+</li>    
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -105,27 +98,22 @@ export default {
         return {
             toggleMenu: false,
             classAbove: false
-
         }
-    },
-    created() {
-        
     },
     methods: {
         doMenu(id) {
             let elem = document.getElementById(id).getBoundingClientRect().top
-            if(this.toggleMenu == false) {
-                this.toggleMenu = true
-                document.body.classList.add('fixed-body')
-                if((this.getWindowHeight-elem) > 200)
-                this.classAbove = true
-                else
-                this.classAbove = false
-            }else{
-                this.toggleMenu = false
-                document.body.classList.remove('fixed-body')
-            }
+            this.toggleMenu = true
+            document.body.classList.add('fixed-body')
+            if((this.getWindowHeight-elem) > 200)
+            this.classAbove = true
+            else
+            this.classAbove = false
         },
+        dismissMenu() {
+            this.toggleMenu = false
+            document.body.classList.remove('fixed-body')
+        }
     }
     
 }
@@ -141,11 +129,9 @@ export default {
         height: 90px;
         width: 90px;
         border-radius: 16px;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
     }
-}.prod-capt-hold{
+}
+.prod-capt-hold{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -172,15 +158,7 @@ export default {
     }
 }
 
-.batch-no{
-    padding: 20px;
-}
 
-.menu-toggle{
-    align-items: center;
-    display: flex;
-    
-}
 .class-above{
   top: 55%;
 }

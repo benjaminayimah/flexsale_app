@@ -21,8 +21,15 @@ $myFont: 'Urbanist', Helvetica, sans-serif;
 .activity-wrap .activity-row:last-child i{
   display: none;
 }
-li:last-child a{
+li:last-child a, li:last-child .info-section-hold{
   border-bottom: none
+}
+.separator-dot{
+  height: 3px;
+  width: 3px;
+  border-radius: 50%;
+  background-color: $gray-light;
+  margin: 0 8px;
 }
 .has-discount{
   text-decoration: line-through;
@@ -118,6 +125,9 @@ ul{
 }
 .mb-0{
   margin-bottom: 0 !important;
+}
+.mb-8{
+  margin-bottom: 6px;
 }
 
 #form_submit_btn_holder{
@@ -271,6 +281,12 @@ button{
 }
 .flex{
   display: flex;
+}
+.flx-gap-1{
+  gap: 0.8rem;
+}
+.flex-end{
+  justify-content: flex-end;
 }
 .flex-wrap{
   flex-wrap: wrap !important;
@@ -839,6 +855,13 @@ hr{
   i{
     border-color: $white-color;
   }
+}
+.hide-on-mob{
+  display: none;
+}
+.profile-pg-avatar{
+  height: 150px;
+  width: 150px;
 }
 
 

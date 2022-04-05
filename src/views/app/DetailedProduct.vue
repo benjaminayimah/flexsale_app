@@ -54,9 +54,9 @@
                     <div class="category-pill pill">
                         <div class="pill-wrap">
                             <ul class="flex-row-st">
-                                <li><router-link replace :to="'/product/'+getTempContainer.data.id+'/'+getTempContainer.data.name">Details</router-link></li>
-                                <li><router-link replace :to="'/product/stats/'+getTempContainer.data.id+'/'+getTempContainer.data.name">Statistics</router-link></li>
-                                <li><router-link replace :to="'/product/logs/'+getTempContainer.data.id+'/'+getTempContainer.data.name">Activity logs</router-link></li>
+                                <li><router-link replace :to="{ name: 'ProductDetailsBasic', params: { id: getTempContainer.data.id, name: getTempContainer.data.name }}">Details</router-link></li>
+                                <li><router-link replace :to="{ name: 'ProductDetailsStats', params: { id: getTempContainer.data.id, name: getTempContainer.data.name }}">Statistics</router-link></li>
+                                <li><router-link replace :to="{ name: 'ProductDetailsLogs', params: { id: getTempContainer.data.id, name: getTempContainer.data.name }}">Activity logs</router-link></li>
                             </ul>
                         </div>
                     </div>

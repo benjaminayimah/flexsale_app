@@ -15,7 +15,7 @@
 
                 </div>
             </div>
-            <button v-if="editMode" class="button" @click.prevent="removeSelectedProduct(checkedProduct.id)">
+            <button v-if="editMode || addMode" class="button" @click.prevent="removeSelectedProduct(checkedProduct.id)">
                 <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 14 14"><path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)"></path></svg>
             </button>
         </div> 
@@ -25,7 +25,7 @@
 import { mapGetters } from 'vuex'
 export default {
     name: 'SelectedTagRow',
-    props: ['checkedProduct', 'editMode'],
+    props: ['checkedProduct', 'editMode', 'addMode'],
     computed: {
         ...mapGetters(['getHostname', 'getUser', 'getDefaultImage', 'getDiscounts', 'getCurrency']),
         computeDiscount: function () {

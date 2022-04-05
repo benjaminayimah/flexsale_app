@@ -31,7 +31,7 @@ export default createStore({
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
-    addingProduct: { status: false, width: '', product: false, tag: false, discount: false},
+    addingProduct: { status: false, width: '', product: false, tag: false, discount: false, admin: false},
     sale: { active: false, minimize: false, maximize: false, array: []
     },
     todaysales: [],
@@ -62,12 +62,32 @@ export default createStore({
         {id: 12, index: 11, name: 'Chris Sharw', image: 'profile-9.png'},
         {id: 13, index: 12, name: 'Dominic Campbel', image: 'profile-10.png'},
     ],
+    customers: [
+      {id: 1, index: 0, name: 'Jon Doe', image: 'profile-1.png'},
+      {id: 2, index: 1, name: 'Walter White', image: 'profile-2.png'},
+      {id: 3, index: 2, name: 'Jane Smith', image: 'profile-3.png'},
+      {id: 4, index: 3, name: 'monicca brown', image: ''},
+      {id: 5, index: 4, name: 'monicca brown', image: 'profile-4.png'},
+      {id: 6, index: 5, name: 'Tyler Cooper', image: 'profile-5.png'},
+      {id: 7, index: 6, name: 'Harisson Smichel', image: ''},
+      {id: 8, index: 7, name: 'Harisson Smichel', image: 'profile-6.png'},
+      {id: 9, index: 8, name: 'Jadon Sancho', image: 'profile-7.png'},
+      {id: 10, index: 9, name: 'Sarah', image: ''},
+      {id: 11, index: 10, name: 'Sarah', image: 'profile-8.png'},
+      {id: 12, index: 11, name: 'Chris Sharw', image: 'profile-9.png'},
+      {id: 13, index: 12, name: 'Dominic Campbel', image: 'profile-10.png'},
+  ],
     activities: [
       {id: 1, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
       {id: 2, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
       {id: 3, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
       {id: 4, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
       {id: 5, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
+    ],
+    admins: [
+      {id: 1, name: 'Benjamin Ayimah', email: 'benjaminayimah@gmail.com', role: '1'},
+      {id: 2, name: 'Sarah Meagan', email: 'sarahmeagan@gmail.com', role: '2'},
+      {id: 3, name: 'John Doe', email: 'johndoe@gmail.com', role: '2'},
     ],
   },
   
@@ -172,6 +192,9 @@ export default createStore({
         state.addingProduct.tag = true
       }else if(payload.type == 'discount'){
         state.addingProduct.discount = true
+      }else if(payload.type == 'admin') {
+        state.addingProduct.admin = true
+
       }
       if(payload.mode == 'edit') {
         state.tempDataContainer.editMode = true
@@ -188,6 +211,7 @@ export default createStore({
       state.addingProduct.tag = false
       state.addingProduct.product = false
       state.addingProduct.discount = false
+      state.addingProduct.admin = false
       state.addingProduct.width = ''
       document.body.classList.remove('fixed-body')
       let appSection = document.getElementById('app_section')
@@ -596,12 +620,15 @@ export default createStore({
     getDefaultImage: (state) => state.defaultImage,
     getCurrency: (state) => state.currency,
     getSuppliers: (state) => state.suppliers,
+    getCustomers: (state) => state.customers,
     getStats: (state) => state.stats,
     getActivities: (state) => state.activities,
     getTempArrayCopy: (state) => state.tempArrayCopy,
     getTodaysales: (state) => state.todaysales,
     getTodaysaleItems: (state) => state.todaysaleItems,
     getSale: (state) => state.sale,
+    getAdmins: (state) => state.admins,
+
 
 
 

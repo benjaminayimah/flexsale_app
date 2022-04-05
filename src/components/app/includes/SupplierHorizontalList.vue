@@ -27,7 +27,6 @@ export default {
             }
         }
     },
-   
     created() {
         var colors = ['#5C74F7', '#3EC0D1', '#D94EE5', '#FAB23F', '#44C749', '#2B2A2A', '#FA4848', '#0076FF'];
         this.color = colors[Math.floor(Math.random() * colors.length)];

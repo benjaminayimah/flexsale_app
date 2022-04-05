@@ -11,25 +11,13 @@
         </div>
     </div>
     <div class="flex lign-items-cente item-row">
-        <div class="item-label">Units (Batch number | Expiration date):</div>
+        <div class="item-label">Units (Batch numbers):</div>
     </div>
     <div class="units-wrap item-row" v-if="getTempContainer.array.length > 0">
-        <div class="flex flex-wrap">
-            <li v-for="unit in getTempContainer.array.slice(0, 6)" :key="unit.id">
-                <div class="unit-pill flex">
-                    <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batch_no }}</span>
-                    <span class="divider">|</span>
-                    <span class="expiry-date text-overflow-ellipsis">{{ unit.expiry_date }}</span>
-                    <button v-if="unit.active == 0" class="flex align-items-center justify-content-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 21.5 23.166">
-                            <path d="M-162.427-433a2.727,2.727,0,0,1-2.714-2.539l-.912-13.682,1.5-.1.912,13.683a1.222,1.222,0,0,0,1.217,1.138h9.118a1.222,1.222,0,0,0,1.217-1.139l.912-13.682,1.5.1-.912,13.682A2.727,2.727,0,0,1-153.309-433Zm-6.039-18v-1.5h6.4v-3.666h8.394v3.666h6.705v1.5Zm13.295-1.5v-2.165h-5.394v2.165Z" transform="translate(168.466 456.167)" fill="#e63232">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-            </li>
+        <div class="flex flex-wrap flx-gap-1">
+            <product-unit-products v-for="unit in getTempContainer.array.slice(0, 12)" :key="unit.id" v-bind:unit="unit" />
         </div>
-        <div v-if="getTempContainer.array.length > 6">
+        <div v-if="getTempContainer.array.length > 12">
             <a href="" >View all</a>
         </div>
     </div>
@@ -107,7 +95,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import ProductUnitProducts from '../includes/ProductUnitProducts.vue'
 export default {
+  components: { ProductUnitProducts },
     name: 'ProductInfoDetails',
     computed: {
         ...mapGetters(['getTempContainer', 'getDiscounts', 'getCurrency']),
@@ -128,9 +118,6 @@ export default {
                 return 0
             }
         }
-        // filteredProducts: function () {
-        // return this.getAllFilters.filter(product => product.tag_id === this.$route.params.id)
-        // }
     },
     data() {
         return {
@@ -172,53 +159,22 @@ a{
 .item-label{
     font-weight: 500;
     border-bottom: 1px dashed ;
-    color: $gray-color;
+    color: $dark;
 }
 .item-value{
     margin-left: 20px;
-    font-weight: 500;
+    font-weight: 600;
     display: flex;
+    align-items: center;
 
 }
 .units-wrap{
     li{
         list-style-type: none;
-        padding: 0 10px 10px 0;
     }
 }
-.unit-pill{
-    border: 1px solid $gray-light;
-    border-radius: 27px;
-    padding: 0 10px;
-    background-color: #fff;
-    //box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
-    span{
-        align-items: center;
-        display: flex;
-        //margin-right: 20px;
-        height: 38px;
-        color: $dark;
-        font-weight: 600;
-        font-size: 15px;
-    }
-    .divider{
-        color: $gray-color;
-        margin: 0 5px;
-    }
-    .expiry-date{
-        color: $gray-color;
-    }
-    button{
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        display: flex;
-        background-color: transparent;
-        &:hover{
-            background-color: $dark-light;
-        }
-    }
-}
+
+
 hr{
     border-bottom: none;
     margin: 22px 0;

@@ -25,7 +25,7 @@
                 <!-- :style="{maxHeight: (getWindowHeight-380)+'px'}" -->
                 <div class="selected-products-hold">
                     <ul style="margin-top:20px">
-                        <selected-tag-row v-for="checked in this.getTempContainer.array" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="getTempContainer.editMode" />
+                        <selected-tag-row v-for="checked in this.getTempContainer.array" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="getTempContainer.editMode" v-bind:addMode="true" />
                     </ul>
                 </div>
             </div>
