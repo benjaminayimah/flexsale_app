@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 //import Home from '@/views/web/Home.vue'
 //import About from '@/views/web/About.vue'
-import Login from '@/views/web/Login.vue'
+import Welcome from '@/views/web/Welcome.vue'
+import SignIn from '@/views/web/SignIn.vue'
+import SignUp from '@/views/web/SignUp.vue'
 import AdminHome from '@/views/AdminHome.vue'
 //import WebHome from '@/views/WebHome.vue'
 import Dashboard from '@/views/app/Dashboard.vue'
@@ -80,7 +82,13 @@ const routes = [
 
     ]
   },
-  { path: '/login', name: 'Login', component: Login, meta: {requiresVisitor: true}},
+  { path: '/signin', component: Welcome,
+  children: [
+    { path: '/signin', name: 'SignIn', component: SignIn},
+    { path: '/signup', name: 'SignUp', component: SignUp},
+  ],
+  meta: {requiresVisitor: true}
+},
   //{ path: '/:pathMatch(.*)*', name: 'not-found', component: Error404 },
 ]
 const router = createRouter({
@@ -94,7 +102,7 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     if (!store.getters.auth) {
       next({
-        name: 'Login',
+        name: 'SignIn',
       })
     } else {
       next()

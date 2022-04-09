@@ -23,7 +23,7 @@
             <nav class="justify-content-center">
                 <ul class="flex justify-content-center">
                     <li><router-link replace :to="{ name: 'ProfileStoreDetails', param: { name: getUser.name }}"><div>Store details</div></router-link></li>
-                    <li><router-link replace :to="{ name: 'ProfileAdministration', param: { name: getUser.name }}"><div>Administration</div></router-link></li>
+                    <li><router-link v-if="getUser.role == 1" replace :to="{ name: 'ProfileAdministration', param: { name: getUser.name }}"><div>Administration</div></router-link></li>
                 </ul>
             </nav>
         </div>
@@ -60,14 +60,15 @@ export default {
     margin-bottom: 20px;
 }
 .profile-pg-avatar{
-    height: 250px;
-    width: 250px;
+    height: 200px;
+    width: 200px;
 }
 .main-top{
     margin-bottom: 8px;
 }
 .profile-name{
     font-size: 28px;
+    text-transform: capitalize;
 }
 label{
     margin-right: 5px;

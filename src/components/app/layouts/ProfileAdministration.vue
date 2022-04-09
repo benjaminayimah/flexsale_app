@@ -20,12 +20,17 @@ import { mapGetters } from 'vuex'
 export default {
   components: { AdminUsersRow },
     name: 'ProfileAdministration',
-    computed: mapGetters(['getAdmins'])
+    computed: mapGetters(['getAdmins']),
+    created() {
+        this.$store.dispatch('fetchAdmins')
+    }
 }
 </script>
 <style scoped lang="scss">
 .button-primary{
-    height: 48px;
+    height: 44px;
+    padding: 0 13px;
+    border-radius: 11px;
     span{
         margin-left: 5px;
     }
@@ -33,9 +38,11 @@ export default {
 h3{
     text-transform: uppercase;
     font-size: 16px;
+    font-weight: 900;
+    margin: 0;
 }
 .admin-row-wrap{
-    margin: 30px 0 150px 0 ;
+    margin: 15px 0 150px 0 ;
    
 }
 </style>

@@ -3,7 +3,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
     <router-link v-if="auth" to="/dashboard">Dashboard</router-link>
-    <router-link v-else :to="{ name: 'Login' }">Login</router-link> 
+    <router-link v-else :to="{ name: 'SignIn' }">Login</router-link> 
   </div>
 </template>
 

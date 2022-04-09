@@ -34,7 +34,7 @@
                       </div>
                     </div>
                     <div v-for="store in getStores" :key="store.id">
-                      <div class="store-info-hold inactive" v-if="store.id != getUser.current" @click="doSwitch(store.id)">
+                      <div class="store-info-hold inactive" v-if="store.id != getUser.current && getUser.role == 1" @click="doSwitch(store.id)">
                           <div class="avatar">
                             <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
                           </div>
@@ -48,10 +48,25 @@
                               </div>
                           </div> 
                       </div>
+                      <div class="store-info-hold inactive" v-else-if="store.id != getUser.current && getUser.role == 2 && (getUser.store_1 == store.id || getUser.store_2 == store.id)" @click="doSwitch(store.id)">
+                          <div class="avatar">
+                            <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
+                          </div>
+                          <div class="acct-label">
+                              <div class="user-details">
+                                  <div class="user-name"><strong>{{ store.name }}</strong></div>
+                                  <div class="shop">{{ store.address }}</div>
+                              </div>
+                              <div class="acct-elipse">
+                                <i class="lazy-loader" v-if="load" :class="{ 'loader' : load }"></i>
+                              </div>
+                          </div> 
+                      </div>
+                      
                     </div>
                 </div>
+                <hr v-show="getStores.length > 1">
                 <div class="logout-hold">
-                    <hr>
                     <a href="#" @click.prevent="$store.dispatch('getLogout')">
                       <svg xmlns="http://www.w3.org/2000/svg"  height="14" viewBox="0 0 12.142 10.928">
                       <path id="Path_1672" data-name="Path 1672" d="M11.107,5.428l-.856.856,1.566,1.572H5.643V9.071h6.174l-1.566,1.566.856.862,3.036-3.036ZM3.214,4.214H8.071V3H3.214A1.218,1.218,0,0,0,2,4.214v8.5a1.218,1.218,0,0,0,1.214,1.214H8.071V12.714H3.214Z" transform="translate(-2 -3)" fill="#212121"/>

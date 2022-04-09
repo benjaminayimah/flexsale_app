@@ -94,7 +94,6 @@
                   <router-view />
                 </div>
               </div>
-              <!-- mob_nav -->
               <mob-nav />
                <!-- end -->
             </div>
@@ -131,9 +130,8 @@
         <new-sale v-for="newsale in getSale.array" :key="newsale.id" v-bind:sale="getSale" />
       </div>
 </section>
-    
-    
-    
+<onboarding-view />
+
 </template>
 <script>
 import AccountMenu from '../components/app/includes/AccountMenu.vue'
@@ -148,8 +146,9 @@ import Loader from '../components/app/includes/Loader.vue'
 import DeleteModal from '../components/app/includes/DeleteModal.vue'
 import RightBodyContent from '../components/app/layouts/RightBodyContent.vue'
 import NewSale from '../components/app/includes/NewSale.vue'
+import OnboardingView from '../components/app/layouts/OnboardingView.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView },
     name: 'AdminHome',
     computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale']),
     data() {

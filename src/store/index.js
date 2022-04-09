@@ -9,6 +9,7 @@ export default createStore({
     token: localStorage.getItem('token') || null,
     windowHeight: '',
     defaultImage: require('@/assets/images/preview-img.svg'),
+    onboard: false,
     currency: 'GHS',
     user: {},
     stores: [],
@@ -36,6 +37,8 @@ export default createStore({
     },
     todaysales: [],
     todaysaleItems: [],
+    admins: [],
+
 
     submitting: true,
     stats: [
@@ -84,11 +87,6 @@ export default createStore({
       {id: 4, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
       {id: 5, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
     ],
-    admins: [
-      {id: 1, name: 'Benjamin Ayimah', email: 'benjaminayimah@gmail.com', role: '1'},
-      {id: 2, name: 'Sarah Meagan', email: 'sarahmeagan@gmail.com', role: '2'},
-      {id: 3, name: 'John Doe', email: 'johndoe@gmail.com', role: '2'},
-    ],
   },
   
 
@@ -118,6 +116,22 @@ export default createStore({
     },
     computeWindow(state) {
       state.windowHeight = window.innerHeight
+    },
+    checkOnboard(state) {
+      setTimeout(() => {
+        if(state.stores.length < 1){
+          state.onboard = true
+          document.body.classList.add('fixed-body')
+        }else{
+          state.onboard = false
+        }
+      }, 3000);
+
+    },
+    forceCloseOnboard(state) {
+      state.onboard = false
+      document.body.classList.remove('fixed-body')
+
     },
     // setThiStore(state, payload) {
     //   state.thiStore = payload
@@ -348,6 +362,13 @@ export default createStore({
       state.filters = payload
       //console.log(payload)
     },
+    
+    fetchAdmins(state, payload) {
+      state.admins = payload
+    },
+    addToAdmins(state, payload) {
+      state.admins.push(payload)
+    },
     setTempDataContainer(state, payload) {
        state.tempDataContainer.array = payload.array
        state.tempDataContainer.data = payload.data
@@ -458,6 +479,7 @@ export default createStore({
           state.commit('fetchProducts', res.data.products)
           state.commit('fetchDiscounts', res.data.discounts)
           state.commit('fetchTodaysSales', { sales: res.data.sales, saleItems: res.data.sales_items })
+          state.commit('checkOnboard')
           state.commit('setLoader')
         } catch (e) {
           state.commit('setLoader')
@@ -492,6 +514,19 @@ export default createStore({
       //console.log(res.data)
       state.commit('setLoader') 
     },
+    async fetchAdmins(state){
+      state.commit('setLoader') 
+      try {
+        const res = await axios.post(this.getters.getHostname+'/api/get-this-admins?token='+this.getters.getToken)
+        state.commit('fetchAdmins', res.data.admins)
+        state.commit('setLoader') 
+      } catch (e) {
+        console.log(e.response)
+      }  
+    },
+    
+
+
     async fetchThisFilter(state, payload){
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-this-filter?token='+this.getters.getToken, {id: payload})
@@ -596,6 +631,7 @@ export default createStore({
     getUser(state) {
         return state.user
     },
+    getOnboard: (state) => state.onboard,
     getCurrentStore: (state) => state.currentStore,
     getToken: (state) => state.token,
     getCurrentpage: (state) => state.navPage,

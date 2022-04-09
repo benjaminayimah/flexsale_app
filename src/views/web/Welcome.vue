@@ -1,79 +1,23 @@
 <template>
-  <section id="login_page" :class="{ 'mob-view': getMobile}">
+  <section id="welcome_page" :class="{ 'mob-view': getMobile}">
       <div class="container-fluid">
           <div class="container">
               <div class="login-wrapper">
                   <header>
-                    <svg id="large-logo" xmlns="http://www.w3.org/2000/svg" height="45" viewBox="0 0 583.301 171.521">
+                    <svg id="large_logo" xmlns="http://www.w3.org/2000/svg" height="45" viewBox="0 0 583.301 171.521">
                         <g id="Group_3760" data-name="Group 3760" transform="translate(-258.104 -313.102)">
                             <path id="Path_1712" data-name="Path 1712" d="M19500.967-7334.344a86.416,86.416,0,0,1-17.283-1.742,85.282,85.282,0,0,1-16.1-5,85.836,85.836,0,0,1-14.568-7.907,86.323,86.323,0,0,1-12.691-10.473,86.258,86.258,0,0,1-10.473-12.692,85.724,85.724,0,0,1-7.906-14.567,85.172,85.172,0,0,1-5-16.1,86.5,86.5,0,0,1-1.742-17.283,86.514,86.514,0,0,1,1.742-17.284,85.2,85.2,0,0,1,5-16.1,85.733,85.733,0,0,1,7.906-14.568,86.312,86.312,0,0,1,10.473-12.692,86.323,86.323,0,0,1,12.691-10.473,85.81,85.81,0,0,1,14.568-7.907,85.282,85.282,0,0,1,16.1-5,86.416,86.416,0,0,1,17.283-1.742,86.421,86.421,0,0,1,17.285,1.742,85.362,85.362,0,0,1,16.1,5,85.81,85.81,0,0,1,14.568,7.907,86.323,86.323,0,0,1,12.691,10.473,86.168,86.168,0,0,1,10.473,12.692,85.423,85.423,0,0,1,7.906,14.568,85.214,85.214,0,0,1,5,16.1,86.514,86.514,0,0,1,1.742,17.284,86.5,86.5,0,0,1-1.742,17.283,85.172,85.172,0,0,1-5,16.1,85.451,85.451,0,0,1-7.906,14.567,86.258,86.258,0,0,1-10.473,12.692,86.323,86.323,0,0,1-12.691,10.473,85.836,85.836,0,0,1-14.568,7.907,85.362,85.362,0,0,1-16.1,5A86.421,86.421,0,0,1,19500.967-7334.344Zm1.4-126.843,31.494,31.49a14.366,14.366,0,0,1,4.229,10.215,14.348,14.348,0,0,1-4.229,10.215l-27.936,27.93.061.064a7.807,7.807,0,0,0,3.66,1.688,23.784,23.784,0,0,0,5.344.563,23.789,23.789,0,0,0,5.346-.563,7.807,7.807,0,0,0,3.66-1.688l23.5-23.59a16.033,16.033,0,0,0,3.936-5.7,22.727,22.727,0,0,0,1.742-7.672,20.822,20.822,0,0,0-5.27-15.316l-25.152-25.379a7.645,7.645,0,0,0-5.441-2.256h-14.939Zm-50.074.379a3.564,3.564,0,0,0-3.561,3.559v38.76a3.586,3.586,0,0,0,1.047,2.517l33.289,33.254a11.242,11.242,0,0,0,8,3.318,11.237,11.237,0,0,0,8-3.313l27.787-27.793.006,0s0,0,0-.006a11.231,11.231,0,0,0,3.289-7.973,11.227,11.227,0,0,0-3.289-7.973c0-.005-.006-.005-.01-.005l-33.293-33.3a3.531,3.531,0,0,0-2.512-1.042Z" transform="translate(-19157.105 7818.967)" fill="#fff"/>
                             <path id="Path_1713" data-name="Path 1713" d="M20020.7-7158.233a4.284,4.284,0,0,1-3.633-1.761,6.611,6.611,0,0,1-1.668-4.2l-.652-4.764a18.943,18.943,0,0,1-9.059,7.887,29.892,29.892,0,0,1-11.975,2.6,30.514,30.514,0,0,1-12.627-2.654,33.26,33.26,0,0,1-10.369-7.3,34.676,34.676,0,0,1-6.994-10.663,32.507,32.507,0,0,1-2.539-12.691,33.276,33.276,0,0,1,2.479-12.661,35.139,35.139,0,0,1,6.908-10.784,32.919,32.919,0,0,1,10.365-7.443,30.809,30.809,0,0,1,12.9-2.709,22.213,22.213,0,0,1,8.6,1.756,31.113,31.113,0,0,1,7.5,4.411,19.9,19.9,0,0,1,4.916,5.45l.656-5.722a6.456,6.456,0,0,1,1.434-4.2,4.747,4.747,0,0,1,3.869-1.756,5.751,5.751,0,0,1,4.2,1.756,5.741,5.741,0,0,1,1.756,4.2v.126l-.115,55.161a5.733,5.733,0,0,1-1.758,4.2A5.778,5.778,0,0,1,20020.7-7158.233Zm-26.986-55.227a19.4,19.4,0,0,0-10.543,2.978,21.78,21.78,0,0,0-7.447,7.892,21.6,21.6,0,0,0-2.74,10.638,21.311,21.311,0,0,0,2.8,10.693,22.165,22.165,0,0,0,7.539,7.893,19.344,19.344,0,0,0,10.451,2.982,19.069,19.069,0,0,0,10.4-2.982,22.13,22.13,0,0,0,7.443-7.893,21.4,21.4,0,0,0,2.77-10.632,21.81,21.81,0,0,0-2.709-10.723,21.776,21.776,0,0,0-7.357-7.867A19.346,19.346,0,0,0,19993.709-7213.459Zm-165.678,54.919c-.246,0-.473,0-.689-.005a33.15,33.15,0,0,1-13.287-2.846,32.246,32.246,0,0,1-10.213-7.328,33.871,33.871,0,0,1-6.76-10.7,34.212,34.212,0,0,1-2.414-12.772,32.764,32.764,0,0,1,2.383-12.363,34.306,34.306,0,0,1,6.639-10.456,31.994,31.994,0,0,1,9.922-7.236,28.418,28.418,0,0,1,12.152-2.654,28.074,28.074,0,0,1,14.537,3.931,30.6,30.6,0,0,1,10.633,10.577c2.586,4.271,3.295,6.971,3.295,12.565a32.823,32.823,0,0,1-.182,3.4,5.6,5.6,0,0,1-1.992,3.724,5.917,5.917,0,0,1-3.963,1.519l-40.914.056c.021.088.041.515.066,1.022a18.816,18.816,0,0,0,.154,2.025,21.748,21.748,0,0,0,3.594,7.176,22.619,22.619,0,0,0,6.818,6.081,22.523,22.523,0,0,0,9.531,3.043,36.6,36.6,0,0,0,3.666.177,24.661,24.661,0,0,0,6.906-.833,27.027,27.027,0,0,0,7.861-4.425,10.831,10.831,0,0,0,1.693-1.67l.02-.021c1.824-2.089,6.672-7.638,22.242-23.606l-20.361-20.952a4,4,0,0,1-1.326-2.967,4.231,4.231,0,0,1,1.861-3.421,7.1,7.1,0,0,1,4.451-1.433,7.813,7.813,0,0,1,2.865.581,5.907,5.907,0,0,1,2.246,1.413l18.213,18.716,17.131-18.575a6.663,6.663,0,0,1,2.3-1.408,7.757,7.757,0,0,1,2.813-.58,7.065,7.065,0,0,1,4.48,1.433,4.257,4.257,0,0,1,1.826,3.421,3.989,3.989,0,0,1-1.322,2.967l-19.336,20.806,19.775,20.011-7.941,8.232-19.727-20.18-25.383,25.983c-4.859,4.237-6.668,4.7-8.566,5.424l-.457.158C19839.467-7159.225,19832.725-7158.541,19828.031-7158.541Zm-2.268-54.444a24.06,24.06,0,0,0-6.689,1,15.248,15.248,0,0,0-5.463,2.72c-2.6,2.219-4.842,4.37-6.02,8.215l34.365-.056a14.924,14.924,0,0,0-1.486-4.627,12.035,12.035,0,0,0-3.2-3.533A18.637,18.637,0,0,0,19825.764-7212.985Zm253.443,54.278a30.391,30.391,0,0,1-12.721-2.685,32.292,32.292,0,0,1-10.219-7.328,34.046,34.046,0,0,1-6.762-10.7,34.312,34.312,0,0,1-2.408-12.772,32.677,32.677,0,0,1,2.377-12.363,34.3,34.3,0,0,1,6.646-10.456,31.973,31.973,0,0,1,9.92-7.236,28.418,28.418,0,0,1,12.152-2.654,28.07,28.07,0,0,1,14.533,3.931,30.528,30.528,0,0,1,10.633,10.577,28.011,28.011,0,0,1,4.027,14.745,33.7,33.7,0,0,1-.178,3.4,5.575,5.575,0,0,1-2,3.719,5.938,5.938,0,0,1-3.961,1.519l-41.643.061a21.691,21.691,0,0,0,3.811,8.043,22.641,22.641,0,0,0,6.822,6.081,17.385,17.385,0,0,0,8.791,2.321,17.184,17.184,0,0,0,9.168-2.5,20.909,20.909,0,0,0,6.318-5.778,5.577,5.577,0,0,1,2.17-1.908,5.984,5.984,0,0,1,2.771-.772,5.677,5.677,0,0,1,4.2,1.786,5.829,5.829,0,0,1,1.762,4.229,5.692,5.692,0,0,1-1.07,3.4,32.912,32.912,0,0,1-10.158,9.381,26.155,26.155,0,0,1-6.98,2.975A31.284,31.284,0,0,1,20079.207-7158.707Zm-1.014-54.278a17.619,17.619,0,0,0-6.115,1.057,17.784,17.784,0,0,0-5.355,3.172,20.972,20.972,0,0,0-6.7,9.89l35.088-.061a17.357,17.357,0,0,0-5.834-9.946A16.38,16.38,0,0,0,20078.193-7212.985Zm-39.709,54.212a6.482,6.482,0,0,1-4.441-1.665,5.508,5.508,0,0,1-1.869-4.29v-76.078a6.077,6.077,0,0,1,1.633-4.108,5.189,5.189,0,0,1,4.021-1.852,5.965,5.965,0,0,1,4.588,1.882,5.712,5.712,0,0,1,1.67,4.078v76.734a4.667,4.667,0,0,1-1.877,3.84A6.1,6.1,0,0,1,20038.484-7158.773Zm-109.918,0a40.327,40.327,0,0,1-17.668-3.84c-1.4-.768-2.617-1.452-3.732-2.091l8.547-8.55c.361.177.756.355,1.205.543a30.115,30.115,0,0,0,11.588,2.023,36.389,36.389,0,0,0,7.412-.8,16.515,16.515,0,0,0,6.494-2.771,6.345,6.345,0,0,0,2.654-5.364,3.945,3.945,0,0,0-2.291-3.78,16.075,16.075,0,0,0-5.484-1.519l-1.062-.119-.336-.038c-1.6-.178-3.113-.347-4.531-.5-2.623-.3-4.586-.717-7.557-1.343l-.285-.06-.238-.05a65.661,65.661,0,0,1-10.152-2.715,19.226,19.226,0,0,1-7.781-5.48c-1.973-2.371-2.973-5.58-2.973-9.538a16.232,16.232,0,0,1,2.59-9.229,20.463,20.463,0,0,1,6.877-6.343,40.417,40.417,0,0,1,9.26-3.79c.361-.082.68-.159.988-.233l.08-.02a26.687,26.687,0,0,1,6.154-.817,32.374,32.374,0,0,1,15.461,3.724,26.625,26.625,0,0,1,6.039,4.372,22.745,22.745,0,0,1,4.24,5.666,5.736,5.736,0,0,1,.711,2.861,5.754,5.754,0,0,1-1.756,4.2,5.778,5.778,0,0,1-4.2,1.761,5.838,5.838,0,0,1-3.068-.984,5.869,5.869,0,0,1-2.23-2.3,12.568,12.568,0,0,0-5.9-5.541,21.951,21.951,0,0,0-9.352-1.847c-.291,0-.539,0-.76,0h-.1l-.453,0a13.592,13.592,0,0,0-3.359.461,16.375,16.375,0,0,0-6.393,3.063,6.423,6.423,0,0,0-2.918,5,4.076,4.076,0,0,0,2.412,3.664,28.062,28.062,0,0,0,5.678,2.155c.346.087.652.173.936.253a19.752,19.752,0,0,0,3.465.691c1.482.185,2.8.3,3.961.4.639.054,1.3.111,1.873.172a73.968,73.968,0,0,1,8.7,1.458,31.7,31.7,0,0,1,7.867,2.892,15.1,15.1,0,0,1,5.688,5.183,15.169,15.169,0,0,1,2.113,8.336,19.594,19.594,0,0,1-1.045,6.554,15.321,15.321,0,0,1-3.127,5.244,24.981,24.981,0,0,1-10.658,6.787A42.23,42.23,0,0,1,19928.566-7158.773Zm-142.514,0a6.474,6.474,0,0,1-4.436-1.665,5.518,5.518,0,0,1-1.877-4.29v-76.078a6.06,6.06,0,0,1,1.641-4.108,5.183,5.183,0,0,1,4.016-1.852,5.959,5.959,0,0,1,4.588,1.882,5.664,5.664,0,0,1,1.67,4.078v76.734a4.655,4.655,0,0,1-1.877,3.84A6.1,6.1,0,0,1,19786.053-7158.773Zm-64.607-.358a5.766,5.766,0,0,1-4.2-1.726,5.586,5.586,0,0,1-1.76-4.107v-.061l-.18-74.408a5.558,5.558,0,0,1,1.758-4.143,5.853,5.853,0,0,1,4.2-1.7l48.557-.061h.061a5.748,5.748,0,0,1,4.2,1.756,5.757,5.757,0,0,1,1.756,4.2,5.745,5.745,0,0,1-1.756,4.2,5.748,5.748,0,0,1-4.2,1.756h-.061l-42.6.061.061,21.684,31.033-.3h.656a4.717,4.717,0,0,1,3.877,1.907,6.116,6.116,0,0,1,1.482,3.694,6.5,6.5,0,0,1-1.664,4.441,5.5,5.5,0,0,1-4.285,1.872l-31.045.3.061,34.673v.121a5.59,5.59,0,0,1-1.756,4.107A5.793,5.793,0,0,1,19721.445-7159.131Z" transform="translate(-19265.982 7601.554)" fill="#fff"/>
                         </g>
                     </svg>
-                    <svg id="mini-logo" xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 386 386">
+                    <svg id="mini_logo" xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 386 386">
                         <g id="logo-icon" transform="translate(-750 -810)">
                             <rect id="Rectangle_2449" data-name="Rectangle 2449" width="386" height="386" rx="193" transform="translate(750 810)" fill="#566ff4"/>
                             <path id="Path_1701" data-name="Path 1701" d="M114.208-1118.587l-.114-.119,55.723-55.724a28.624,28.624,0,0,0,8.439-20.376,28.624,28.624,0,0,0-8.439-20.372L106.994-1278h29.793a15.375,15.375,0,0,1,10.864,4.5l50.172,50.638c16.5,17.995,11.709,46.115-.809,57.223l-46.874,47.056c-3,3-10.485,4.5-17.966,4.5S117.208-1115.588,114.208-1118.587ZM68.5-1121.464,2.084-1187.8A7.086,7.086,0,0,1,0-1192.822v-77.324a7.1,7.1,0,0,1,7.1-7.1H84.424a7.1,7.1,0,0,1,5.019,2.079l66.416,66.42a.052.052,0,0,1,.017.014,22.412,22.412,0,0,1,6.558,15.907,22.418,22.418,0,0,1-6.558,15.907l-.017.016-55.439,55.44a22.421,22.421,0,0,1-15.962,6.612,22.429,22.429,0,0,1-15.958-6.613Z" transform="translate(838.862 2199.105)" fill="#fff"/>
                         </g>
                     </svg>
-
                   </header>
-                  
-                  <div id="login_card">
-                      <div class="title">
-                          <h1>Welcome back!</h1>
-                          <span>Sign in to continue</span>
-                      </div>
-                        <div v-if="validation.error" class="validation-error">
-                          <span>{{ validation.message }}</span>
-                        </div>
-                    <form action="">
-                      <div class="form-row">
-                          <!-- <label>Email:</label> -->
-                          <input v-model="form.email" @mousedown="resertForm" type="email" name="email" class="form-control" placeholder="Enter email">
-                          <span class="validation-err" v-if="validation.error && validation.errors.email">
-                              {{ validation.errors.email[0] }}
-                          </span>
-                      </div>
-                      <div class="form-row">
-                          <!-- <label>Password:</label> -->
-                          <input v-model="form.password"  @mousedown="resertForm" required type="password" name="password" class="form-control password" placeholder="Enter password">
-                          <span class="validation-err" v-if="validation.error && validation.errors.password">
-                              {{ validation.errors.password[0] }}
-                          </span>
-                          <div class="forgot-pass">
-                              <a href="">Forgot password?</a>
-                          </div>
-                      </div>
-                        <button class="button button-primary" @click.prevent="submitSignin">Login</button>
-                        <div class="or">
-                            <div>
-                                <span>Or</span><span class="hide-mob">continue with social sign-in</span>
-                            </div>
-                        </div>
-                    <div class="flex social-signin">
-                        <button @click.prevent="">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 20.919 21.262">
-                                <path  d="M20.919,11.442c0,6.066-4.154,10.382-10.288,10.382a10.631,10.631,0,1,1,0-21.262A10.223,10.223,0,0,1,17.76,3.345L14.866,6.127C11.081,2.474,4.042,5.218,4.042,11.193a6.659,6.659,0,0,0,6.589,6.713,5.749,5.749,0,0,0,6.036-4.582H10.631V9.667H20.752A9.32,9.32,0,0,1,20.919,11.442Z" transform="translate(0 -0.562)"/>
-                            </svg>
-                            <span class="show-mob">Sign in with</span><span>Google</span>
-                        </button>
-                        <button @click.prevent="">
-                            <svg xmlns="http://www.w3.org/2000/svg"  height="18" viewBox="0 0 11.387 21.262">
-                                <path d="M12.251,11.96l.591-3.848H9.149v-2.5a1.924,1.924,0,0,1,2.169-2.079H13V.26A20.469,20.469,0,0,0,10.017,0C6.977,0,4.989,1.843,4.989,5.179V8.112H1.609V11.96h3.38v9.3h4.16v-9.3Z" transform="translate(-1.609)"/>
-                            </svg>
-                            <span class="show-mob">Sign in with</span><span>Facebook</span>
-                        </button>
-                    </div>
-                    <div class="flex create-acct">
-                          <span>Don't have an account?</span><a href="">Create one</a>
-                        <!--<router-link id="go_hm" :to="{ name: 'Home' }">Back Home</router-link>-->
-                    </div>
-                            
-
-
-                  </form>
-                  </div>
+                  <router-view />
               </div>
           </div>
       </div>
@@ -81,53 +25,10 @@
 </template>
 
 <script>
-//import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
-import axios from 'axios'
-
 export default {
-    name: 'Login',
-    computed: mapGetters(['getHostname', 'getMobile']),
-    data() {
-        return {
-            form: {
-              email: 'benjaminayimah@gmail.com',
-              password: 'ajf1432#@!'
-            },
-            validation: {
-                error: false,
-                errors: [],
-                message: ''
-            }
-        }
-    },
-    methods: {
-        submitSignin() {
-            this.resertForm()
-            axios.post(this.getHostname+'/api/sign-in', this.form)
-            .then((res) => {
-                this.$store.commit('setAuthToken', res.data.token)
-                localStorage.setItem('token', res.data.token)
-                location.reload()
-            }).catch((err) => {
-                if (err.response.status == 401) {
-                    this.validation.error = true
-                    this.validation.message = err.response.data.status
-                }if(err.response.status == 422){
-                    this.validation.error = true
-                    this.validation.errors = err.response.data.errors
-                    this.validation.message = err.response.data.message
-                }
-
-            })
-        },
-        resertForm() {
-            if (this.validation.error === true)
-            this.validation.error = false
-            this.validation.message = null
-            return
-        }
-    }
+    name: 'Welcome',
+    computed: mapGetters(['getMobile']),
 }
 </script>
 <style scoped lang="scss">
@@ -137,7 +38,7 @@ header{
     justify-content: center;
 }
 
-#login_page{
+#welcome_page{
     background-color: $primary-color;
     display: flex;
     justify-content: center;
@@ -150,137 +51,21 @@ header{
     width: 100%;
     transition: 0.5s all;
 }
-p{
-    margin-bottom: 0;
-    text-align: center;
-    & a{
-    color: $dark;
-    }
-}
-.show-mob{
-    display: none;
-}
-
 .login-wrapper{
     width: 35%;
     min-width: 350px;
     
 }
-.form-row{
-    margin-bottom: 20px;
-}
-#login_card{
-    padding: 60px 40px;
-    background-color: $white-color;
-    border-radius: 24px;
-}
 
-button{
-    width: 100%;
-    line-height: 2.5;
-}
-.title{
-    text-align: center;
-    margin-bottom: 40px;
-    h1{
-        margin: 0;
-        font-weight: 700;
-        text-align: center;
-        padding-bottom: 10px;
-        font-size: 1.8rem;
-    }
-    span{
-        font-weight: 500;
-        color: $gray-color;
-        font-size: 1.1rem;
-    }
-}
-.forgot-pass{
-    text-align: right;
-    padding-top: 12px;
-
-    a{
-        color: $primary-color;
-        font-weight: 600;
-        text-decoration: none;
-        &:hover{
-            text-decoration: underline;
-        }
-    }
-   
-   
-}
-.create-acct{
-        flex-wrap: wrap;
-        margin-top: 20px;
-       text-align: center;
-       justify-content: center;
-       font-weight: 500;
-       a{
-           font-weight: 600;
-           color: $primary-color;
-           text-decoration: none;
-            &:hover{
-                text-decoration: underline;
-            }
-       }
-       span{
-           margin-right: 5px;
-       }
-   }
-
-
-.validation-error {
-    padding: 15px;
-    border-radius: 6px;
-    background-color: rgba(230, 50, 50, 0.1);
-    border: 1px solid rgba(230, 50, 50, 0.5);
-    color: $danger;
-    margin-bottom: 20px;
-    & span{
-        font-size: 0.9rem;
-    }
-}
-.validation-err{
-    color: $danger;
-    padding-top: 8px;
-    display: flex;
-}
-#mini-logo{
+#mini_logo{
     display: none;
 }
-.hide-mob{
-        margin-left: 5px;
-    }
 
 @media screen and (max-width: 499px){
     header{
         margin-bottom: 20px;
     }
-    .show-mob{
-        display: block;
-        margin-right: 5px;
-    }
-    .hide-mob{
-        display: none;
-    }
-    
-    .social-signin{
-        flex-direction: column !important;
-        button{
-            &:first-child{
-            margin-right: 0 !important;
-            margin-bottom: 15px;
-            }
-            &:last-child{
-                margin-left: 0 !important;
-            }
-        }
-    }
-    .or div{
-         background-color: $primary-light;
-    }
-    #login_page{
+    #welcome_page{
         background-color: $primary-light;
         background-image: none;
         padding-top: 15%;
@@ -288,90 +73,19 @@ button{
         background-image: url('../../assets/images/shapes-mob.svg');
         
     }
-    #mini-logo{
+    #mini_logo{
     display: block;
     }
-    #large-logo{
-    display: none;
+    #large_logo{
+        display: none;
     }
     .container{
         width: 90%;
     }
-    #login_card{
-       background-color: transparent;
-        padding: 0;
-        
-        .title{
-            h1{
-                font-size: 1.6rem;
-                    padding-bottom: 5px;
-            }
-            // span{
-            //     font-weight: 400;
-            //      font-size: 1rem;
-            // }
-        }
-  
-        .form-control{
-            border-radius: 0;
-            background-color: transparent;
-            border: none;
-            border-bottom: 1px solid $gray-color;
-            padding-left: 0;
-            transition: all 0.1s linear;
-            box-shadow: none;
-            height: 50px;
-            &:focus{
-                border-bottom-width: 2px;
-                border-bottom-color: $primary-color;
-            }
-        }
-
-    }
-
     .login-wrapper{
         min-width: 100%;
     }
   
 }
-.social-signin{
-    flex-direction: row;
-    button{
-        box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        line-height: 52px;
-        border-radius: 14px;
-        //border: 2px solid $gray-light;
-        background-color: $white-color;
-        &:first-child{
-            margin-right: 8px;
-        }
-        &:last-child{
-            margin-left: 8px;
-        }
-        &:hover{
-            background-color: $primary-light;
-            border-color: $primary-color;
-            span{
-                color:$primary-color;
-            }
-            path{
-                fill: $primary-color ;
-            }
-        }
-        svg{
-        margin-right: 10px
-        }
-        span{
-            font-weight: 600;
-            color: $dark;
-        }
-    }
-    
-}
-.password{
-    font-family: 'Helvetica', sans-serif;
-}
+
 </style>
