@@ -54,13 +54,6 @@
                         </button>
                     </div>
                     
-                    <!-- <div>
-                        ···
-                    </div> -->
-
-                     <!-- <div class="flex-row">
-                        
-                    </div> -->
                 </div>
                 <div class="mini-body-content">
                     <ul v-if="getTempContainer.array.length > 0">

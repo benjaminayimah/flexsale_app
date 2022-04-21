@@ -8,6 +8,7 @@ export default createStore({
     //hostname: 'http://api.flexsale.store',
     token: localStorage.getItem('token') || null,
     windowHeight: '',
+    windowWidth: '',
     defaultImage: require('@/assets/images/preview-img.svg'),
     onboard: false,
     currency: 'GHS',
@@ -20,6 +21,7 @@ export default createStore({
     selectionSheet: false,
     discounts: [],
     tempDataContainer: { active: false, editMode: false, data: {}, array: [], propertyName: ''},
+    editContainer: { active: false, data: {}, array: [], propertyName: ''},
     tempArrayCopy: [],
     currentStore: {},
     mobile: false,
@@ -32,7 +34,7 @@ export default createStore({
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
-    addingProduct: { status: false, width: '', product: false, tag: false, discount: false, admin: false},
+    addingProduct: { status: false, product: false, tag: false, discount: false, admin: false},
     sale: { active: false, minimize: false, maximize: false, array: []
     },
     todaysales: [],
@@ -115,7 +117,17 @@ export default createStore({
       });
     },
     computeWindow(state) {
+      let appWidth = 1344
+      let winWidth = window.innerWidth
       state.windowHeight = window.innerHeight
+      state.windowWidth = winWidth
+      if(winWidth < 500){
+        return this.commit('setMobile')
+      }else if(winWidth > appWidth){
+        return this.commit('setDesktop')
+      }else{
+        return this.commit('setTablet', winWidth)
+      }
     },
     checkOnboard(state) {
       setTimeout(() => {
@@ -190,46 +202,53 @@ export default createStore({
         state.loader = !state.loader
     },
     getMainHomeWidth(state, payload) {
-      let homeWidth = document.getElementById('main_home').offsetWidth
-      let appSection = document.getElementById('app_section')
-      appSection.style.left = appSection.offsetLeft+'px'
       document.body.classList.add('fixed-body')
-      const thispayload = { dimension: homeWidth, type: payload.type, mode:payload.mode }
+      const thispayload = { type: payload.type, mode:payload.mode, id:payload.id }
       this.commit('setMainHomeWidth', thispayload)
     },
     setMainHomeWidth(state, payload) {
-      state.addingProduct.width = payload.dimension
+      
       state.addingProduct.status = true
       if(payload.type == 'product'){
         state.addingProduct.product = true
+        if(payload.mode == 'edit') {
+          const newPayload = { data: state.tempDataContainer.data, array: state.tempDataContainer.array, propertyName: state.tempDataContainer.propertyName }
+          this.commit('setEditContainer', newPayload)
+        }
+
       }else if(payload.type == 'tag'){
         state.addingProduct.tag = true
       }else if(payload.type == 'discount'){
         state.addingProduct.discount = true
       }else if(payload.type == 'admin') {
-        state.addingProduct.admin = true
-
+        if(payload.mode == 'edit'){
+          this.dispatch('fetchThisAdmin', payload.id)
+        }else{
+          state.addingProduct.admin = true
+        }
       }
       if(payload.mode == 'edit') {
-        state.tempDataContainer.editMode = true
+        this.commit('editMode')
         const newArray = state.tempDataContainer.array.slice();
         state.tempArrayCopy = newArray
-
       }
       //copy to tempArrayCopy
       //for removing rows
     },
+    editMode(state) {
+      state.tempDataContainer.editMode = true
+      return
+    },
     unsetMainHomeWidth(state, payload){
       // this.commit('dismisAlert')
+      this.commit('clearEditContainer')
       state.addingProduct.status = false
       state.addingProduct.tag = false
       state.addingProduct.product = false
       state.addingProduct.discount = false
       state.addingProduct.admin = false
-      state.addingProduct.width = ''
       document.body.classList.remove('fixed-body')
-      let appSection = document.getElementById('app_section')
-      appSection.style.left = '0px'
+    
       if(!state.tempDataContainer.active) {
         state.tempDataContainer.array = []
       }
@@ -286,7 +305,10 @@ export default createStore({
         this.dispatch('deleteTag', state.deleteModal.id)
       }else if(state.deleteModal.type === 'product') {
         this.dispatch('deleteProduct', state.deleteModal.id)
-      }else{
+      }else if(state.deleteModal.type === 'user') {
+        this.dispatch('deleteUser', state.deleteModal.id)
+      }
+      else{
         const newPayload = {
             id: 'danger',
             body: 'Error deleting item try again'
@@ -369,6 +391,28 @@ export default createStore({
     addToAdmins(state, payload) {
       state.admins.push(payload)
     },
+    updateAdmins(state, payload) {
+      //state.admins.push(payload)
+      const i = state.admins.findIndex(x => x.id === payload.id)
+      state.admins.splice(i, 1, payload)
+    },
+    setEditContainer(state, payload) {
+      state.editContainer.active = true
+      state.editContainer.array = payload.array
+      state.editContainer.data = payload.data
+      state.editContainer.propertyName = payload.propertyName
+      if (payload.propertyName == 'user') {
+          state.addingProduct.admin = true 
+      }
+    },
+    clearEditContainer(state) {
+      state.editContainer.active = false
+      state.editContainer.array = []
+      state.editContainer.data = ''
+      state.editContainer.propertyName = ''
+      return
+    },
+
     setTempDataContainer(state, payload) {
        state.tempDataContainer.array = payload.array
        state.tempDataContainer.data = payload.data
@@ -407,6 +451,9 @@ export default createStore({
       if(state.filters.length > 0) {
         state.filters = state.filters.filter(product => product.id != payload)
       }
+    },
+    removeDeletedUser(state, payload) {
+      state.admins = state.admins.filter(admin => admin.id != payload)
     },
     
 
@@ -517,16 +564,25 @@ export default createStore({
     async fetchAdmins(state){
       state.commit('setLoader') 
       try {
-        const res = await axios.post(this.getters.getHostname+'/api/get-this-admins?token='+this.getters.getToken)
+        const res = await axios.post(this.getters.getHostname+'/api/get-admin-users?token='+this.getters.getToken)
         state.commit('fetchAdmins', res.data.admins)
         state.commit('setLoader') 
       } catch (e) {
         console.log(e.response)
       }  
     },
+    async fetchThisAdmin(state, payload){
+      state.commit('setLoader') 
+      const res = await axios.post(this.getters.getHostname+'/api/get-this-admin-user?token='+this.getters.getToken, {id: payload})
+      if(res.data.admin){
+        const newData = { data: res.data.admin, array: [], propertyName: 'user' }
+        state.commit('setEditContainer', newData)
+      }else{
+        console.log('does not exist')
+      }
+      state.commit('setLoader') 
+    },
     
-
-
     async fetchThisFilter(state, payload){
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-this-filter?token='+this.getters.getToken, {id: payload})
@@ -609,11 +665,22 @@ export default createStore({
       }
       state.commit('closeDeleteModal')
       state.commit('showAlert', newPayload)
-      //document.body.classList.remove('fixed-body')
-      
       router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter'  ? '' : router.go(-1)
-      //console.log(router.currentRoute.value.name)
-        
+    }).catch((err) => {
+        console.log(err)
+    })
+  },
+  deleteUser(state, payload) {
+    axios.delete(this.getters.getHostname+'/api/sign-up/'+payload+'?token='+this.getters.getToken)
+    .then((res) => {
+      //console.log(res.data)
+      state.commit('removeDeletedUser', res.data.id)
+      const newPayload = {
+          id: 'success',
+          body: res.data.status
+      }
+      state.commit('closeDeleteModal')
+      state.commit('showAlert', newPayload)
     }).catch((err) => {
         console.log(err)
     })
@@ -624,6 +691,7 @@ export default createStore({
   getters: {
     getHostname: (state) => state.hostname,
     getWindowHeight: (state) => state.windowHeight,
+    getWindowWidth: (state) => state.windowWidth,
     auth(state){
         return state.token !== null
     },
@@ -652,6 +720,7 @@ export default createStore({
     getSelectionSheet: (state) => state.selectionSheet,
     getLoader: (state) => state.loader,
     getTempContainer: (state) => state.tempDataContainer,
+    getEditContainer: (state) => state.editContainer,
     getDeleteModal: (state) => state.deleteModal,
     getDefaultImage: (state) => state.defaultImage,
     getCurrency: (state) => state.currency,

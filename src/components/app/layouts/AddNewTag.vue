@@ -1,4 +1,12 @@
 <template>
+<teleport to="#add_title">
+    <span>{{ getTempContainer.active ? 'Edit Tag' : 'Create New Tag'}}</span>
+</teleport>
+<teleport to="#add_submit_button">
+    <button v-if="!getTempContainer.active" class="button button-primary top-submit-btn" @click.prevent="submitTag">Create</button>
+    <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditTag">Save</button>
+</teleport>
+<teleport to="#add_master_body_container">
     <form id="tag_form">
         <div class="form-row">
             <label>{{ getTempContainer.active? 'Tag name' : 'Give a title to your tag' }}:</label>
@@ -42,14 +50,15 @@
                 </span>
             </div>
         </div>
-        <teleport to="#form_submit_btn_holder">
+        <!-- <teleport to="#form_submit_btn_holder">
             <div class="btn-wrap2">
                 <button v-if="!getTempContainer.active" class="button button-primary" @click.prevent="submitTag">Submit</button>
                 <button v-else class="button button-primary" @click.prevent="submitEditTag">Save changes</button>
             </div>
-        </teleport>
+        </teleport> -->
     </form>
-     <select-products-overlay v-if="getSelectionSheet" v-bind:thisWidth="thisWidth" v-bind:windowHeight="getWindowHeight" />
+     <select-products-overlay v-if="getSelectionSheet" v-bind:windowHeight="getWindowHeight" />
+     </teleport>
 </template>
 <script>
 import axios from 'axios'
@@ -60,7 +69,6 @@ export default {
   components: { SelectedTagRow, SelectProductsOverlay },
     computed: mapGetters(['getWindowHeight', 'getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer']),
     name: 'AddNewTag',
-    props: ['thisWidth'],
     data() {
         return {
             form: {

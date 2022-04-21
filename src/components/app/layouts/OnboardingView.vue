@@ -37,7 +37,7 @@
                     </svg>
 
                     <div class="heading">
-                        <h2>One last thing</h2>
+                        <h2>Create Your First Store</h2>
                         <span>Let's get your first store set up real quick.</span>
                     </div>
                     <button class="button button-primary ob-begin-btn">

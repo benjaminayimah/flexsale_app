@@ -18,7 +18,7 @@
                   <div v-for="store in getStores" :key="store.id">
                       <div v-if="store.id == getUser.current" class="store-info-hold active">
                           <div class="avatar">
-                            <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
+                            <span  v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -79,7 +79,8 @@
     </teleport>
         <div id="account_menu" class="store-info-hold" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
           <div class="avatar">
-              <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+getCurrentStore.id+'/'+getCurrentStore.image+')'}"></span>
+              <span v-if="getStores.length > 0" v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+getCurrentStore.id+'/'+getCurrentStore.image+')'}"></span>
+              <span v-else class="no-store"></span>
               <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
                   <path d="M404.366,1308.847l-4.744-4.732a.75.75,0,0,1,1.059-1.062l3.663,3.655,3.514-3.644a.75.75,0,1,1,1.08,1.041Z" transform="translate(-399.402 -1302.833)" fill="#11172f"/>
               </svg>

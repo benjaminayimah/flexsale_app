@@ -1,5 +1,12 @@
 <template>
-    <form id="product_form">
+<teleport to="#add_title">
+    <span>{{ getEditContainer.active ? 'Edit Product' : 'Add New Product'}}</span>
+</teleport>
+<teleport to="#add_submit_button">
+    <button class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Add'}}</button>
+</teleport>
+<teleport to="#add_master_body_container">
+     <form id="product_form">
         <div class="form-row">
             <label>Product Image:</label>
             <div class="img-hold">
@@ -222,20 +229,22 @@
                 </a>
             </div>
         </div>
-        <teleport to="#form_submit_btn_holder">
+        <!-- <teleport to="#form_submit_btn_holder">
             <div class="btn-wrap2">
-                <button v-if="!getTempContainer.active" class="button button-primary" @click.prevent="doSubmit">Submit</button>
+                <button v-if="!getEditContainer.active" class="button button-primary" @click.prevent="doSubmit">Submit</button>
                 <button v-else class="button button-primary" @click.prevent="doSubmit">Save changes</button>
             </div>
-        </teleport>
+        </teleport> -->
     </form>
+</teleport>
+   
 </template>
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewProduct',
-    computed: mapGetters(['getToken', 'getHostname', 'getUser', 'getTempContainer', 'getDefaultImage']),
+    computed: mapGetters(['getToken', 'getHostname', 'getUser', 'getDefaultImage', 'getEditContainer']),
     data() {
         return {
             doingProductUpload: false,
@@ -351,9 +360,9 @@ export default {
             }else if(x.batch == '') {
                 this.alertMsg('danger', 'Submition error', 'The batch field is required')
             }else {
-                let id = this.getTempContainer.data.id
+                let id = this.getEditContainer.data.id
                 const putUrl = this.getHostname+'/api/products/'+id+'?token='+this.getToken
-                if(this.getTempContainer.active) {
+                if(this.getEditContainer.active) {
                     axios.put(putUrl, x,
                         {
                             headers: {
@@ -484,7 +493,7 @@ export default {
         setTempImage() {
             this.doingtempUpload = true
             this.load = true
-            let image = this.getTempContainer.data.image
+            let image = this.getEditContainer.data.image
             axios.post( this.getHostname+'/api/reset-temp-img?token='+this.getToken, { id: image})
             .then((res) => {
                 this.afterTempUpload(res.data.image)
@@ -502,21 +511,21 @@ export default {
             this.doingtempUpload = false
         },
         preloadForEdit() {
-            //console.log(this.getTempContainer)
-            if(this.getTempContainer.active){
-                this.form.name = this.getTempContainer.data.name
-                this.form.cost = this.getTempContainer.data.cost
-                this.form.sellingPrice = this.getTempContainer.data.selling_price
-                this.form.stock = this.getTempContainer.data.end
-                this.form.description = this.getTempContainer.data.description
-                this.form.supplier = this.getTempContainer.data.supplier
-                this.form.prodType = this.getTempContainer.data.prod_type
-                if(this.getTempContainer.data.prod_type === 0){
-                    this.units = this.getTempContainer.array
+            //console.log(this.getEditContainer)
+            if(this.getEditContainer.active){
+                this.form.name = this.getEditContainer.data.name
+                this.form.cost = this.getEditContainer.data.cost
+                this.form.sellingPrice = this.getEditContainer.data.selling_price
+                this.form.stock = this.getEditContainer.data.end
+                this.form.description = this.getEditContainer.data.description
+                this.form.supplier = this.getEditContainer.data.supplier
+                this.form.prodType = this.getEditContainer.data.prod_type
+                if(this.getEditContainer.data.prod_type === 0){
+                    this.units = this.getEditContainer.array
                 }else{
-                    this.direct.quantity = this.getTempContainer.data.stock
-                    this.direct.batch = this.getTempContainer.array[0].batch_no
-                    this.expiryDate2 = this.getTempContainer.array[0].expiry_date
+                    this.direct.quantity = this.getEditContainer.data.stock
+                    this.direct.batch = this.getEditContainer.array[0].batch_no
+                    this.expiryDate2 = this.getEditContainer.array[0].expiry_date
                 }
             }
         },
@@ -530,11 +539,13 @@ export default {
     },
 
     mounted() {
-        this.getTempContainer.active && this.getTempContainer.data.image ? this.setTempImage() : ''
+        this.getEditContainer.active && this.getEditContainer.data.image ? this.setTempImage() : ''
+        //this.$store.commit('setEditContainer')
     },
     unmounted() {
         this.imageUploaded ? axios.post(this.getHostname+'/api/del-alltemp-img?token='+this.getToken) : ''
-        this.getTempContainer.active ? this.clearPreloader() : ''
+        this.getEditContainer.active ? this.clearPreloader() : ''
+        //this.$store.commit('clearEditContainer')
     },
     beforeMount() {
         window.addEventListener('beforeunload', this.preventReload)
@@ -553,7 +564,7 @@ export default {
     border-radius: 16px;
     display: flex;
     flex-direction: column;
-    border: 1px dashed $gray-light;
+    border: 1px solid $dark-light;
     span{
     text-align: center;
     color: $gray-color;
@@ -639,11 +650,10 @@ export default {
       height: 100%;
       width: 100%;
       border-radius: 16px;
-      padding: 20px;
       .img-main-wrap{
           height: 100%;
           width: 100%;
-          border-radius: 8px;
+          border-radius: 16px;
           background-repeat: no-repeat;
           background-position: center;
           background-size: cover;
@@ -652,26 +662,27 @@ export default {
               position: absolute;
               top: 15px;
               right: 15px;
-              height: 50px;
-              width: 50px;
+              height: 45px;
+              width: 45px;
               border-radius: 50%;
               border: none;
               border-color: $danger;;
           }
           button{
               box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
+              background-color: rgba(0, 0, 0, 0.7);
               svg path{
-                  fill: $danger;
+                  fill: $white-color;
               }
               &:hover{
-                  background-color: $danger;
+                    background-color: rgba(0, 0, 0, 0.9);
                     svg path{
                     fill: $white-color;
                 }
               }
               &:active{
                 box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 10%);
-                border: 1px solid $danger;
+                border: 1px solid $white-color;
                 //background-color: #ffffff;
             }
           }
@@ -840,4 +851,6 @@ hr{
 .activate-dst{
     opacity: 0.5;
 }
+
+
 </style>

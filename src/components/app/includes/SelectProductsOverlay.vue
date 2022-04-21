@@ -1,8 +1,8 @@
 <template>
-    <teleport to="#main_home">
+    <teleport to="#app">
         <tertiary-backdrop @click.prevent="$store.commit('doSelectionSheet')" />
-        <div class="product-selection-sheet" :style="{width: thisWidth+'px'}">
-            <div style="width:75%">
+        <div class="product-selection-sheet" :class="computeWidth ? 'width-active': 'width-inactive'">
+            <div class="selection-wrap">
                  <div class="selection-main">
                     <div class="selection-header">
                         <div class="header-holder">
@@ -35,9 +35,17 @@ import { mapGetters } from 'vuex'
 export default {
   components: { AddTagRow, TertiaryBackdrop },
     name: 'SelectProductOverlay',
-    props: ['thisWidth', 'windowHeight'],
-    computed: mapGetters(['getSelectionSheet', 'getProducts', 'getTempContainer']),
-
+    props: ['windowHeight'],
+    computed: {
+        ...mapGetters(['getSelectionSheet', 'getProducts', 'getTempContainer', 'getWindowWidth']),
+        computeWidth() {
+            if(this.getWindowWidth <= 600) {
+                return true
+            }else {
+                return false
+            }
+        }
+    },
 }
 </script>
 <style scoped lang="scss">
@@ -46,11 +54,11 @@ export default {
     z-index: 301;
     display: flex;
     justify-content: center;
-    align-items: center;
     height: 100%;
+    width: 600px;
+    top: 0;
     .selection-main{
         width: 100%;
-        border-radius: 20px;
         background-color: #ffffff;
         position: relative;
         .selection-body{
@@ -77,6 +85,27 @@ export default {
 .button-primary{
     height: 40px;
     border-radius: 12px;
+}
+.width-inactive{
+    align-items: center;
+    .selection-wrap{
+        width: 90%;
+    }
+    .selection-main{
+        border-radius: 20px;
+    }
+}
+.width-active{
+    width: 100%;
+    align-items: flex-end;
+    .selection-wrap{
+        width: 100%;
+    }
+     .selection-main{
+        border-top-right-radius: 20px;
+        border-top-left-radius: 20px;
+    }
+    
 }
 
 </style>

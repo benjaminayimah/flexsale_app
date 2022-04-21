@@ -55,7 +55,7 @@
                     <ul @mouseup="dismissMenu">
                         <li><router-link :to="{ name: 'ProductDetailsBasic', params: { id: product.id, name: product.name }}">View details</router-link></li>
                         <li><a href="javascript: void">Update stock</a></li>
-                        <li><a href="javascript: void" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: 'product' } )">Delete</a></li>
+                        <li><a href="#" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: 'product' } )">Delete</a></li>
                     </ul>
                 </div>
             </transition>

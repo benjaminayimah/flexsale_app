@@ -25,23 +25,52 @@
                 </div>
             </div>
         </div>
-        <div class="edit-wrap">
-            <button v-if="admin.role != '1'" class="button edit-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 14.62 16.711">
-                    <path d="M-8807.809-385.606a.691.691,0,0,1-.692-.69.692.692,0,0,1,.692-.692h13.237a.692.692,0,0,1,.69.692.691.691,0,0,1-.69.69Zm-.489-2.477a.691.691,0,0,1-.146-.759l1.781-4.153a.706.706,0,0,1,.145-.216l8.367-8.4a2.379,2.379,0,0,1,1.7-.7,2.375,2.375,0,0,1,1.693.7,2.4,2.4,0,0,1,0,3.384l-8.4,8.37a.647.647,0,0,1-.216.145l-4.155,1.781a.667.667,0,0,1-.271.057A.692.692,0,0,1-8808.3-388.083Zm2.852-4.247-1.048,2.446,2.446-1.05,6.716-6.686-1.428-1.426Zm8.767-5.94.942-.938a1.017,1.017,0,0,0,0-1.433,1,1,0,0,0-.717-.3,1,1,0,0,0-.718.3l-.936.94Z" transform="translate(8808.501 402.318)" fill="#0e142c"></path>
-                </svg>
-                <span>Edit</span>
+        <div class="menu-toggle" v-if="admin.role != '1'" :id="'supplier_menu_'+admin.id" @click.prevent="doMenu('supplier_menu_'+admin.id)">
+            <button class="menu-toggle-btn">
+                <i></i>
+                <i></i>
+                <i></i>
             </button>
         </div>
+        <teleport to="body">
+            <transition name="fade">
+                <backdrop v-if="toggleMenu" @mousedown="dismissMenu" />
+            </transition>
+        </teleport>
+        <transition :name="getMobile? 'slide' : ''">
+            <div class="menu" v-if="toggleMenu" :class="[{ 'class-above' : classAbove && !getMobile}, { 'class-below' : !classAbove && !getMobile}, { 'menu-card-mob': getMobile}]">
+                <div class="title" v-show="getMobile">
+                    <div>Menu</div>
+                    <button @click.prevent="dismissMenu">
+                        <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
+                            <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
+                        </svg>
+                    </button>
+                </div>
+                <ul @mouseup="dismissMenu">
+                    <li><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'admin', id: admin.id})">Edit user</a></li>
+                    <li><a href="#" @click.prevent="">Reset password</a></li>
+                    <li><a href="#" @click.prevent="$store.commit('setDeleteModal', { id: admin.id, type: 'user' } )">Delete</a></li>
+                </ul>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import Backdrop from './Backdrop.vue'
 export default {
+  components: { Backdrop },
     name: 'AdminUsersRow',
     props: ['admin'],
+    data() {
+        return {
+            toggleMenu: false,
+            classAbove: false
+        }
+    },
     computed: {
-        ...mapGetters(['getStores']),
+        ...mapGetters(['getStores', 'getWindowHeight', 'getMobile']),
         computeAccess1() {
             return this.getStores.filter(store => store.id == this.admin.store_1)
         },
@@ -49,6 +78,21 @@ export default {
             return this.getStores.filter(store => store.id == this.admin.store_2)
         }
     },
+    methods: {
+        doMenu(id) {
+            let elem = document.getElementById(id).getBoundingClientRect().top
+            this.toggleMenu = true
+            document.body.classList.add('fixed-body')
+            if((this.getWindowHeight-elem) > 210)
+            this.classAbove = true
+            else
+            this.classAbove = false
+        },
+        dismissMenu() {
+            this.toggleMenu = false
+            document.body.classList.remove('fixed-body')
+        }
+    }
 }
 </script>
 <style scoped lang="scss">
@@ -58,6 +102,7 @@ export default {
     padding: 20px;
     margin: 0 -20px 0 -20px;
     border-radius: 2px;
+    position: relative;
 }
 .flex-col{
     gap: 6px;
@@ -69,10 +114,7 @@ export default {
         margin-right: 10px;
     }
 }
-.edit-wrap{
-    display: flex;
-    align-items: flex-start;
-}
+
 h4{
     margin: 5px 0;
     text-decoration: underline;
@@ -96,6 +138,7 @@ h4{
 }
  .admin-name{
         font-weight: 700;
+        text-transform: capitalize;
 }
 .admin-email{
     color: $gray-color;
@@ -135,5 +178,82 @@ h4{
         color: $gray-color;
         font-size: 14px;
     }
+}
+.class-above{
+  top: 28%;
+}
+.class-below{
+    top: -50%;
+}
+
+.menu{
+    position: absolute;
+    background-color: #ffffff;
+    z-index: 200;
+    right: 0;
+    padding: 20px 0;
+    box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
+    //0 1px 6px 0 rgb(14 20 44 / 18%);
+    border-radius: 16px;
+    width: 200px;
+    ul{
+        padding: 0;
+        list-style-type: none;
+        display: flex;
+        margin: 0;
+        flex-direction: column;
+        li{
+            display: flex;
+            height: 50px;
+            width: 100%;
+            a{
+                display: flex;
+                height: 100%;
+                width: 100%;
+                align-items: center;
+                color: $dark;
+                text-decoration: none;
+                transition: 0.3s all;
+                padding: 0 20px;
+                font-weight: 500;
+            }
+            &:hover a{
+                background-color: $dark-light;
+            }
+        }
+    }
+}
+.menu-card-mob{
+    padding: 25px 0;
+    position: fixed;
+    bottom: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        margin-bottom: 20px;
+        font-weight: 700;
+        font-size: 1.4rem;
+        button{
+            border-radius: 50%;
+            padding: 10px;
+            background-color: #f0f3ff;
+        }
+    }
+   
+    width: 100%;
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    .acct-label .user-details{
+      max-width: 100%;
+    }
+  }
+  .slide-enter-from,
+.slide-leave-to {
+  transform: translateY(250px);
+  
 }
 </style>

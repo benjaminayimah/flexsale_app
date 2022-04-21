@@ -86,9 +86,10 @@
                   </div>
                 </div>
               </header>
-              <div id="form_submit_btn_holder" :style="{width: getAddingProduct.width + 'px'}"></div>
+              <!-- <div id="form_submit_btn_holder" :style="{width: getAddingProduct.width + 'px'}"></div> -->
               <loader />
-              <add-new v-if="getAddingProduct.status" v-bind:thisWidth="getAddingProduct.width" />
+              <!-- <add-new v-if="getAddingProduct.status" v-bind:thisWidth="getAddingProduct.width" /> -->
+
               <div class="main-body">
                 <div class="main-body-content">
                   <router-view />
@@ -131,6 +132,8 @@
       </div>
 </section>
 <onboarding-view />
+<add-new v-bind:winHeight="getWindowHeight" v-if="getAddingProduct.status" />
+
 
 </template>
 <script>
@@ -161,7 +164,7 @@ export default {
       window.addEventListener('resize', this.windowSize )
       window.addEventListener('scroll', this.pageScroll)
       this.$store.commit('computeWindow')
-      this.windowDimension()
+      // this.windowDimension()
   },
   unmounted() {
     window.removeEventListener('resize', this.windowSize)
@@ -171,13 +174,13 @@ export default {
     windowSize() {
       setTimeout(()=> {
         this.$store.commit('computeWindow')
-        this.windowDimension() 
+        // this.windowDimension() 
         let elem = document.getElementsByClassName('this-will-change')
         if(elem.length > 0){
             return this.$store.commit('setDynamicFloatingDiv', elem[0])
         }
-        const payload = { mode: 'me', type: 'me'}
-        this.getAddingProduct.status ? this.$store.commit('getMainHomeWidth', payload) : ''
+        // const payload = { mode: 'me', type: 'me'}
+        // this.getAddingProduct.status ? this.$store.commit('getMainHomeWidth', payload) : ''
       }, 100)
       //'getMainHomeWidth', payload = { mode: 'add', type: 'product'}
       //console.log(document.getElementById('app_section').offsetWidth)

@@ -1,4 +1,12 @@
 <template>
+<teleport to="#add_title">
+    <span>{{ getTempContainer.active ? 'Edit Discount' : 'Create New Discount'}}</span>
+</teleport>
+<teleport to="#add_submit_button">
+    <button v-if="!getTempContainer.active" class="button button-primary top-submit-btn" @click.prevent="submitDiscount">Create</button>
+    <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditDiscount">Save</button>
+</teleport>
+<teleport to="#add_master_body_container">
     <form>
         <div class="form-row">
             <label>Discount name:</label>
@@ -67,14 +75,15 @@
                 </button>
             </div>
         </div>
-        <teleport to="#form_submit_btn_holder">
+        <!-- <teleport to="#form_submit_btn_holder">
             <div class="btn-wrap2">
                 <button v-if="!getTempContainer.active" class="button button-primary" @click.prevent="submitDiscount">Submit</button>
                 <button v-else class="button button-primary" @click.prevent="submitEditDiscount">Save changes</button>
             </div>
-        </teleport>
+        </teleport> -->
     </form>
-     <select-products-overlay v-if="getSelectionSheet" v-bind:thisWidth="thisWidth" v-bind:windowHeight="getWindowHeight" />
+     <select-products-overlay v-if="getSelectionSheet" v-bind:windowHeight="getWindowHeight" />
+</teleport>
 </template>
 <script>
 import axios from 'axios'
@@ -85,7 +94,6 @@ export default {
     name: 'AddNewDiscount',
      components: { SelectProductsOverlay, SelectedTagRow },
      computed: mapGetters(['getToken', 'getHostname', 'getWindowHeight', 'getSelectionSheet', 'getTempContainer']),
-     props: ['thisWidth'],
     data() {
         return {
             form: {

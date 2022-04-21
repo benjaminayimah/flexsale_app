@@ -1,46 +1,28 @@
 <template>
     <secondary-backdrop />
-    <div class="add-wrap" :style="{width: thisWidth+'px'}">
-        <div class="add-content">
-            <div class="add-prd-head">
-                <div class="add-head-wrap">
-                    <div class="add-head-hold" :style="{width: thisWidth+'px'}">
-                        <div class="head-content">
-                            <button class="button button-secondary cancel-btn" @click.prevent="$store.commit('unsetMainHomeWidth')">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
-                                    <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"/>
-                                </svg>
-                            </button>
-                            <div class="heading">
-                                <h1 class="text-overflow-ellipsis" v-if="getAddingProduct.product && !getTempContainer.active">Add New Product</h1>
-                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.tag && !getTempContainer.active">Create Product Tag</h1>
-                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.discount && !getTempContainer.active">Create New Discount</h1>
-                                <h1 class="text-overflow-ellipsis" v-else-if="getAddingProduct.admin && !getTempContainer.active">Add New User</h1>
-                                <h1 class="text-overflow-ellipsis" v-else>Edit {{ getTempContainer.propertyName }}</h1>
-                            </div>
-                            <div class="btn-wrap flex-row">
-                                <!-- <button class="button button-primary" v-if="getAddingProduct.product" @click.prevent="doUpload">Submit</button>
-                                <button class="button button-primary" v-else-if="getAddingProduct.discount && !getTempContainer.active" @click.prevent="doDiscount">Submit</button>
-                                <button class="button button-primary" v-if="getAddingProduct.tag && !getTempContainer.active" @click.prevent="doTag">Submit</button> -->
-                                <button class="button button-primary" style="visibility: hidden; width:44px" @click.prevent=""></button>
-                            </div>
-                        </div>
-                    </div>
+    <div id="add_hero_modal" :class="computeWidth ? 'width-active': 'width-inactive'">
+        <div class="add-master-wrap">
+            <div class="add-master-head">
+                <div class="add-head-content flex-row-js">
+                    <button class="button button-secondary cancel-btn" @click.prevent="$store.commit('unsetMainHomeWidth')">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
+                            <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"/>
+                        </svg>
+                    </button>
+                    <h1 id="add_title" class="text-overflow-ellipsis"></h1>
+                    <div id="add_submit_button"></div> 
                 </div>
             </div>
-            <div class="main-page-body">
-                <div class="add-body">
-                    <div class="form-wrap">
-                        <add-new-product v-if="getAddingProduct.product" />
-                        <add-new-tag v-else-if="getAddingProduct.tag" v-bind:thisWidth="thisWidth" />
-                        <add-new-discount v-else-if="getAddingProduct.discount" v-bind:thisWidth="thisWidth" />
-                        <add-new-user v-else-if="getAddingProduct.admin" />
-                    </div>
+            <div class="add-master-body" :style="{maxHeight: (winHeight-180)+'px'}">
+                <div id="add_master_body_container">
                 </div>
             </div>
         </div>
-        
     </div>
+    <add-new-product v-if="getAddingProduct.product" />
+    <add-new-tag v-else-if="getAddingProduct.tag" />
+    <add-new-discount v-else-if="getAddingProduct.discount" />
+    <add-new-user v-else-if="getAddingProduct.admin" />
 </template>
 <script>
 
@@ -53,8 +35,17 @@ import AddNewUser from './AddNewUser.vue'
 export default {
   components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser },
     name: 'AddNew',
-    computed: mapGetters(['getAddingProduct', 'getTempContainer']),
-    props: ['thisWidth'],
+    computed: {
+        ...mapGetters(['getAddingProduct', 'getTempContainer', 'getEditContainer', 'getWindowWidth']),
+        computeWidth() {
+            if(this.getWindowWidth <= 600) {
+                return true
+            }else {
+                return false
+            }
+        }
+    },
+    props: ['winHeight'],
     methods: {
         doDiscount() {
             console.log('submit discount')
@@ -62,108 +53,80 @@ export default {
         doTag() {
             console.log('subit tag')
         }
+    },
+    created() {
+        console.log(this.getWindowWidth)
     }
         
 }
 </script>
 <style scoped lang="scss">
 
-.add-wrap{
-    background-color: $white-color;
-    height: 100%;
+#add_hero_modal{
+    background-color: #ffffff;
     position: fixed;
-    z-index: 201;
-    top: 0;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-        display: none;
-        -ms-overflow-style: none; 
-        scrollbar-width: none; 
+    z-index: 202;
+    h1{
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0 0 0 20px;
     }
-}
-.add-content{
-    &::-webkit-scrollbar {
-        display: none;
-        -ms-overflow-style: none; 
-        scrollbar-width: none; 
+    .add-master-head{
+        border-bottom: 1px solid $dark-light;
     }
-    .add-prd-head{
-        z-index: 100;
-        display: flex;
-        align-items: center;
-        position: relative;
-        .add-head-wrap{
-            height: 80px;
-            width: 100%;
-        }
-        .add-head-hold{
-            position: fixed;
-            top: 0;
-            display: flex;
-            height: 80px;
-            border-bottom: 1px solid $dark-light;
-            background-color: $white-color;
-        }
-        .head-content{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 30px;
-            align-items: center;
-        }
-    }
-    .heading{
-        display: flex;
-        height: 100%;
-        align-items: center;
-        h1{
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin: 0;
-        }
-    }
-    .btn-wrap{
-        height: 100%;
-        button{
+    .add-head-content{
+        height: inherit;
+        #add_submit_button button{
             height: 44px;
-            border-radius: 12px;
+            border-radius: 13px;
         }
-        
     }
-    
-    .add-body{
+    .add-master-body{
+        min-height: 100px;
         overflow-y: auto;
-        display: flex;
-        justify-content: center;
+        &::-webkit-scrollbar {
+            display: none;
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
     }
-    
 }
-
-.form-wrap{
-    padding: 20px 0 120px 0;
-    width: 75%;
+.width-inactive{
+    border-radius: 16px;
+    width: 600px;
+    top: 8%;
+    .add-master-head{
+        height: 75px;
+    }
+    .add-head-content{
+        padding: 0 20px;
+    }
+    .add-master-body{
+        padding: 0 30px;
+    }
 }
-.mob-view{
-    .form-wrap{
-        width: 100% !important;
+.width-active{
+    width: 100%;
+    top: 0;
+    height: 100%;
+    .add-master-head{
+        height: 60px;
     }
-    .head-content{
-        padding: 0 15px !important;
+    .add-head-content{
+        padding: 0 15px;
     }
-    .add-head-wrap, .add-head-hold{
-        height: 60px !important;
+    .add-master-body{
+        height: 100% !important;
+        padding: 0 15px;
     }
-
-} 
-
-
-
+}
 
 
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(200px);
-  
 }
+
+
+
 </style>

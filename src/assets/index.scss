@@ -102,6 +102,16 @@ li:last-child a, li:last-child .info-section-hold{
   margin-right: 4px;
   color: $gray-color;
 }
+#add_master_body_container{
+  form{
+    margin: 20px 0 90px 0;
+  }
+}
+.top-submit-btn{
+  height: 45px;
+  border-radius: 13px;
+  min-width: 80px;
+}
 
 @keyframes load{
   0%{transform: rotate(0deg)}
@@ -864,8 +874,6 @@ hr{
   height: 150px;
   width: 150px;
 }
-
-
 
 
   

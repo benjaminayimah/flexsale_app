@@ -1,6 +1,6 @@
 <template>
     <li>
-        <a href="#" :id="'store_'+store.id" @click.prevent="doCheck(store.id)" class="flex" :class="{ 'active' : active}">
+        <a href="#" :id="'store_'+store.id" @click.prevent="doCheck(store.id)" class="flex" :class="{ 'active' : thisCheck}">
             <button class="button check-btn" @click.prevent="">
                 <svg xmlns="http://www.w3.org/2000/svg"  height="14" viewBox="0 0 28.454 20.383">
                     <path d="M1126.264,386.512l-9.779-10.489,2.194-2.046,7.686,8.243,16.478-16.092,2.1,2.146Z" transform="translate(-1116.485 -366.129)" />
@@ -17,9 +17,14 @@
 export default {
     name: 'StoreSelectedCheck',
     props: ['store', 'checked'],
-    data() {
-        return {
-            active: false
+    computed: {
+        thisCheck() {
+             let items = this.checked.filter(check => check.id == this.store.id)
+             if(items != '') {
+                 return true
+             }else {
+                 return false
+             }
         }
     },
     methods: {
@@ -28,7 +33,6 @@ export default {
                 id: id
             }
             this.$emit('check',newObj)
-            this.active = !this.active
         }
     }
 
