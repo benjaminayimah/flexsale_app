@@ -49,7 +49,7 @@
                 </div>
                 <ul @mouseup="dismissMenu">
                     <li><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'admin', id: admin.id})">Edit user</a></li>
-                    <li><a href="#" @click.prevent="">Reset password</a></li>
+                    <li><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'pass', type: 'admin', id: admin.id})">Reset password</a></li>
                     <li><a href="#" @click.prevent="$store.commit('setDeleteModal', { id: admin.id, type: 'user' } )">Delete</a></li>
                 </ul>
             </div>

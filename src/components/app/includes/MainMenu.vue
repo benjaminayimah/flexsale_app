@@ -169,7 +169,7 @@ li a {
     color: $dark;
     text-decoration: none;
     font-weight: 500;
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     line-height: 22px;
     transition: 0.2s linear background-color;
     position: relative;

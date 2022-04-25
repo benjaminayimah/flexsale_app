@@ -21,7 +21,7 @@ export default createStore({
     selectionSheet: false,
     discounts: [],
     tempDataContainer: { active: false, editMode: false, data: {}, array: [], propertyName: ''},
-    editContainer: { active: false, data: {}, array: [], propertyName: ''},
+    editContainer: { active: false, data: {}, array: [], propertyName: '', password: false},
     tempArrayCopy: [],
     currentStore: {},
     mobile: false,
@@ -34,7 +34,7 @@ export default createStore({
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
-    addingProduct: { status: false, product: false, tag: false, discount: false, admin: false},
+    addingProduct: { status: false, product: false, tag: false, discount: false, admin: false, store: false},
     sale: { active: false, minimize: false, maximize: false, array: []
     },
     todaysales: [],
@@ -223,8 +223,21 @@ export default createStore({
       }else if(payload.type == 'admin') {
         if(payload.mode == 'edit'){
           this.dispatch('fetchThisAdmin', payload.id)
+        }else if(payload.mode == 'pass') {
+          const newData = { id: payload.id }
+          state.editContainer.data = newData
+          state.editContainer.active = true
+          state.editContainer.password = true
+          state.editContainer.active = true
+          state.addingProduct.admin = true 
         }else{
           state.addingProduct.admin = true
+        }
+      }else if(payload.type == 'store') {
+        state.addingProduct.store = true
+        if(payload.mode == 'edit') {
+          const newPayload = { data: state.currentStore}
+          this.commit('setEditContainer', newPayload)
         }
       }
       if(payload.mode == 'edit') {
@@ -247,6 +260,7 @@ export default createStore({
       state.addingProduct.product = false
       state.addingProduct.discount = false
       state.addingProduct.admin = false
+      state.addingProduct.store = false
       document.body.classList.remove('fixed-body')
     
       if(!state.tempDataContainer.active) {
@@ -410,6 +424,9 @@ export default createStore({
       state.editContainer.array = []
       state.editContainer.data = ''
       state.editContainer.propertyName = ''
+      if(state.editContainer.password) {
+        state.editContainer.password = false
+      }
       return
     },
 

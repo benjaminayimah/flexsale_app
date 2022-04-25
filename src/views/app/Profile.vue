@@ -13,7 +13,7 @@
                     </svg>
                     <span>Edit profile</span>
                 </button>
-                <button class="button button-secondary">
+                <button class="button button-secondary" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'pass', type: 'admin', id: getUser.id})">
                     <svg xmlns="http://www.w3.org/2000/svg"  height="16" viewBox="0 0 19.051 19.049">
                         <path d="M6899.083-7467.026a5.758,5.758,0,0,1,0-8.137,5.764,5.764,0,0,1,7.368-.645l8.585-8.585,1.412,1.415-2.376,2.376,2.378,2.378-3.792,3.791-2.376-2.378-2.417,2.417a5.764,5.764,0,0,1-.645,7.369,5.741,5.741,0,0,1-4.069,1.682A5.737,5.737,0,0,1,6899.083-7467.026Zm1.413-6.723a3.759,3.759,0,0,0,0,5.308,3.76,3.76,0,0,0,5.31,0,3.758,3.758,0,0,0,0-5.308,3.746,3.746,0,0,0-2.655-1.1A3.746,3.746,0,0,0,6900.5-7473.749Zm12.162-3.514.964-.962-.964-.963-.963.963Z" transform="translate(-6897.4 7484.394)" fill="#212121"/>
                     </svg>
@@ -54,7 +54,6 @@ export default {
 </script>
 <style scoped lang="scss">
 .bg-img{
-    
     border: 1px solid $dark-light;
     border-radius: 50%;
     margin-bottom: 20px;

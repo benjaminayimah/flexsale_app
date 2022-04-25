@@ -23,6 +23,7 @@
     <add-new-tag v-else-if="getAddingProduct.tag" />
     <add-new-discount v-else-if="getAddingProduct.discount" />
     <add-new-user v-else-if="getAddingProduct.admin" />
+    <add-new-store v-else-if="getAddingProduct.store" />
 </template>
 <script>
 
@@ -32,8 +33,9 @@ import SecondaryBackdrop from '../includes/SecondaryBackdrop.vue'
 import AddNewProduct from './AddNewProduct.vue'
 import AddNewDiscount from './AddNewDiscount.vue'
 import AddNewUser from './AddNewUser.vue'
+import AddNewStore from './AddNewStore.vue'
 export default {
-  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser },
+  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser, AddNewStore },
     name: 'AddNew',
     computed: {
         ...mapGetters(['getAddingProduct', 'getTempContainer', 'getEditContainer', 'getWindowWidth']),

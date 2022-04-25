@@ -1,6 +1,7 @@
 <template>
 <teleport to="#add_title">
-    <span v-if="getEditContainer.active && getUser.id !== getEditContainer.data.id">Edit User</span>
+    <span v-if="getEditContainer.password">Reset Password</span>
+    <span v-else-if="getEditContainer.active && getUser.id !== getEditContainer.data.id">Edit User</span>
     <span v-else-if="getUser.id == getEditContainer.data.id">Edit Profile</span>
     <span v-else>Add New User</span>
 </teleport>
@@ -9,41 +10,40 @@
 </teleport>
 <teleport to="#add_master_body_container">
     <form id="product_form">
-        <div class="form-row">
+        <div class="form-row justify-content-center flex" v-if="getEditContainer.active && !getEditContainer.password && getUser.id === getEditContainer.data.id && getUser.role == 1">
+            <div class="bg-img profile-pg-avatar" :style="{backgroundImage: 'url('+getHostname+'/storage/'+ getCurrentStore.id+'/'+getCurrentStore.image+')'}"></div>
+        </div>
+        <div class="form-row" v-if="!getEditContainer.password">
             <label>Name:</label>
             <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Full name" required>
         </div>
-        <div class="form-row">
+        <div class="form-row" v-if="!getEditContainer.password">
             <label>Email:</label>
             <input v-model="form.email" type="email" name="email" class="form-control" placeholder="example@gmail.com" required>
         </div>
-        <div class="form-row" v-if="getUser.id !== getEditContainer.data.id">
+        <div class="form-row" v-if="getUser.id !== getEditContainer.data.id && !getEditContainer.password">
             <label>Select Store:</label>
             <span class="sub-info">Your users (sellers) can only access the selected stores.</span>
             <ul>
                 <store-selected-check v-for="store in getStores" :key="store.id" v-bind:store="store" v-bind:checked="this.form.store" v-on:check="check" />
             </ul>
         </div>
-        <!-- <div class="form-row">
-            <div class="profit-row" v-for="store in getStores" :key="store.id">
-                <label class="checkbox-hold">
-                    <input v-model="form.trackQty" type="checkbox">
-                    <span class="checkbox-custom"></span>
-                    <span class="chk-label">{{ store.name }}</span>
-                </label>
-            </div>
-        </div> -->
         <div class="form-row" v-if="!getEditContainer.active">
             <label>Password:</label>
             <input v-model="form.password" type="password" name="password" class="form-control" placeholder="Enter password" required>
         </div>
-    </form>
-    <!-- <teleport to="#form_submit_btn_holder">
-            <div class="btn-wrap2">
-                <button v-if="!getEditContainer.active" class="button button-primary" @click.prevent="doSubmit">Create user</button>
-                <button v-else class="button button-primary" @click.prevent="doSubmit">Save changes</button>
+        <div class="form-row" v-if="getEditContainer.active && getEditContainer.password && getUser.id === getEditContainer.data.id">
+            <label>Current password:</label>
+            <input v-model="form.password" type="password" name="password" class="form-control" placeholder="Current password" required>
+            <div class="forgot-pass">
+                <a href="#" class="">Forgot your password?</a>
             </div>
-        </teleport> -->
+        </div>
+        <div class="form-row" v-if="getEditContainer.active && getEditContainer.password">
+            <label>New password:</label>
+            <input v-model="form.newPassword" type="password" name="password" class="form-control" placeholder="New password" required>
+        </div>
+    </form>
 </teleport>
 </template>
 <script>
@@ -54,7 +54,7 @@ export default {
   components: { StoreSelectedCheck },
     name: 'AddNewUser',
     computed: {
-        ...mapGetters(['getTempContainer', 'getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser']),
+        ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser', 'getCurrentStore']),
     },
     data() {
         return {
@@ -62,6 +62,7 @@ export default {
                 name: '',
                 email: '',
                 password: '',
+                newPassword: '',
                 store: []
             },
         }
@@ -78,8 +79,11 @@ export default {
                             },
                         }
                 ).then((res) => {
-                    console.log(res.data)
-                    this.$store.commit('updateAdmins', res.data.admin)
+                    if(this.getUser.id === this.getEditContainer.data.id ){
+                        this.$store.commit('setUser', res.data.admin)
+                    }else{
+                        this.$store.commit('updateAdmins', res.data.admin)
+                    }
                     const payload = {
                         id: 'success',
                         title: res.data.title,
@@ -183,5 +187,26 @@ export default {
 ul{
     margin-left: 0;
     padding: 0;
+}
+.forgot-pass{
+    padding-top: 10px;
+    a{
+        color: #566ff4;
+        font-weight: 500;
+        font-size: 0.9rem;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+.bg-img{
+    border: 1px solid $dark-light;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+.profile-pg-avatar{
+    height: 200px;
+    width: 200px;
 }
 </style>

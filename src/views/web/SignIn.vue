@@ -22,7 +22,7 @@
                 {{ validation.errors.password[0] }}
             </span>
             <div class="forgot-pass">
-                <a href="">Forgot password?</a>
+                <a href="">Forgot your password?</a>
             </div>
         </div>
             <button class="button button-primary" @click.prevent="submitSignin">Login</button>
