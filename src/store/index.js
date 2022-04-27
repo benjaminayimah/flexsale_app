@@ -366,6 +366,12 @@ export default createStore({
         });
       }
     },
+    updateStore(state, payload) {
+      state.currentStore = payload
+      console.log(payload)
+      const i = state.stores.findIndex(x => x.id === payload.id)
+      state.stores.splice(i, 1, payload);
+    },
     updateTags(state, payload) {
       state.tags = payload.tags
       state.tempDataContainer.data = payload.data
@@ -547,7 +553,6 @@ export default createStore({
           state.commit('setLoader')
         } catch (e) {
           state.commit('setLoader')
-          console.log(e.response)
           state.commit('destroyToken') 
         }      
     },

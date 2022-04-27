@@ -6,7 +6,8 @@
     <span v-else>Add New User</span>
 </teleport>
 <teleport to="#add_submit_button">
-    <button class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Create user'}}</button>
+    <button v-if="getEditContainer.password" class="button button-primary top-submit-btn" @click.prevent="doSubmitPassword">Save</button>
+    <button v-else class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Create user'}}</button>
 </teleport>
 <teleport to="#add_master_body_container">
     <form id="product_form">
@@ -30,18 +31,19 @@
         </div>
         <div class="form-row" v-if="!getEditContainer.active">
             <label>Password:</label>
-            <input v-model="form.password" type="password" name="password" class="form-control" placeholder="Enter password" required>
+            <input v-model="form.password" type="password" name="password" class="form-control password-field"  placeholder="Enter password" required>
         </div>
         <div class="form-row" v-if="getEditContainer.active && getEditContainer.password && getUser.id === getEditContainer.data.id">
             <label>Current password:</label>
-            <input v-model="form.password" type="password" name="password" class="form-control" placeholder="Current password" required>
+            <input v-model="form.password" @mousedown="resetError" :class="{ 'err-exist-border':error.pass }" type="password" name="password" class="form-control password-field" placeholder="Current password" required>
             <div class="forgot-pass">
                 <a href="#" class="">Forgot your password?</a>
             </div>
+            <div v-if="error.pass" class="error-hold"><span class="error">{{ error.message }}</span></div>
         </div>
         <div class="form-row" v-if="getEditContainer.active && getEditContainer.password">
             <label>New password:</label>
-            <input v-model="form.newPassword" type="password" name="password" class="form-control" placeholder="New password" required>
+            <input v-model="form.newPassword" type="password" name="password" class="form-control password-field" placeholder="New password" required>
         </div>
     </form>
 </teleport>
@@ -65,6 +67,7 @@ export default {
                 newPassword: '',
                 store: []
             },
+            error: { pass: false, message: ''}
         }
     },
     methods: {
@@ -92,7 +95,6 @@ export default {
                     this.$store.commit('showAlert', payload)
                     this.$store.commit('unsetMainHomeWidth', true)
                 }).catch((err) => {
-                    console.log(err.response.data.errors)
                     if(err.response.status === 422) {
                         const payload = {
                             id: 'danger',
@@ -133,6 +135,41 @@ export default {
                 })
             }
         },
+        async doSubmitPassword() {
+            let id = this.getEditContainer.data.id
+                const putUrl = this.getHostname+'/api/reset-password/'+id+'?token='+this.getToken
+                    axios.put(putUrl, this.form,
+                        {
+                            headers: {
+                                'Content-Type': ['application/json']
+                            },
+                        }
+                ).then((res) => {
+                    const payload = {
+                        id: 'success',
+                        title: res.data.title,
+                        body: res.data.message
+                    }
+                    if(res.status == 201){
+                        this.error.pass = true
+                        this.error.message = res.data.message
+                    }else{
+                        this.$store.commit('showAlert', payload)
+                        this.$store.commit('unsetMainHomeWidth', true)
+
+                    }
+                }).catch((err) => {
+                    console.log(err.data)
+                    if(err.response.status === 422) {
+                        const payload = {
+                            id: 'danger',
+                            title: 'Error!',
+                            body: err.response.data.message
+                        }
+                        this.$store.commit('showAlert', payload)
+                    }
+                })
+        },
         check(item) {
             let array = this.form.store
             if(array.length > 0){
@@ -164,6 +201,12 @@ export default {
                 }
             }
         },
+        resetError() {
+            if(this.error.pass) {
+                this.error.pass = false
+                this.error.message = ''
+            }
+        }
 
     },
     created() {
@@ -208,5 +251,17 @@ ul{
 .profile-pg-avatar{
     height: 200px;
     width: 200px;
+}
+
+.error-hold{
+    margin-top: 5px;
+    .error{
+        color: $danger;
+        font-size: 0.97rem;
+        font-weight: 500;
+    }
+}
+.err-exist-border{
+    border-color: $danger !important;
 }
 </style>

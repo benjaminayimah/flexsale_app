@@ -4,7 +4,7 @@
     <span v-else>Create new store</span>
 </teleport>
 <teleport to="#add_submit_button">
-    <button class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Create store'}}</button>
+    <button class="button button-primary top-submit-btn" @click.prevent="doSubmitUpdate">Save</button>
 </teleport>
 <teleport to="#add_master_body_container">
     <form id="product_form">
@@ -41,6 +41,7 @@
 </teleport>
 </template>
 <script>
+import axios from 'axios'
 import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewStore',
@@ -62,6 +63,37 @@ export default {
         }
     },
     methods: {
+        async doSubmitUpdate() {
+            let id = this.getCurrentStore.id
+                const putUrl = this.getHostname+'/api/store/'+id+'?token='+this.getToken
+
+                    axios.put(putUrl, this.form,
+                        {
+                            headers: {
+                                'Content-Type': ['application/json']
+                            },
+                        }
+                ).then((res) => {
+                    const payload = {
+                        id: 'success',
+                        title: res.data.title,
+                        body: res.data.message
+                    }
+                    this.$store.commit('updateStore', res.data.store)
+                    this.$store.commit('showAlert', payload)
+                    this.$store.commit('unsetMainHomeWidth', true)
+                }).catch((err) => {
+                    console.log(err.data)
+                    if(err.response.status === 422) {
+                        const payload = {
+                            id: 'danger',
+                            title: 'Error!',
+                            body: err.response.data.message
+                        }
+                        this.$store.commit('showAlert', payload)
+                    }
+                })
+        },
         preloadForEdit() {
             if(this.getEditContainer.active){
                 this.form.name = this.getEditContainer.data.name
@@ -71,12 +103,6 @@ export default {
                 this.form.city = this.getEditContainer.data.city
                 this.form.region = this.getEditContainer.data.region
                 this.form.country = this.getEditContainer.data.country
-
-
-
-
-
-
             }
         }
     },

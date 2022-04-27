@@ -17,7 +17,7 @@
         </div>
         <div class="form-row">
             <!-- <label>Password:</label> -->
-            <input v-model="form.password"  @mousedown="resertForm" required type="password" name="password" class="form-control password" placeholder="Enter password">
+            <input v-model="form.password"  @mousedown="resertForm" required type="password" name="password" class="form-control password-field" placeholder="Enter password">
             <span class="validation-err" v-if="validation.error && validation.errors.password">
                 {{ validation.errors.password[0] }}
             </span>
@@ -221,9 +221,6 @@ button{
         }
     }
     
-    }
-    .password{
-        font-family: 'Helvetica', sans-serif;
     }
     .show-mob{
         display: none;

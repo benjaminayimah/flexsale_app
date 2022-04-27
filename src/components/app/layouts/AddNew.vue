@@ -47,18 +47,7 @@ export default {
             }
         }
     },
-    props: ['winHeight'],
-    methods: {
-        doDiscount() {
-            console.log('submit discount')
-        },
-        doTag() {
-            console.log('subit tag')
-        }
-    },
-    created() {
-        console.log(this.getWindowWidth)
-    }
+    props: ['winHeight']
         
 }
 </script>
