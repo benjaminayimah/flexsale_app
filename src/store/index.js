@@ -10,7 +10,22 @@ export default createStore({
     windowHeight: '',
     windowWidth: '',
     defaultImage: require('@/assets/images/preview-img.svg'),
-    onboard: false,
+    onboard: { status: false, intro: false, basicInfo: false, avatar: false, final: false,
+      form: {
+        name: '',
+        phone1: '',
+        phone2: '',
+        address: '',
+        city: '',
+        region: '',
+        country: ''
+      },
+      imageForm: {
+        store: '',
+        image: ''
+      },
+      uploaded: false,
+    },
     currency: 'GHS',
     user: {},
     stores: [],
@@ -40,6 +55,7 @@ export default createStore({
     todaysales: [],
     todaysaleItems: [],
     admins: [],
+
 
 
     submitting: true,
@@ -129,21 +145,66 @@ export default createStore({
         return this.commit('setTablet', winWidth)
       }
     },
+    setStoreTempImg(state, payload) {
+      state.onboard.imageForm.image = payload
+      state.onboard.uploaded = true
+    },
+    delStoreTempImg(state) {
+      state.onboard.imageForm.image = ''
+      state.onboard.uploaded = false
+    },
+
     checkOnboard(state) {
       setTimeout(() => {
         if(state.stores.length < 1){
-          state.onboard = true
+          state.onboard.status = true
+          state.onboard.intro = true
           document.body.classList.add('fixed-body')
         }else{
-          state.onboard = false
+          state.onboard.status = false
         }
-      }, 3000);
+      }, 2000);
 
     },
+    forceSetOnboard(state, payload) {
+      state.onboard.status = true
+      if(payload == 'basicInfo') {
+        state.onboard.intro = false
+        state.onboard.avatar = false
+        state.onboard.final = false
+        state.onboard.basicInfo = true
+      }else if(payload == 'avatar') {
+        state.onboard.intro = false
+        state.onboard.final = false
+        state.onboard.basicInfo = false
+        state.onboard.avatar = true
+      }else if(payload == 'final') {
+        state.onboard.intro = false
+        state.onboard.basicInfo = false
+        state.onboard.avatar = false
+        state.onboard.final = true
+        this.commit('resetForm')
+      }
+    },
     forceCloseOnboard(state) {
-      state.onboard = false
+      state.onboard.status = false
+      this.commit('resetForm')
       document.body.classList.remove('fixed-body')
-
+      if(state.onboard.uploaded) {
+        this.dispatch('deleteTempStoreImg', state.onboard.form.tempImage)
+      }
+    },
+    resetForm(state) {
+      state.onboard.form.name = '',
+      state.onboard.form.phone1 = '',
+      state.onboard.form.phone2 = '',
+      state.onboard.form.address = '',
+      state.onboard.form.city = '',
+      state.onboard.form.region = '',
+      state.onboard.form.country = ''
+      state.onboard.imageForm.store = '',
+      state.onboard.imageForm.image = ''
+      return
     },
     // setThiStore(state, payload) {
     //   state.thiStore = payload
@@ -368,9 +429,24 @@ export default createStore({
     },
     updateStore(state, payload) {
       state.currentStore = payload
-      console.log(payload)
       const i = state.stores.findIndex(x => x.id === payload.id)
       state.stores.splice(i, 1, payload);
+    },
+    updateAvatar(state, payload) {
+      const i = state.stores.findIndex(x => x.id === payload.id)
+      state.stores.splice(i, 1, payload);
+      if (state.currentStore.id == payload.id) {
+          state.currentStore = payload
+      }
+    },
+    
+    addStore(state, payload) {
+      if(Object.keys(state.currentStore).length === 0) {
+        state.currentStore = payload.store
+      }
+      state.stores.push(payload.store)
+      state.user = payload.user
+      state.onboard.imageForm.store = payload.store.id
     },
     updateTags(state, payload) {
       state.tags = payload.tags
@@ -706,7 +782,24 @@ export default createStore({
     }).catch((err) => {
         console.log(err)
     })
-  }
+  },
+  // do this for close delete temp
+  // deleteTempProdImg(state, payload) {
+  //   axios.delete(this.getters.getHostname+'/api/del-prod-temp/'+payload+'?token='+this.getters.getToken)
+  //   .then(() => {
+  //       state.commit('delStoreTempImg')
+  //   }).catch((err) => {
+  //     console.log(err)
+  //   })
+  // },
+  deleteTempStoreImg(state, payload) {
+    axios.delete(this.getters.getHostname+'/api/del-store-temp/'+payload+'?token='+this.getters.getToken)
+    .then(() => {
+        state.commit('delStoreTempImg')
+    }).catch((err) => {
+      console.log(err)
+    })
+  },
 
 
   },

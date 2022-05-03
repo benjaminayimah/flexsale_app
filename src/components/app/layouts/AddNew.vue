@@ -37,6 +37,7 @@ import AddNewStore from './AddNewStore.vue'
 export default {
   components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser, AddNewStore },
     name: 'AddNew',
+    props: ['winHeight'],
     computed: {
         ...mapGetters(['getAddingProduct', 'getTempContainer', 'getEditContainer', 'getWindowWidth']),
         computeWidth() {
@@ -46,8 +47,7 @@ export default {
                 return false
             }
         }
-    },
-    props: ['winHeight']
+    }
         
 }
 </script>

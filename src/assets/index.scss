@@ -114,6 +114,7 @@ li:last-child a, li:last-child .info-section-hold{
   min-width: 80px;
 }
 
+
 @keyframes load{
   0%{transform: rotate(0deg)}
   100%{transform: rotate(360deg)}
@@ -562,6 +563,24 @@ textarea{
   
 }
 
+// Onboarding screen
+.ob-wrap{
+  padding: 0 40px;
+  width: 100%;
+  form{
+      width: 100%;
+      padding-bottom: 80px;
+  }
+  .ob-title{
+      text-align: left;
+      width: 100%;
+      h2{
+          margin-top: 0;
+          font-weight: 800;
+      }
+  }
+}
+
 
 .form-check-input {
   float: left;
@@ -722,6 +741,28 @@ hr{
       padding-right: 0;
   }
   }
+}
+
+.no-store-profile-large{
+  height: 200px;
+  width: 200px;
+  background-color: $gray-color;
+  display: flex;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+.no-store-profile-small{
+  background-color: $gray-color;
+  display: flex;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 //desktop && tablet
 .main-page-body{

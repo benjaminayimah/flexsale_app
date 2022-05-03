@@ -12,7 +12,8 @@
 <teleport to="#add_master_body_container">
     <form id="product_form">
         <div class="form-row justify-content-center flex" v-if="getEditContainer.active && !getEditContainer.password && getUser.id === getEditContainer.data.id && getUser.role == 1">
-            <div class="bg-img profile-pg-avatar" :style="{backgroundImage: 'url('+getHostname+'/storage/'+ getCurrentStore.id+'/'+getCurrentStore.image+')'}"></div>
+            <div v-if="getStores.length > 0" class="justify-content-center align-items-center profile-pg-avatar" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ !getCurrentStore.image ? computeInitials: '' }}</div>
+            <div v-else class="no-store-profile-large justify-content-center align-items-center">{{ computeInitials }}</div>
         </div>
         <div class="form-row" v-if="!getEditContainer.password">
             <label>Name:</label>
@@ -57,6 +58,18 @@ export default {
     name: 'AddNewUser',
     computed: {
         ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser', 'getCurrentStore']),
+        computeInitials() {
+            if(this.getUser.name && this.getStores.length < 1) {
+                let name = this.getUser.name.split(' ')
+                let initial = name[0].charAt(0).toUpperCase() + (name[1] ? name[1].charAt(0).toUpperCase() : '')
+                return initial
+            }else if(this.getCurrentStore.name){
+              let name = this.getCurrentStore.name.split(' ')
+              let initial = name[0].charAt(0).toUpperCase() + (name[1] ? name[1].charAt(0).toUpperCase() : '')
+              return initial
+            }
+            return ''
+        }
     },
     data() {
         return {

@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div v-else-if="imageUploaded" class="img-container">
-                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/temp/'+form.tempImage+')'}">
+                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/temp/'+form.tempImage+')'}">
                         <div v-if="deleting" id="loading_hold">
                             <i class="lazy-loader" :class="{ 'loader' : load }"></i>
                         </div>
@@ -51,7 +51,6 @@
                                 </svg>
                             </div>
                             <div><span>{{ imageStatus.msg }}</span></div>
-                            
                         </div>
                     </div>
                 </div>
@@ -303,11 +302,9 @@ export default {
             if(file) {
                 if(!(file.type == "image/png" || file.type == "image/jpg" || file.type == "image/jpeg")){
                     return this.showError('Unsupported file. The file type must be "png, jpg or jpeg"')
-                    //return console.log('File type must be "png,jpg or jpeg')
                 }else{
                     if(file.size > 1000000) {
                         return this.showError('This file is too large. The file size must be less than 1MB') 
-                        //return console.log('File too large')
                     }else {
                         this.doingtempUpload = true
                         this.load = true
@@ -465,7 +462,6 @@ export default {
         },
         delUnit(id) {
             this.units = this.units.filter(filter => filter.batch_no != id)
-
         },
         deltmp(id) {
             this.deleting = true
@@ -488,7 +484,6 @@ export default {
             if(this.form.name || this.form.supplier || this.form.description || this.form.batch || this.form.cost || this.form.sellingPrice || this.form.stock || this.doingProductUpload ) {
                 event.returnValue = `Are you sure you want to leave?`;
             }
-            
         },
         setTempImage() {
             this.doingtempUpload = true
@@ -614,7 +609,6 @@ export default {
                 justify-content: center;
                 background-color: rgba(0, 0, 0, 0.5);
                 align-items: center;
-
             .status-div{
                 position: relative;
                 max-width: 300px;

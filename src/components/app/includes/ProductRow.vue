@@ -4,7 +4,7 @@
         <div class="table-row flex-row-js" >
             <div class="flex-row-st">
                 <div class="img-hold">
-                    <div class="img bg-img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
+                    <div class="img bg-img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     </div>
                 </div>
                 <div class="prod-capt-hold">

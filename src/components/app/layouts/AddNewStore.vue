@@ -58,7 +58,6 @@ export default {
                 city: '',
                 region: '',
                 country: ''
-
             },
         }
     },

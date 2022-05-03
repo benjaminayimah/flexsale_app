@@ -3,7 +3,7 @@
         <hr>
          <div class="li-hold">
             <div class="flex-row">
-                <div class="prd-img bg-img" :style="checkedProduct.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+checkedProduct.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
+                <div class="prd-img bg-img" :style="checkedProduct.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getUser.current+'/'+checkedProduct.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                 <div class="prod-captions">
                     <div class="item-name">{{ checkedProduct.name }}</div>
                     <div class="flex">

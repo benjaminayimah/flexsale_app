@@ -1,7 +1,8 @@
 <template>
     <div class="main-page-body">
         <div class="flex-col align-items-center">
-            <div class="bg-img profile-pg-avatar" :style="{backgroundImage: 'url('+getHostname+'/storage/'+ getCurrentStore.id+'/'+getCurrentStore.image+')'}"></div>
+            <div v-if="getStores.length > 0" class="justify-content-center align-items-center profile-pg-avatar" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ !getCurrentStore.image ? computeInitials: '' }}</div>
+            <div v-else class="no-store-profile-large justify-content-center align-items-center">{{ computeInitials }}</div>
             <div class="main-top profile-name"><strong>{{ getUser.name }}</strong></div>
             <div class="main-top profile-email flex align-items-center">
                 <label>Email:</label><span>{{ getUser.email }}</span>
@@ -34,7 +35,21 @@
 import { mapGetters } from 'vuex'
 export default {
     name: 'Profile',
-    computed: mapGetters(['getUser', 'getCurrentStore', 'getHostname']),
+    computed: {
+        ...mapGetters(['getUser', 'getCurrentStore', 'getHostname', 'getStores']),
+        computeInitials() {
+            if(this.getUser.name && this.getStores.length < 1) {
+                let name = this.getUser.name.split(' ')
+                let initial = name[0].charAt(0).toUpperCase() + (name[1] ? name[1].charAt(0).toUpperCase() : '')
+                return initial
+            }else if(this.getCurrentStore.name){
+              let name = this.getCurrentStore.name.split(' ')
+              let initial = name[0].charAt(0).toUpperCase() + (name[1] ? name[1].charAt(0).toUpperCase() : '')
+              return initial
+            }
+            return ''
+        }
+    },
     data() {
         return {
             title: 'Profile'
@@ -62,6 +77,8 @@ export default {
     height: 200px;
     width: 200px;
 }
+
+
 .main-top{
     margin-bottom: 8px;
 }

@@ -3,7 +3,7 @@
     <!-- <transition name="fade"> -->
         <div v-if="getTempContainer.data.name">
             <div class="header">
-                <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
+                <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     <div class="cover-image-backdrop"></div>
                     <div class="flex-row action-btn-hold">
                         <!-- <button class="icon-label-btn image-icon menu-toggle-btn flex-row">

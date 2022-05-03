@@ -131,7 +131,7 @@
         <new-sale v-for="newsale in getSale.array" :key="newsale.id" v-bind:sale="getSale" />
       </div>
 </section>
-<onboarding-view />
+<onboarding-view v-bind:winHeight="getWindowHeight" v-if="getOnboard.status" />
 <add-new v-bind:winHeight="getWindowHeight" v-if="getAddingProduct.status" />
 
 
@@ -153,7 +153,7 @@ import OnboardingView from '../components/app/layouts/OnboardingView.vue'
 export default {
   components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView },
     name: 'AdminHome',
-    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale']),
+    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard']),
     data() {
       return {
         windowHeight: ''
@@ -423,8 +423,10 @@ header, .right-header{
     border-radius: 0.9rem;
     background-color: $primary-light;
     padding: 10px 20px 10px 50px;
-    & :focus{
-      border: 1px solid $primary-color !important;
+    &:focus{
+      //border: 1px solid $primary-color !important;
+      border-width: 2px;
+      padding: 10px 19px 10px 49px;
     }
   }
   input::placeholder{

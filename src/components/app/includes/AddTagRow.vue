@@ -2,7 +2,7 @@
     <li>
         <a href="#" @click.prevent="toggleActive(product.id, product.name, product.image, product.stock, product.selling_price, product.discount)" :class="{ 'active' : active}">
             <div class="flex-row">
-                <div class="prd-img bg-img" :style="product.image ? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+product.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
+                <div class="prd-img bg-img" :style="product.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getUser.current+'/'+product.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                 <div class="prod-captions">
                     <div class="item-name">{{ product.name }}</div>
                     <div class="flex">

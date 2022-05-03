@@ -14,7 +14,7 @@
         <div class="card-bottom">
             <div class="bottom-top">
                 <div class="img-col">
-                    <div class="img-holder bg-img" v-for="img in filteredItems.slice(0, 5)" :key="img.id" :style="img.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.current+'/'+img.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
+                    <div class="img-holder bg-img" v-for="img in filteredItems.slice(0, 5)" :key="img.id" :style="img.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getUser.current+'/'+img.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                     <div class="img-holder more" v-if="filteredItems.length > 5">+{{ filteredItems.length - 5}}</div>
                 </div>
                 <!-- <div class="add-col">

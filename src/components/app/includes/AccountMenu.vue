@@ -18,7 +18,7 @@
                   <div v-for="store in getStores" :key="store.id">
                       <div v-if="store.id == getUser.current" class="store-info-hold active">
                           <div class="avatar">
-                            <span  v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
+                            <span class="justify-content-center align-items-center" :class="store.image != null ? 'bg-img': 'no-store-profile-small'" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+store.id+'/'+store.image+')'} : ''">{{ store.image == null ? store.name.split(' ')[0].charAt(0).toUpperCase() + (store.name.split(' ')[1] ? store.name.split(' ')[1].charAt(0).toUpperCase() : '') : '' }}</span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -36,7 +36,7 @@
                     <div v-for="store in getStores" :key="store.id">
                       <div class="store-info-hold inactive" v-if="store.id != getUser.current && getUser.role == 1" @click="doSwitch(store.id)">
                           <div class="avatar">
-                            <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
+                            <span class="justify-content-center align-items-center" :class="store.image != null ? 'bg-img': 'no-store-profile-small'" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+store.id+'/'+store.image+')'} : ''">{{ store.image == null ? store.name.split(' ')[0].charAt(0).toUpperCase() + (store.name.split(' ')[1] ? store.name.split(' ')[1].charAt(0).toUpperCase() : '') : '' }}</span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -50,7 +50,7 @@
                       </div>
                       <div class="store-info-hold inactive" v-else-if="store.id != getUser.current && getUser.role == 2 && (getUser.store_1 == store.id || getUser.store_2 == store.id)" @click="doSwitch(store.id)">
                           <div class="avatar">
-                            <span v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+ store.id+'/'+store.image+')'}"></span>
+                            <span :class="store.image != null ? 'bg-img': 'no-store-profile-small'" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+store.id+'/'+store.image+')'} : ''">{{ store.image == null ? store.name.split(' ')[0].charAt(0).toUpperCase() + (store.name.split(' ')[1] ? store.name.split(' ')[1].charAt(0).toUpperCase() : '') : '' }}</span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -62,14 +62,19 @@
                               </div>
                           </div> 
                       </div>
-                      
                     </div>
                 </div>
                 <hr v-show="getStores.length > 1">
                 <div class="logout-hold">
+                    <a href="#" @click.prevent="this.$store.commit('forceSetOnboard', 'basicInfo')">
+                      <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 15.882 15.882">
+                        <path d="M-7843.453-4503.179v-5.94h-5.94a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.94v-5.94a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.94h5.94a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.94v5.94a1,1,0,0,1-1,1A1,1,0,0,1-7843.453-4503.179Z" transform="translate(7850.395 4518.06)" fill="#0e142c"></path>
+                      </svg>
+                      Add new store
+                    </a>
                     <a href="#" @click.prevent="$store.dispatch('getLogout')">
                       <svg xmlns="http://www.w3.org/2000/svg"  height="14" viewBox="0 0 12.142 10.928">
-                      <path id="Path_1672" data-name="Path 1672" d="M11.107,5.428l-.856.856,1.566,1.572H5.643V9.071h6.174l-1.566,1.566.856.862,3.036-3.036ZM3.214,4.214H8.071V3H3.214A1.218,1.218,0,0,0,2,4.214v8.5a1.218,1.218,0,0,0,1.214,1.214H8.071V12.714H3.214Z" transform="translate(-2 -3)" fill="#212121"/>
+                        <path id="Path_1672" data-name="Path 1672" d="M11.107,5.428l-.856.856,1.566,1.572H5.643V9.071h6.174l-1.566,1.566.856.862,3.036-3.036ZM3.214,4.214H8.071V3H3.214A1.218,1.218,0,0,0,2,4.214v8.5a1.218,1.218,0,0,0,1.214,1.214H8.071V12.714H3.214Z" transform="translate(-2 -3)" fill="#212121"/>
                     </svg>
                     Logout
                     </a>
@@ -79,16 +84,16 @@
     </teleport>
         <div id="account_menu" class="store-info-hold" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
           <div class="avatar">
-              <span v-if="getStores.length > 0" v-bind:style="{backgroundImage: 'url('+getHostname+'/storage/'+getCurrentStore.id+'/'+getCurrentStore.image+')'}"></span>
-              <span v-else class="no-store"></span>
-              <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
+              <span v-if="getStores.length > 0" class="justify-content-center align-items-center" :class="getCurrentStore.image != null? 'bg-img': 'no-store-profile-small'" v-bind:style="getCurrentStore.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ getCurrentStore.image == null ? computeInitials: '' }}</span>
+              <div v-else class="no-store-profile-small justify-content-center align-items-center">{{ computeInitials }}</div>
+              <!-- <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
                   <path d="M404.366,1308.847l-4.744-4.732a.75.75,0,0,1,1.059-1.062l3.663,3.655,3.514-3.644a.75.75,0,1,1,1.08,1.041Z" transform="translate(-399.402 -1302.833)" fill="#11172f"/>
-              </svg>
+              </svg> -->
           </div>
           <div class="acct-label" v-if="getDesktop">
             <div class="user-details">
-                <div class="user-name"><strong>{{ getCurrentStore.name }}</strong></div>
-                <div class="shop">{{ getCurrentStore.address }}</div>
+                <div class="user-name"><strong>{{ getStores.length == 0 ? getUser.name : getCurrentStore.name }}</strong></div>
+                <div class="shop">{{ getStores.length == 0 ? getUser.email : getCurrentStore.address }}</div>
             </div>
             <div class="acct-elipse">
                 <span></span>
@@ -106,7 +111,21 @@ import { mapGetters } from 'vuex'
 import Backdrop from './Backdrop.vue'
 export default {
     components: { Backdrop },
-    computed: mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop', 'getStores', 'getUser', 'getCurrentStore', 'getHostname']),
+    computed: {
+      ...mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop', 'getStores', 'getUser', 'getCurrentStore', 'getHostname', 'getDefaultImage']),
+      computeInitials() {
+          if(this.getUser.name && this.getStores.length < 1) {
+              let name = this.getUser.name.split(' ')
+              let initial = name[0].charAt(0).toUpperCase() + (name[1] ? name[1].charAt(0).toUpperCase() : '')
+              return initial
+          }else if(this.getCurrentStore.name){
+              let name = this.getCurrentStore.name.split(' ')
+              let initial = name[0].charAt(0).toUpperCase() + (name[1] ? name[1].charAt(0).toUpperCase() : '')
+              return initial
+          }
+          return ''
+      }
+    },
     name: 'AccountMenu',
     data() {
         return {
@@ -141,6 +160,9 @@ export default {
     height: 64px
   }
   
+}
+hr{
+  margin: 0;
 }
 .acct-menu{
 padding: 15px 20px;
@@ -207,20 +229,16 @@ padding: 15px 20px;
     }
   }
   .avatar {
-      display: flex;
-      align-items: center;
       svg{
           margin-left: 5px;
       }
   }
-  .avatar span{
+  .bg-img{
     display: block;
     height: 40px;
     width: 40px;
     border-radius: 50%;
     border: 1px solid $gray-light;
-    background-repeat: no-repeat;
-    background-size: cover;
   }
   .dialog{
     position: fixed;
@@ -290,6 +308,7 @@ padding: 15px 20px;
   transform: translateY(300px);
   
 }
+
   
   
 </style>

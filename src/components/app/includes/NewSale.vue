@@ -54,7 +54,7 @@
                             </transition>
                             <div v-if="searchResult != ''" class="preview-hold flex-row-js" :class="{ 'expired-product': searchResult.active == 0}">
                                 <div class="flex align-items-center">
-                                    <div class="prod-image bg-img" :style="searchResult.image? { backgroundImage: 'url('+getHostname+'/storage/'+ getUser.current+'/'+searchResult.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
+                                    <div class="prod-image bg-img" :style="searchResult.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getUser.current+'/'+searchResult.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                                     <div class="flex-col sale-captions" style="max-width: 140px">
                                         <div class="item-value text-overflow-ellipsis">{{ searchResult.name }}</div>
                                         <div><span class="currency">{{ getCurrency }}</span><span class="value">{{ Intl.NumberFormat('en-US').format(computePrice(searchResult.selling_price, searchResult.discount).toFixed(2)) }}</span></div>
@@ -430,6 +430,9 @@ export default {
             padding: 10px 20px 10px 50px;
             &:focus{
                 background-color: $white-color;
+                border-width: 2px;
+                padding: 10px 19px 10px 49px;
+
             }
         }
         &:hover, &:focus-within {

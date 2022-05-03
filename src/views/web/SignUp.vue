@@ -64,7 +64,7 @@ export default {
     data() {
         return {
             form: {
-                name: 'Jogn Doe',
+                name: 'John Doe',
                 email: 'johndoe@gmail.com',
                 password: 'Sha!@#$dow1432Fs'
             },
