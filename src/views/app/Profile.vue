@@ -1,8 +1,22 @@
 <template>
     <div class="main-page-body">
         <div class="flex-col align-items-center">
-            <div v-if="getStores.length > 0" class="justify-content-center align-items-center profile-pg-avatar" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ !getCurrentStore.image ? computeInitials: '' }}</div>
-            <div v-else class="no-store-profile-large justify-content-center align-items-center">{{ computeInitials }}</div>
+            <div v-if="getStores.length > 0" class="justify-content-center relative align-items-center profile-pg-avatar bg-img" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
+                <div class="overlay" v-if="getUser.role == 1">
+                    <div class="flex cam justify-content-center align-items-center">
+                        <div class="btn-holder">
+                            <button class="button upload-btn flex" @click.prevent="$store.commit('editProfileImage')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
+                                    <path d="M20,4H16.83L15,2H9L7.17,4H4A2.006,2.006,0,0,0,2,6V18a2.006,2.006,0,0,0,2,2H20a2.006,2.006,0,0,0,2-2V6A2.006,2.006,0,0,0,20,4Zm0,14H4V6H8.05L9.88,4h4.24l1.83,2H20ZM12,7a5,5,0,1,0,5,5A5,5,0,0,0,12,7Zm0,8a3,3,0,1,1,3-3A3.009,3.009,0,0,1,12,15Z" transform="translate(-2 -2)" fill="#ffffff"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-else class="no-store-profile-large justify-content-center align-items-center">
+                {{ computeInitials }}
+            </div>
             <div class="main-top profile-name"><strong>{{ getUser.name }}</strong></div>
             <div class="main-top profile-email flex align-items-center">
                 <label>Email:</label><span>{{ getUser.email }}</span>
@@ -36,7 +50,7 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'Profile',
     computed: {
-        ...mapGetters(['getUser', 'getCurrentStore', 'getHostname', 'getStores']),
+        ...mapGetters(['getUser', 'getCurrentStore', 'getHostname', 'getStores', 'getUserAdminID', 'getDefaultImage']),
         computeInitials() {
             if(this.getUser.name && this.getStores.length < 1) {
                 let name = this.getUser.name.split(' ')
@@ -134,5 +148,37 @@ nav{
     }
 
 }
-
+.overlay{
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border-radius: inherit;
+    transition: 0.3s all;
+    &:hover{
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+    .cam{
+        height: 100%;
+    }
+    button{
+        align-items: center;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.6);
+        &:hover{
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        &:active{
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    }
+    .btn-holder{
+        position: relative;
+        .upload-btn{
+            height: 50px;
+            width: 50px;
+        }
+        
+    }
+}
 </style>

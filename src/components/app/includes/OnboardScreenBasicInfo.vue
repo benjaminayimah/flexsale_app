@@ -4,7 +4,7 @@
 </teleport>
 <teleport to="#onboarding_top_button">
     <!-- this.$store.commit('forceSetOnboard', 'avatar') -->
-    <button class="button button-primary top-submit-btn" @click.prevent="submitStore">Create</button>
+    <button class="button button-primary top-submit-btn" @click.prevent="submitStore">Submit store</button>
 </teleport>
 <teleport to="#onboard_body_content">
     <div class="flex-col align-items-center ob-wrap">
@@ -87,7 +87,9 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-
+.ob-wrap{
+    border-top: 1px solid $dark-light;
+}
 
 .flex-col{
     width: 100%;

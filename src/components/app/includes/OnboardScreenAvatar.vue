@@ -5,13 +5,14 @@
 <teleport to="#onboarding_top_button">
     <div class="flex">
         <!-- <button class="button button-secondary top-submit-btn" @click.prevent="this.$store.commit('forceSetOnboard', 'basicInfo')">Back</button> -->
-        <button class="button button-primary top-submit-btn" @click.prevent="doSubmitImage">Done</button>
+        <button class="button button-primary top-submit-btn" v-if="getOnboard.imageForm.store == ''" @click.prevent="afterOnboardImageUpdate">Save</button>
+        <button class="button button-primary top-submit-btn" v-else @click.prevent="onboardImageUpload">Done</button>
     </div>
 </teleport>
 <teleport to="#onboard_body_content">
      <div class="flex-col align-items-center ob-wrap">
         <div class="ob-content">
-            <div class="image bg-img" :style="getOnboard.uploaded? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/temp/'+getOnboard.imageForm.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}" >
+            <div class="image bg-img" :style="getOnboard.uploaded? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/temp/'+getOnboard.imageForm.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}" >
                 <div class="overlay">
                     <div class="flex cam justify-content-center align-items-center">
                         <div class="btn-holder">
@@ -57,7 +58,7 @@ import axios from 'axios'
 import { mapGetters } from 'vuex'
 export default {
     name: 'OnboardScreenAvatar',
-    computed: mapGetters(['getDefaultImage', 'getOnboard', 'getHostname', 'getToken', 'getUser']),
+    computed: mapGetters(['getDefaultImage', 'getOnboard', 'getHostname', 'getToken', 'getUser', 'getUserAdminID']),
     data() {
         return {
             imageStatus: {status: false, msg: ''},
@@ -133,9 +134,16 @@ export default {
             }
             this.$store.commit('showAlert', payload)
         },
-        async doSubmitImage() {
-            axios.post( this.getHostname+'/api/submit-store-image?token='+this.getToken,
-                    this.getOnboard.imageForm,
+        onboardImageUpload() {
+            const url = this.getHostname+'/api/submit-store-image?token='+this.getToken
+            return this.doSubmitImage(url)
+        },
+        afterOnboardImageUpdate() {
+            const url = this.getHostname+'/api/update-store-image?token='+this.getToken
+            return this.doSubmitImage(url)
+        },
+        async doSubmitImage(Url) {
+            axios.post( Url, this.getOnboard.imageForm,
                     {
                         headers: {
                             'Content-Type': ['application/json']
@@ -145,13 +153,17 @@ export default {
                 if(res.data.store != '') {
                     this.$store.commit('updateAvatar', res.data.store)
                 }
-                 const payload = {
-                    id: 'success',
-                    title: res.data.title,
-                    body: res.data.message
+                if(this.getOnboard.imageForm.store == '') {
+                    const payload = {
+                        id: 'success',
+                        title: res.data.title,
+                        body: res.data.message
+                    }
+                    this.$store.commit('forceCloseOnboard')
+                    this.$store.commit('showAlert', payload)
+                }else{
+                    this.$store.commit('forceSetOnboard', 'final')
                 }
-                this.$store.commit('showAlert', payload)
-                this.$store.commit('forceSetOnboard', 'final')
                 
             }).catch((err) => {
                 console.log(err.response.data.errors)
@@ -230,6 +242,7 @@ export default {
     font-size: 0.98rem;
     padding: 15px 0;
 }
+
  .status-div-backdrop{
                 position: fixed;
                 bottom: 0;

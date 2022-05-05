@@ -28,6 +28,7 @@ export default createStore({
     },
     currency: 'GHS',
     user: {},
+    userAdminID: '',
     stores: [],
     products: [],
     thisProduct: {},
@@ -115,6 +116,7 @@ export default createStore({
     },
     setUser(state, payload) {
         state.user = payload
+        payload.role === 1 ?  state.userAdminID = payload.id : state.userAdminID = payload.admin_id 
     },
     fetchProducts(state, payload) {
       state.products = payload
@@ -163,11 +165,12 @@ export default createStore({
         }else{
           state.onboard.status = false
         }
-      }, 2000);
+      }, 1000);
 
     },
     forceSetOnboard(state, payload) {
       state.onboard.status = true
+      document.body.classList.add('fixed-body')
       if(payload == 'basicInfo') {
         state.onboard.intro = false
         state.onboard.avatar = false
@@ -206,10 +209,19 @@ export default createStore({
       state.onboard.imageForm.image = ''
       return
     },
-    // setThiStore(state, payload) {
-    //   state.thiStore = payload
-    //   console.log(payload)
-    // },
+    editProfileImage(state) {
+      const image = state.currentStore.image
+      if(image != null) {
+        state.onboard.imageForm.image = image
+        this.dispatch('setTempImage', image)
+      }else
+      this.commit('forceSetOnboard', 'avatar')
+    },
+    resetStoreImage(state) {
+      state.onboard.uploaded = true
+      this.commit('forceSetOnboard', 'avatar')
+    },
+    
     destroyToken(state){
         localStorage.removeItem('token')
         state.token = null
@@ -439,7 +451,6 @@ export default createStore({
           state.currentStore = payload
       }
     },
-    
     addStore(state, payload) {
       if(Object.keys(state.currentStore).length === 0) {
         state.currentStore = payload.store
@@ -716,6 +727,15 @@ export default createStore({
       }
       state.commit('setLoader') 
     },
+    async setTempImage(state, payload) {
+      axios.post( this.getters.getHostname+'/api/reset-temp-img?token='+this.getters.getToken, { id: payload})
+      .then(() => {
+          state.commit('resetStoreImage')
+      }).catch((e) => {
+          console.log(e.response)
+      })
+      
+  },
 
     // Deletions
     deleteTag(state, payload) {
@@ -848,6 +868,7 @@ export default createStore({
     getTodaysaleItems: (state) => state.todaysaleItems,
     getSale: (state) => state.sale,
     getAdmins: (state) => state.admins,
+    getUserAdminID: (state) => state.userAdminID,
 
 
 

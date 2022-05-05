@@ -7,12 +7,12 @@
 </teleport>
 <teleport to="#add_submit_button">
     <button v-if="getEditContainer.password" class="button button-primary top-submit-btn" @click.prevent="doSubmitPassword">Save</button>
-    <button v-else class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Create user'}}</button>
+    <button v-else class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Submit user'}}</button>
 </teleport>
 <teleport to="#add_master_body_container">
     <form id="product_form">
         <div class="form-row justify-content-center flex" v-if="getEditContainer.active && !getEditContainer.password && getUser.id === getEditContainer.data.id && getUser.role == 1">
-            <div v-if="getStores.length > 0" class="justify-content-center align-items-center profile-pg-avatar" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ !getCurrentStore.image ? computeInitials: '' }}</div>
+            <div v-if="getStores.length > 0" class="justify-content-center align-items-center profile-pg-avatar" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ !getCurrentStore.image ? computeInitials: '' }}</div>
             <div v-else class="no-store-profile-large justify-content-center align-items-center">{{ computeInitials }}</div>
         </div>
         <div class="form-row" v-if="!getEditContainer.password">
@@ -57,7 +57,7 @@ export default {
   components: { StoreSelectedCheck },
     name: 'AddNewUser',
     computed: {
-        ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser', 'getCurrentStore']),
+        ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser', 'getCurrentStore', 'getUserAdminID']),
         computeInitials() {
             if(this.getUser.name && this.getStores.length < 1) {
                 let name = this.getUser.name.split(' ')

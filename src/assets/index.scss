@@ -113,6 +113,9 @@ li:last-child a, li:last-child .info-section-hold{
   border-radius: 13px;
   min-width: 80px;
 }
+.relative{
+  position: relative;
+}
 
 
 @keyframes load{
@@ -565,8 +568,9 @@ textarea{
 
 // Onboarding screen
 .ob-wrap{
-  padding: 0 40px;
   width: 100%;
+  border-top: 1px solid $dark-light;
+  overflow-y: auto;
   form{
       width: 100%;
       padding-bottom: 80px;
@@ -580,6 +584,34 @@ textarea{
       }
   }
 }
+.intro-wrap{
+  padding: 0 25px;
+  gap: 40px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none; 
+    scrollbar-width: none;  
+    } 
+}
+.width-inactive{
+  .ob-wrap{
+    padding: 25px 65px;
+  }
+  .ob-head{
+    padding: 0 25px;
+  }
+
+}
+.width-active{
+  .ob-wrap{
+    padding: 15px;
+  }
+  .ob-head{
+    padding: 0 15px;
+  }
+}
+
 
 
 .form-check-input {
@@ -920,6 +952,7 @@ hr{
   height: 150px;
   width: 150px;
 }
+
 
 
   

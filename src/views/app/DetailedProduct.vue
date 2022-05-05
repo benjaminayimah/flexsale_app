@@ -3,7 +3,7 @@
     <!-- <transition name="fade"> -->
         <div v-if="getTempContainer.data.name">
             <div class="header">
-                <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
+                <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     <div class="cover-image-backdrop"></div>
                     <div class="flex-row action-btn-hold">
                         <!-- <button class="icon-label-btn image-icon menu-toggle-btn flex-row">
@@ -75,7 +75,9 @@ import Backdrop from '../../components/app/includes/Backdrop.vue'
 export default {
   components: { Backdrop },
     name: 'DetailedProduct',
-    computed: mapGetters(['getProducts', 'getHostname', 'getUser', 'getTempContainer', 'getMobile', 'getDefaultImage']),
+    computed: {
+        ...mapGetters(['getProducts', 'getHostname', 'getUser', 'getTempContainer', 'getMobile', 'getDefaultImage', 'getUserAdminID']),
+    },
     data() {
         return {
             product: {},

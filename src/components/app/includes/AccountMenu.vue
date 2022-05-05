@@ -18,7 +18,7 @@
                   <div v-for="store in getStores" :key="store.id">
                       <div v-if="store.id == getUser.current" class="store-info-hold active">
                           <div class="avatar">
-                            <span class="justify-content-center align-items-center" :class="store.image != null ? 'bg-img': 'no-store-profile-small'" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+store.id+'/'+store.image+')'} : ''">{{ store.image == null ? store.name.split(' ')[0].charAt(0).toUpperCase() + (store.name.split(' ')[1] ? store.name.split(' ')[1].charAt(0).toUpperCase() : '') : '' }}</span>
+                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -36,7 +36,7 @@
                     <div v-for="store in getStores" :key="store.id">
                       <div class="store-info-hold inactive" v-if="store.id != getUser.current && getUser.role == 1" @click="doSwitch(store.id)">
                           <div class="avatar">
-                            <span class="justify-content-center align-items-center" :class="store.image != null ? 'bg-img': 'no-store-profile-small'" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+store.id+'/'+store.image+')'} : ''">{{ store.image == null ? store.name.split(' ')[0].charAt(0).toUpperCase() + (store.name.split(' ')[1] ? store.name.split(' ')[1].charAt(0).toUpperCase() : '') : '' }}</span>
+                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -50,7 +50,7 @@
                       </div>
                       <div class="store-info-hold inactive" v-else-if="store.id != getUser.current && getUser.role == 2 && (getUser.store_1 == store.id || getUser.store_2 == store.id)" @click="doSwitch(store.id)">
                           <div class="avatar">
-                            <span :class="store.image != null ? 'bg-img': 'no-store-profile-small'" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+store.id+'/'+store.image+')'} : ''">{{ store.image == null ? store.name.split(' ')[0].charAt(0).toUpperCase() + (store.name.split(' ')[1] ? store.name.split(' ')[1].charAt(0).toUpperCase() : '') : '' }}</span>
+                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <hr v-show="getStores.length > 1">
-                <div class="logout-hold">
+                <div class="logout-hold" @mouseup="showthisMenu('account_menu')">
                     <a href="#" @click.prevent="this.$store.commit('forceSetOnboard', 'basicInfo')">
                       <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 15.882 15.882">
                         <path d="M-7843.453-4503.179v-5.94h-5.94a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.94v-5.94a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.94h5.94a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.94v5.94a1,1,0,0,1-1,1A1,1,0,0,1-7843.453-4503.179Z" transform="translate(7850.395 4518.06)" fill="#0e142c"></path>
@@ -84,7 +84,7 @@
     </teleport>
         <div id="account_menu" class="store-info-hold" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
           <div class="avatar">
-              <span v-if="getStores.length > 0" class="justify-content-center align-items-center" :class="getCurrentStore.image != null? 'bg-img': 'no-store-profile-small'" v-bind:style="getCurrentStore.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ getCurrentStore.image == null ? computeInitials: '' }}</span>
+              <span v-if="getStores.length > 0" class="justify-content-center align-items-center bg-img" :class="getCurrentStore.image == null? 'no-border': ''" v-bind:style="getCurrentStore.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
               <div v-else class="no-store-profile-small justify-content-center align-items-center">{{ computeInitials }}</div>
               <!-- <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
                   <path d="M404.366,1308.847l-4.744-4.732a.75.75,0,0,1,1.059-1.062l3.663,3.655,3.514-3.644a.75.75,0,1,1,1.08,1.041Z" transform="translate(-399.402 -1302.833)" fill="#11172f"/>
@@ -112,7 +112,7 @@ import Backdrop from './Backdrop.vue'
 export default {
     components: { Backdrop },
     computed: {
-      ...mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop', 'getStores', 'getUser', 'getCurrentStore', 'getHostname', 'getDefaultImage']),
+      ...mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop', 'getStores', 'getUser', 'getCurrentStore', 'getHostname', 'getDefaultImage', 'getUserAdminID']),
       computeInitials() {
           if(this.getUser.name && this.getStores.length < 1) {
               let name = this.getUser.name.split(' ')
@@ -299,7 +299,9 @@ padding: 15px 20px;
       }
     }
   }
-
+.no-border{
+  border: none !important;
+}
 
 
 

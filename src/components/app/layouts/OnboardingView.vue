@@ -62,21 +62,13 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 25px;
-        
     }
     h1{
         font-size: 1.2rem;
         font-weight: 700;
         margin: 0 0 0 20px;
     }
-    
 }
-#onboard_body_content{
-        overflow-y: auto;
-        padding: 25px;
-    }
-
 .width-inactive{
     border-radius: 18px;
     top: 10%;

@@ -2,7 +2,7 @@
     <li>
         <a href="#" @click.prevent="toggleActive(product.id, product.name, product.image, product.stock, product.selling_price, product.discount)" :class="{ 'active' : active}">
             <div class="flex-row">
-                <div class="prd-img bg-img" :style="product.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+getUser.current+'/'+product.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
+                <div class="prd-img bg-img" :style="product.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+product.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                 <div class="prod-captions">
                     <div class="item-name">{{ product.name }}</div>
                     <div class="flex">
@@ -27,7 +27,7 @@ export default {
     name: 'AddTagRow',
     props: ['product'],
     computed: {
-        ...mapGetters(['getHostname', 'getUser', 'getDefaultImage', 'getTempContainer', 'getDiscounts', 'getCurrency']),
+        ...mapGetters(['getHostname', 'getUser', 'getDefaultImage', 'getTempContainer', 'getDiscounts', 'getCurrency', 'getUserAdminID']),
         computeDiscount: function () {
             return this.getDiscounts.filter(discount => discount.id == this.product.discount)
         },

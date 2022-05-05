@@ -4,7 +4,7 @@
         <div class="table-row flex-row-js" >
             <div class="flex-row-st">
                 <div class="img-hold">
-                    <div class="img bg-img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
+                    <div class="img bg-img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     </div>
                 </div>
                 <div class="prod-capt-hold">
@@ -71,7 +71,7 @@ export default {
     name: 'ProductRow',
     props: ['product'],
     computed: {
-        ... mapGetters(['getHostname', 'getUser', 'getWindowHeight', 'getMobile', 'getDefaultImage', 'getCurrency', 'getDiscounts']),
+        ... mapGetters(['getHostname', 'getUser', 'getWindowHeight', 'getMobile', 'getDefaultImage', 'getCurrency', 'getDiscounts', 'getUserAdminID']),
         computeDiscount: function () {
             if(this.getDiscounts.length > 0) {
                 return this.getDiscounts.filter(discount => discount.id == this.product.discount)
@@ -92,7 +92,8 @@ export default {
             }else {
                 return 0
             }
-        }
+        },
+        
     },
     data() {
         return {

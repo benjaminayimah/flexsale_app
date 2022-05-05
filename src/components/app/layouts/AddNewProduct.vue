@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div v-else-if="imageUploaded" class="img-container">
-                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUser.id+'/temp/'+form.tempImage+')'}">
+                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/temp/'+form.tempImage+')'}">
                         <div v-if="deleting" id="loading_hold">
                             <i class="lazy-loader" :class="{ 'loader' : load }"></i>
                         </div>
@@ -243,7 +243,9 @@ import axios from 'axios'
 import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewProduct',
-    computed: mapGetters(['getToken', 'getHostname', 'getUser', 'getDefaultImage', 'getEditContainer']),
+    computed: {
+        ...mapGetters(['getToken', 'getHostname', 'getUser', 'getDefaultImage', 'getEditContainer', 'getUserAdminID'])
+    },
     data() {
         return {
             doingProductUpload: false,

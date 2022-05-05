@@ -1,32 +1,6 @@
 <template>
 <teleport to="#onboard_body_content">
-<div class="flex-col align-items-center intro-wrap">    
-            <!-- <svg xmlns="http://www.w3.org/2000/svg" height="230" viewBox="0 0 364 319">
-            <g id="Group_3847" data-name="Group 3847" transform="translate(-809 -188)">
-                <circle id="Ellipse_711" data-name="Ellipse 711" cx="24" cy="24" r="24" transform="translate(809 394)" fill="#efb039"/>
-                <circle id="Ellipse_712" data-name="Ellipse 712" cx="32" cy="32" r="32" transform="translate(1109 188)" fill="#1dbef4"/>
-                <circle id="Ellipse_710" data-name="Ellipse 710" cx="159.5" cy="159.5" r="159.5" transform="translate(822 188)" fill="rgba(238,241,254,0.83)" opacity="0.999"/>
-                <g id="onboarding" transform="translate(936.479 267.869)">
-                <path id="Path_1782" data-name="Path 1782" d="M465.223,171.875H276.269a3.908,3.908,0,0,0-3.9,3.9V359.952a3.908,3.908,0,0,0,3.9,3.9h16.567v-1.115H276.269a2.793,2.793,0,0,1-2.79-2.79V175.779a2.793,2.793,0,0,1,2.79-2.79H465.223a2.794,2.794,0,0,1,2.794,2.79V359.952a2.766,2.766,0,0,1-.461,1.531,2.886,2.886,0,0,1-1.057.949,2.77,2.77,0,0,1-1.276.309H448.656v1.115h16.567a3.9,3.9,0,0,0,2.969-1.37.867.867,0,0,0,.085-.107,3.649,3.649,0,0,0,.56-.945,3.8,3.8,0,0,0,.3-1.482V175.779A3.909,3.909,0,0,0,465.223,171.875Z" transform="translate(-325.632 -197.805)" fill="#566ff4"/>
-                <rect id="Rectangle_2463" data-name="Rectangle 2463" width="195.651" height="1.116" transform="translate(-52.712 -10.279)" fill="#566ff4"/>
-                <circle id="Ellipse_705" data-name="Ellipse 705" cx="3.349" cy="3.349" r="3.349" transform="translate(-46.573 -20.905)" fill="#566ff4"/>
-                <circle id="Ellipse_706" data-name="Ellipse 706" cx="3.349" cy="3.349" r="3.349" transform="translate(-36.945 -20.905)" fill="#566ff4"/>
-                <circle id="Ellipse_707" data-name="Ellipse 707" cx="3.349" cy="3.349" r="3.349" transform="translate(-27.318 -20.905)" fill="#566ff4"/>
-                <path id="Path_1783" data-name="Path 1783" d="M473.887,250.173H379.409a5.821,5.821,0,0,1,0-11.642h94.477a5.821,5.821,0,0,1,0,11.642Zm-94.477-10.746a4.925,4.925,0,0,0,0,9.851h94.477a4.925,4.925,0,0,0,0-9.851Z" transform="translate(-381.532 -234.615)" fill="#566ff4"/>
-                <path id="Path_1784" data-name="Path 1784" d="M466.088,371.02H323.7a7.62,7.62,0,0,1-7.612-7.612V317.737a7.62,7.62,0,0,1,7.612-7.612H466.088a7.62,7.62,0,0,1,7.612,7.612v45.671A7.621,7.621,0,0,1,466.088,371.02Zm-142.387-60a6.724,6.724,0,0,0-6.716,6.716v45.671a6.724,6.724,0,0,0,6.716,6.716H466.088a6.724,6.724,0,0,0,6.716-6.716V317.737a6.724,6.724,0,0,0-6.716-6.716Z" transform="translate(-349.778 -274.152)" fill="#566ff4"/>
-                <path id="Path_1785" data-name="Path 1785" d="M468.073,363.789h-49.7a3.582,3.582,0,1,1,0-7.164h49.7a3.582,3.582,0,0,1,0,7.164Z" transform="translate(-404.285 -299.831)" fill="#566ff4"/>
-                <path id="Path_1786" data-name="Path 1786" d="M514.192,390.789h-95.82a3.582,3.582,0,1,1,0-7.164h95.82a3.582,3.582,0,1,1,0,7.164Z" transform="translate(-404.285 -314.742)" fill="#566ff4"/>
-                <circle id="Ellipse_708" data-name="Ellipse 708" cx="13.433" cy="13.433" r="13.433" transform="translate(-23.257 52.988)" fill="#566ff4"/>
-                <path id="Path_1787" data-name="Path 1787" d="M616.9,423.289H604.36a3.582,3.582,0,0,1,0-7.164H616.9a3.582,3.582,0,1,1,0,7.164Z" transform="translate(-506.995 -332.69)" fill="#566ff4"/>
-                <path id="Path_1788" data-name="Path 1788" d="M616.9,423.289H604.36a3.582,3.582,0,0,1,0-7.164H616.9a3.582,3.582,0,1,1,0,7.164Z" transform="translate(-506.995 -332.69)" fill="#566ff4"/>
-                <path id="Path_1789" data-name="Path 1789" d="M466.084,494.125H323.7a7.623,7.623,0,0,0-7.612,7.612v45.671a7.623,7.623,0,0,0,7.612,7.612H466.084a7.62,7.62,0,0,0,7.612-7.612V501.737a7.62,7.62,0,0,0-7.612-7.612Zm6.716,53.283a6.722,6.722,0,0,1-6.716,6.716H323.7a6.725,6.725,0,0,1-6.716-6.716V501.737a6.725,6.725,0,0,1,6.716-6.716H466.084a6.722,6.722,0,0,1,6.716,6.716Z" transform="translate(-349.776 -375.764)" fill="#566ff4"/>
-                <path id="Path_1790" data-name="Path 1790" d="M468.073,547.789h-49.7a3.582,3.582,0,1,1,0-7.164h49.7a3.582,3.582,0,0,1,0,7.164Z" transform="translate(-404.285 -401.444)" fill="#566ff4"/>
-                <path id="Path_1791" data-name="Path 1791" d="M514.192,574.789h-95.82a3.582,3.582,0,1,1,0-7.164h95.82a3.582,3.582,0,1,1,0,7.164Z" transform="translate(-404.285 -416.354)" fill="#566ff4"/>
-                <circle id="Ellipse_709" data-name="Ellipse 709" cx="13.433" cy="13.433" r="13.433" transform="translate(-23.257 135.375)" fill="#566ff4"/>
-                <path id="Path_1792" data-name="Path 1792" d="M616.9,607.289H604.36a3.582,3.582,0,0,1,0-7.164H616.9a3.582,3.582,0,0,1,0,7.164Z" transform="translate(-506.995 -434.302)" fill="#566ff4"/>
-                </g>
-            </g>
-            </svg> -->
+    <div class="flex-col align-items-center intro-wrap">    
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="230" viewBox="0 0 364 319">
                 <defs>
                     <clipPath id="clip-path">
@@ -73,9 +47,9 @@
                     </g>
                     </g>
                 </g>
-</svg>
-
+        </svg>
         <div class="heading">
+            <h3>Welcome, {{ getUser.name.split(' ')[0] }}</h3>
             <h2>Create Your First Store</h2>
             <span>Let's get your first store set up real quick.</span>
         </div>
@@ -88,21 +62,18 @@
         </button>
         </div>
         
-</div>
+    </div>
 </teleport>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
-    name: 'OnboardScreenIntro'
+    name: 'OnboardScreenIntro',
+    computed: mapGetters(['getUser'])
+
 }
 </script>
 <style scoped lang="scss">
-.intro-wrap{
-    gap: 40px;
-    svg{
-        margin-bottom: 15px;
-    }
-}
 .heading{
     text-align: center;
     h2{
@@ -111,6 +82,13 @@ export default {
         font-size: 2rem;
         margin-bottom: 15px;
         margin-top: 0;
+    }
+    h3{
+        color: $primary-color;
+        font-size: 1.5rem;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-transform: capitalize;
     }
     span{
         font-size: 1.1rem;
