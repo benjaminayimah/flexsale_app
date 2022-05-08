@@ -11,6 +11,7 @@ import Dashboard from '@/views/app/Dashboard.vue'
 import Products from '@/views/app/Products.vue'
 import Notifications from '@/views/app/Notifications.vue'
 import Profile from '@/views/app/Profile.vue'
+import Trash from '@/views/app/Trash.vue'
 import Settings from '@/views/app/Settings.vue'
 import Tags from '@/views/app/Tags.vue'
 import All from '@/components/app/layouts/AllProducts.vue'
@@ -58,6 +59,7 @@ const routes = [
       ]
     },
     { path: '/notifications', name: 'Notifications', component: Notifications },
+    { path: '/trash', name: 'Trash', component: Trash },
     { path: '/profile/:name', component: Profile, 
     children: [
       { path: '/profile/:name', name: 'ProfileStoreDetails', component: ProfileStoreDetails},

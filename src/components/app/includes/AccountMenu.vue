@@ -18,12 +18,13 @@
                   <div v-for="store in getStores" :key="store.id">
                       <div v-if="store.id == getUser.current" class="store-info-hold active">
                           <div class="avatar">
-                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
+                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null || store.image == '' ? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
                                   <div class="user-name"><strong>{{ store.name }}</strong></div>
                                   <div class="shop">{{ store.address }}</div>
+                                  <router-link @mouseup="showthisMenu('account_menu')" :to="{ name: 'ProfileStoreDetails', params: { name: getUser.name }}">Manage store</router-link>
                               </div>
                               <div class="acct-elipse">
                                   <svg xmlns="http://www.w3.org/2000/svg"  height="13" viewBox="0 0 27.028 19.354">
@@ -36,7 +37,7 @@
                     <div v-for="store in getStores" :key="store.id">
                       <div class="store-info-hold inactive" v-if="store.id != getUser.current && getUser.role == 1" @click="doSwitch(store.id)">
                           <div class="avatar">
-                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
+                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null || store.image == '' ? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -50,7 +51,7 @@
                       </div>
                       <div class="store-info-hold inactive" v-else-if="store.id != getUser.current && getUser.role == 2 && (getUser.store_1 == store.id || getUser.store_2 == store.id)" @click="doSwitch(store.id)">
                           <div class="avatar">
-                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
+                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null || store.image == '' ? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -72,9 +73,9 @@
                       </svg>
                       Add new store
                     </a>
-                    <a href="#" @click.prevent="$store.dispatch('getLogout')">
+                    <a href="#" class="logout" @click.prevent="$store.dispatch('getLogout')">
                       <svg xmlns="http://www.w3.org/2000/svg"  height="14" viewBox="0 0 12.142 10.928">
-                        <path id="Path_1672" data-name="Path 1672" d="M11.107,5.428l-.856.856,1.566,1.572H5.643V9.071h6.174l-1.566,1.566.856.862,3.036-3.036ZM3.214,4.214H8.071V3H3.214A1.218,1.218,0,0,0,2,4.214v8.5a1.218,1.218,0,0,0,1.214,1.214H8.071V12.714H3.214Z" transform="translate(-2 -3)" fill="#212121"/>
+                        <path id="Path_1672" data-name="Path 1672" d="M11.107,5.428l-.856.856,1.566,1.572H5.643V9.071h6.174l-1.566,1.566.856.862,3.036-3.036ZM3.214,4.214H8.071V3H3.214A1.218,1.218,0,0,0,2,4.214v8.5a1.218,1.218,0,0,0,1.214,1.214H8.071V12.714H3.214Z" transform="translate(-2 -3)" fill="#e63232"/>
                     </svg>
                     Logout
                     </a>
@@ -213,6 +214,14 @@ padding: 15px 20px;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      a{
+        color: $primary-color;
+        text-decoration: none;
+        font-weight: 500;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
     }
     .acct-elipse{
       display: flex;
@@ -248,7 +257,7 @@ padding: 15px 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 25px 0; 
+    padding: 15px 0; 
   }
   .menu-card-desk{
     width: 255px;
@@ -266,7 +275,7 @@ padding: 15px 20px;
       
       a{
           display: block;
-          padding: 20px;
+          padding: 16px 20px;
           color: $dark;
           text-decoration: none;
           font-weight: 500;
@@ -282,6 +291,15 @@ padding: 15px 20px;
       }
       a:active{
           background-color: $dark-light;
+      }
+      .logout{
+        color: $danger;
+        &:hover{
+          background-color: rgba(230, 50, 50, 0.05);
+        }
+        &:active{
+          background-color: rgba(230, 50, 50, 0.12);
+        }
       }
       
   }

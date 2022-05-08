@@ -565,6 +565,30 @@ textarea{
   }
   
 }
+//empty state
+.empty-state{
+  margin: 0;
+  padding-top: 120px;
+  text-align: center;
+  align-items: center;
+ 
+  h1{
+      margin: 32px 0 16px 0;
+  }
+  div{
+      color: $gray-color;
+      font-size: 1.1rem;
+      line-height: 26px;
+  }
+  button {
+      height: 52px;
+      width: 150px;
+      margin-top: 16px;
+      svg{
+          margin-right: 5px;
+      }
+  }
+}
 
 // Onboarding screen
 .ob-wrap{

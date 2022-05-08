@@ -70,28 +70,5 @@ ul{
         }
     }
 }
-.empty-state{
-    margin: 0;
-    padding-top: 120px;
-    text-align: center;
-    align-items: center;
-    .icon-svg{
-        margin-bottom: 20px;
-    }
-    h1{
-        margin: 8px 0;
-    }
-    div{
-        color: $gray-color;
-        font-size: 1.1rem;
-        margin-bottom: 15px;
-    }
-    button {
-        height: 52px;
-        width: 150px;
-        svg{
-            margin-right: 5px;
-        }
-    }
-}
+
 </style>

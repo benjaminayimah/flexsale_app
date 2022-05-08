@@ -50,13 +50,14 @@ export default createStore({
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
-    addingProduct: { status: false, product: false, tag: false, discount: false, admin: false, store: false},
+    addingProduct: { status: false, product: false, tag: false, discount: false, admin: false, store: false, supplier: false},
     sale: { active: false, minimize: false, maximize: false, array: []
     },
     todaysales: [],
     todaysaleItems: [],
     admins: [],
-
+    suppliers: [],
+    trash: [],
 
 
     submitting: true,
@@ -69,7 +70,7 @@ export default createStore({
         {id: 6, index: 5, count: '15', title: 'Expiry alert'},
         {id: 7, index: 6, count: '15', title: 'Expiry alert'},
     ],
-    suppliers: [
+    suppliersALT: [
         {id: 1, index: 0, name: 'Jon Doe', image: 'profile-1.png'},
         {id: 2, index: 1, name: 'Walter White', image: 'profile-2.png'},
         {id: 3, index: 2, name: 'Jane Smith', image: 'profile-3.png'},
@@ -124,8 +125,14 @@ export default createStore({
     fetchDiscounts(state, payload) {
       state.discounts = payload
     },
+    fetchSuppliers(state, payload) {
+      state.suppliers = payload
+    },
     addToProducts(state, payload) {
       state.products.push(payload)
+    },
+    addToSuppliers(state, payload) {
+      state.suppliers.push(payload)
     },
     setStore(state, payload) {
       state.stores = payload
@@ -280,7 +287,6 @@ export default createStore({
       this.commit('setMainHomeWidth', thispayload)
     },
     setMainHomeWidth(state, payload) {
-      
       state.addingProduct.status = true
       if(payload.type == 'product'){
         state.addingProduct.product = true
@@ -288,7 +294,6 @@ export default createStore({
           const newPayload = { data: state.tempDataContainer.data, array: state.tempDataContainer.array, propertyName: state.tempDataContainer.propertyName }
           this.commit('setEditContainer', newPayload)
         }
-
       }else if(payload.type == 'tag'){
         state.addingProduct.tag = true
       }else if(payload.type == 'discount'){
@@ -310,6 +315,12 @@ export default createStore({
         state.addingProduct.store = true
         if(payload.mode == 'edit') {
           const newPayload = { data: state.currentStore}
+          this.commit('setEditContainer', newPayload)
+        }
+      }else if(payload.type == 'supplier') {
+        state.addingProduct.supplier = true
+        if(payload.mode == 'edit') {
+          const newPayload = { data: state.suppliers.find(data => data.id == payload.id)}
           this.commit('setEditContainer', newPayload)
         }
       }
@@ -334,6 +345,7 @@ export default createStore({
       state.addingProduct.discount = false
       state.addingProduct.admin = false
       state.addingProduct.store = false
+      state.addingProduct.supplier = false
       document.body.classList.remove('fixed-body')
     
       if(!state.tempDataContainer.active) {
@@ -394,6 +406,8 @@ export default createStore({
         this.dispatch('deleteProduct', state.deleteModal.id)
       }else if(state.deleteModal.type === 'user') {
         this.dispatch('deleteUser', state.deleteModal.id)
+      }else if(state.deleteModal.type === 'supplier') {
+        this.dispatch('deleteSupplier', state.deleteModal.id)
       }
       else{
         const newPayload = {
@@ -499,10 +513,14 @@ export default createStore({
       state.admins.push(payload)
     },
     updateAdmins(state, payload) {
-      //state.admins.push(payload)
       const i = state.admins.findIndex(x => x.id === payload.id)
       state.admins.splice(i, 1, payload)
     },
+    updateSuppliers(state, payload) {
+      const i = state.suppliers.findIndex(x => x.id === payload.id)
+      state.suppliers.splice(i, 1, payload)
+    },
+    
     setEditContainer(state, payload) {
       state.editContainer.active = true
       state.editContainer.array = payload.array
@@ -565,8 +583,10 @@ export default createStore({
     removeDeletedUser(state, payload) {
       state.admins = state.admins.filter(admin => admin.id != payload)
     },
+    removeDeletedSupplier(state, payload) {
+      state.suppliers = state.suppliers.filter(supplier => supplier.id != payload)
+    },
     
-
     setDynamicFloatingDiv(state, payload) {
       const rect = payload.getBoundingClientRect()
       let top = rect.top
@@ -635,6 +655,7 @@ export default createStore({
           state.commit('fetchTags', res.data.tags)
           state.commit('fetchProducts', res.data.products)
           state.commit('fetchDiscounts', res.data.discounts)
+          state.commit('fetchSuppliers', res.data.suppliers)
           state.commit('fetchTodaysSales', { sales: res.data.sales, saleItems: res.data.sales_items })
           state.commit('checkOnboard')
           state.commit('setLoader')
@@ -803,6 +824,21 @@ export default createStore({
         console.log(err)
     })
   },
+  deleteSupplier(state, payload) {
+    axios.delete(this.getters.getHostname+'/api/suppliers/'+payload+'?token='+this.getters.getToken)
+    .then((res) => {
+      state.commit('removeDeletedSupplier', res.data.id)
+      const newPayload = {
+          id: 'success',
+          body: res.data.status
+      }
+      state.commit('closeDeleteModal')
+      state.commit('showAlert', newPayload)
+    }).catch((err) => {
+        console.log(err)
+    })
+  },
+  
   // do this for close delete temp
   // deleteTempProdImg(state, payload) {
   //   axios.delete(this.getters.getHostname+'/api/del-prod-temp/'+payload+'?token='+this.getters.getToken)
@@ -869,6 +905,10 @@ export default createStore({
     getSale: (state) => state.sale,
     getAdmins: (state) => state.admins,
     getUserAdminID: (state) => state.userAdminID,
+    getTrash: (state) => state.trash,
+    // delete this afterwards
+    getSuppliersALT: (state) => state.suppliersALT,
+
 
 
 

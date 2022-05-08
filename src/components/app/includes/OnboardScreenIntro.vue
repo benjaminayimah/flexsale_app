@@ -49,7 +49,7 @@
                 </g>
         </svg>
         <div class="heading">
-            <h3>Welcome, {{ getUser.name.split(' ')[0] }}</h3>
+            <h3>Welcome onboard, {{ getUser.name.split(' ')[0] }}</h3>
             <h2>Create Your First Store</h2>
             <span>Let's get your first store set up real quick.</span>
         </div>
@@ -88,7 +88,6 @@ export default {
         font-size: 1.5rem;
         margin-top: 0;
         margin-bottom: 15px;
-        text-transform: capitalize;
     }
     span{
         font-size: 1.1rem;

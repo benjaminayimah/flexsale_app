@@ -18,12 +18,12 @@ export default {
     },
     computed: {
         computeInitials() {
-            if(this.supplier.image == '') {
+            if(this.supplier.image == null || this.supplier.image == '') {
                 let name = this.supplier.name.split(' ')
                 let initial = name[0].charAt(0).toUpperCase() + (name[1] ? name[1].charAt(0).toUpperCase() : '')
                 return initial
             }else{
-                return false
+                return ''
             }
         }
     },

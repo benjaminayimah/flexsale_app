@@ -10,11 +10,11 @@
                     <div class="flex align-items-center">
                         <span class="name">{{ supplier.name }}</span>
                     </div>
-                    <div class="flex align-items-center mrg">
-                        <label>Phone:</label><span>024 123 4567</span>
+                    <div class="flex align-items-center mrg" v-if="supplier.phone">
+                        <label>Phone:</label><span>{{ supplier.phone }}</span>
                     </div>
-                    <div class="flex align-items-center">
-                        <label>Location:</label><span>Dansoman</span>
+                    <div class="flex align-items-center" v-if="supplier.location">
+                        <label>Location:</label><span>{{ supplier.location }}</span>
                     </div>
                 </div>
                 <div class="menu-toggle">
@@ -43,8 +43,8 @@
                 </div>
                 <ul @mouseup="dismissMenu">
                     <li><router-link :to="{ name: 'DetailedSupplier', params: { id: supplier.id, name: supplier.name} }">View details</router-link></li>
-                    <li><a href="javascript: void">Edit</a></li>
-                    <li><a href="javascript: void" @click.prevent="">Delete</a></li>
+                    <li><a href="javascript: void" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'supplier', id: supplier.id})">Edit</a></li>
+                    <li><a href="#" @click.prevent="$store.commit('setDeleteModal', { id: supplier.id, type: 'supplier' } )">Delete</a></li>
                 </ul>
             </div>
         </transition>
@@ -67,12 +67,12 @@ export default {
     computed: {
         ...mapGetters(['getWindowHeight', 'getMobile']),
         computeInitials() {
-            if(this.supplier.image == '') {
+            if(this.supplier.image == '' || this.supplier.image == null) {
                 let name = this.supplier.name.split(' ')
                 let initial = name[0].charAt(0).toUpperCase() + (name[1] ? name[1].charAt(0).toUpperCase() : '')
                 return initial
             }else{
-                return false
+                return ''
             }
         }
     },
@@ -121,7 +121,7 @@ export default {
 .image-hold{
     height: 80px;
     width: 80px;
-    border-radius: 16px;
+    border-radius: 50%;
     .bg-img, span{
         height: 100%;
         width: 100%;

@@ -39,7 +39,7 @@ header{
 }
 
 #welcome_page{
-    background-color: $primary-color;
+    background-color: #1b2457;
     display: flex;
     justify-content: center;
     flex-direction: column;

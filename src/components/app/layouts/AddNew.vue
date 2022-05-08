@@ -24,6 +24,7 @@
     <add-new-discount v-else-if="getAddingProduct.discount" />
     <add-new-user v-else-if="getAddingProduct.admin" />
     <add-new-store v-else-if="getAddingProduct.store" />
+    <add-new-supplier v-else-if="getAddingProduct.supplier" />
 </template>
 <script>
 
@@ -34,8 +35,9 @@ import AddNewProduct from './AddNewProduct.vue'
 import AddNewDiscount from './AddNewDiscount.vue'
 import AddNewUser from './AddNewUser.vue'
 import AddNewStore from './AddNewStore.vue'
+import AddNewSupplier from './AddNewSupplier.vue'
 export default {
-  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser, AddNewStore },
+  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser, AddNewStore, AddNewSupplier },
     name: 'AddNew',
     props: ['winHeight'],
     computed: {

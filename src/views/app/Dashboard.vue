@@ -69,7 +69,7 @@
             <div class="list-hold">
                 <div class="list-content">
                     <ul>
-                        <supplier-horizontal-list v-for="supplier in getSuppliers" :key="supplier.id" v-bind:supplier="supplier" />
+                        <supplier-horizontal-list v-for="supplier in getSuppliersALT" :key="supplier.id" v-bind:supplier="supplier" />
                     </ul>
                 </div>
             </div>
@@ -96,7 +96,7 @@ import SupplierHorizontalList from '../../components/app/includes/SupplierHorizo
 export default {
   components: { SupplierHorizontalList, ActivityListRow },
     name: 'Dashboard',
-    computed: mapGetters(['getStores', 'getSuppliers', 'getStats', 'getActivities']),
+    computed: mapGetters(['getStores', 'getSuppliersALT', 'getStats', 'getActivities']),
     data() {
         return {
             transitionVal: 0,
