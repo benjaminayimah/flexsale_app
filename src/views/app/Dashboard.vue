@@ -39,6 +39,7 @@
                      </ul>
                  </div>
              </div>
+             <!-- <button @click.prevent="counter">Click me {{ count }}</button> -->
              
              <!--
             <div class="ovw-colum" v-for="stat in stats" :key="stat.id">
@@ -90,12 +91,14 @@
 
 </template>
 <script>
+import CouterMixin from '../../mixins/counter'
 import { mapGetters } from 'vuex'
 import ActivityListRow from '../../components/app/includes/ActivityListRow.vue'
 import SupplierHorizontalList from '../../components/app/includes/SupplierHorizontalList.vue'
 export default {
   components: { SupplierHorizontalList, ActivityListRow },
     name: 'Dashboard',
+    mixins: [CouterMixin],
     computed: mapGetters(['getStores', 'getSuppliersALT', 'getStats', 'getActivities']),
     data() {
         return {

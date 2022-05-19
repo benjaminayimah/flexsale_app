@@ -7,7 +7,7 @@
         <div v-if="validation.error" class="validation-error">
             <span>{{ validation.message }}</span>
         </div>
-        <form action="">
+        <form @submit.prevent="">
         <div class="form-row">
             <!-- <label>Email:</label> -->
             <input v-model="form.email" @mousedown="resertForm" type="email" name="email" class="form-control" placeholder="Enter email">

@@ -4,18 +4,13 @@
 <script>
 export default {
     name: 'Notifications',
-    data() {
-        return {
-            title: 'Notifications'
-        }
-    },
     created() {
         window.scrollTo(0,0)
         this.setPage()
     },
     methods: {
         setPage() {
-            const title = { title: this.title, back: true}
+            const title = { title: 'Notifications', back: true}
             this.$store.commit('setPagetitle', title)
         }
     }

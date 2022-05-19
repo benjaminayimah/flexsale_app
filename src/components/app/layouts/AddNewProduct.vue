@@ -6,7 +6,7 @@
     <button class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Add'}}</button>
 </teleport>
 <teleport to="#add_master_body_container">
-     <form id="product_form">
+     <form id="product_form" @submit.prevent="">
         <div class="form-row">
             <label>Product Image:</label>
             <div class="img-hold">
@@ -176,7 +176,7 @@
                                 Profit per unit:
                             </div>
                             <div class="vals">
-                                <span>GH₵</span><span>50</span>
+                                <span>GH₵</span><span>{{ computeProfit }}</span>
                             </div>
                         </div>
                         <div class="flex-row-st">
@@ -184,7 +184,7 @@
                                 Profit margin:
                             </div>
                             <div class="vals">
-                                <span>40</span><span class="percent value">%</span>
+                                <span>{{ computePM }}</span><span class="percent value">%</span>
                             </div>
                         </div>
                     </div>
@@ -215,9 +215,8 @@
         <div class="form-row">
             <label>Supplier:</label>
             <select v-model="form.supplier" id="supplier" class="form-control select">
-                <option selected="selected">Select a supplier</option>
-                <option value="0">ABC Enterprise</option>
-                <option value="1">XYZ Ltd</option>
+                <option selected="selected" :value="null">Select a supplier</option>
+                <option :value="supplier.id" v-for="supplier in getSuppliers" :key="supplier.id">{{ supplier.name }}</option>
                 </select>
             <div class="a-btn">
                 <a href="#">
@@ -228,12 +227,6 @@
                 </a>
             </div>
         </div>
-        <!-- <teleport to="#form_submit_btn_holder">
-            <div class="btn-wrap2">
-                <button v-if="!getEditContainer.active" class="button button-primary" @click.prevent="doSubmit">Submit</button>
-                <button v-else class="button button-primary" @click.prevent="doSubmit">Save changes</button>
-            </div>
-        </teleport> -->
     </form>
 </teleport>
    
@@ -244,7 +237,35 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewProduct',
     computed: {
-        ...mapGetters(['getToken', 'getHostname', 'getUser', 'getDefaultImage', 'getEditContainer', 'getUserAdminID'])
+        ...mapGetters(['getToken', 'getHostname', 'getUser', 'getDefaultImage', 'getEditContainer', 'getUserAdminID', 'getDiscounts', 'getSuppliers']),
+        // computeDiscount: function () {
+        //     return this.getDiscounts.filter(discount => discount.id == this.getEditContainer.data.discount)
+        // },
+        // computePrice() {
+        //     if(this.getEditContainer.data.discount !== null && this.computeDiscount.length > 0 && this.computeDiscount[0].active == 1 ) {
+        //         if(this.computeDiscount[0].percentage === 1) {
+        //             let price = this.getTempContainer.data.selling_price - ((this.computeDiscount[0].value)/100) * this.getTempContainer.data.selling_price
+        //             return price
+        //         }else{
+        //             let price = this.getTempContainer.data.selling_price - this.computeDiscount[0].value
+        //             return price
+        //         }
+        //     }else {
+        //         return 0
+        //     }
+        // },
+        computeProfit() {
+            let profit = (this.form.sellingPrice - this.form.cost).toFixed(2)
+            return Intl.NumberFormat('en-US').format(profit)
+        },
+        computePM() {
+            if(this.computeProfit > 0) {
+                let pm = ((this.computeProfit / this.form.sellingPrice)*100).toFixed(2)
+                return pm
+            }
+            else
+            return 0
+        }
     },
     data() {
         return {
@@ -264,11 +285,11 @@ export default {
             form: {
                 tempImage: '',
                 name: '',
-                cost: '',
-                sellingPrice: '',
+                cost: 0,
+                sellingPrice: 0,
                 stock: '',
                 description: '',
-                supplier: '',
+                supplier: null,
                 prodType: '0',
                 batch: ''
                 //directStock: false,
@@ -517,6 +538,7 @@ export default {
                 this.form.description = this.getEditContainer.data.description
                 this.form.supplier = this.getEditContainer.data.supplier
                 this.form.prodType = this.getEditContainer.data.prod_type
+                this.form.supplier = this.getEditContainer.data.supplier_id
                 if(this.getEditContainer.data.prod_type === 0){
                     this.units = this.getEditContainer.array
                 }else{
@@ -535,14 +557,11 @@ export default {
         
     },
 
-    mounted() {
+    created() {
         this.getEditContainer.active && this.getEditContainer.data.image ? this.setTempImage() : ''
-        //this.$store.commit('setEditContainer')
     },
     unmounted() {
-        this.imageUploaded ? axios.post(this.getHostname+'/api/del-alltemp-img?token='+this.getToken) : ''
         this.getEditContainer.active ? this.clearPreloader() : ''
-        //this.$store.commit('clearEditContainer')
     },
     beforeMount() {
         window.addEventListener('beforeunload', this.preventReload)
@@ -561,14 +580,14 @@ export default {
     border-radius: 16px;
     display: flex;
     flex-direction: column;
-    border: 1px solid $dark-light;
+    border: 1px solid #f0f3ff;
     span{
     text-align: center;
     color: $gray-color;
     margin-top: 10px;
   }
   .empty-state-container{
-      background-color: $dark-light;
+      background-color: #f0f3ff6b;
       border-radius: 16px;
       display: flex;
       flex-direction: column;

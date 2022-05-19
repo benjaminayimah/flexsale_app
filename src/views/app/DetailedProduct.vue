@@ -2,7 +2,7 @@
 <div class="main-page-body">
     <!-- <transition name="fade"> -->
         <div v-if="getTempContainer.data.name">
-            <div class="header">
+            <div class="header detailed-items-banner-holder">
                 <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     <div class="cover-image-backdrop"></div>
                     <div class="flex-row action-btn-hold">
@@ -20,8 +20,11 @@
                     <div class="cover-caption">
                         <div class="flex align-items-center">
                             <h1>{{ getTempContainer.data.name }}</h1>
-                            </div>
-                            <div class="flex-row caption-row"><span v-if="getTempContainer.data.batch_no">({{ getTempContainer.data.batch_no }})</span></div>
+                        </div>
+                        <div v-if="!computeSupplier == false">
+                            <div class="flex-row caption-row"><label>Supplied by:</label><router-link :to="{ name: 'DetailedSupplier', params: { id: computeSupplier.id, name: computeSupplier.name} }">{{computeSupplier.name }}</router-link></div>
+                        </div>
+                        <div class="flex-row caption-row"><span v-if="getTempContainer.data.batch_no">({{ getTempContainer.data.batch_no }})</span></div>
                         <div class="flex-row caption-row"><label>Created:</label><span>{{ dateTime(getTempContainer.data.created_at) }}</span></div>
                         <div class="flex-row caption-row"><label>By:</label><span>{{ getTempContainer.data.added_by }}</span></div>
                     </div>
@@ -76,11 +79,18 @@ export default {
   components: { Backdrop },
     name: 'DetailedProduct',
     computed: {
-        ...mapGetters(['getProducts', 'getHostname', 'getUser', 'getTempContainer', 'getMobile', 'getDefaultImage', 'getUserAdminID']),
+        ...mapGetters(['getProducts', 'getHostname', 'getUser', 'getTempContainer', 'getMobile', 'getDefaultImage', 'getUserAdminID', 'getSuppliers']),
+        computeSupplier() {
+            if(this.getTempContainer.data.suppler_id !== null) {
+                let supplier = this.getSuppliers.find(supplier => supplier.id == this.getTempContainer.data.supplier_id)
+                return supplier
+            }
+            else
+            return false
+        }
     },
     data() {
         return {
-            product: {},
             toggleMenu: false,
         }
     },
@@ -122,162 +132,9 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.cover-image{
-    height: 350px;
-    border-radius: 20px;
-    position: relative;
-    box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
-    .action-btn-hold{
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        border-radius: 16px;
-        z-index: 10;
-
-    }
-    .cover-image-backdrop{
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 45%;
-        width: 100%;
-        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
-        border-radius: inherit;
-    }
-}
-.menu-toggle-btn{
-    background-color: rgba($color: #000000, $alpha: 0.4) !important;
-    i {
-        background-color: #ffffff !important;
-    }
-    &:hover {
-        background-color: rgba($color: #000000, $alpha: 0.8) !important;
-    }
-}
-.cover-caption{
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-    height: 100%;
-    width: 70%;
-    flex-direction: column;
-    padding: 40px 32px;
-    color: #fff;
-    position: absolute;
-    h1{
-        margin: 0 0 8px 0;
-        font-size: 2.2rem;
-        font-weight: 800;
-    }
-    p{
-        margin: 8px 0;
-        font-size: 1.1rem;
-    }
-}
-.icon-label-btn{
-    padding: 12px 10px;
-    background-color: #fff;
-    margin-left: 5px;
-}
-.caption-row{
-    font-size: 0.98rem;
-    label{
-        margin: 0 6px 0 0;
-    }
-    span{
-        color: $dark-light;
-    }
-}
-
-.image-icon{
-    background-color: rgba($color: #000000, $alpha: 0.4);
-    margin-right: 10px;
-    svg path {
-        fill: #ffffff;
-    }
-    &:hover {
-        background-color: rgba($color: #000000, $alpha: 0.8);
-    }
-}
-
 .router-link-exact-active{
     background-color: $dark !important;
     color: #ffffff !important;
     border: 1px solid $dark !important;
 }
-.slide-enter-from,
-.slide-leave-to {
-  transform: translateY(240px);
-  
-}
-
-
-
-
-.menu{
-    position: absolute;
-    background-color: #ffffff;
-    z-index: 200;
-    padding: 20px 0;
-    box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
-    //0 1px 6px 0 rgb(14 20 44 / 18%);
-    border-radius: 16px;
-    width: 200px;
-    ul{
-        padding: 0;
-        list-style-type: none;
-        display: flex;
-        margin: 0;
-        flex-direction: column;
-        li{
-            display: flex;
-            height: 50px;
-            width: 100%;
-            a{
-                display: flex;
-                height: 100%;
-                width: 100%;
-                align-items: center;
-                color: $dark;
-                text-decoration: none;
-                transition: 0.3s all;
-                padding: 0 20px;
-                font-weight: 500;
-            }
-            &:hover a{
-                background-color: $dark-light;
-            }
-        }
-    }
-}
-.show-menu{
-    right: 13px;
-    top: 40px
-}
-.menu-card-mob{
-    right: 0;
-    padding: 25px 0;
-    position: fixed;
-    bottom: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    .title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-        margin-bottom: 20px;
-        font-weight: 700;
-        font-size: 1.4rem;
-        button{
-            border-radius: 50%;
-            padding: 10px;
-            background-color: #f0f3ff;
-        }
-    }
-   
-    width: 100%;
-    border-top-right-radius: 16px;
-    border-top-left-radius: 16px;
-  }
 </style>

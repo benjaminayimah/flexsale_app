@@ -8,7 +8,7 @@
 </teleport>
 <teleport to="#onboard_body_content">
     <div class="flex-col align-items-center ob-wrap">
-       <form>
+       <form @submit.prevent="">
             <div class="form-row">
                 <label>Store name:</label>
                 <input v-model="getOnboard.form.name" type="text" name="name" class="form-control" placeholder="Full name" required>

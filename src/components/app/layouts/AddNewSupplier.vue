@@ -7,7 +7,7 @@
     <button class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Submit supplier'}}</button>
 </teleport>
 <teleport to="#add_master_body_container">
-    <form id="supplier_form">
+    <form id="supplier_form" @submit.prevent="">
         <div class="form-row">
             <label>Name:</label>
             <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Supplier name" required>
@@ -40,13 +40,15 @@ export default {
                 phone: '',
                 email: '',
                 location: ''
-            }
+            },
+            id: ''
         }
     },
     methods: {
      async doSubmit() {
          if(this.getEditContainer.active) {
             const id = this.getEditContainer.data.id
+            this.id = id
             const putUrl = this.getHostname+'/api/suppliers/'+id+'?token='+this.getToken
             this.doUpdate(putUrl)
          }else{
@@ -94,7 +96,7 @@ export default {
                 this.$store.commit('addToSuppliers', res.supplier)
             }
             this.$store.commit('unsetMainHomeWidth', true)
-
+            this.$router.currentRoute.value.name === 'DetailedSupplier'  ?  this.$router.push({ name: this.$router.currentRoute.value.name, params: { id: this.id, name: res.supplier.name }, replace: true }) : ''
         },
         errorRes(err) {
             console.log(err.data)

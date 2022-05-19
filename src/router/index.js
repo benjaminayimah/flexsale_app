@@ -34,12 +34,6 @@ import ProfileAdministration from '@/components/app/layouts/ProfileAdministratio
 
 
 
-
-
-
-
-
-
 //import Error404 from '@/views/web/Error404.vue'
 
 const routes = [

@@ -7,7 +7,7 @@
     <button class="button button-primary top-submit-btn" @click.prevent="doSubmitUpdate">Save</button>
 </teleport>
 <teleport to="#add_master_body_container">
-    <form id="product_form">
+    <form id="product_form" @submit.prevent="">
         
         <div class="form-row">
             <label>Store name:</label>

@@ -519,6 +519,9 @@ export default createStore({
     updateSuppliers(state, payload) {
       const i = state.suppliers.findIndex(x => x.id === payload.id)
       state.suppliers.splice(i, 1, payload)
+      if(state.tempDataContainer.active == true) {
+        state.tempDataContainer.data = payload
+      }
     },
     
     setEditContainer(state, payload) {
@@ -540,7 +543,11 @@ export default createStore({
       }
       return
     },
-
+    // fetchDetailedSupplier(state, payload) {
+    //   const data = state.suppliers.find(data => data.id == payload)
+    //   const newData = { data: data, array: [], propertyName: '' }
+    //   this.commit('setTempDataContainer', newData)
+    // },
     setTempDataContainer(state, payload) {
        state.tempDataContainer.array = payload.array
        state.tempDataContainer.data = payload.data
@@ -724,12 +731,23 @@ export default createStore({
       }
       state.commit('setLoader') 
     },
+    
+    async fetchThisSupplier(state, payload){
+      state.commit('setLoader') 
+       const res = await axios.post(this.getters.getHostname+'/api/supplier-this-supplier?token='+this.getters.getToken, {id: payload})
+       if(res.data.supplier) {
+        //  console.log(res.data)
+        const newData = { data: res.data.supplier, array: res.data.products, propertyName: 'supplier'}
+        state.commit('setTempDataContainer', newData)
+       }else{
+         console.log('does not exist')
+       }
+       state.commit('setLoader') 
+    },
     async fetchThisProduct(state, payload){
       state.commit('setLoader') 
        const res = await axios.post(this.getters.getHostname+'/api/product-detail?token='+this.getters.getToken, {id: payload})
        if(res.data.product) {
-         //console.log(res.data)
-        // state.commit('fetchThisProduct', res.data.product)
         const newData = { data: res.data.product, array: res.data.units, propertyName: 'product'}
         state.commit('setTempDataContainer', newData)
        }else{
@@ -796,13 +814,13 @@ export default createStore({
   deleteProduct(state, payload) {
     axios.delete(this.getters.getHostname+'/api/products/'+payload+'?token='+this.getters.getToken)
     .then((res) => {
-      //console.log(res.data)
+      // console.log(res.data)
       state.commit('removeDeletedProduct', res.data.id)
       const newPayload = {
           id: 'success',
           body: res.data.status
       }
-      state.commit('closeDeleteModal')
+     state.commit('closeDeleteModal')
       state.commit('showAlert', newPayload)
       router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter'  ? '' : router.go(-1)
     }).catch((err) => {
@@ -834,6 +852,7 @@ export default createStore({
       }
       state.commit('closeDeleteModal')
       state.commit('showAlert', newPayload)
+      router.currentRoute.value.name === 'DetailedSupplier' ? router.go(-1) : ''
     }).catch((err) => {
         console.log(err)
     })

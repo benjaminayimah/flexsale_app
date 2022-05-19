@@ -27,7 +27,7 @@
                 <div v-if="!sale.minimize" class="flex-col flex-space-between">
                     <div class="sale-main-body">
                         <div class="sales-top">
-                            <form action="">
+                            <form @submit.prevent="">
                                 <div class="form-row product-search">
                                     <label class="input-label flex align-items-center">
                                         <svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">

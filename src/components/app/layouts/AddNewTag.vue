@@ -7,7 +7,7 @@
     <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditTag">Save</button>
 </teleport>
 <teleport to="#add_master_body_container">
-    <form id="tag_form">
+    <form id="tag_form" @submit.prevent="">
         <div class="form-row">
             <label>{{ getTempContainer.active? 'Tag name' : 'Give a title to your tag' }}:</label>
             <input v-model="form.tag" type="text" name="tagName" class="form-control" placeholder="Tag title eg. tooth paste or new arrivals" required>

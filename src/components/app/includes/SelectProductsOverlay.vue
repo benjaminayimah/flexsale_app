@@ -8,8 +8,8 @@
                         <div class="header-holder">
                             <div class="flex top-hold">
                                 <button @click.prevent="$store.commit('doSelectionSheet')" class="button button-secondary cancel-btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 16 16">
-                                        <path  d="M20,11H7.83l5.59-5.59L12,4,4,12l8,8,1.41-1.41L7.83,13H20Z" transform="translate(-4 -4)" fill="#0e142c"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 23.062 19.844">
+                                        <path d="M3769.432-2903.1l-10.236-9.362,10.214-9.937a1,1,0,0,1,1.414.02,1,1,0,0,1-.02,1.413l-7.665,7.457H3781.3a.981.981,0,0,1,.961,1,.981.981,0,0,1-.961,1h-18.1l7.58,6.932a1,1,0,0,1,.063,1.412,1,1,0,0,1-.739.326A1,1,0,0,1,3769.432-2903.1Z" transform="translate(-3759.195 2922.683)" fill="#0e142c"></path>
                                     </svg>
                                 </button>
                                 <div class="flex head-title">

@@ -35,15 +35,15 @@
     </div>
     <div class="flex lign-items-center item-row" v-if="getTempContainer.data.cost">
         <div class="item-label">Unit Cost:</div>
-        <div class="item-value"><span class="currency">{{ getCurrency }}</span>{{ getTempContainer.data.cost }}</div>
+        <div class="item-value"><span class="currency">{{ getCurrency }}</span>{{ Intl.NumberFormat('en-US').format(getTempContainer.data.cost) }}</div>
     </div>
     <div class="flex lign-items-center item-row flex-wrap" v-if="getTempContainer.data.selling_price">
         <div class="item-label">Selling Price:</div>
-        <div class="item-value"><span :class="{ 'has-discount': getTempContainer.data.discount !== null && getTempContainer.data.selling_price != 0 && computePrice !== 0}"><span class="currency">{{ getCurrency }}</span>{{ getTempContainer.data.selling_price }}</span></div>
+        <div class="item-value"><span :class="{ 'has-discount': getTempContainer.data.discount !== null && getTempContainer.data.selling_price != 0 && computePrice !== 0}"><span class="currency">{{ getCurrency }}</span>{{ Intl.NumberFormat('en-US').format(getTempContainer.data.selling_price) }}</span></div>
         <div v-if="getTempContainer.data.discount !== null && computePrice !== 0" class="flex has-discount-wrap">
             <div class="item-value" v-if="this.getTempContainer.data.selling_price != 0">
                 <span class="currency">{{ getCurrency }}</span>
-                <div>{{ Intl.NumberFormat('en-US').format(computePrice.toFixed(2)) }}</div>
+                <div>{{ computePrice }}</div>
             </div>
             <!-- <div>{{ computeDiscount[0].name }}</div> -->
             <div class="flex discount-value-wrap">
@@ -68,28 +68,14 @@
         <div class="item-label">Profit:</div>
         <div class="item-value">
             <span class="currency">{{ getCurrency }}</span>
-            <span v-if="getTempContainer.data.discount !== null && computePrice !== 0">{{ Intl.NumberFormat('en-US').format((computePrice - getTempContainer.data.cost).toFixed(2)) }}</span>
-            <span v-else>{{ Intl.NumberFormat('en-US').format((getTempContainer.data.selling_price - getTempContainer.data.cost).toFixed(2)) }}</span>
+            <span >{{ computeProfit }}</span>
         </div>
     </div>
     <div class="flex lign-items-center item-row" v-if="getTempContainer.data.selling_price && getTempContainer.data.cost">
         <div class="item-label">Profit Margin:</div>
         <div class="item-value">
-            <span v-if="getTempContainer.data.discount !== null && computePrice !== 0">{{ Intl.NumberFormat('en-US').format((((computePrice - getTempContainer.data.cost) / computePrice)*100).toFixed(2)) }}%</span>
-            <span v-else>{{ Intl.NumberFormat('en-US').format((((getTempContainer.data.selling_price - getTempContainer.data.cost) / getTempContainer.data.selling_price)*100).toFixed(2)) }}%</span>
+            <span>{{ computePM }}%</span>
         </div>
-    </div>
-    <hr>
-    <div class="flex align-items-center content-row">
-        <div class="row-title">Discounts</div>
-    </div>
-    <div class="flex empty-state">
-        <button class="button-secondary">
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582"><path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#566ff4"></path></svg>
-            </div>
-            <span>Add a discount tag</span>
-        </button>
     </div>
 </div>
 </template>
@@ -101,7 +87,6 @@ export default {
     name: 'ProductInfoDetails',
     computed: {
         ...mapGetters(['getTempContainer', 'getDiscounts', 'getCurrency']),
-
         computeDiscount: function () {
             return this.getDiscounts.filter(discount => discount.id == this.getTempContainer.data.discount)
         },
@@ -109,13 +94,31 @@ export default {
             if(this.getTempContainer.data.discount !== null && this.computeDiscount.length > 0 && this.computeDiscount[0].active == 1 ) {
                 if(this.computeDiscount[0].percentage === 1) {
                     let price = this.getTempContainer.data.selling_price - ((this.computeDiscount[0].value)/100) * this.getTempContainer.data.selling_price
-                    return price
+                    return Intl.NumberFormat('en-US').format(price.toFixed(2))
                 }else{
                     let price = this.getTempContainer.data.selling_price - this.computeDiscount[0].value
-                    return price
+                    return Intl.NumberFormat('en-US').format(price.toFixed(2))
                 }
             }else {
                 return 0
+            }
+        },
+        computeProfit() {
+            if(this.getTempContainer.data.discount !== null){
+                let profit = (this.computePrice - this.getTempContainer.data.cost).toFixed(2)
+                return Intl.NumberFormat('en-US').format(profit)
+            }else{
+                let profit = (this.getTempContainer.data.selling_price - this.getTempContainer.data.cost).toFixed(2)
+                return Intl.NumberFormat('en-US').format(profit)
+            }
+        },
+        computePM() {
+            if(this.getTempContainer.data.discount !== null){
+                let pm = (this.computeProfit / this.computePrice)*100
+                return pm.toFixed(2)
+            }else{
+                let pm = ((this.getTempContainer.data.selling_price - this.getTempContainer.data.cost) / this.getTempContainer.data.selling_price)*100
+                return pm.toFixed(2)
             }
         }
     },

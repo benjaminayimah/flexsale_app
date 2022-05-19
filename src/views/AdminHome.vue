@@ -441,10 +441,11 @@ header, .right-header{
   }
 }
 .desktop-mode .left-new-wrap{
-    border: 1px dashed $primary-color;
+    border: 1px solid #f0f3ff;
     width: 90%;
     padding: 30px 15px;
     border-radius: 16px;
+    background-color: #f0f3ff6b;
   }
 #left_add_new_pd{
   padding-top: 15px;

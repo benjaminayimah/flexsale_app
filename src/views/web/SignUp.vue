@@ -6,7 +6,7 @@
         <div v-if="validation.error" class="validation-error">
             <span>{{ validation.message }}</span>
         </div>
-        <form action="">
+        <form @submit.prevent="">
         <div class="form-row">
             <div class="form-row">
                 <!-- <label>Email:</label> -->

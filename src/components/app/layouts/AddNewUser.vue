@@ -10,7 +10,7 @@
     <button v-else class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Submit user'}}</button>
 </teleport>
 <teleport to="#add_master_body_container">
-    <form id="product_form">
+    <form id="product_form" @submit.prevent="">
         <div class="form-row justify-content-center flex" v-if="getEditContainer.active && !getEditContainer.password && getUser.id === getEditContainer.data.id && getUser.role == 1">
             <div v-if="getStores.length > 0" class="justify-content-center align-items-center profile-pg-avatar" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ !getCurrentStore.image ? computeInitials: '' }}</div>
             <div v-else class="no-store-profile-large justify-content-center align-items-center">{{ computeInitials }}</div>
@@ -228,15 +228,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.profit-row{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-}
-.chk-label{
-    margin-left: 28px;
-}
 .sub-info{
     color: $gray-color;
 }
@@ -256,14 +247,10 @@ ul{
         }
     }
 }
-.bg-img{
-    border: 1px solid $dark-light;
-    border-radius: 50%;
-    margin-bottom: 20px;
-}
 .profile-pg-avatar{
     height: 200px;
     width: 200px;
+    border-radius: 50%;
 }
 
 .error-hold{

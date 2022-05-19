@@ -11,7 +11,7 @@
                     <div class="itm-name">{{ product.name }}</div>
                     <div class="flex-row-st">
                         <label>Price:</label>
-                        <div class="itm-price" :class="{ 'has-discount': product.discount !== null && product.selling_price != 0 && computePrice !== 0 }"><span>{{ getCurrency }}</span>{{ product.selling_price }}</div>
+                        <div class="itm-price" :class="{ 'has-discount': product.discount !== null && product.selling_price != 0 && computePrice !== 0 }"><span>{{ getCurrency }}</span>{{ Intl.NumberFormat('en-US').format(product.selling_price) }}</div>
                         <div class="discount-price" v-if="product.discount !== null  && product.selling_price != 0 && computePrice !== 0"><span class="currency">{{ getCurrency }}</span><span>{{ Intl.NumberFormat('en-US').format(computePrice.toFixed(2)) }}</span></div>
                     </div>
                     <div class="flex-row-st">
@@ -54,6 +54,7 @@
                     </div>
                     <ul @mouseup="dismissMenu">
                         <li><router-link :to="{ name: 'ProductDetailsBasic', params: { id: product.id, name: product.name }}">View details</router-link></li>
+                        <li><a href="javascript: void">Add to Tag</a></li>
                         <li><a href="javascript: void">Update stock</a></li>
                         <li><a href="#" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: 'product' } )">Delete</a></li>
                     </ul>
