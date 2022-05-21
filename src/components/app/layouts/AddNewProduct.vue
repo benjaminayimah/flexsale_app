@@ -238,22 +238,6 @@ export default {
     name: 'AddNewProduct',
     computed: {
         ...mapGetters(['getToken', 'getHostname', 'getUser', 'getDefaultImage', 'getEditContainer', 'getUserAdminID', 'getDiscounts', 'getSuppliers']),
-        // computeDiscount: function () {
-        //     return this.getDiscounts.filter(discount => discount.id == this.getEditContainer.data.discount)
-        // },
-        // computePrice() {
-        //     if(this.getEditContainer.data.discount !== null && this.computeDiscount.length > 0 && this.computeDiscount[0].active == 1 ) {
-        //         if(this.computeDiscount[0].percentage === 1) {
-        //             let price = this.getTempContainer.data.selling_price - ((this.computeDiscount[0].value)/100) * this.getTempContainer.data.selling_price
-        //             return price
-        //         }else{
-        //             let price = this.getTempContainer.data.selling_price - this.computeDiscount[0].value
-        //             return price
-        //         }
-        //     }else {
-        //         return 0
-        //     }
-        // },
         computeProfit() {
             let profit = (this.form.sellingPrice - this.form.cost).toFixed(2)
             return Intl.NumberFormat('en-US').format(profit)
@@ -351,9 +335,7 @@ export default {
                     
                 }
                 
-            }
-            
-            
+            }    
         },
         alertMsg(id, title, msg) {
             const payload = {

@@ -122,6 +122,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.a-row{
+    display: flex;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid $dark-light;
+    &:hover {
+        background-color: rgb(250, 250, 250);
+    }
+}
 .table-row{
     padding: 15px 0;
     width: 100%;
@@ -169,16 +179,6 @@ export default {
 }
 li{
     list-style-type: none;
-}
-.a-row{
-    display: flex;
-    width: 100%;
-    color: inherit;
-    text-decoration: none;
-    border-bottom: 1px solid $dark-light;
-    &:hover {
-        background-color: rgb(250, 250, 250);
-    }
 }
 .menu{
     position: absolute;

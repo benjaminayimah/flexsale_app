@@ -1,5 +1,5 @@
 <template>
-<h1 id="page_title">Home</h1>
+<h1 id="page_title">{{ title }}</h1>
 
  <div class="ovw-wrap" v-if="getStores.length > 0">
      <div id="overview_row">
@@ -102,6 +102,7 @@ export default {
     computed: mapGetters(['getStores', 'getSuppliersALT', 'getStats', 'getActivities']),
     data() {
         return {
+            title: 'Home',
             transitionVal: 0,
             leftShow: false,
             rightShow: true,
@@ -115,7 +116,7 @@ export default {
     },
     methods: {
         setPage() {
-            const title = { title: 'Home', back: false}
+            const title = { title: this.title, back: false}
             this.$store.commit('setPagetitle', title)
         },
        

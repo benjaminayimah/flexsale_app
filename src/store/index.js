@@ -38,6 +38,7 @@ export default createStore({
     discounts: [],
     tempDataContainer: { active: false, editMode: false, data: {}, array: [], propertyName: ''},
     editContainer: { active: false, data: {}, array: [], propertyName: '', password: false},
+    saleRecords: { data: {}, array: [], title: ''},
     tempArrayCopy: [],
     currentStore: {},
     mobile: false,
@@ -562,6 +563,11 @@ export default createStore({
       state.tempDataContainer.propertyName = ''
       state.tempDataContainer.data = {}
     },
+    setSaleRecordResult(state, payload) {
+      state.saleRecords.array = payload.array
+      state.saleRecords.data = payload.data
+      state.saleRecords.title = payload.resultTItle
+   },
 
     clrThisProduct(state) {
       state.thisProduct = []
@@ -755,6 +761,19 @@ export default createStore({
        }
        state.commit('setLoader') 
     },
+    async fetchSaleRecords(state, payload) {
+      state.commit('setLoader') 
+       const res = await axios.post(this.getters.getHostname+'/api/filter-sale-record?token='+this.getters.getToken, payload)
+       if(res.data.result) {
+        const newData = { data: res.data.result, array: res.data.units, resultTItle: res.data.title}
+        state.commit('setSaleRecordResult', newData)
+        console.log(res.data)
+       }else{
+         console.log('does not exist')
+       }
+       state.commit('setLoader') 
+    },
+
     async fetchThisDiscount(state, payload){
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-this-discount?token='+this.getters.getToken, {id: payload})
@@ -925,6 +944,7 @@ export default createStore({
     getAdmins: (state) => state.admins,
     getUserAdminID: (state) => state.userAdminID,
     getTrash: (state) => state.trash,
+    getSaleRecords: (state) => state.saleRecords,
     // delete this afterwards
     getSuppliersALT: (state) => state.suppliersALT,
 

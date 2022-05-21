@@ -9,6 +9,7 @@ import AdminHome from '@/views/AdminHome.vue'
 //import WebHome from '@/views/WebHome.vue'
 import Dashboard from '@/views/app/Dashboard.vue'
 import Products from '@/views/app/Products.vue'
+import SaleRecords from '@/views/app/SaleRecords.vue'
 import Notifications from '@/views/app/Notifications.vue'
 import Profile from '@/views/app/Profile.vue'
 import Trash from '@/views/app/Trash.vue'
@@ -51,7 +52,8 @@ const routes = [
         { path: '/products', name: 'AllProducts', component: All},
         { path: '/products/filter/:id/:name', name: 'ProdFilter', component: Filter},
       ]
-    },
+      },
+    { path: '/sales-records/filter/:name', name: 'SaleRecords', component: SaleRecords},
     { path: '/notifications', name: 'Notifications', component: Notifications },
     { path: '/trash', name: 'Trash', component: Trash },
     { path: '/profile/:name', component: Profile, 
@@ -68,6 +70,7 @@ const routes = [
       { path: '/product/stats/:id/:name', name: 'ProductDetailsStats', component: ProductDetailsStats},
       { path: '/product/logs/:id/:name', name: 'ProductDetailsLogs', component: ProductDetailsLogs},
     ]},
+    
     { path: '/discounts', name: 'Discount', component: Discount },
     { path: '/discounts/:id/:name', name: 'DetailedDiscount', component: DetailedDiscount },
     { path: '/supplier/:id/:name', name: 'DetailedSupplier', component: DetailedSupplier },

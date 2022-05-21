@@ -23,7 +23,7 @@
             
             <div class="flex-row-js dashboard-title-wrap">
                 <h1 class="dashboard-title">Recent sales</h1>
-                <a href="" class="see-all">See all</a>
+                <router-link :to="'/sales-records/filter/todays-sales'" class="see-all">See all</router-link>
             </div>
             <div class="flex-col" id="dash_sales" v-if="getTodaysales.length > 0">
                 <today-sales-row v-for="sale in getTodaysales" :key="sale.id" v-bind:sale="sale" />

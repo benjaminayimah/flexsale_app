@@ -1,5 +1,5 @@
 <template>
-<h1 id="page_title">All Products</h1>
+<h1 id="page_title">{{ title }}</h1>
  <div id="all_products" class="main-page-body">   
     <div class="prod-main">
         <div class="table">
@@ -88,7 +88,12 @@ import { mapGetters } from 'vuex'
 
 export default {
     name: 'Products',
-    computed: mapGetters(['getMobile', 'getProducts', 'getTags', 'getToken']),
+    computed: mapGetters(['getMobile', 'getProducts', 'getTags']),
+    data() {
+        return {
+            title: 'All Products'
+        }
+    },
     created() {
         this.setPage()
         window.scrollTo(0,0)
@@ -97,7 +102,7 @@ export default {
     },
     methods: {
         setPage() {
-            const title = { title: 'All Products', back: false}
+            const title = { title: this.title, back: false}
             this.$store.commit('setPagetitle', title)
             
         },

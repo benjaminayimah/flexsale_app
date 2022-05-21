@@ -1,13 +1,13 @@
 <template>
     <div class="sale-row flex-col">
-        <div class="sale-inner flex-row-js" v-for="sale in computeSaleItems" :key="sale.id">
+        <div class="sale-inner flex-row-js" v-for="saleitm in computeSaleItems" :key="saleitm.id">
             <div class="flex">
-                <span>{{ sale.product_name }}</span>
-                <span class="qty">x{{ sale.quantity }}</span>
+                <span>{{ saleitm.product_name }}</span>
+                <span class="qty">x{{ saleitm.quantity }}</span>
             </div>
             <div class="flex">
                 <span class="currency">{{ getCurrency }}</span>
-                <span class="amount">{{ Intl.NumberFormat('en-US').format(Number(sale.total_paid).toFixed(2)) }}</span>
+                <span class="amount">{{ Intl.NumberFormat('en-US').format(Number(saleitm.total_paid).toFixed(2)) }}</span>
             </div>
         </div>
         <div class="total flex-end">
@@ -28,18 +28,6 @@ export default {
         ...mapGetters(['getCurrency', 'getTodaysaleItems']),
         computeSaleItems() {
             return this.getTodaysaleItems.filter(item => item.sale_id == this.sale.id)
-        }
-
-    },
-    data() {
-        return {
-            mySale: [
-                {id: 1, name: 'Cooking oil', amount: '23', qty: '2'},
-                {id: 2, name: 'Note book', amount: '50', qty: '5'},
-                {id: 3, name: 'Sugar', amount: '12', qty: '1'},
-                {id: 4, name: 'Milk', amount: '39', qty: '5'},
-
-            ]
         }
     }
 }

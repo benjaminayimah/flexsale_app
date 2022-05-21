@@ -1,5 +1,5 @@
 <template>
-    <h1 id="page_title">Manage Tags</h1>
+    <h1 id="page_title">{{ title }}</h1>
     <div id="tags" class="main-page-body">
         <div class="info-card">
             <div class="card-outer">
@@ -25,12 +25,13 @@ export default {
     computed: mapGetters(['getTags', 'getAllFilters']),
     data() {
         return {
+            title: 'Manage Tags',
             newFilter: []
         }
     },
     methods: {
         setPage() {
-            const title = { title: 'Manage Tags', back: false}
+            const title = { title: this.title, back: false}
             this.$store.commit('setPagetitle', title)
         },
         getFilters() {
