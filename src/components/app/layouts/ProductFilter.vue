@@ -12,12 +12,7 @@ export default {
     computed: {
         ...mapGetters(['getAllFilters']),
         filteredProducts: function () {
-        return this.getAllFilters.filter(product => product.tag_id === this.$route.params.id)
-        }
-    },
-    data() {
-        return {
-            products: []
+            return this.getAllFilters.filter(product => product.tag_id === this.$route.params.id)
         }
     },
     methods: {

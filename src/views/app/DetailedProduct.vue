@@ -1,7 +1,7 @@
 <template>
 <div class="main-page-body">
     <!-- <transition name="fade"> -->
-        <div v-if="getTempContainer.data.name">
+        <div class="prod-main-custom-table" v-if="getTempContainer.data.name">
             <div class="header detailed-items-banner-holder">
                 <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     <div class="cover-image-backdrop"></div>

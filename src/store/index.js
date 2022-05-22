@@ -38,7 +38,7 @@ export default createStore({
     discounts: [],
     tempDataContainer: { active: false, editMode: false, data: {}, array: [], propertyName: ''},
     editContainer: { active: false, data: {}, array: [], propertyName: '', password: false},
-    saleRecords: { data: {}, array: [], title: ''},
+    saleRecords: { data: {}, array: [], title: '', startDate: '', endDate: ''},
     tempArrayCopy: [],
     currentStore: {},
     mobile: false,
@@ -567,6 +567,8 @@ export default createStore({
       state.saleRecords.array = payload.array
       state.saleRecords.data = payload.data
       state.saleRecords.title = payload.resultTItle
+      state.saleRecords.startDate = payload.startDate
+      state.saleRecords.endDate = payload.endDate
    },
 
     clrThisProduct(state) {
@@ -765,8 +767,12 @@ export default createStore({
       state.commit('setLoader') 
        const res = await axios.post(this.getters.getHostname+'/api/filter-sale-record?token='+this.getters.getToken, payload)
        if(res.data.result) {
-        const newData = { data: res.data.result, array: res.data.units, resultTItle: res.data.title}
+        const newData = { data: '', array: res.data.result, resultTItle: res.data.title, startDate: res.data.start_date, endDate: res.data.end_date}
         state.commit('setSaleRecordResult', newData)
+        // if(res.data.type === 3) {
+        //   router.push({ name: 'SaleRecords', params: { name: 'custom-date-range' }})
+        // }
+        window.scrollTo(0,0)
         console.log(res.data)
        }else{
          console.log('does not exist')
