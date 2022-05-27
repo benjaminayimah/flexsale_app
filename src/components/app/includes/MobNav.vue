@@ -27,13 +27,13 @@
             </a>
             </li>
             <li>
-            <router-link :to="{ name: 'Reports'}">
+            <router-link :to="'/sales-record/filter/todays-sales'">
                 <i>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 22.638 22.638">
                     <path d="M-4170.306-473.723h0a2.767,2.767,0,0,1-2.763-2.764v-8.8h3.01v1.5h-1.51v7.3a1.266,1.266,0,0,0,1.264,1.264,1.265,1.265,0,0,0,1.262-1.264v-19.875h18.612v19.875a2.766,2.766,0,0,1-2.763,2.764Zm2.764-2.764a2.746,2.746,0,0,1-.307,1.264h14.655a1.265,1.265,0,0,0,1.263-1.264v-18.375h-15.611Zm2.474-2.236v-1.5h10.5v1.5Zm0-4v-1.5h10.5v1.5Zm0-4v-5.5h10.5v5.5Zm1.5-1.5h7.5v-2.5h-7.5Z" transform="translate(4173.069 496.362)"/>
                 </svg>
                 </i>
-                <span>Reports</span>
+                <span>Sales</span>
             </router-link>
             </li>
             <li>
@@ -112,12 +112,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <router-link :to="'/sales-records/filter/todays-sales'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 22.638 22.638">
                             <path d="M-4170.306-473.723h0a2.767,2.767,0,0,1-2.763-2.764v-8.8h3.01v1.5h-1.51v7.3a1.266,1.266,0,0,0,1.264,1.264,1.265,1.265,0,0,0,1.262-1.264v-19.875h18.612v19.875a2.766,2.766,0,0,1-2.763,2.764Zm2.764-2.764a2.746,2.746,0,0,1-.307,1.264h14.655a1.265,1.265,0,0,0,1.263-1.264v-18.375h-15.611Zm2.474-2.236v-1.5h10.5v1.5Zm0-4v-1.5h10.5v1.5Zm0-4v-5.5h10.5v5.5Zm1.5-1.5h7.5v-2.5h-7.5Z" transform="translate(4173.069 496.362)"/>
                         </svg>
-                        <span>Reports</span>
-                    </a>
+                        <span>Sales</span>
+                    </router-link>
                 </li>
                 <li @click="showthisMenu('more_mob')">
                     <router-link :to="{ name: 'Trash'}">

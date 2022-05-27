@@ -89,7 +89,7 @@
                                 <tr>
                                     <th>Items</th>
                                     <th>Qty</th>
-                                    <th>Price({{ getCurrency }})</th>
+                                    <th>Amount({{ getCurrency }})</th>
                                 </tr>
                             </thead>
                             <tbody>

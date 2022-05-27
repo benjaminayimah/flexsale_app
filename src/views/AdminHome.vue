@@ -92,7 +92,7 @@
 
               <div class="main-body">
                 <div class="main-body-content">
-                  <router-view />
+                    <router-view />
                 </div>
               </div>
               <mob-nav />
@@ -127,6 +127,7 @@
         </div>
     </main>
     <delete-modal />
+    <restore-trash-modal />
     <div class="flex" id="sale_holder" v-if="getSale.active">
         <new-sale v-for="newsale in getSale.array" :key="newsale.id" v-bind:sale="getSale" />
       </div>
@@ -150,8 +151,9 @@ import DeleteModal from '../components/app/includes/DeleteModal.vue'
 import RightBodyContent from '../components/app/layouts/RightBodyContent.vue'
 import NewSale from '../components/app/includes/NewSale.vue'
 import OnboardingView from '../components/app/layouts/OnboardingView.vue'
+import RestoreTrashModal from '../components/app/includes/RestoreTrashModal.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal },
     name: 'AdminHome',
     computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard']),
     data() {
@@ -483,5 +485,7 @@ header, .right-header{
   from {opacity: 0;}
   to {opacity: 1;}
 }
+
+
 
 </style>

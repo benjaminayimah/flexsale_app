@@ -22,7 +22,6 @@ export default {
     },
     beforeMount() {
         this.getFilters()
-        //console.log(this.getAllFilters)
     },
 }
 </script>

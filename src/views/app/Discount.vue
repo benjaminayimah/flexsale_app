@@ -10,7 +10,7 @@
             </button>
         </div>
         <ul>
-            <discount-row v-for="item in getDiscounts" :key="item.id" v-bind:item="[ item, getCurrency ]" />
+            <discount-row v-for="item in getDiscounts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))" :key="item.id" v-bind:item="[ item, getCurrency ]" />
         </ul>
     </div>
     <div v-else class="flex-col empty-state">

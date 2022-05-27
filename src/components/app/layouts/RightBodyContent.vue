@@ -1,11 +1,30 @@
 <template>
     <div class="right-content-wrap">
         <div class="flex-col">
-            <div class="flex-col" id="right_top">
+            <div class="flex-col gap-8" id="right_top">
                 <div class="flex-row-js">
-                    <div class="flex-col">
-                        <div class="flex align-items-center"><span class="currency">{{ getCurrency }}</span><h1>{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</h1></div>
-                        <label>Today’s sales</label>
+                    <div class="flex-col gap-8">
+                        <label class="mg-0">Today’s sales</label>
+                        <div class="flex gap-8">
+                            <div class="flex">
+                                <span class="currency">{{ getCurrency }}</span><h1>{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</h1>
+                            </div>
+                            <div class="flex-col">
+                                <div class="flex compared-figure align-items-center" :class="checkDiff.status ? 'isIncreased' : 'isDecreased'">
+                                    <span>{{ checkDiff.status ? '+' : '-' }}</span>
+                                    <span>{{ Intl.NumberFormat('en-US').format(computeCompare.toFixed(2))}}</span>
+                                    <span>%</span>
+                                    <svg v-if="checkDiff.status" xmlns="http://www.w3.org/2000/svg" class="compare-arrow arrow-up" height="12" viewBox="0 0 8.164 10.6">
+                                        <path d="M18342.83-3197.193v-7.289l-2.049,2.049a.749.749,0,0,1-1.062,0,.752.752,0,0,1,0-1.059l3.332-3.333h0l0,0a.75.75,0,0,1,.488-.213h.076a.768.768,0,0,1,.213.042h0l.018.007a.789.789,0,0,1,.262.166l3.33,3.334a.748.748,0,0,1,0,1.059.748.748,0,0,1-.531.221.743.743,0,0,1-.529-.221l-2.053-2.05v7.291a.75.75,0,0,1-.75.75A.751.751,0,0,1,18342.83-3197.193Z" transform="translate(-18339.5 3207.042)" fill="#20c647"/>
+                                    </svg>
+                                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="compare-arrow arrow-down" height="12" viewBox="0 0 8.164 10.6">
+                                        <path d="M18342.83-3206.292V-3199l-2.049-2.049a.749.749,0,0,0-1.062,0,.752.752,0,0,0,0,1.059l3.332,3.333h0l0,0a.75.75,0,0,0,.488.213h.076a.768.768,0,0,0,.213-.042h0l.018-.007a.789.789,0,0,0,.262-.166l3.33-3.334a.748.748,0,0,0,0-1.059.748.748,0,0,0-.531-.221.743.743,0,0,0-.529.221l-2.053,2.05v-7.291a.75.75,0,0,0-.75-.75A.751.751,0,0,0,18342.83-3206.292Z" transform="translate(-18339.5 3207.042)" fill="#e63232"/>
+                                    </svg>
+
+                                </div>
+                                <span class="compared-label">Compare to yest'day</span>
+                            </div>
+                        </div>
                     </div>
                     <button class="menu-toggle-btn">
                         <i></i>
@@ -20,13 +39,12 @@
                     <span>New sale</span>
                 </button>
             </div>
-            
             <div class="flex-row-js dashboard-title-wrap">
                 <h1 class="dashboard-title">Recent sales</h1>
-                <router-link :to="'/sales-records/filter/todays-sales'" class="see-all">See all</router-link>
+                <router-link :to="'/sales-record/filter/todays-sales'" class="see-all">See all</router-link>
             </div>
             <div class="flex-col" id="dash_sales" v-if="getTodaysales.length > 0">
-                <today-sales-row v-for="sale in getTodaysales" :key="sale.id" v-bind:sale="sale" />
+                <today-sales-row v-for="sale in getTodaysales.slice(0, 3)" :key="sale.id" v-bind:sale="sale" />
             </div>
             <div v-else>
                 No sales today
@@ -41,19 +59,59 @@ export default {
     name: 'RightBodyContent',
     components: { TodaySalesRow },
     computed: {
-        ...mapGetters(['getCurrency', 'getTodaysales', 'getWindowHeight']),
+        ...mapGetters(['getCurrency', 'getTodaysales', 'getWindowHeight', 'getYesterdaySale']),
         computeTotal() {
           return this.getTodaysales.reduce((acc, item) => acc + Number(item.total_paid), 0);
         },
+        checkDiff() {
+            let yesterday = this.getYesterdaySale
+            let today = this.computeTotal
+            if(yesterday >= today){
+                let params = {
+                    status: false,
+                    yesterday: yesterday,
+                    today: today
+                }
+                return params  
+            }else {
+                let params = {
+                    status: true,
+                    yesterday: yesterday,
+                    today: today
+                }
+                return params
+            }
+        },
+        computeCompare() {
+            let og_val = this.checkDiff.yesterday
+            let new_val = this.checkDiff.today
+            if(og_val > 0) {
+                if(this.checkDiff.status) {
+                    let diff = new_val - og_val
+                    let total = (diff/og_val)*100
+                    return total
+                }else{
+                    let diff = og_val - new_val
+                    let total = (diff/og_val)*100
+                    return total
+                }
+            }else{
+                return new_val - og_val
+            }  
+        }
     }
 }
 </script>
 <style scoped lang="scss">
+.currency{
+    margin-top: 4px;
+}
 .right-content-wrap{
     padding: 0 15px;
 }
 h1{
     margin: 0;
+    font-size: 1.8rem;
 }
 label{
     color: $gray-color;
@@ -68,6 +126,22 @@ label{
 .dashboard-title-wrap{
     padding: 0;
     margin-top: 30px;
+}
+.compared-figure{
+    font-weight: 600;
+}
+.isIncreased{
+    color: $success;
+}
+.isDecreased{
+    color: $danger;
+}
+.compared-label{
+    font-size: 0.8rem;
+    color: $gray-color;
+}
+.compare-arrow{
+    margin-left: 4px;
 }
 
 

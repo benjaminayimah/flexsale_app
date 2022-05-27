@@ -53,7 +53,7 @@ const routes = [
         { path: '/products/filter/:id/:name', name: 'ProdFilter', component: Filter},
       ]
       },
-    { path: '/sales-records/filter/:name', name: 'SaleRecords', component: SaleRecords},
+    { path: '/sales-record/filter/:name', name: 'SaleRecords', component: SaleRecords},
     { path: '/notifications', name: 'Notifications', component: Notifications },
     { path: '/trash', name: 'Trash', component: Trash },
     { path: '/profile/:name', component: Profile, 

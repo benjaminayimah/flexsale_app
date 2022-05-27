@@ -19,7 +19,7 @@
         </div>
         <div class="main-page-table">
             <ul>
-                <suppliers-page-list v-for="supplier in getSuppliers" :key="supplier.id" v-bind:supplier="supplier" />
+                <suppliers-page-list v-for="supplier in getSuppliers.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))" :key="supplier.id" v-bind:supplier="supplier" />
             </ul>
         </div>
     </div>

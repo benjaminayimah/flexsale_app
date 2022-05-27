@@ -1,5 +1,44 @@
 <template>
     <div class="main-page-body" v-if="getTrash.length > 0">
+    <div class="prod-main-custom-table">
+        <div class="page-info">
+            Items in Trash will be permanently deleted after <strong>30 days.</strong> 
+        </div>
+        <div class="table">
+            <div class="table-body">
+                <div class="table-menu flex">
+                    <div v-if="getBulkSelection.active" class="flex gap-8  align-items-center">
+                        <button class="button button-secondary cancel-btn" @click.prevent="$store.commit('toggleBulkSeletion')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
+                                <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
+                            </svg>
+                        </button>
+                        <span class="selection-count">{{ getBulkSelection.array.length }}</span>
+                        <span class="cap">items selected</span>
+                    </div>
+                    <div></div>
+                    <div v-show="!getBulkSelection.active" class="category-pill">
+                        <div class="pill-wrap">
+                            <ul class="flex-row-st">
+                                <li><a @click.prevent="$store.commit('toggleBulkSeletion')" href="#">Select</a></li>
+                                <li><a href="#" class="perm-delete" @click.prevent="$store.commit('setTrashRestoreDeleteModal', { type: 'bulk-Delete' })">Empty trash</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div v-show="getBulkSelection.active && getBulkSelection.array.length > 0" class="category-pill">
+                        <div class="pill-wrap">
+                            <ul class="flex-row-st">
+                                <li><a @click.prevent="$store.commit('setTrashRestoreDeleteModal', { type: 'bulk-Restore' })" class="rounded-button" href="#">Restore selected</a></li>
+                                <li><a @click.prevent="$store.commit('setTrashRestoreDeleteModal', { type: 'delete-Selected' })" href="#" class="perm-delete">Delete selected</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+                <product-row v-for="product in getTrash.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))" :key="product.id" v-bind:product="product" />
+            </div>
+        </div>
+    </div>
     </div>
     <div class="empty-state flex-col" v-else>
         <svg xmlns="http://www.w3.org/2000/svg" height="150" viewBox="0 0 204 204">
@@ -10,7 +49,6 @@
             </g>
         </svg>
 
-
         <h1>Trash is Empty</h1>
         <div>Items in Trash will be permanently <br> deleted after 30 days.</div>
     </div>
@@ -18,9 +56,12 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import ProductRow from '../../components/app/includes/ProductRow.vue'
+
 export default {
     name: 'Trash',
-    computed: mapGetters(['getTrash']),
+    components: { ProductRow },
+    computed: mapGetters(['getTrash', 'getBulkSelection']),
      data() {
         return {
             title: 'Trash'
@@ -29,20 +70,43 @@ export default {
     created() {
         window.scrollTo(0,0)
         this.setPage()
+        this.$store.dispatch('fetchTrash')
     },
     methods: {
         setPage() {
             const title = { title: this.title, back: true}
             this.$store.commit('setPagetitle', title)
         }
+    },
+    unmounted() {
+        this.$store.commit('clearSelection')
     }
 }
 </script>
 <style scoped lang="scss">
-.empty-state {
-    margin: 0;
-    padding-top: 120px;
+.page-info{
+    // color: $danger;
+    padding: 20px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    // background-color: $dark-light;
     text-align: center;
-    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid $gray-color
+}
+.table-menu{
+    justify-content: space-between;
+}
+.cancel-btn{
+    margin-right: 10px;
+}
+.selection-count{
+    color: $primary-color;
+}
+.cap, .selection-count {
+    font-weight: 600;
+}
+.perm-delete{
+    border-color: $danger !important;
 }
 </style>

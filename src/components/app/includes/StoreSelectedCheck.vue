@@ -1,7 +1,7 @@
 <template>
     <li>
         <a href="#" :id="'store_'+store.id" @click.prevent="doCheck(store.id)" class="flex" :class="{ 'active' : thisCheck}">
-            <button class="button check-btn" @click.prevent="">
+            <button class="check-btn" @click.prevent="">
                 <svg xmlns="http://www.w3.org/2000/svg"  height="14" viewBox="0 0 28.454 20.383">
                     <path d="M1126.264,386.512l-9.779-10.489,2.194-2.046,7.686,8.243,16.478-16.092,2.1,2.146Z" transform="translate(-1116.485 -366.129)" />
                 </svg>
@@ -68,19 +68,7 @@ a{
         color: $gray-color;
     }
 }
-.check-btn{
-    display: flex;
-    background-color: $dark-light;
-    border-radius: 50%;
-    height: 38px;
-    width: 38px;
-    padding: 0;
-    border: 1px solid transparent;
 
-    svg path{
-        fill: #ffffff;
-    }
-}
 .active{
     button{
         background-color: $primary-color !important;

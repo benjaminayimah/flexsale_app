@@ -25,7 +25,7 @@
                     </div>
                     <div class="selection-body" :style="{height: (windowHeight-180)+'px'}">
                         <ul>
-                            <add-tag-row v-for="product in getProducts" :key="product.id" v-bind:product="product" />
+                            <add-tag-row v-for="product in getProducts.sort((a, b) => (a.name > b.name) ? 1 : -1)" :key="product.id" v-bind:product="product" />
                         </ul>
                     </div>
                 </div>

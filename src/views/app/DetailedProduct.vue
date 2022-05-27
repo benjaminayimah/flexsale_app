@@ -3,6 +3,10 @@
     <!-- <transition name="fade"> -->
         <div class="prod-main-custom-table" v-if="getTempContainer.data.name">
             <div class="header detailed-items-banner-holder">
+                <div v-if="getTempContainer.data.deleted" class="flex gap-8 justify-content-center perm-delete-row">
+                <button class="button button-secondary rounded-button">Restore this product</button>
+                <button class="button button-secondary perm-delete">Permanently Delete</button>
+                </div>
                 <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     <div class="cover-image-backdrop"></div>
                     <div class="flex-row action-btn-hold">
@@ -44,9 +48,10 @@
                                 </button>
                             </div>
                             <ul>
-                                <li @click.prevent="closeJustMenu()"><a href="javascript: void" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product'})">Edit product</a></li>
-                                <li><a href="javascript: void">Update stock</a></li>
-                                <li @click.prevent="closeJustMenu()"><a href="javascript: void" @click.prevent="$store.commit('setDeleteModal', { id: $route.params.id, type: 'product' } )">Delete</a></li>
+                                <li v-if="!getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="javascript: void" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product'})">Edit product</a></li>
+                                <li v-if="!getTempContainer.data.deleted"><a href="javascript: void">Update stock</a></li>
+                                <li v-if="getTempContainer.data.deleted"><a href="javascript: void">Restore</a></li>
+                                <li @click.prevent="closeJustMenu()"><a :class="{ 'perm-delete' : getTempContainer.data.deleted }" href="javascript: void" @click.prevent="$store.commit('setDeleteModal', { id: $route.params.id, type: 'trash' } )">Delete</a></li>
                             </ul>
                         </div>
                     </transition>
@@ -136,5 +141,29 @@ export default {
     background-color: $dark !important;
     color: #ffffff !important;
     border: 1px solid $dark !important;
+}
+.logout, .perm-delete{
+  color: $danger !important;
+  &:hover{
+    background-color: rgba(230, 50, 50, 0.05) !important;
+  }
+  &:active{
+    background-color: rgba(230, 50, 50, 0.12) !important;
+  }
+}
+.perm-delete-row{
+    position: sticky;
+    top: 80px;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 10px;
+    z-index: 11;
+    margin: -30px -2px 0 -2px;
+    button{
+        line-height: 28px;
+        border-radius: 30px;
+    }
+    .perm-delete{
+        border-color: $danger;
+    }
 }
 </style>

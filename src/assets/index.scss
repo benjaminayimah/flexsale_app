@@ -122,7 +122,33 @@ li:last-child a, li:last-child .info-section-hold{
 .relative{
   position: relative;
 }
+.no-border{
+  border: unset !important;
+}
 
+.clear-input-btn{
+  transition: 0.3s all;
+  height: 25px;
+  width: 25px;
+  border-radius: 50% !important;
+  background-color: #eaedff;
+  position: absolute;
+  top: 22%;
+  right: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  path{
+    transition: 0.3s all;
+    fill: $primary-color ;
+  }
+  &:hover{
+    background-color: $primary-color;
+    path{
+      fill: #ffffff;
+    }
+  }
+}
 
 @keyframes load{
   0%{transform: rotate(0deg)}
@@ -152,6 +178,12 @@ ul{
 }
 .mt-0{
   margin-top: 0 !important;
+}
+.mg-0{
+  margin: 0;
+}
+.gap-8{
+  gap: 8px;
 }
 
 #form_submit_btn_holder{
@@ -195,6 +227,25 @@ button.add-more{
       padding-left: 4px;
       color: $dark;
   }
+}
+.rounded-button{
+  color: $primary-color !important;
+  border-color: $primary-color !important;
+  &:hover {
+    background-color: $primary-light !important
+  }
+}
+.check-btn{
+    display: flex;
+    background-color: $dark-light;
+    border-radius: 50%;
+    height: 38px;
+    width: 38px;
+    padding: 0;
+    border: 1px solid transparent;
+    svg path{
+        fill: #ffffff;
+    }
 }
 .header-holder{
   font-weight: 600;
@@ -442,7 +493,7 @@ textarea{
 }
 .cancel-btn{
   display: flex;
-  background-color: #ffffff;
+  background-color: transparent;
   height: 44px;
   width: 44px;
   border-radius: 50%;
@@ -455,12 +506,102 @@ textarea{
     background-color: $dark-light;
   }
   &:focus{
-      box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
-      border: 1px solid #0e142c;
-    background-color: #fff;
+      box-shadow: none;
+      border: none;
+      background-color: transparent;
+  }&:active {
+    box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
+    border: 1px solid #0e142c;
+  }
+}
+.logout, .perm-delete{
+  color: $danger !important;
+  &:hover{
+    background-color: rgba(230, 50, 50, 0.05) !important;
+  }
+  &:active{
+    background-color: rgba(230, 50, 50, 0.12) !important;
   }
 }
 
+//delete container
+.delete-container{
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 20%;
+  z-index: 999999;
+  height: auto;
+  width: 280px;
+  .delete-wrap{
+      border-radius: 24px;
+      background-color: #ffffff;
+      padding: 38px 35px 30px 35px;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      align-items: center;
+      justify-content: space-between;
+      button{
+          width: 100%;
+          height: 48px;
+          border-radius: 12px;
+      }
+      .delete-info{
+          text-align: center;
+          margin-bottom: 15px;
+          line-height: 21px;
+          h2{
+              margin: 15px 0;
+              font-size: 18px;
+          }
+          span{
+              color: $gray-color;
+              font-weight: 500;
+          }
+          
+      }
+      .cancel-btn{
+          margin-top: 10px;
+          margin-left: 0;
+          background-color: transparent;
+          color: $primary-color;
+          font-weight: 500;
+          &:hover {
+              text-decoration: underline;
+          }
+          &:active {
+              border: 1px solid $primary-color;
+              box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+              background-color: $primary-light;
+          }
+      }
+  }
+  .alert-close{
+      background-image: url('/images/close.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      margin-right: -8px;
+      transition: 0.3s all;
+      height: 38px;
+      width: 38px;
+      border-radius: 50%;
+      position: absolute;
+      right: 18px;
+      top: 10px;
+      &:hover {
+          background-color: $dark-light;
+      }
+      &:focus{
+          box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
+          border: 1px solid #0e142c9d;
+          background-color: #fff;
+      }
+  }
+}
 //checkbox
 .checkbox-hold {
   position: relative;
@@ -709,8 +850,8 @@ textarea{
       }
   }
   .prod-stat-item, .add-new{
-      height: 110px;
-      border-radius: 24px;
+      height: 100px;
+      border-radius: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -761,7 +902,7 @@ textarea{
       top: 80px;
       background-color: $white-color;
       z-index: 10;
-      margin: 25px 0;
+      margin: 10px 0;
       height: 70px;
        ul{
           padding: 0;

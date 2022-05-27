@@ -1,8 +1,13 @@
 <template>
 <li style="position: relative">
-    <router-link :to="{ name: 'ProductDetailsBasic', params: { id: product.id, name: product.name }}" class="a-row" >
+    <router-link :to="!getBulkSelection.active ? { name: 'ProductDetailsBasic', params: { id: product.id, name: product.name } } : ''" @click.prevent="getBulkSelection.active ? doSelect(product.id) : ''" class="a-row" :class="computeSelected ? 'isSelected' : 'notSelected'">
         <div class="table-row flex-row-js" >
             <div class="flex-row-st">
+                <button v-if="product.deleted && getBulkSelection.active" class="check-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg"  height="14" viewBox="0 0 28.454 20.383">
+                        <path d="M1126.264,386.512l-9.779-10.489,2.194-2.046,7.686,8.243,16.478-16.092,2.1,2.146Z" transform="translate(-1116.485 -366.129)" />
+                    </svg>
+                </button>
                 <div class="img-hold">
                     <div class="img bg-img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     </div>
@@ -19,18 +24,10 @@
                             <label>Stock:</label>
                             <div class="qty">{{ product.stock }}</div>
                         </div>
-                        <div class="edit-action">
-                            <a href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 14.62 16.711">
-                                    <path d="M-8807.809-385.606a.691.691,0,0,1-.692-.69.692.692,0,0,1,.692-.692h13.237a.692.692,0,0,1,.69.692.691.691,0,0,1-.69.69Zm-.489-2.477a.691.691,0,0,1-.146-.759l1.781-4.153a.706.706,0,0,1,.145-.216l8.367-8.4a2.379,2.379,0,0,1,1.7-.7,2.375,2.375,0,0,1,1.693.7,2.4,2.4,0,0,1,0,3.384l-8.4,8.37a.647.647,0,0,1-.216.145l-4.155,1.781a.667.667,0,0,1-.271.057A.692.692,0,0,1-8808.3-388.083Zm2.852-4.247-1.048,2.446,2.446-1.05,6.716-6.686-1.428-1.426Zm8.767-5.94.942-.938a1.017,1.017,0,0,0,0-1.433,1,1,0,0,0-.717-.3,1,1,0,0,0-.718.3l-.936.94Z" transform="translate(8808.501 402.318)" fill="#566ff4"/>
-                                </svg>
-                                Update stock
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>
-            <div class="menu-toggle">
+            <div class="menu-toggle" v-if="!getBulkSelection.active">
                 <button class="menu-toggle-btn" :id="'prod_menu_'+product.id" @click.prevent="doMenu('prod_menu_'+product.id)">
                     <i></i>
                     <i></i>
@@ -53,10 +50,11 @@
                         </button>
                     </div>
                     <ul @mouseup="dismissMenu">
-                        <li><router-link :to="{ name: 'ProductDetailsBasic', params: { id: product.id, name: product.name }}">View details</router-link></li>
-                        <li><a href="javascript: void">Add to Tag</a></li>
-                        <li><a href="javascript: void">Update stock</a></li>
-                        <li><a href="#" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: 'product' } )">Delete</a></li>
+                        <li v-if="!product.deleted"><router-link :to="{ name: 'ProductDetailsBasic', params: { id: product.id, name: product.name }}">View details</router-link></li>
+                        <li v-if="!product.deleted"><a href="#" @click.prevent="">Add to Tag</a></li>
+                        <li v-if="!product.deleted"><a href="#" @click.prevent="">Update stock</a></li>
+                        <li v-if="product.deleted"><a href="#" @click.prevent="$store.dispatch('restoreThisProduct', product.id)">Restore</a></li>
+                        <li><a :class="{ 'perm-delete' : product.deleted }" href="#" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: product.deleted ? 'product' : 'trash' })">{{ !product.deleted ? 'Move to Trash' : 'Delete' }}</a></li>
                     </ul>
                 </div>
             </transition>
@@ -71,8 +69,14 @@ export default {
   components: { Backdrop },
     name: 'ProductRow',
     props: ['product'],
+    data() {
+        return {
+            toggleMenu: false,
+            classAbove: false
+        }
+    },
     computed: {
-        ... mapGetters(['getHostname', 'getUser', 'getWindowHeight', 'getMobile', 'getDefaultImage', 'getCurrency', 'getDiscounts', 'getUserAdminID']),
+        ... mapGetters(['getHostname', 'getUser', 'getWindowHeight', 'getMobile', 'getDefaultImage', 'getCurrency', 'getDiscounts', 'getUserAdminID', 'getBulkSelection']),
         computeDiscount: function () {
             if(this.getDiscounts.length > 0) {
                 return this.getDiscounts.filter(discount => discount.id == this.product.discount)
@@ -94,13 +98,14 @@ export default {
                 return 0
             }
         },
-        
-    },
-    data() {
-        return {
-            toggleMenu: false,
-            classAbove: false
+        computeSelected() {
+            const find = this.getBulkSelection.array.find(item => item === this.product.id)
+            if(find)
+            return true
+            else
+            return false
         }
+        
     },
     methods: {
         doMenu(id) {
@@ -115,6 +120,10 @@ export default {
         dismissMenu() {
             this.toggleMenu = false
             document.body.classList.remove('fixed-body')
+        },
+        doSelect(id){
+            const find = this.getBulkSelection.array.find(item => item === id)
+            find ? this.$store.commit('removeFromSelections', id) : this.$store.commit('addToSelections', id)
         }
     }
     
@@ -129,9 +138,24 @@ export default {
     text-decoration: none;
     border-bottom: 1px solid $dark-light;
     &:hover {
-        background-color: rgb(250, 250, 250);
+        .check-btn{
+            border: 1px solid $primary-color;
+            background-color: #d7dcf8;
+        }
     }
 }
+.notSelected{
+    &:hover {
+            background-color: rgb(250, 250, 250);
+    }
+}
+.isSelected{
+    background-color: $primary-light;
+    .check-btn{
+        background-color: $primary-color !important;
+    }
+}
+
 .table-row{
     padding: 15px 0;
     width: 100%;
@@ -245,7 +269,14 @@ li{
       max-width: 100%;
     }
   }
-  .slide-enter-from,
+
+
+.check-btn{
+    margin-right: 15px;
+}
+
+
+.slide-enter-from,
 .slide-leave-to {
   transform: translateY(250px);
   

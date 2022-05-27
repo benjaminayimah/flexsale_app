@@ -276,7 +276,6 @@ padding: 15px 20px;
       a{
           display: block;
           padding: 16px 20px;
-          color: $dark;
           text-decoration: none;
           font-weight: 500;
           transition: 0.2s all linear;
@@ -285,21 +284,6 @@ padding: 15px 20px;
           svg{
             margin-right: 15px;
           }
-      }
-      a:hover{
-          background-color: $dark-light;
-      }
-      a:active{
-          background-color: $dark-light;
-      }
-      .logout{
-        color: $danger;
-        &:hover{
-          background-color: rgba(230, 50, 50, 0.05);
-        }
-        &:active{
-          background-color: rgba(230, 50, 50, 0.12);
-        }
       }
       
   }

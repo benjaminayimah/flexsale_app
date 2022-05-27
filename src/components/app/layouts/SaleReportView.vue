@@ -1,20 +1,26 @@
 <template>
     <div>
-        <div class="flex-row-js">
+        <div class="flex-row-js" style="height: 40px">
              <div class="flex align-items-center">
-                <h4>{{ saleRecords.title }}</h4>
+                <h4 v-if="!receiptSearch.active">{{ saleRecords.title }}</h4>
+                <div v-else>
+                    <h4>{{ receiptSearch.submited ? 'Showing for receipt no.' : '' }}</h4>
+                </div>
                 <span class="separator-dot"></span>
-                <div class="results-dates">
+                <div class="results-dates" v-if="!receiptSearch.active">
                     <span v-if="saleRecords.startDate">{{ dateTime(saleRecords.startDate) }} - </span>
                     <span>{{ dateTime(saleRecords.endDate) }}</span>
                 </div>
+                <div class="results-dates" v-else>
+                    <span>{{ receiptSearch.submited ? receiptSearch.input : '' }}</span>
+                </div>
             </div>
-            <div class="flex align-items-center results-right-nav">
-                <button class="button button-secondary">
+            <div v-if="!receiptSearch.active" class="flex align-items-center results-right-nav">
+                <!-- <button class="button button-secondary">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.671 26.671">
                         <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"></path>
                     </svg>
-                </button>
+                </button> -->
                 <li>
                     <a href="#" @click.prevent="">
                         <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 16.57 13.463">
@@ -31,12 +37,12 @@
                 </li>
             </div>
         </div>
-        <div class="table-head b-b-0">
+        <div class="table-head b-b-0" v-if="!receiptSearch.active">
             <div class="flex-row-js tbh-row">
                 <div class="prod-stat-hold">
                     <div class="prod-stat-item">
                         <a href="#" @click.prevent="">
-                            <div class="stat-count flex"><span class="currency">{{ getCurrency }}</span>{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</div>
+                            <div class="stat-count flex align-items-center"><div class="currency">{{ getCurrency }}</div>{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</div>
                             <span class="label">Sale value</span>
                         </a>
                     </div>
@@ -75,15 +81,40 @@
                 </div>
             </div>
         </div>
-        <div v-for="record in saleRecords.array" :key="record.id" style="background-color: #f0f3ff; border-radius: 16px; height: 300px; width: 100%; margin-bottom: 15px"></div>
+        <div v-if="saleRecords.array.length > 0 && !receiptSearch.active">
+            <sales-record-list v-for="record in saleRecords.array" :key="record.id" v-bind:record="record" />
+            <div v-if="saleRecords.array.length < 0">
+                <h2>No Record Found</h2>
+            </div>
+        </div>
+        <div v-else-if="receiptSearch.active">
+            <div v-if="receiptSearch.result.length > 0 && !receiptSearch.input == ''">
+                <sales-record-list v-for="record in receiptSearch.result" :key="record.id" v-bind:record="record" />
+            </div>
+            <div v-else-if="!receiptSearch.submited">
+                <div class="empty-state flex-col">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="80" viewBox="0 0 72.686 72.684">
+                        <path d="M875.607-10393.867a3.488,3.488,0,0,1-2.475-1.025l-13.5-13.5a32.44,32.44,0,0,1-20.512,7.23,32.73,32.73,0,0,1-32.695-32.691,32.732,32.732,0,0,1,32.695-32.694,32.73,32.73,0,0,1,32.692,32.694,32.443,32.443,0,0,1-7.23,20.512l13.5,13.5a3.488,3.488,0,0,1,1.025,2.475,3.489,3.489,0,0,1-1.025,2.475A3.489,3.489,0,0,1,875.607-10393.867Zm-36.492-65.684a25.723,25.723,0,0,0-25.695,25.694,25.722,25.722,0,0,0,25.695,25.691,25.521,25.521,0,0,0,18.167-7.524,25.523,25.523,0,0,0,7.525-18.167A25.722,25.722,0,0,0,839.116-10459.551Z" transform="translate(-806.421 10466.551)" fill="#566ff4"/>
+                    </svg>
+                    <h1>Search by Receipt</h1>
+                    <div>Enter the Receipt number and submit.</div>
+                </div>
+            </div>
+            <div v-else>
+                <h2>No Record Found</h2>
+            </div>
+
+        </div>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment'
+import SalesRecordList from '../includes/SalesRecordList.vue';
 export default {
+  components: { SalesRecordList },
     name: 'SaleReportView',
-    props: ['saleRecords'],
+    props: ['saleRecords', 'receiptSearch'],
     computed: {
         ...mapGetters(['getCurrency']),
         computeTotal() {
@@ -101,13 +132,18 @@ export default {
 h4{
     margin: 0;
     text-transform: capitalize;
+    color: $gray-color;
 }
 .results-dates{
-    color: $gray-color;
+    color: $dark;
 }
 .tbh-row{
     margin-top: 25px;
 }
+.currency{
+    font-weight: 500;
+}
+
 .results-right-nav{
     gap: 10px;
     button{
@@ -126,4 +162,5 @@ h4{
         }
     }
 }
+
 </style>

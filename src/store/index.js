@@ -47,7 +47,8 @@ export default createStore({
     hideRight: false,
     alert: { status: { show: false, success: false, danger: false, warning: false, info: false }, title: '', body: '' },
     loader: false,
-    deleteModal: {active: false, deleting: false, id: '', type: '' },
+    deleteModal: {active: false, trash: false, deleting: false, id: '', type: '' },
+    trashModal: { active: false, restore: false, type: '', deleting: false,},
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
@@ -56,9 +57,11 @@ export default createStore({
     },
     todaysales: [],
     todaysaleItems: [],
+    yesterdaySale: Number,
     admins: [],
     suppliers: [],
     trash: [],
+    bulkSelection: { active: false, array: []},
 
 
     submitting: true,
@@ -174,7 +177,6 @@ export default createStore({
           state.onboard.status = false
         }
       }, 1000);
-
     },
     forceSetOnboard(state, payload) {
       state.onboard.status = true
@@ -337,6 +339,20 @@ export default createStore({
       state.tempDataContainer.editMode = true
       return
     },
+    toggleBulkSeletion(state) {
+      state.bulkSelection.active = !state.bulkSelection.active
+      state.bulkSelection.array = []
+    },
+    addToSelections(state, payload) {
+      state.bulkSelection.array.push(payload)
+    },
+    removeFromSelections(state, payload) {
+      state.bulkSelection.array = state.bulkSelection.array.filter(item => item != payload)
+    },
+    clearSelection(state) {
+      state.bulkSelection.active = false
+      state.bulkSelection.array = []
+    },
     unsetMainHomeWidth(state, payload){
       // this.commit('dismisAlert')
       this.commit('clearEditContainer')
@@ -385,14 +401,18 @@ export default createStore({
         state.alert.title = ''
     },
     setDeleteModal(state, payload) {
+      document.body.classList.add('fixed-body')
       state.deleteModal.active = true
       state.deleteModal.id = payload.id
-      state.deleteModal.type = payload.type
-      document.body.classList.add('fixed-body')
+      state.deleteModal.type = payload.type  
+      if (payload.type === 'trash') {
+        state.deleteModal.trash = true
+      }
     },
     closeDeleteModal(state) {
       state.deleteModal.active = false
       state.deleteModal.deleting = false
+      state.deleteModal.trash = false
       state.deleteModal.id = ''
       state.deleteModal.type = ''
       document.body.classList.remove('fixed-body')
@@ -409,6 +429,41 @@ export default createStore({
         this.dispatch('deleteUser', state.deleteModal.id)
       }else if(state.deleteModal.type === 'supplier') {
         this.dispatch('deleteSupplier', state.deleteModal.id)
+      }
+      else if(state.deleteModal.type === 'trash') {
+        this.dispatch('moveToTrash', state.deleteModal.id)
+      }
+      else{
+        const newPayload = {
+            id: 'danger',
+            body: 'Error deleting item try again'
+          }
+          this.commit('closeDeleteModal')
+          this.commit('showAlert', newPayload)
+      }
+    },
+    setTrashRestoreDeleteModal(state, payload) {
+      document.body.classList.add('fixed-body')
+      state.trashModal.active = true
+      state.trashModal.type = payload.type
+      if(payload.type === 'bulk-Restore')  
+      state.trashModal.restore = true
+    },
+    closeTrashRestoreDeleteModal(state) {
+      state.trashModal.deleting = false
+      state.trashModal.active = false
+      state.trashModal.restore = false
+      state.trashModal.type = ''
+      document.body.classList.remove('fixed-body')
+    },
+    doRestoreDeleteTrash(state) {
+      state.trashModal.deleting = true
+      if(state.trashModal.type === 'bulk-Restore'){
+        this.dispatch('bulkRestoreTrash', state.bulkSelection.array)
+      }else if(state.trashModal.type === 'delete-Selected') {
+        this.dispatch('deleteSelectedTrash', state.bulkSelection.array)
+      }else if(state.trashModal.type === 'bulk-Delete') {
+        this.dispatch('bulkDeleteTrash')
       }
       else{
         const newPayload = {
@@ -428,6 +483,10 @@ export default createStore({
     fetchTodaysSales(state, payload) {
       state.todaysales = payload.sales
       state.todaysaleItems = payload.saleItems
+      state.yesterdaySale = payload.yesterdaySale
+    },
+    fetchTrash(state, payload) {
+      state.trash = payload
     },
     addToTodaysSale(state, payload) {
       state.todaysales.push(payload.sale)
@@ -479,10 +538,18 @@ export default createStore({
       state.tempDataContainer.data = payload.data
     },
     updateProduct(state, payload) {
+        const i = state.products.findIndex(x => x.id === payload.product.id)
+        state.products.splice(i, 1, payload.product);
+        state.tempDataContainer.array = payload.units
+        state.tempDataContainer.data = payload.product
+    },
+    updateTrash(state, payload) {
       const i = state.products.findIndex(x => x.id === payload.product.id)
       state.products.splice(i, 1, payload.product);
-      state.tempDataContainer.array = payload.units
-      state.tempDataContainer.data = payload.product
+      if(state.editContainer.active) {
+        state.tempDataContainer.array = payload.units
+        state.tempDataContainer.data = payload.product
+      }
     },
     updateDiscounts(state, payload) {
       state.discounts = payload.discounts
@@ -595,6 +662,30 @@ export default createStore({
         state.filters = state.filters.filter(product => product.id != payload)
       }
     },
+    emptyTrash(state) {
+      state.trash = []
+    },
+    removeFromTrash(state, payload) {
+      state.trash = state.trash.filter(product => product.id != payload)
+    },
+    restoreThisProduct(state, payload) {
+      this.commit('removeFromTrash', payload.id)
+      state.products.push(payload)
+    },
+    restoreSelectdTrash(state, payload) {
+      payload.forEach(element => {
+        this.commit('removeFromTrash', element.id)
+      state.products.push(element)
+      });
+    },
+    removeSelectedTrash(state, payload) {
+      payload.forEach(element => {
+        this.commit('removeFromTrash', element.id)
+      });
+    },
+    
+
+
     removeDeletedUser(state, payload) {
       state.admins = state.admins.filter(admin => admin.id != payload)
     },
@@ -671,7 +762,7 @@ export default createStore({
           state.commit('fetchProducts', res.data.products)
           state.commit('fetchDiscounts', res.data.discounts)
           state.commit('fetchSuppliers', res.data.suppliers)
-          state.commit('fetchTodaysSales', { sales: res.data.sales, saleItems: res.data.sales_items })
+          state.commit('fetchTodaysSales', { sales: res.data.sales, saleItems: res.data.sales_items, yesterdaySale: res.data.yesterday_sale })
           state.commit('checkOnboard')
           state.commit('setLoader')
         } catch (e) {
@@ -769,11 +860,11 @@ export default createStore({
        if(res.data.result) {
         const newData = { data: '', array: res.data.result, resultTItle: res.data.title, startDate: res.data.start_date, endDate: res.data.end_date}
         state.commit('setSaleRecordResult', newData)
-        // if(res.data.type === 3) {
-        //   router.push({ name: 'SaleRecords', params: { name: 'custom-date-range' }})
-        // }
+        if(res.data.type === 3) {
+          router.push({ name: 'SaleRecords', params: { name: 'custom-date-range' }})
+        }
         window.scrollTo(0,0)
-        console.log(res.data)
+        // console.log(res.data)
        }else{
          console.log('does not exist')
        }
@@ -799,6 +890,41 @@ export default createStore({
           console.log(e.response)
       })
       
+  },
+  async fetchTrash(state) {
+    axios.get(this.getters.getHostname+'/api/trash?token='+this.getters.getToken)
+      .then((res) => {
+          state.commit('fetchTrash', res.data.trash)
+      }).catch((e) => {
+          console.log(e.response)
+      })
+  },
+  async restoreThisProduct(state, payload) {
+    axios.put(this.getters.getHostname+'/api/trash/'+payload+'?token='+this.getters.getToken)
+      .then((res) => {
+        state.commit('restoreThisProduct', res.data.product)
+        const newPayload = {
+          id: 'success',
+          body: res.data.status
+        }
+        state.commit('showAlert', newPayload)
+      }).catch((e) => {
+          console.log(e.response)
+      })
+  },
+  async bulkRestoreTrash(state, payload) {
+    axios.post(this.getters.getHostname+'/api/bulk-restore-trash?token='+this.getters.getToken, { items: payload})
+      .then((res) => {
+        state.commit('restoreSelectdTrash', res.data.products)
+        const newPayload = {
+          id: 'success',
+          body: res.data.status
+        }
+        state.commit('showAlert', newPayload)
+        state.commit('closeTrashRestoreDeleteModal')
+      }).catch((e) => {
+          console.log(e.response)
+      })
   },
 
     // Deletions
@@ -840,14 +966,14 @@ export default createStore({
     axios.delete(this.getters.getHostname+'/api/products/'+payload+'?token='+this.getters.getToken)
     .then((res) => {
       // console.log(res.data)
-      state.commit('removeDeletedProduct', res.data.id)
+      state.commit('removeFromTrash', res.data.id)
       const newPayload = {
           id: 'success',
           body: res.data.status
       }
      state.commit('closeDeleteModal')
       state.commit('showAlert', newPayload)
-      router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter'  ? '' : router.go(-1)
+      router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter' || router.currentRoute.value.name === 'Trash'  ? '' : router.go(-1)
     }).catch((err) => {
         console.log(err)
     })
@@ -878,6 +1004,54 @@ export default createStore({
       state.commit('closeDeleteModal')
       state.commit('showAlert', newPayload)
       router.currentRoute.value.name === 'DetailedSupplier' ? router.go(-1) : ''
+    }).catch((err) => {
+        console.log(err)
+    })
+  },
+  moveToTrash(state, payload) {
+    axios.post( this.getters.getHostname+'/api/move-to-trash?token='+this.getters.getToken, { id: payload})
+    .then((res) => {
+      state.commit('removeDeletedProduct', res.data.id)
+      const newPayload = {
+          id: 'success',
+          body: res.data.status
+      }
+      state.commit('showAlert', newPayload)
+
+      state.commit('closeDeleteModal')
+      router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter'  ? '' : router.go(-1)
+    }).catch((err) => {
+        console.log(err)
+    })
+  },
+  deleteSelectedTrash(state, payload) {
+    axios.post(this.getters.getHostname+'/api/bulk-delete-trash-selection?token='+this.getters.getToken, { items: payload})
+    .then((res) => {
+      console.log(res.data)
+      state.commit('removeSelectedTrash', res.data.products)
+      const newPayload = {
+          id: 'success',
+          body: res.data.status
+      }
+      state.commit('showAlert', newPayload)
+      state.commit('closeTrashRestoreDeleteModal')
+      router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter' || router.currentRoute.value.name === 'Trash'  ? '' : router.go(-1)
+    }).catch((err) => {
+        console.log(err)
+    })
+  },
+  bulkDeleteTrash(state) {
+    axios.post(this.getters.getHostname+'/api/empty-trash?token='+this.getters.getToken)
+    .then((res) => {
+      console.log(res.data)
+      state.commit('emptyTrash')
+      const newPayload = {
+          id: 'success',
+          body: res.data.status
+      }
+      state.commit('showAlert', newPayload)
+      state.commit('closeTrashRestoreDeleteModal')
+      router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter' || router.currentRoute.value.name === 'Trash'  ? '' : router.go(-1)
     }).catch((err) => {
         console.log(err)
     })
@@ -937,6 +1111,7 @@ export default createStore({
     getTempContainer: (state) => state.tempDataContainer,
     getEditContainer: (state) => state.editContainer,
     getDeleteModal: (state) => state.deleteModal,
+    getTrashRestoreDeleteModal: (state) => state.trashModal,
     getDefaultImage: (state) => state.defaultImage,
     getCurrency: (state) => state.currency,
     getSuppliers: (state) => state.suppliers,
@@ -951,6 +1126,8 @@ export default createStore({
     getUserAdminID: (state) => state.userAdminID,
     getTrash: (state) => state.trash,
     getSaleRecords: (state) => state.saleRecords,
+    getYesterdaySale: (state) => state.yesterdaySale,
+    getBulkSelection: (state) => state.bulkSelection,
     // delete this afterwards
     getSuppliersALT: (state) => state.suppliersALT,
 

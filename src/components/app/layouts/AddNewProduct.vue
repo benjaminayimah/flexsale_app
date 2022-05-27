@@ -394,6 +394,7 @@ export default {
                         this.$store.commit('addToProducts', res.data.product)
                         this.alertMsg('success', res.data.title, res.data.body)
                         this.resetTempImg()
+                        this.units = []
                     }).catch((err) => {
                         console.log(err.response)  
                     })
@@ -414,7 +415,6 @@ export default {
             if(id !== '') {
                 axios.post(this.getHostname+'/api/check-unit?token='+this.getToken, {batch_no: id})
                 .then((res) => {
-                    console.log(res.data)
                     if(res.data.status === 1){
                         this.form.prodType == '0' ? this.doUnitLocalCheck() : ''
                     }else if(res.data.status === 2){

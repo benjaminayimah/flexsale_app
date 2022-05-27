@@ -143,7 +143,7 @@ export default {
     padding: 15px;
     border-radius: 6px;
     background-color: rgba(230, 50, 50, 0.1);
-    border: 1px solid rgba(230, 50, 50, 0.5);
+    // border: 1px solid rgba(230, 50, 50, 0.5);
     color: $danger;
     margin-bottom: 20px;
     & span{
