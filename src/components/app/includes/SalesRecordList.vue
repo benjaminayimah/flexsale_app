@@ -65,7 +65,7 @@
 
             </div>
             <div v-else class="loading">
-                Loading...
+                <spinner v-bind:size="25" />
             </div>
         </div>
     </div>
@@ -74,7 +74,9 @@
 import axios from 'axios'
 import moment from 'moment'
 import { mapGetters } from "vuex"
+import Spinner from './Spinner.vue'
 export default {
+  components: { Spinner },
     name: 'SalesRecordList',
     props: ['record'],
     computed: {

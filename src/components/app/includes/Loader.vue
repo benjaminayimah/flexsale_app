@@ -1,14 +1,15 @@
 <template>
     <div v-if="getLoader" class="loader-backdrop">
-        <div class="loader-wrap">
-            <i class="lazy-loader loader"></i>
-        </div>
+        <spinner v-bind:size="size"/>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import Spinner from './Spinner.vue'
 export default {
+  components: { Spinner },
     name: 'Loader',
+    props: ['size'],
     computed: mapGetters(['getLoader'])
 }
 </script>
@@ -20,32 +21,13 @@ export default {
     z-index: 99999;
     display: flex;
     justify-content: center;
-    .loader-wrap{
-        display: flex;
-        position: fixed;
-        background-color: $white-color;
-        padding: 4px;
+    .loader{
         border-radius: 50%;
+        position: fixed;
+        background-color: rgba($color: #ffffff, $alpha: 0.7);
+        padding: 4px;
         margin: 4px;
-        // box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
-        .lazy-loader{
-            height: 25px;
-            width: 25px;
-            border: 3px solid $primary-light;
-            border-top: 3px $primary-color solid;
-            border-radius: 50%;
-        }
-        .loader{
-            -webkit-animation: load 2s linear infinite;
-            animation: load 1s linear infinite;
-        }
-        @keyframes load{
-            0%{transform: rotate(0deg)}
-            100%{transform: rotate(360deg)}
-        }
-        
     }
-    
 }
 
 </style>

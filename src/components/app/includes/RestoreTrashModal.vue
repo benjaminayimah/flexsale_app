@@ -19,8 +19,8 @@
                     </svg>
                 </div>
                 <div class="delete-info">
-                    <h2 v-if="!getTrashRestoreDeleteModal.restore">Delete product</h2>
-                    <h2 v-else>Restore product</h2>
+                    <h2 v-if="!getTrashRestoreDeleteModal.restore">Delete ({{ getTrashRestoreDeleteModal.count}}) products</h2>
+                    <h2 v-else>Restore ({{ getTrashRestoreDeleteModal.count}}) products</h2>
                     <span v-if="getTrashRestoreDeleteModal.restore">Do you want to Restore items?</span>
                     <span v-else class="danger">Are you sure want to permanently delete items?</span>
                 </div>

@@ -1,6 +1,6 @@
 <template>
 <h1 id="page_title">{{ title }}</h1>
- <div id="all_products" class="main-page-body">   
+ <div class="main-page-body">   
     <div class="prod-main-custom-table">
         <div class="table">
             <div class="table-body">
@@ -36,7 +36,7 @@
                                 <div class="receipt-input-wrap">
                                     <form @submit.prevent="" class="flex">
                                         <div class="reciept-input-wrap">
-                                            <input autofocus type="text" @focus="receiptInputFocused" v-model="receiptSearch.input" class="form-control" ref="receipt" name="search" placeholder="Receipt number..." id="receiptInput">
+                                            <input autofocus type="text" required @focus="receiptInputFocused" v-model="receiptSearch.input" class="form-control" ref="receipt" name="search" placeholder="Receipt number..." id="receiptInput">
                                             <span v-if="!receiptSearch.input == ''" class="clear-input-btn" @click="clearReceiptInput">
                                                 <svg  xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
                                                     <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
@@ -49,6 +49,7 @@
                                             </svg>
                                         </button>
                                     </form>
+                                    <span v-if="error" class="danger flex">Enter Receipt nunber</span>
                                 </div>
                             </div>
                            
@@ -129,7 +130,9 @@ import SaleReportView from '../../components/app/layouts/SaleReportView.vue'
 export default {
   components: { SaleReportView, Backdrop },
     name: 'SaleRecords',
-    computed: mapGetters(['getMobile', 'getFloatingDiv', 'getSaleRecords', 'getHostname', 'getToken']),
+    computed: {
+        ...mapGetters(['getMobile', 'getFloatingDiv', 'getSaleRecords', 'getHostname', 'getToken'])
+    } ,
     data() {
         return {
             title: 'Sales Record',
@@ -148,6 +151,7 @@ export default {
                 endDate: new Date().toISOString().slice(0,10),
             },
             searchToggle: false,
+            error: false,
             receiptSearch: {
                 active: false,
                 submited: false,
@@ -221,6 +225,7 @@ export default {
             }
         },
         toggleSearch() {
+            this.error ? this.clrError(): ''
             if(this.searchToggle) {
                 this.receiptSearch.active = false
                 this.searchToggle = false
@@ -236,15 +241,20 @@ export default {
             }
         },
         async submitReceiptQuery() {
-            axios.post(this.getHostname+'/api/receipt-detailed-record?token='+this.getToken, {receipt: this.receiptSearch.input})
-            .then((res) => {
-                this.receiptSearch.submited = true
-                this.receiptSearch.result = res.data.result
-                this.receiptSearch.active = true
-            })
-            .catch((e) => {
-                console.log(e.response)
-            })
+            if (!this.receiptSearch.input == '') {
+                this.clrError()
+                axios.post(this.getHostname+'/api/receipt-detailed-record?token='+this.getToken, {receipt: this.receiptSearch.input})
+                .then((res) => {
+                    this.receiptSearch.submited = true
+                    this.receiptSearch.result = res.data.result
+                    this.receiptSearch.active = true
+                })
+                .catch((e) => {
+                    console.log(e.response)
+                })
+            }else
+            this.error = true
+            
         },
         clearReceiptInput() {
             this.receiptSearch.input = ''
@@ -256,7 +266,9 @@ export default {
         },
         receiptInputFocused() {
             this.receiptSearch.submited = false
-
+        },
+        clrError() {
+            this.error = false
         }
     },
     created() {
@@ -439,6 +451,11 @@ export default {
     }
     button{
         border-radius: 12px;
+    }
+    .danger{
+        color: $danger;
+        font-size: 0.9rem;
+        padding: 5px 0;
     }
 }
 

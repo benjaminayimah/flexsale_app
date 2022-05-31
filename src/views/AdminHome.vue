@@ -52,7 +52,7 @@
                         <back-button v-if="getCurrentpage.back" />
                         <span class="page-title-span text-overflow-ellipsis">{{ getCurrentpage.title }}</span>
                       </div>
-                      <div class="noti-help">
+                      <div class="noti-help align-items-center justify-content-center">
                         <li class="ml-0" v-if="(getHideRight || getMobile) && !getCurrentpage.back">
                           <a href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
@@ -60,16 +60,7 @@
                             </svg>
                           </a>
                         </li>
-                        <li><router-link :to="{ name: 'Notifications'}">
-                          <svg xmlns="http://www.w3.org/2000/svg"  height="22" viewBox="0 0 24.177 26.285">
-                            <g transform="translate(-4.955 -2)">
-                              <path id="bell" d="M27.088,21.883s-2.812-3.616-2.812-6.83V10.232A7.232,7.232,0,0,0,17.044,3h0a7.232,7.232,0,0,0-7.232,7.232v4.821c0,3.214-2.812,6.83-2.812,6.83Z" transform="translate(0 0)" fill="rgba(255,255,255,0)" stroke="#0e142c" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"/>
-                              <path id="Path_1761" d="M30.821,55A2.411,2.411,0,0,1,26,55" transform="translate(-11.367 -30.126)" fill="rgba(0,0,0,0)" stroke="#0e142c" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/>
-                            </g>
-                          </svg>
-
-                          <i></i></router-link>
-                        </li>
+                        <notification />
                         <li v-if="!getMobile"><a href="javascript: void">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.25 26.249">
                               <path d="M-1129.625,12.658A13.123,13.123,0,0,1-1116.5-.467a13.123,13.123,0,0,1,13.126,13.125A13.123,13.123,0,0,1-1116.5,25.782,13.123,13.123,0,0,1-1129.625,12.658Zm5.092-8.033a11.281,11.281,0,0,0-3.325,8.033,11.283,11.283,0,0,0,3.325,8.032,11.283,11.283,0,0,0,8.032,3.326,11.283,11.283,0,0,0,8.033-3.326,11.283,11.283,0,0,0,3.326-8.032,11.281,11.281,0,0,0-3.326-8.033A11.283,11.283,0,0,0-1116.5,1.3,11.283,11.283,0,0,0-1124.533,4.625Zm6.418,12.79a1.321,1.321,0,0,1,1.35-1.3,1.319,1.319,0,0,1,1.356,1.3,1.319,1.319,0,0,1-1.356,1.3A1.314,1.314,0,0,1-1118.115,17.415Zm.22-2.4-.019-.543a2.628,2.628,0,0,1,1.49-2.776c1.066-.637,1.514-1.041,1.514-1.823a1.531,1.531,0,0,0-1.7-1.356,1.6,1.6,0,0,0-1.691,1.552h-2.24c.044-2.031,1.546-3.464,4.083-3.464,2.366,0,3.994,1.312,3.994,3.2a3.086,3.086,0,0,1-1.773,2.8c-1.1.637-1.471,1.1-1.471,1.912v.5Z" transform="translate(1129.625 0.467)"/>
@@ -87,7 +78,7 @@
                 </div>
               </header>
               <!-- <div id="form_submit_btn_holder" :style="{width: getAddingProduct.width + 'px'}"></div> -->
-              <loader />
+              <loader v-bind:size="35" />
               <!-- <add-new v-if="getAddingProduct.status" v-bind:thisWidth="getAddingProduct.width" /> -->
 
               <div class="main-body">
@@ -152,10 +143,11 @@ import RightBodyContent from '../components/app/layouts/RightBodyContent.vue'
 import NewSale from '../components/app/includes/NewSale.vue'
 import OnboardingView from '../components/app/layouts/OnboardingView.vue'
 import RestoreTrashModal from '../components/app/includes/RestoreTrashModal.vue'
+import Notification from '../components/app/includes/NotificationFloat.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification },
     name: 'AdminHome',
-    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard']),
+    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard','getStores']),
     data() {
       return {
         windowHeight: ''
@@ -166,7 +158,9 @@ export default {
       window.addEventListener('resize', this.windowSize )
       window.addEventListener('scroll', this.pageScroll)
       this.$store.commit('computeWindow')
-      // this.windowDimension()
+      this.checkForNotification()
+      this.$store.dispatch('setNotification')
+      
   },
   unmounted() {
     window.removeEventListener('resize', this.windowSize)
@@ -176,28 +170,21 @@ export default {
     windowSize() {
       setTimeout(()=> {
         this.$store.commit('computeWindow')
-        // this.windowDimension() 
         let elem = document.getElementsByClassName('this-will-change')
         if(elem.length > 0){
             return this.$store.commit('setDynamicFloatingDiv', elem[0])
         }
-        // const payload = { mode: 'me', type: 'me'}
-        // this.getAddingProduct.status ? this.$store.commit('getMainHomeWidth', payload) : ''
       }, 100)
-      //'getMainHomeWidth', payload = { mode: 'add', type: 'product'}
-      //console.log(document.getElementById('app_section').offsetWidth)
     },
     pageScroll(){
-      //setTimeout(() => {
         if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50){
           return this.$store.commit('setMobileTitle')
         }else{
             return this.$store.commit('unSetMobileTitle')
         }
-      //}, 100)
+  
       
     },
-    
     windowDimension() {
       let winWidth = window.innerWidth
       let appWidth = 1344
@@ -208,6 +195,16 @@ export default {
       }else{
         return this.$store.commit('setTablet', winWidth)
       }
+    },
+    checkForNotification() {
+      let counter = 0
+      setInterval(() => {
+          counter++
+          if (counter === 3600) {
+            this.$store.dispatch('setNotification')
+            counter = 0
+          }
+      }, 1000)
     }
   }
 }
@@ -378,43 +375,7 @@ header, .right-header{
   display: flex;
   flex-direction: row;
 }
-.noti-help li{
-  list-style-type: none;
-  display: flex;
-  align-items: center;
-  margin-left: 5px;
-  min-width: 48px;
-  &:hover{
-    a{
-      background-color: $dark-light;
-    }
-    i{
-      border-color: $dark-light;
-    }
-  }
-  a{
-    color: $dark;
-    text-decoration: none;
-    padding: 13px;
-    border-radius: 1rem;
-    position: relative;
-    display: flex;
-    align-items: center;
-    span{
-      margin-left: 5px;
-    }
-    i{
-      height: 12px;
-      width: 12px;
-      background-color: $accent-color;
-      position: absolute;
-      border-radius: 50%;
-      border: 2px $white-color solid;
-      top: 10px;
-      right: 10px;
-    }
-  }
-}
+
 .form-control{
   border: 1px solid #ffffff;
 }

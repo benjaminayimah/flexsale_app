@@ -16,6 +16,7 @@ $button-disabled: #9ea7d8;
 $myFont: 'Urbanist', Helvetica, sans-serif;
 
 
+
 .h-list-wrap ul li:last-child div, #ovw_content ul li:last-child .a-wrap{
   padding-right: 20px;
 }
@@ -41,17 +42,7 @@ li:last-child a, li:last-child .info-section-hold{
   margin-left: 10px;
   font-weight: 500;
 }
-.lazy-loader{
-  height: 25px;
-  width: 25px;
-  border: 3px solid $primary-light;
-  border-top: 3px $primary-color solid;
-  border-radius: 50%;
-}
-.loader{
-  -webkit-animation: load 2s linear infinite;
-  animation: load 2s linear infinite;
-}
+
 .h-100{
   height: 100%;
 }
@@ -184,6 +175,9 @@ ul{
 }
 .gap-8{
   gap: 8px;
+}
+.flx-shrink-0{
+  flex-shrink: 0;
 }
 
 #form_submit_btn_holder{
@@ -522,6 +516,51 @@ textarea{
   &:active{
     background-color: rgba(230, 50, 50, 0.12) !important;
   }
+}
+
+.noti-help li{
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  min-width: 48px;
+  &:hover{
+    a{
+      background-color: $dark-light;
+    }
+    .noti-count{
+      border-color: $dark-light;
+    }
+  }
+  a{
+    color: $dark;
+    text-decoration: none;
+    padding: 13px;
+    border-radius: 1rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    span{
+      margin-left: 5px;
+    }
+    .noti-count{
+      font-size: 12px;
+      font-weight: 600;
+      color: #ffffff;
+      height: 20px;
+      width: 20px;
+      background-color: $danger;
+      position: absolute;
+      border-radius: 50%;
+      border: 1px $white-color solid;
+      top: 5px;
+      right: 5px;
+    }
+  }
+}
+.time-remains{
+  color: $danger;
+  font-size: 0.9rem;
 }
 
 //delete container
@@ -905,6 +944,7 @@ textarea{
       margin: 10px 0;
       height: 70px;
        ul{
+          gap: 10px;
           padding: 0;
           margin: 0;
           display: flex;
@@ -912,46 +952,40 @@ textarea{
           align-items: center;
           li{
               display: flex;
-              margin-right: 10px;
               align-items: center;
               height: 42px;
               &:hover a{
                   background-color: $dark-light;
               }
-              &:last-child{
-                  margin-right: 0 
-              }
-              a{
-                  transition: 0.3s all;
-              }
           }
           
       }
-      .category-pill{
-          position: relative;
-          align-items: center;
-          display: flex;
-          overflow: hidden;
+      
+    }
+    .category-pill{
+      position: relative;
+      align-items: center;
+      display: flex;
+      overflow: hidden;
       .pill-wrap{
-          height: 100%;
-          display: flex;
-          overflow-x: auto;
-          &::-webkit-scrollbar {
-              display: none;
-              -ms-overflow-style: none; 
-              scrollbar-width: none; 
-          }
-          li a{
-              padding: 10px 14px;
-              border: 1px solid $gray-light;
-              color: $dark;
-              border-radius: 20px;
-              text-decoration: none;
-              font-weight: 600;
-              }
+        height: 100%;
+        display: flex;
+        overflow-x: auto;
+        &::-webkit-scrollbar {
+            display: none;
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
+        a{
+          padding: 10px 14px;
+          border: 1px solid $gray-light;
+          color: $dark;
+          border-radius: 20px;
+          text-decoration: none;
+          font-weight: 600;
+          transition: 0.3s all;
           }
       }
-      
     }
     
   }
@@ -980,6 +1014,13 @@ textarea{
       svg{
           margin-right: 5px;
       }
+  }
+}
+#noti_main_wrapper{
+  li{
+    &:last-child{
+      padding-bottom: 30px;
+    }
   }
 }
 
@@ -1109,11 +1150,6 @@ hr{
        fill: $primary-color;
   }
 }
-.noti-help .router-link-exact-active{
-  & svg path{
-       fill: $dark;
-  }
-}
 
 .menu-toggle-btn{
   height: 40px;
@@ -1227,6 +1263,11 @@ hr{
 
 
 .mob-view{
+  .noti-help .router-link-exact-active{
+    path{
+      fill: $dark;
+    }
+  }
   #mob_logo svg{
     height: 30px;
   }

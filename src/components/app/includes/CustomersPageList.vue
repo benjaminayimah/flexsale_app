@@ -120,6 +120,7 @@ export default {
 .image-hold{
     height: 80px;
     width: 80px;
+    min-width: 80px;
     border-radius: 50%;
     .bg-img, span{
         height: 100%;

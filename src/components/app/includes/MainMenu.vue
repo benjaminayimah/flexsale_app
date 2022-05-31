@@ -63,9 +63,9 @@
         </a>
         <label v-if="getTablet">More</label>
     </li>
-    <teleport to="body">
-        <backdrop v-if="showMenu" @mousedown="showthisMenu('more')" />
-        <div class="more" v-if="showMenu" :style="{ left: getFloatingDiv.left+'px', top: getFloatingDiv.top-300+'px'}">
+    <teleport v-if="showMenu" to="body">
+        <backdrop @mousedown="showthisMenu('more')" />
+        <div class="more" :style="{ left: getFloatingDiv.left+'px', top: getFloatingDiv.top-300+'px'}">
             <ul id="more_menu">
                 <li @click="showthisMenu('more')">
                     <router-link :to="{ name: 'ProfileStoreDetails', params: { name: getUser.name }}">

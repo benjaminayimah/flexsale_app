@@ -1,11 +1,15 @@
+import { mapGetters } from "vuex"
 export default {
+    computed: {
+        ...mapGetters([''])
+    },
     data() {
         return {
             count: 0
         }
     },
     methods: {
-        counter() {
+        incrementCount() {
             this.count += 1
         }
     }

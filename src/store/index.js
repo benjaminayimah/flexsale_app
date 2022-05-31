@@ -48,7 +48,7 @@ export default createStore({
     alert: { status: { show: false, success: false, danger: false, warning: false, info: false }, title: '', body: '' },
     loader: false,
     deleteModal: {active: false, trash: false, deleting: false, id: '', type: '' },
-    trashModal: { active: false, restore: false, type: '', deleting: false,},
+    trashModal: { active: false, restore: false, type: '', deleting: false, count: ''},
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
@@ -62,6 +62,7 @@ export default createStore({
     suppliers: [],
     trash: [],
     bulkSelection: { active: false, array: []},
+    notifications: [],
 
 
     submitting: true,
@@ -231,7 +232,6 @@ export default createStore({
       state.onboard.uploaded = true
       this.commit('forceSetOnboard', 'avatar')
     },
-    
     destroyToken(state){
         localStorage.removeItem('token')
         state.token = null
@@ -446,6 +446,7 @@ export default createStore({
       document.body.classList.add('fixed-body')
       state.trashModal.active = true
       state.trashModal.type = payload.type
+      state.trashModal.count = payload.count
       if(payload.type === 'bulk-Restore')  
       state.trashModal.restore = true
     },
@@ -453,6 +454,7 @@ export default createStore({
       state.trashModal.deleting = false
       state.trashModal.active = false
       state.trashModal.restore = false
+      state.trashModal.count = ''
       state.trashModal.type = ''
       document.body.classList.remove('fixed-body')
     },
@@ -502,6 +504,9 @@ export default createStore({
       state.products.splice(j, 1, payload.product);
       if(tmp.active && tmp.propertyName == 'product') {
         tmp.data = payload.product
+      }
+      if (router.currentRoute.value.params.name === 'todays-sales' || (router.currentRoute.value.params.name === 'custom-date-range' && new Date(state.saleRecords.endDate).toISOString().slice(0,10)  === new Date().toISOString().slice(0,10))) {
+          state.saleRecords.array.push(payload.sale)
       }
     },
     addToDiscounts(state, payload) {
@@ -561,7 +566,9 @@ export default createStore({
           element.discount = payload.discount.id
         });
       }
-
+    },
+    setNotifications(state, payload) {
+      state.notifications = payload
     },
     addCheckedProdToArray(state, payload) {
       state.tempDataContainer.array.push(payload)
@@ -671,6 +678,9 @@ export default createStore({
     restoreThisProduct(state, payload) {
       this.commit('removeFromTrash', payload.id)
       state.products.push(payload)
+      if(state.tempDataContainer.active) {
+        state.tempDataContainer.data = payload
+      }
     },
     restoreSelectdTrash(state, payload) {
       payload.forEach(element => {
@@ -864,7 +874,6 @@ export default createStore({
           router.push({ name: 'SaleRecords', params: { name: 'custom-date-range' }})
         }
         window.scrollTo(0,0)
-        // console.log(res.data)
        }else{
          console.log('does not exist')
        }
@@ -889,7 +898,6 @@ export default createStore({
       }).catch((e) => {
           console.log(e.response)
       })
-      
   },
   async fetchTrash(state) {
     axios.get(this.getters.getHostname+'/api/trash?token='+this.getters.getToken)
@@ -926,12 +934,20 @@ export default createStore({
           console.log(e.response)
       })
   },
+  async setNotification(state) {
+    axios.post( this.getters.getHostname+'/api/notification?token='+this.getters.getToken, { id: 'me' })
+    .then((res) => {
+      state.commit('setNotifications', res.data.notifications)
+      console.log(res.data)
+    }).catch((e) => {
+        console.log(e.response)
+    })
+  },
 
     // Deletions
     deleteTag(state, payload) {
       axios.delete(this.getters.getHostname+'/api/tag/'+payload+'?token='+this.getters.getToken)
       .then((res) => {
-          console.log(res.data)
           state.commit('removeDeletedTags', res.data.id)
           const newPayload = {
               id: 'success',
@@ -1128,6 +1144,7 @@ export default createStore({
     getSaleRecords: (state) => state.saleRecords,
     getYesterdaySale: (state) => state.yesterdaySale,
     getBulkSelection: (state) => state.bulkSelection,
+    getNotifications: (state) => state.notifications,
     // delete this afterwards
     getSuppliersALT: (state) => state.suppliersALT,
 

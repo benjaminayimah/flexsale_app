@@ -25,6 +25,9 @@
                             <div class="qty">{{ product.stock }}</div>
                         </div>
                     </div>
+                    <div class="time-remains flex">
+                        <span>{{ computeDateRemain }}</span>
+                    </div>
                 </div>
             </div>
             <div class="menu-toggle" v-if="!getBulkSelection.active">
@@ -88,7 +91,6 @@ export default {
             if(this.product.discount !== null && this.computeDiscount.length > 0 && this.computeDiscount[0].active == 1 ) {
                 if(this.computeDiscount[0].percentage == 1 && this.product.selling_price > 0 ) {
                     let price = this.product.selling_price - ((this.computeDiscount[0].value)/100) * this.product.selling_price
-                    //console.log(this.computeDiscount[0].percentage)
                     return price
                 }else{
                     let price = this.product.selling_price - this.computeDiscount[0].value
@@ -104,6 +106,15 @@ export default {
             return true
             else
             return false
+        },
+        computeDateRemain() {
+            if(this.product.deleted){
+                const deletedDate = new Date(this.product.updated_at);
+                const expiryDate = deletedDate.setDate(deletedDate.getDate() + 30);
+                const diff = Math.abs(expiryDate - new Date());
+                return Math.ceil(diff / (1000 * 60 * 60 * 24)) + ' days untill permanent deletion'; 
+            }else
+            return ''
         }
         
     },

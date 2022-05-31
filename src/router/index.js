@@ -54,7 +54,7 @@ const routes = [
       ]
       },
     { path: '/sales-record/filter/:name', name: 'SaleRecords', component: SaleRecords},
-    { path: '/notifications', name: 'Notifications', component: Notifications },
+    { path: '/notifications/:name', name: 'Notifications', component: Notifications},
     { path: '/trash', name: 'Trash', component: Trash },
     { path: '/profile/:name', component: Profile, 
     children: [

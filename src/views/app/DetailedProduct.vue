@@ -4,8 +4,8 @@
         <div class="prod-main-custom-table" v-if="getTempContainer.data.name">
             <div class="header detailed-items-banner-holder">
                 <div v-if="getTempContainer.data.deleted" class="flex gap-8 justify-content-center perm-delete-row">
-                <button class="button button-secondary rounded-button">Restore this product</button>
-                <button class="button button-secondary perm-delete">Permanently Delete</button>
+                <button class="button button-secondary rounded-button" @click.prevent="$store.dispatch('restoreThisProduct', getTempContainer.data.id)">Restore this product</button>
+                <button class="button button-secondary perm-delete" @click.prevent="$store.commit('setDeleteModal', { id: getTempContainer.data.id, type: 'product' })">Permanently Delete</button>
                 </div>
                 <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     <div class="cover-image-backdrop"></div>

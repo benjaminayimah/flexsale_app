@@ -21,15 +21,15 @@
                         <div class="pill-wrap">
                             <ul class="flex-row-st">
                                 <li><a @click.prevent="$store.commit('toggleBulkSeletion')" href="#">Select</a></li>
-                                <li><a href="#" class="perm-delete" @click.prevent="$store.commit('setTrashRestoreDeleteModal', { type: 'bulk-Delete' })">Empty trash</a></li>
+                                <li><a href="#" class="perm-delete" @click.prevent="$store.commit('setTrashRestoreDeleteModal', { type: 'bulk-Delete', count: getTrash.length })">Empty trash</a></li>
                             </ul>
                         </div>
                     </div>
                     <div v-show="getBulkSelection.active && getBulkSelection.array.length > 0" class="category-pill">
                         <div class="pill-wrap">
                             <ul class="flex-row-st">
-                                <li><a @click.prevent="$store.commit('setTrashRestoreDeleteModal', { type: 'bulk-Restore' })" class="rounded-button" href="#">Restore selected</a></li>
-                                <li><a @click.prevent="$store.commit('setTrashRestoreDeleteModal', { type: 'delete-Selected' })" href="#" class="perm-delete">Delete selected</a></li>
+                                <li><a @click.prevent="$store.commit('setTrashRestoreDeleteModal', { type: 'bulk-Restore', count: getBulkSelection.array.length })" class="rounded-button" href="#">Restore selected</a></li>
+                                <li><a @click.prevent="$store.commit('setTrashRestoreDeleteModal', { type: 'delete-Selected', count: getBulkSelection.array.length })" href="#" class="perm-delete">Delete selected</a></li>
                             </ul>
                         </div>
                     </div>
@@ -85,14 +85,13 @@ export default {
 </script>
 <style scoped lang="scss">
 .page-info{
-    // color: $danger;
     padding: 20px;
     font-size: 1.1rem;
     border-radius: 8px;
-    // background-color: $dark-light;
+    background-color: #F2F2F7;
     text-align: center;
     margin-bottom: 20px;
-    border: 1px solid $gray-color
+    border: 1px solid $dark-light
 }
 .table-menu{
     justify-content: space-between;

@@ -45,7 +45,7 @@
                                   <div class="shop">{{ store.address }}</div>
                               </div>
                               <div class="acct-elipse">
-                                <i class="lazy-loader" v-if="load" :class="{ 'loader' : load }"></i>
+                                <spinner v-if="load" v-bind:size="20" />
                               </div>
                           </div> 
                       </div>
@@ -59,7 +59,7 @@
                                   <div class="shop">{{ store.address }}</div>
                               </div>
                               <div class="acct-elipse">
-                                <i class="lazy-loader" v-if="load" :class="{ 'loader' : load }"></i>
+                                <spinner v-if="load" v-bind:size="20" />
                               </div>
                           </div> 
                       </div>
@@ -83,8 +83,8 @@
             </div>
       </transition>
     </teleport>
-        <div id="account_menu" class="store-info-hold" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
-          <div class="avatar">
+    <div id="account_menu" class="store-info-hold" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
+      <div class="avatar">
               <span v-if="getStores.length > 0" class="justify-content-center align-items-center bg-img" :class="getCurrentStore.image == null? 'no-border': ''" v-bind:style="getCurrentStore.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
               <div v-else class="no-store-profile-small justify-content-center align-items-center">{{ computeInitials }}</div>
               <!-- <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
@@ -103,15 +103,14 @@
             </div>
         </div> 
     </div>
-</div>
-
-    
+</div> 
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import Backdrop from './Backdrop.vue'
+import Spinner from './Spinner.vue'
 export default {
-    components: { Backdrop },
+    components: { Backdrop, Spinner },
     computed: {
       ...mapGetters(['getFloatingDiv', 'getMobile', 'getTablet', 'getDesktop', 'getStores', 'getUser', 'getCurrentStore', 'getHostname', 'getDefaultImage', 'getUserAdminID']),
       computeInitials() {
@@ -276,6 +275,7 @@ padding: 15px 20px;
       a{
           display: block;
           padding: 16px 20px;
+          color: $dark;
           text-decoration: none;
           font-weight: 500;
           transition: 0.2s all linear;
@@ -284,6 +284,12 @@ padding: 15px 20px;
           svg{
             margin-right: 15px;
           }
+      }
+      a:hover{
+          background-color: $dark-light;
+      }
+      a:active{
+          background-color: $dark-light;
       }
       
   }

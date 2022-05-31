@@ -46,12 +46,12 @@ header{
 }
 
 #welcome_page{
-    background-color: #1b2457;
+    background-color: #131D52;
     display: flex;
     justify-content: center;
     flex-direction: column;
     height: 100vh;
-    background-image: url('../../assets/images/shapes.svg');
+    // background-image: url('../../assets/images/shapes.svg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
