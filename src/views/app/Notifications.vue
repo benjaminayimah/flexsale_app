@@ -9,9 +9,7 @@
                             <div class="pill-wrap">
                                 <ul class="flex-row-st">
                                     <li><router-link :to="{ name: 'Notifications', params: { name: 'all'} }" replace>All</router-link></li>
-                                    <li><router-link :to="{ name: 'Notifications', params: { name: 'low-stocks'} }" replace>Low stocks</router-link></li>
-                                    <li><router-link :to="{ name: 'Notifications', params: { name: 'expiring-soon'} }" replace>Expiring soon</router-link></li>
-                                    <li><router-link :to="{ name: 'Notifications', params: { name: 'expired'} }" replace>Expired</router-link></li>
+                                    <li v-for="link in computedNotifications" :key="link.key"><router-link :to="{ name: 'Notifications', params: { name: link.key} }" replace>{{ link.title }}</router-link></li>
                                 </ul>
                             </div>
                         </div>

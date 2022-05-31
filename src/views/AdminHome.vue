@@ -159,13 +159,11 @@ export default {
       window.addEventListener('scroll', this.pageScroll)
       this.$store.commit('computeWindow')
       setTimeout(()=> {
-        if(this.getStores.length > 0) {
+        if(this.getStores && this.getStores.length > 0) {
           this.$store.dispatch('setNotification')
           this.checkForNotification()
         }
       }, 4000)
-
-      
   },
   unmounted() {
     window.removeEventListener('resize', this.windowSize)
