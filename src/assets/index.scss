@@ -146,6 +146,232 @@ li:last-child a, li:last-child .info-section-hold{
   }
 }
 
+//sign up sign in
+
+#login_card{
+  padding: 60px 40px;
+  background-color: $white-color;
+  border-radius: 24px;
+  .form-row{
+    margin-bottom: 20px;
+  }
+  .create-acct{
+    flex-wrap: wrap;
+    margin-top: 20px;
+    text-align: center;
+    justify-content: center;
+    font-weight: 500;
+    a{
+        font-weight: 600;
+        color: $primary-color;
+        text-decoration: none;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+    span{
+        margin-right: 5px;
+    }
+  }
+  .password-rules{
+    padding: 10px;
+    font-size: 14px;
+    background-color: $dark-light;
+    border-radius: 8px;
+    margin-top: 8px;
+    border: 1px solid #e6e7eb;
+    .this-bold{
+        font-weight: 600;
+        margin: 0 4px;
+    }
+    svg{
+        margin-left: 8px;
+    }
+    .is-valid{
+        color: #189f38;
+        path {
+            fill: #189f38;
+        }
+    }
+  }
+  .all-correct{
+    background-color: #f0f7f1;
+    color: #0f6824;
+    border-color: #e0eee4;
+  }
+  .has-error{
+    border-color: $danger;
+  }
+  .pass-has-error{
+    color: $danger;
+    background-color: rgba(230, 50, 50, 0.05);
+    border-color: #fce9e9;
+    svg path{
+        fill: rgba(230, 50, 50, 0.1);
+    }
+  }
+
+// .validation-error {
+//     padding: 15px;
+//     border-radius: 6px;
+//     background-color: rgba(230, 50, 50, 0.1);
+//     // border: 1px solid rgba(230, 50, 50, 0.5);
+//     color: $danger;
+//     margin-bottom: 20px;
+//     & span{
+//         font-size: 14px;
+//     }
+// }
+  .validation-err{
+    color: $danger;
+    padding-top: 8px;
+    display: flex;
+    font-size: 14px;
+  }
+
+  .hide-mob{
+    margin-left: 5px;
+  }
+  button{
+    width: 100%;
+    line-height: 2.5;
+  }
+  .forgot-pass{
+    text-align: right;
+    padding-top: 12px;
+
+    a{
+        color: $primary-color;
+        font-weight: 600;
+        text-decoration: none;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+  }
+  .title{
+        text-align: center;
+        margin-bottom: 40px;
+        h1{
+            margin: 0;
+            font-weight: 700;
+            text-align: center;
+            padding-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        span{
+            font-weight: 500;
+            color: $gray-color;
+            font-size: 1.1rem;
+        }
+    }
+    .social-signin{
+      flex-direction: row;
+      button{
+        box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        line-height: 52px;
+        border-radius: 14px;
+        //border: 2px solid $gray-light;
+        background-color: $white-color;
+        &:first-child{
+            margin-right: 8px;
+        }
+        &:last-child{
+            margin-left: 8px;
+        }
+        &:hover{
+            background-color: $primary-light;
+            border-color: $primary-color;
+            span{
+                color:$primary-color;
+            }
+            path{
+                fill: $primary-color ;
+            }
+        }
+        svg{
+        margin-right: 10px
+        }
+        span{
+            font-weight: 600;
+            color: $dark;
+        }
+    }
+  }
+  .password{
+      font-family: 'Helvetica', sans-serif;
+    }
+    .show-mob{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 499px){
+  .show-mob{
+      display: block;
+      margin-right: 5px;
+  }
+  .hide-mob{
+      display: none;
+  }
+  
+  .social-signin{
+      flex-direction: column !important;
+      button{
+          &:first-child{
+          margin-right: 0 !important;
+          margin-bottom: 15px;
+          }
+          &:last-child{
+              margin-left: 0 !important;
+          }
+      }
+  }
+  .or div{
+       background-color: $primary-light;
+  }
+ 
+  #login_card{
+     background-color: transparent;
+      padding: 0;
+      
+      .title{
+          h1{
+              font-size: 1.6rem;
+                  padding-bottom: 5px;
+          }
+      }
+      .form-control{
+          border-radius: 0;
+          background-color: transparent;
+          border: none;
+          border-bottom: 1px solid $gray-color;
+          padding-left: 0;
+          transition: all 0.1s linear;
+          box-shadow: none;
+          height: 50px;
+          &:focus{
+              border-bottom-width: 2px;
+              border-bottom-color: $primary-color;
+          }
+      }
+
+  }
+
+}
+.fade-enter-active,
+.fade-leave-active {
+transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+opacity: 0;
+}
+
 @keyframes load{
   0%{transform: rotate(0deg)}
   100%{transform: rotate(360deg)}
