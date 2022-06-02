@@ -25,7 +25,6 @@
                             <path id="Line_346" data-name="Line 346" d="M.261,22.131l-1.321-1.348L20.346-1.061,21.667.287Z" transform="translate(-0.209 2.377)" fill="#7e8596"/>
                         </g>
                     </svg>
-
                 </i>
                 <span class="validation-err" v-if="validation.error && validation.errors.password">
                     {{ validation.errors.password[0] }}
