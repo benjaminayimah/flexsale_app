@@ -16,10 +16,10 @@
                 <div id="onboard_body_content" class="intro flex justify-content-center" :style="{height: (winHeight-250)+'px'}"></div>
             </div>
         </div>
-    <onboard-screen-intro v-if="getOnboard.intro" />
-    <onboard-screen-basic-info v-else-if="getOnboard.basicInfo" />
-    <onboard-screen-avatar v-else-if="getOnboard.avatar" />
-    <onboard-screen-final v-else-if="getOnboard.final" />
+            <onboard-screen-intro v-if="getOnboard.intro" />
+            <onboard-screen-basic-info v-else-if="getOnboard.basicInfo" />
+            <onboard-screen-avatar v-else-if="getOnboard.avatar" />
+            <onboard-screen-final v-else-if="getOnboard.final" />
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -94,6 +94,17 @@ export default {
         height: 100% !important;
     }
 }
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
 
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(0.8, 0.5, 0.5, 0.8);
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
   
 </style>

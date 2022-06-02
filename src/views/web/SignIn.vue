@@ -1,33 +1,32 @@
 <template>
-
     <div v-if="!created" id="login_card">
         <div class="title">
             <h1>Welcome back!</h1>
             <span>Sign in to continue</span>
         </div>
-        <div v-if="validation.error" class="validation-error">
+        <!-- <div v-if="validation.error" class="validation-error">
             <span>{{ validation.message }}</span>
-        </div>
+        </div> -->
         <form @submit.prevent="">
             <div class="form-row">
                 <!-- <label>Email:</label> -->
-                <input v-model="form.email" @mousedown="resertForm" type="email" name="email" class="form-control" placeholder="Enter email">
+                <input v-model="form.email" @mousedown="resertForm" type="email" name="email" class="form-control" placeholder="Enter email" :class="{ 'has-error' : validation.error && validation.errors.email}">
                 <span class="validation-err" v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
                 </span>
             </div>
             <div class="form-row">
                 <!-- <label>Password:</label> -->
-                <input v-model="form.password"  @mousedown="resertForm" required type="password" name="password" class="form-control password-field" placeholder="Enter password">
+                <input v-model="form.password"  @mousedown="resertForm" required type="password" name="password" class="form-control password-field" placeholder="Enter password" :class="{ 'has-error' : validation.error && validation.errors.password}">
                 <span class="validation-err" v-if="validation.error && validation.errors.password">
                     {{ validation.errors.password[0] }}
                 </span>
                 <div class="forgot-pass">
-                    <a href="">Forgot your password?</a>
+                    <router-link :to="{ name: 'ForgotPassword'}">Forgot your password?</router-link>
                 </div>
             </div>
-                <button class="button button-primary logon-btn" @click.prevent="submitSignin">
-                    <span>{{ creating ? 'Loging in' : 'Login'}}</span>
+                <button class="button button-primary logon-btn" @click.prevent="submitSignin" :class="{ 'button-disabled' : creating }" :disabled="creating? true : false">
+                    <span>{{ creating ? 'Signing in' : 'Sign in'}}</span>
                     <spinner v-if="creating" v-bind:size="20" v-bind:white="true" />
                 </button>
                 <div class="or">
@@ -50,7 +49,7 @@
                 </button>
             </div>
             <div class="flex create-acct">
-                <span>Don't have an account?</span><router-link :to="{ name: 'SignUp'}">Sign Up</router-link>
+                <span>Don't have an account?</span><router-link :to="{ name: 'SignUp'}">Create account</router-link>
                 <!--<router-link id="go_hm" :to="{ name: 'Home' }">Back Home</router-link>-->
             </div>
         </form>
@@ -68,6 +67,7 @@
                         <line :x2="progressFill" transform="translate(833 592.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5"/>
                     </g>
                 </svg>
+                <!-- <div>{{ ((progressFill/254)*100).toFixed(0) }}%</div> -->
             </div>
             <div v-else>
                 <button class="button" @click="loadDashboard">Proceed to Dashboard</button>
@@ -101,7 +101,7 @@ export default {
             },
             validation: {
                 error: false,
-                errors: [],
+                errors: '',
                 message: ''
             },
             progressFill: 1,
@@ -124,6 +124,7 @@ export default {
                 this.creating = false
                 this.loadDashboard()
             }).catch((err) => {
+                console.log(err.response.status)
                 this.creating = false
                 if (err.response.status == 401) {
                     this.validation.error = true
@@ -139,6 +140,7 @@ export default {
         resertForm() {
             if (this.validation.error === true)
             this.validation.error = false
+            this.validation.errors = ''
             this.validation.message = null
             this.creating = false
             return
@@ -157,188 +159,5 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-#login_card{
-    padding: 60px 40px;
-    background-color: $white-color;
-    border-radius: 24px;
-
-
-.form-row{
-    margin-bottom: 20px;
-}
-.forgot-pass{
-    text-align: right;
-    padding-top: 12px;
-
-    a{
-        color: $primary-color;
-        font-weight: 600;
-        text-decoration: none;
-        &:hover{
-            text-decoration: underline;
-        }
-    }
-   
-   
-}
-.create-acct{
-    flex-wrap: wrap;
-    margin-top: 20px;
-    text-align: center;
-    justify-content: center;
-    font-weight: 500;
-    a{
-        font-weight: 600;
-        color: $primary-color;
-        text-decoration: none;
-        &:hover{
-            text-decoration: underline;
-        }
-    }
-    span{
-        margin-right: 5px;
-    }
-}
-
-
-.validation-error {
-    padding: 15px;
-    border-radius: 6px;
-    background-color: rgba(230, 50, 50, 0.1);
-    // border: 1px solid rgba(230, 50, 50, 0.5);
-    color: $danger;
-    margin-bottom: 20px;
-    & span{
-        font-size: 0.9rem;
-    }
-}
-.validation-err{
-    color: $danger;
-    padding-top: 8px;
-    display: flex;
-}
-
-.hide-mob{
-    margin-left: 5px;
-}
-button{
-    width: 100%;
-    line-height: 2.5;
-}
-.title{
-        text-align: center;
-        margin-bottom: 40px;
-        h1{
-            margin: 0;
-            font-weight: 700;
-            text-align: center;
-            padding-bottom: 10px;
-            font-size: 1.8rem;
-        }
-        span{
-            font-weight: 500;
-            color: $gray-color;
-            font-size: 1.1rem;
-        }
-    }
-    .social-signin{
-    flex-direction: row;
-    button{
-        box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        line-height: 52px;
-        border-radius: 14px;
-        //border: 2px solid $gray-light;
-        background-color: $white-color;
-        &:first-child{
-            margin-right: 8px;
-        }
-        &:last-child{
-            margin-left: 8px;
-        }
-        &:hover{
-            background-color: $primary-light;
-            border-color: $primary-color;
-            span{
-                color:$primary-color;
-            }
-            path{
-                fill: $primary-color ;
-            }
-        }
-        svg{
-        margin-right: 10px
-        }
-        span{
-            font-weight: 600;
-            color: $dark;
-        }
-    }
-    
-    }
-    .show-mob{
-        display: none;
-    }
-    
-
-    
-}
-@media screen and (max-width: 499px){
-    .show-mob{
-        display: block;
-        margin-right: 5px;
-    }
-    .hide-mob{
-        display: none;
-    }
-    
-    .social-signin{
-        flex-direction: column !important;
-        button{
-            &:first-child{
-            margin-right: 0 !important;
-            margin-bottom: 15px;
-            }
-            &:last-child{
-                margin-left: 0 !important;
-            }
-        }
-    }
-    .or div{
-         background-color: $primary-light;
-    }
-   
-    #login_card{
-       background-color: transparent;
-        padding: 0;
-        
-        .title{
-            h1{
-                font-size: 1.6rem;
-                    padding-bottom: 5px;
-            }
-        }
-  
-        .form-control{
-            border-radius: 0;
-            background-color: transparent;
-            border: none;
-            border-bottom: 1px solid $gray-color;
-            padding-left: 0;
-            transition: all 0.1s linear;
-            box-shadow: none;
-            height: 50px;
-            &:focus{
-                border-bottom-width: 2px;
-                border-bottom-color: $primary-color;
-            }
-        }
-
-    }
-  
-}
-
 
 </style>
