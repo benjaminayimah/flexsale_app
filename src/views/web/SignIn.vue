@@ -1,6 +1,6 @@
 <template>
 
-    <div id="login_card">
+    <div v-if="!created" id="login_card">
         <div class="title">
             <h1>Welcome back!</h1>
             <span>Sign in to continue</span>
@@ -26,7 +26,10 @@
                     <a href="">Forgot your password?</a>
                 </div>
             </div>
-                <button class="button button-primary" @click.prevent="submitSignin">Login</button>
+                <button class="button button-primary logon-btn" @click.prevent="submitSignin">
+                    <span>{{ creating ? 'Loging in' : 'Login'}}</span>
+                    <spinner v-if="creating" v-bind:size="20" v-bind:white="true" />
+                </button>
                 <div class="or">
                     <div>
                         <span>Or</span><span class="hide-mob">continue with social sign-in</span>
@@ -47,19 +50,49 @@
                 </button>
             </div>
             <div class="flex create-acct">
-                <span>Don't have an account?</span><router-link :to="{ name: 'SignUp'}">Create now</router-link>
+                <span>Don't have an account?</span><router-link :to="{ name: 'SignUp'}">Sign Up</router-link>
                 <!--<router-link id="go_hm" :to="{ name: 'Home' }">Back Home</router-link>-->
             </div>
         </form>
+    </div>
+    <div v-else class="flex justify-content-center align-items-center flex-col after-created">
+        <div v-if="computedUser">
+            <h1>Hello!</h1>
+            <span>{{ computedUser }}</span>
+        </div>
+        <div class="flex justify-content-center align-items-center bottom-hold">
+            <div v-if="proceeding">
+                <svg xmlns="http://www.w3.org/2000/svg" width="259" height="5" viewBox="0 0 259 5">
+                    <g transform="translate(-830.5 -590)">
+                        <line x2="254" transform="translate(833 592.5)" fill="none" stroke="rgba(0,0,0,0.2)" stroke-linecap="round" stroke-width="5"/>
+                        <line :x2="progressFill" transform="translate(833 592.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5"/>
+                    </g>
+                </svg>
+            </div>
+            <div v-else>
+                <button class="button" @click="loadDashboard">Proceed to Dashboard</button>
+            </div>
+        </div>
     </div>
 
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import axios from 'axios'
+import Spinner from '../../components/app/includes/Spinner.vue'
+import router from '../../router'
 export default {
+  components: { Spinner },
     name: 'SignIn',
-    computed: mapGetters(['getHostname']),
+    computed: {
+        ...mapGetters(['getHostname', 'getUser']),
+        computedUser() {
+            if(this.getUser.name) {
+                return this.getUser.name.split(' ')[0]
+            }else
+            return ''
+        }
+    },
     data() {
         return {
             form: {
@@ -70,18 +103,28 @@ export default {
                 error: false,
                 errors: [],
                 message: ''
-            }
+            },
+            progressFill: 1,
+            creating: false,
+            created: false,
+            proceeding: false,
+            user: ''
         }
     },
     methods: {
         submitSignin() {
             this.resertForm()
+            this.creating = true
             axios.post(this.getHostname+'/api/sign-in', this.form)
             .then((res) => {
                 this.$store.commit('setAuthToken', res.data.token)
                 localStorage.setItem('token', res.data.token)
-                location.reload()
+                this.$store.dispatch('getAuthUser')
+                this.created = true
+                this.creating = false
+                this.loadDashboard()
             }).catch((err) => {
+                this.creating = false
                 if (err.response.status == 401) {
                     this.validation.error = true
                     this.validation.message = err.response.data.status
@@ -97,8 +140,19 @@ export default {
             if (this.validation.error === true)
             this.validation.error = false
             this.validation.message = null
+            this.creating = false
             return
-        }
+        },
+        loadDashboard() {
+            this.proceeding = true
+            var interval = setInterval(() => {
+                    this.progressFill++
+                if (this.progressFill === 254) {
+                    clearInterval(interval)
+                    router.push({ name: 'Dashboard'})
+                }
+            }, 20)
+        },
     }
 }
 </script>

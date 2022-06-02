@@ -1,5 +1,5 @@
 <template>
-    <li @click="this.$emit('closeDropdown', 'noti_main_list')" v-for="notification in computedNotifications.sort((a, b) => new Date(b.time) - new Date(a.time))" :key="notification.key">
+    <li @click="this.$emit('closeDropdown', 'noti_main_list')" v-for="notification in computedNotifications.sort((a, b) => new Date(b.time) - new Date(a.time))" :key="notification.id">
         <router-link :to="{ name: 'Notifications', params: { name: notification.key} }">
         <div class="flex gap-8">
             <div class="img bg-img" :class="{ 'stacks' : notification.count > 1 }" :style="notification.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+ getUser.current+'/'+notification.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>

@@ -148,11 +148,6 @@ export default {
   components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification },
     name: 'AdminHome',
     computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard','getStores']),
-    data() {
-      return {
-        windowHeight: ''
-      }
-    },
     created() {
       this.$store.dispatch('getAuthUser')
       window.addEventListener('resize', this.windowSize )
@@ -185,8 +180,6 @@ export default {
         }else{
             return this.$store.commit('unSetMobileTitle')
         }
-  
-      
     },
     windowDimension() {
       let winWidth = window.innerWidth

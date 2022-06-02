@@ -33,6 +33,11 @@ li:last-child a, li:last-child .info-section-hold{
   background-color: $gray-light;
   margin: 0 8px;
 }
+.horizontal-separator::after{
+  content: '';
+  margin: 0 8px;
+  border-right: 1px solid $gray-light;
+}
 .has-discount{
   text-decoration: line-through;
   font-size: 0.9rem;
@@ -284,6 +289,38 @@ button{
   }
   &:active{
       box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
+  }
+}
+.logon-btn{
+  height: 56px;
+  gap: 8px;
+}
+.after-created{
+  margin-top: 60%;
+  color: #ffffff;
+  gap: 20px;
+  text-align: center;
+  h1{
+      margin: 0 0 10px 0;
+      font-size: 2rem;
+  }
+  span{
+      font-size: 1.2rem;
+  }
+  button{
+      line-height: 2.5rem;
+      padding: 8px 20px;
+      transition: 0.2s all;
+      &:hover{
+          background-color: $gray-light;
+          transform: scale(1.03);
+      }
+      &:active{
+          transform: scale(1);
+      }
+  }
+  .bottom-hold{
+      min-height: 100px;
   }
 }
 
