@@ -118,6 +118,15 @@ export default {
             user: ''
         }
     },
+    created() {
+        let user = JSON.parse(localStorage.getItem('newUser'))
+        if(user) {
+            this.created = true
+            this.user = user.name.split(' ')[0]
+            this.form.email = user.email
+            this.form.password = user.password
+        }
+    },
     methods: {
         submitSignUp() {
             this.resertForm()
@@ -128,6 +137,7 @@ export default {
                     this.creating = false
                     this.created = true
                     this.user = res.data.name.split(' ')[0]
+                    localStorage.setItem('newUser', JSON.stringify(this.form))
                 }).catch((err) => {
                     this.creating = false
                     if (err.response.status == 401) {
@@ -239,6 +249,7 @@ export default {
                 localStorage.setItem('token', res.data.token)
                 this.$store.dispatch('getAuthUser')
                 this.progressFill = 254
+                localStorage.removeItem('newUser')
                 this.loaderFinish()
             })
         },
