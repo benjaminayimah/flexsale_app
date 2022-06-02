@@ -18,6 +18,15 @@
             <div class="form-row">
                 <!-- <label>Password:</label> -->
                 <input v-model="form.password"  @mousedown="resertForm" required type="password" name="password" class="form-control password-field" placeholder="Enter password" :class="{ 'has-error' : validation.error && validation.errors.password}">
+                <i class="hide-show-pass">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24.609 23.191">
+                        <g id="hide" transform="translate(2.365 -1.316)">
+                            <path id="Path_1850" data-name="Path 1850" d="M15980.41-15077.506a22.508,22.508,0,0,1-4.277-4.586,3.073,3.073,0,0,1,0-3.523,22.157,22.157,0,0,1,4.277-4.584,12.013,12.013,0,0,1,7.471-2.862,11.987,11.987,0,0,1,7.469,2.862,22.193,22.193,0,0,1,4.283,4.58,3.07,3.07,0,0,1,0,3.521,22.309,22.309,0,0,1-4.283,4.592,12.027,12.027,0,0,1-7.469,2.858A12.053,12.053,0,0,1,15980.41-15077.506Zm-2.738-7.029a1.187,1.187,0,0,0,0,1.363c4.232,6,8.549,6.646,10.209,6.646s5.975-.648,10.215-6.646a1.2,1.2,0,0,0,0-1.369c-4.24-6-8.551-6.645-10.215-6.645S15981.9-15090.538,15977.672-15084.535Zm5.473.921a4.728,4.728,0,0,1,4.725-4.725,4.726,4.726,0,0,1,4.727,4.725,4.731,4.731,0,0,1-4.727,4.726A4.734,4.734,0,0,1,15983.145-15083.614Zm1.881,0a2.848,2.848,0,0,0,2.844,2.844,2.85,2.85,0,0,0,2.852-2.844,2.852,2.852,0,0,0-2.852-2.851A2.85,2.85,0,0,0,15985.025-15083.614Z" transform="translate(-15977.943 15096.124)" fill="#7e8596"/>
+                            <path id="Line_346" data-name="Line 346" d="M.261,22.131l-1.321-1.348L20.346-1.061,21.667.287Z" transform="translate(-0.209 2.377)" fill="#7e8596"/>
+                        </g>
+                    </svg>
+
+                </i>
                 <span class="validation-err" v-if="validation.error && validation.errors.password">
                     {{ validation.errors.password[0] }}
                 </span>
@@ -159,5 +168,20 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+.hide-show-pass{
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s all;
+    &:hover {
+        background-color: $primary-light;
+    }
+}
 
 </style>
