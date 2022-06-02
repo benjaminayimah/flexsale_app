@@ -308,6 +308,33 @@ li:last-child a, li:last-child .info-section-hold{
         display: none;
     }
 }
+.hide-show-pass{
+  position: absolute;
+  right: 8px;
+  top: 9px;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s all;
+  &:hover {
+      background-color: $primary-light;
+      path{
+          fill: $primary-color;
+      }
+  }
+  &:active{
+      background-color: #edeffa;
+  }
+}
+.hide-pass-active{
+  background-color: $primary-light;
+  path{
+      fill: $primary-color;
+  }
+}
 
 @media screen and (max-width: 499px){
   .show-mob{

@@ -17,12 +17,12 @@
             </div>
             <div class="form-row">
                 <!-- <label>Password:</label> -->
-                <input v-model="form.password"  @mousedown="resertForm" required type="password" name="password" class="form-control password-field" placeholder="Enter password" :class="{ 'has-error' : validation.error && validation.errors.password}">
-                <i class="hide-show-pass">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24.609 23.191">
-                        <g id="hide" transform="translate(2.365 -1.316)">
-                            <path id="Path_1850" data-name="Path 1850" d="M15980.41-15077.506a22.508,22.508,0,0,1-4.277-4.586,3.073,3.073,0,0,1,0-3.523,22.157,22.157,0,0,1,4.277-4.584,12.013,12.013,0,0,1,7.471-2.862,11.987,11.987,0,0,1,7.469,2.862,22.193,22.193,0,0,1,4.283,4.58,3.07,3.07,0,0,1,0,3.521,22.309,22.309,0,0,1-4.283,4.592,12.027,12.027,0,0,1-7.469,2.858A12.053,12.053,0,0,1,15980.41-15077.506Zm-2.738-7.029a1.187,1.187,0,0,0,0,1.363c4.232,6,8.549,6.646,10.209,6.646s5.975-.648,10.215-6.646a1.2,1.2,0,0,0,0-1.369c-4.24-6-8.551-6.645-10.215-6.645S15981.9-15090.538,15977.672-15084.535Zm5.473.921a4.728,4.728,0,0,1,4.725-4.725,4.726,4.726,0,0,1,4.727,4.725,4.731,4.731,0,0,1-4.727,4.726A4.734,4.734,0,0,1,15983.145-15083.614Zm1.881,0a2.848,2.848,0,0,0,2.844,2.844,2.85,2.85,0,0,0,2.852-2.844,2.852,2.852,0,0,0-2.852-2.851A2.85,2.85,0,0,0,15985.025-15083.614Z" transform="translate(-15977.943 15096.124)" fill="#7e8596"/>
-                            <path id="Line_346" data-name="Line 346" d="M.261,22.131l-1.321-1.348L20.346-1.061,21.667.287Z" transform="translate(-0.209 2.377)" fill="#7e8596"/>
+                <input v-model="form.password"  @mousedown="resertForm" required :type="showPass ? 'text' : 'password'" id="password" name="password" class="form-control password-field" placeholder="Enter password" :class="{ 'has-error' : validation.error && validation.errors.password}">
+                <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">
+                        <g transform="translate(1.182 1.182)">
+                            <path d="M16027.619-15079.234a21.431,21.431,0,0,1-4.111-4.4,2.816,2.816,0,0,1,0-3.226,21.339,21.339,0,0,1,4.111-4.406,11.5,11.5,0,0,1,7.129-2.734,11.516,11.516,0,0,1,7.132,2.734,21.4,21.4,0,0,1,4.107,4.4,2.822,2.822,0,0,1,0,3.229,21.4,21.4,0,0,1-4.107,4.4,11.51,11.51,0,0,1-7.132,2.734A11.492,11.492,0,0,1,16027.619-15079.234Zm.927-10.853a19.948,19.948,0,0,0-3.813,4.087,1.32,1.32,0,0,0,0,1.5,19.8,19.8,0,0,0,3.81,4.084,10.018,10.018,0,0,0,6.2,2.412,10.015,10.015,0,0,0,6.2-2.412,19.886,19.886,0,0,0,3.814-4.088,1.322,1.322,0,0,0,0-1.5,19.9,19.9,0,0,0-3.81-4.083,10.011,10.011,0,0,0-6.2-2.413A10.013,10.013,0,0,0,16028.546-15090.087Zm1.454,4.836a4.754,4.754,0,0,1,4.748-4.748,4.758,4.758,0,0,1,4.752,4.748,4.758,4.758,0,0,1-4.752,4.752A4.754,4.754,0,0,1,16030-15085.251Zm1.5,0a3.253,3.253,0,0,0,3.25,3.25,3.253,3.253,0,0,0,3.249-3.25,3.253,3.253,0,0,0-3.249-3.25A3.253,3.253,0,0,0,16031.5-15085.251Z" transform="translate(-16022.748 15097.25)" fill="#7e8596"/>
+                            <path v-if="!showPass" d="M0,22.121-2.121,20,20-2.121,22.121,0Z" transform="translate(2 2)" fill="#7e8596" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
                         </g>
                     </svg>
                 </i>
@@ -89,9 +89,11 @@ import { mapGetters } from 'vuex'
 import axios from 'axios'
 import Spinner from '../../components/app/includes/Spinner.vue'
 import router from '../../router'
+import passwordToggleMixin from '../../mixins/passwordToggle'
 export default {
   components: { Spinner },
     name: 'SignIn',
+    mixins: [passwordToggleMixin],
     computed: {
         ...mapGetters(['getHostname', 'getUser']),
         computedUser() {
@@ -162,25 +164,11 @@ export default {
                     router.push({ name: 'Dashboard'})
                 }
             }, 20)
-        },
+        }
     }
 }
 </script>
 <style scoped lang="scss">
-.hide-show-pass{
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.2s all;
-    &:hover {
-        background-color: $primary-light;
-    }
-}
+
 
 </style>

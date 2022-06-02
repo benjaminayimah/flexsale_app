@@ -21,7 +21,15 @@
                 </span>
             </div>
             <div class="form-row">
-                <input v-model="form.password" @keyup="checkPassword" @focusin="showPassRules" @focusout="hidePassRules"  @mousedown="resertForm" required type="password" name="password" class="form-control password" placeholder="Enter password" :class="{ 'has-error' : validation.error && validation.errors.password}">
+                <input v-model="form.password" @keyup="checkPassword" @focusin="showPassRules" @focusout="hidePassRules"  @mousedown="resertForm" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password" placeholder="Enter password" :class="{ 'has-error' : validation.error && validation.errors.password}">
+                <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">
+                        <g transform="translate(1.182 1.182)">
+                            <path d="M16027.619-15079.234a21.431,21.431,0,0,1-4.111-4.4,2.816,2.816,0,0,1,0-3.226,21.339,21.339,0,0,1,4.111-4.406,11.5,11.5,0,0,1,7.129-2.734,11.516,11.516,0,0,1,7.132,2.734,21.4,21.4,0,0,1,4.107,4.4,2.822,2.822,0,0,1,0,3.229,21.4,21.4,0,0,1-4.107,4.4,11.51,11.51,0,0,1-7.132,2.734A11.492,11.492,0,0,1,16027.619-15079.234Zm.927-10.853a19.948,19.948,0,0,0-3.813,4.087,1.32,1.32,0,0,0,0,1.5,19.8,19.8,0,0,0,3.81,4.084,10.018,10.018,0,0,0,6.2,2.412,10.015,10.015,0,0,0,6.2-2.412,19.886,19.886,0,0,0,3.814-4.088,1.322,1.322,0,0,0,0-1.5,19.9,19.9,0,0,0-3.81-4.083,10.011,10.011,0,0,0-6.2-2.413A10.013,10.013,0,0,0,16028.546-15090.087Zm1.454,4.836a4.754,4.754,0,0,1,4.748-4.748,4.758,4.758,0,0,1,4.752,4.748,4.758,4.758,0,0,1-4.752,4.752A4.754,4.754,0,0,1,16030-15085.251Zm1.5,0a3.253,3.253,0,0,0,3.25,3.25,3.253,3.253,0,0,0,3.249-3.25,3.253,3.253,0,0,0-3.249-3.25A3.253,3.253,0,0,0,16031.5-15085.251Z" transform="translate(-16022.748 15097.25)" fill="#7e8596"/>
+                            <path v-if="!showPass" d="M0,22.121-2.121,20,20-2.121,22.121,0Z" transform="translate(2 2)" fill="#7e8596" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+                        </g>
+                    </svg>
+                </i>
                 <transition name="fade">
                     <div v-if="validation.rules || validation.errors.password" class="password-rules" :class="[{ 'all-correct' : validation.allCorrect},{ 'pass-has-error' : validation.error && validation.errors.password}]">
                         <div>Password must be a minimum of <strong :class="{ 'is-valid' : validation.char}">6 characters</strong> and must contain at least one of each of the following;</div>
@@ -83,12 +91,14 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import passwordToggleMixin from '../../mixins/passwordToggle'
 import axios from 'axios'
 import Spinner from '../../components/app/includes/Spinner.vue'
 import router from '../../router'
 export default {
   components: { Spinner },
     name: 'SignUp',
+    mixins: [passwordToggleMixin],
     computed: {
         ...mapGetters(['getHostname', 'getUser'])
     },
