@@ -174,7 +174,7 @@ export default {
             if(this.form.email == '' ) {
                 payload.email = ['Email field is required.']
             }
-            if(this.form.password == '' ) {
+            if(this.form.password == '' || !this.checkPassword() ) {
                 payload.password = ['Password field is required.']
             }
             if(payload.name !=='' || payload.email !=='' || payload.password !== '') {
@@ -190,7 +190,7 @@ export default {
             let nums = /[0-9]/g
             let lowercase = /[a-z]/g
             let uppercase = /[A-Z]/g
-            let special = /[!@#$%*()-]/g
+            let special = /[!@#$^&%*()-]/g
             if(this.form.password.match(nums)) {
                this.validation.number = true
             } else {
