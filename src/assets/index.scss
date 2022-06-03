@@ -718,11 +718,10 @@ textarea{
   outline: 0;
   font-weight: 500;
   &:hover {
-    border: 1px solid $primary-color;
+    border-color: $primary-color;
   }
   &:focus {
-    border: 2px solid $primary-color;
-    padding: 6px 15px;
+    border-color: $primary-color;
     //box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
   }
   &::placeholder{
