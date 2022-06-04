@@ -1400,6 +1400,9 @@ textarea{
               background-color: $dark-light;
           }
       }
+      li svg{
+        display: none;
+      }
       .router-link-exact-active{
           background-color: transparent !important;
           color: $primary-color !important;
@@ -1428,15 +1431,15 @@ textarea{
     width: 100%;
 }
 .dropdown-out{
+  border-color: $primary-color !important;
+  background-color: $primary-light;
+  color: $primary-color !important;
   svg{
       transform: rotateX(180deg);
       path{
           fill: $primary-color;
       }
   }
-  border-color: $primary-color !important;
-  background-color: $primary-light;
-  color: $primary-color !important;
 }
 //
 
@@ -1627,6 +1630,27 @@ hr{
   justify-content: center;
   .mini-body-hold{
     width: 83%;
+  }
+}
+.table-filters{
+  ul{
+      overflow: hidden;
+  }
+  li{
+      justify-content: center;
+      a{
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 10px 14px;
+          border: 1px solid $gray-light;
+          color: $dark;
+          border-radius: 20px;
+          text-decoration: none;
+          font-weight: 600;
+          gap: 4px;
+      }
   }
 }
 

@@ -271,36 +271,11 @@ export default {
     border-radius: 50% !important;
     padding: 11px !important;
 }
-.table-filters{
-    ul{
-        overflow: hidden;
-    }
-    li{
-        justify-content: center;
-        a{
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 14px;
-            border: 1px solid $gray-light;
-            color: $dark;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 600;
-            gap: 4px;
-        }
-    }
-}
+
 .router-link-exact-active{
     background-color: $dark !important;
     color: #ffffff !important;
     border: 1px solid $dark !important;
-}
-.dropdown {
-    li svg{
-        display: none;
-    }
 }
 
 .date-dropdown{
