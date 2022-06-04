@@ -103,7 +103,6 @@
             <div v-else>
                 <h2>No Record Found</h2>
             </div>
-
         </div>
     </div>
 </template>
