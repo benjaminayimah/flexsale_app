@@ -99,7 +99,7 @@
     <transition :name="getMobile? 'slide' : ''">
         <div class="menu-dropdown dropdown" v-if="toggleFilter" :class="[{ 'show-menu' : toggleFilter && !getMobile}, { 'menu-card-mob': getMobile}]" :style="{ left: !getMobile? getFloatingDiv.left-100+'px' : '', top: !getMobile? getFloatingDiv.top+45 + 'px' : ''}">
             <div class="title" v-show="getMobile">
-                <div>Sort products</div>
+                <div>Sort by</div>
                 <button @click.prevent="closeJustMenu('product_filter_toggle')">
                     <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
                         <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
@@ -109,8 +109,8 @@
             <ul>
                 <li><a href="#" class="flex-row-js" :class="{ 'is-sorted' : sort.id == 1 }" @click.prevent="doSort(1, 'Newest')"><span>Newest first</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
                 <li><a href="#" class="flex-row-js" :class="{ 'is-sorted' : sort.id == 2 }" @click.prevent="doSort(2, 'Oldest')"><span>Oldest first</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
-                <li><a href="#" class="flex-row-js" :class="{ 'is-sorted' : sort.id == 3 }" @click.prevent="doSort(3, 'Sort A-Z')"><span>Sort by A-Z</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
-                <li><a href="#" class="flex-row-js" :class="{ 'is-sorted' : sort.id == 4 }" @click.prevent="doSort(4, 'Sort Z-A')"><span>Sort by Z-A</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
+                <li><a href="#" class="flex-row-js" :class="{ 'is-sorted' : sort.id == 3 }" @click.prevent="doSort(3, 'Sort A-Z')"><span>Sort A-Z</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
+                <li><a href="#" class="flex-row-js" :class="{ 'is-sorted' : sort.id == 4 }" @click.prevent="doSort(4, 'Sort Z-A')"><span>Sort Z-A</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
             </ul>
         </div>
     </transition>
