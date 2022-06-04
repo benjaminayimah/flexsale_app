@@ -49,10 +49,9 @@
                                             </svg>
                                         </button>
                                     </form>
-                                    <span v-if="error" class="danger flex">Enter Receipt nunber</span>
+                                    <span v-if="error" class="danger flex">Enter Receipt number</span>
                                 </div>
                             </div>
-                           
                             <li>
                                 <a class="align-items-center flex h-100 no-border" title="Search by receipt number" href="#" @click.prevent="toggleSearch">
                                     <svg v-if="!searchToggle" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.671 26.671">
@@ -125,18 +124,19 @@
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import dropdownToggleMixin from '../../mixins/dropdownToggle'
 import Backdrop from '../../components/app/includes/Backdrop.vue'
 import SaleReportView from '../../components/app/layouts/SaleReportView.vue'
 export default {
   components: { SaleReportView, Backdrop },
     name: 'SaleRecords',
+    mixins: [dropdownToggleMixin],
     computed: {
         ...mapGetters(['getMobile', 'getFloatingDiv', 'getSaleRecords', 'getHostname', 'getToken'])
     } ,
     data() {
         return {
             title: 'Sales Record',
-            toggleFilter: false,
             toggleCustomDate: false,
             classAbove: false,
             filters: {
@@ -165,14 +165,6 @@ export default {
             const title = { title: this.title, back: false}
             this.$store.commit('setPagetitle', title)
         },
-        doMenu(id) {            
-            let elem = document.getElementById(id)
-            if(this.toggleFilter === false) {
-                this.toggleFilter = true
-                document.body.classList.add('fixed-body')
-                this.$store.commit('setDynamicFloatingDiv', elem)
-            }
-        },
         doDateToggle(id) {            
             let elem = document.getElementById(id)
             if(this.toggleCustomDate === false) {
@@ -180,13 +172,6 @@ export default {
                 document.body.classList.add('fixed-body')
                 this.$store.commit('setDynamicFloatingDiv', elem)
             }
-        },
-        closeJustMenu(id) {
-            let elem = document.getElementById(id)
-            this.toggleCustomDate = false
-            this.toggleFilter = false
-            this.$store.commit('reSetDynamicFloatingDiv', elem)
-            document.body.classList.remove('fixed-body')
         },
         makeCustomDate(id) {
             this.dispatchFetch('custom date range', 3, '', this.form.startDate, this.form.endDate)
@@ -312,120 +297,44 @@ export default {
     color: #ffffff !important;
     border: 1px solid $dark !important;
 }
-
-.menu-dropdown{
-    width: 200px;
-}
-.date-dropdown{
-    width: 300px;
-}
-
-.dropdown{
-      position: fixed;
-      background-color: #ffffff;
-      z-index: 200;
-      padding: 20px 0;
-      box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
-      //0 1px 6px 0 rgb(14 20 44 / 18%);
-      border-radius: 16px;
-        ul{
-            padding: 0;
-            list-style-type: none;
-            display: flex;
-            margin: 0;
-            flex-direction: column;
-            li{
-                display: flex;
-                height: 50px;
-                width: 100%;
-                a{
-                    display: flex;
-                    height: 100%;
-                    width: 100%;
-                    align-items: center;
-                    color: $dark;
-                    text-decoration: none;
-                    transition: 0.3s all;
-                    padding: 0 20px;
-                    font-weight: 500;
-                }
-                &:hover a{
-                    background-color: $dark-light;
-                }
-            }
-        }
-    }
-
-.dropdown{
+.dropdown {
     li svg{
         display: none;
     }
-    .router-link-exact-active{
-        background-color: transparent !important;
-        color: $primary-color !important;
-        border: none !important;
-        svg{
-            display: inline-block !important;
-        }
-    }
-    
 }
 
-.menu-card-mob{
-    padding: 25px 0;
-    position: fixed;
-    bottom: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    .title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-        margin-bottom: 20px;
-        font-weight: 700;
-        font-size: 1.4rem;
-        button{
-            border-radius: 50%;
-            padding: 10px;
-            background-color: #f0f3ff;
-        }
-    }
-   
-    width: 100%;
-    border-top-right-radius: 16px;
-    border-top-left-radius: 16px;
-    .acct-label .user-details{
-      max-width: 100%;
-    }
-  }
-    #custom_range_form{
-        padding: 15px 30px;
-        .form-control{
-            height: 50px;
-        }
-        .form-row{
-            margin-bottom: 18px;
-        }
-        label{
-            margin-top: 0;
-        }
-    }
-  .send-query{
-      height: 50px;
-      width: 100%;
-  }
-.dropdown-out{
-    svg{
-        transform: rotateX(180deg);
-        path{
-            fill: $primary-color;
-        }
-    }
-    border-color: $primary-color !important;
-    background-color: $primary-light;
-    color: $primary-color !important;
+.date-dropdown{
+    width: 300px;
 }
+.menu-card-mob{
+  padding: 25px 0;
+  position: fixed;
+  bottom: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      button{
+          border-radius: 50%;
+          padding: 10px;
+          background-color: #f0f3ff;
+      }
+  }
+ 
+  width: 100%;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  .acct-label .user-details{
+    max-width: 100%;
+  }
+}
+
 // .category-pill, #custom_date_toggle{
 //     transition: 0.4s ease-out all;
 // }
@@ -462,6 +371,5 @@ export default {
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(250px);
-  
 }
 </style>

@@ -16,8 +16,8 @@ import Profile from '@/views/app/Profile.vue'
 import Trash from '@/views/app/Trash.vue'
 import Settings from '@/views/app/Settings.vue'
 import Tags from '@/views/app/Tags.vue'
-import All from '@/components/app/layouts/AllProducts.vue'
-import Filter from '@/components/app/layouts/ProductFilter.vue'
+// import All from '@/components/app/layouts/AllProducts.vue'
+// import Filter from '@/components/app/layouts/ProductFilter.vue'
 import DetailedTag from '@/views/app/DetailedTag.vue'
 import DetailedProduct from '@/views/app/DetailedProduct.vue'
 import DetailedSupplier from '@/views/app/DetailedSupplier.vue'
@@ -47,14 +47,9 @@ const routes = [
   { path: '/', component: AdminHome, 
     meta: {requiresAuth: true },
     children: [
-      { path: '/', name: 'Dashboard', component: Dashboard },
-      { path: '/', component: Products,
-      children: [
-        { path: '/products', name: 'AllProducts', component: All},
-        { path: '/products/filter/:id/:name', name: 'ProdFilter', component: Filter},
-      ]
-      },
+    { path: '/', name: 'Dashboard', component: Dashboard },
     { path: '/sales-record/filter/:name', name: 'SaleRecords', component: SaleRecords},
+    { path: '/products/:id/:name', name: 'Products', component: Products},
     { path: '/notifications/:name', name: 'Notifications', component: Notifications},
     { path: '/trash', name: 'Trash', component: Trash },
     { path: '/profile/:name', component: Profile, 

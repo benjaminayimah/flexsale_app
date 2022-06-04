@@ -718,11 +718,10 @@ textarea{
   outline: 0;
   font-weight: 500;
   &:hover {
-    border: 1px solid $primary-color;
+    border-color: $primary-color;
   }
   &:focus {
-    border: 2px solid $primary-color;
-    padding: 6px 15px;
+    border-color: $primary-color;
     //box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
   }
   &::placeholder{
@@ -1064,10 +1063,10 @@ textarea{
 }
 
 .router-link-exact-active{
-    background-color: $dark !important;
-    color: #ffffff !important;
-    border: 1px solid $dark !important;
-}
+      background-color: $dark !important;
+      color: #ffffff !important;
+      border: 1px solid $dark !important;
+  }
   .slide-enter-from,
   .slide-leave-to {
     transform: translateY(240px);
@@ -1360,6 +1359,86 @@ textarea{
   }
 }
 
+
+//dropdown
+
+
+.menu-dropdown{
+  width: 200px;
+}
+.dropdown{
+    position: fixed;
+    background-color: #ffffff;
+    z-index: 200;
+    padding: 20px 0;
+    box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
+    //0 1px 6px 0 rgb(14 20 44 / 18%);
+    border-radius: 16px;
+      ul{
+          padding: 0;
+          list-style-type: none;
+          display: flex;
+          margin: 0;
+          flex-direction: column;
+      }
+      li{
+          display: flex;
+          height: 50px;
+          width: 100%;
+          a{
+              display: flex;
+              height: 100%;
+              width: 100%;
+              align-items: center;
+              color: $dark;
+              text-decoration: none;
+              transition: 0.3s all;
+              padding: 0 20px;
+              font-weight: 500;
+          }
+          &:hover a{
+              background-color: $dark-light;
+          }
+      }
+      .router-link-exact-active{
+          background-color: transparent !important;
+          color: $primary-color !important;
+          border: none !important;
+          svg{
+              display: inline-block !important;
+          }
+      }
+  }
+
+
+  #custom_range_form{
+      padding: 15px 30px;
+      .form-control{
+          height: 50px;
+      }
+      .form-row{
+          margin-bottom: 18px;
+      }
+      label{
+          margin-top: 0;
+      }
+  }
+.send-query{
+    height: 50px;
+    width: 100%;
+}
+.dropdown-out{
+  svg{
+      transform: rotateX(180deg);
+      path{
+          fill: $primary-color;
+      }
+  }
+  border-color: $primary-color !important;
+  background-color: $primary-light;
+  color: $primary-color !important;
+}
+//
 
 
 .form-check-input {
@@ -1782,4 +1861,3 @@ hr{
 .fade-leave-to {
   opacity: 0;
 }
-

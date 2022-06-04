@@ -9,16 +9,20 @@
         </div> -->
         <form @submit.prevent="">
             <div class="form-row">
-                <!-- <label>Email:</label> -->
-                <input v-model="form.email" @mousedown="resertForm" type="email" name="email" class="form-control" placeholder="Enter email" :class="{ 'has-error' : validation.error && validation.errors.email}">
+                <div class="input-wrapper" id="email_wrapper">
+                    <label for="emailInput">Email</label>
+                    <input id="emailInput" v-model="form.email" @input="checkInputHasValue('emailInput')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" @mousedown="resertForm" type="email" name="email" class="form-control" :class="{ 'has-error' : validation.error && validation.errors.email}">
+                </div>
                 <span class="validation-err" v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
                 </span>
             </div>
             <div class="form-row">
-                <!-- <label>Password:</label> -->
-                <input v-model="form.password"  @mousedown="resertForm" required :type="showPass ? 'text' : 'password'" id="password" name="password" class="form-control password-field" placeholder="Enter password" :class="{ 'has-error' : validation.error && validation.errors.password}">
-                <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
+                <!--  -->
+                <div class="input-wrapper" id="password_wrapper">
+                    <label for="passwordInput">Password</label>
+                    <input id="passwordInput" v-model="form.password" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')"  @mousedown="resertForm" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field" :class="{ 'has-error' : validation.error && validation.errors.password}">
+                    <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">
                         <g transform="translate(1.182 1.182)">
                             <path d="M16027.619-15079.234a21.431,21.431,0,0,1-4.111-4.4,2.816,2.816,0,0,1,0-3.226,21.339,21.339,0,0,1,4.111-4.406,11.5,11.5,0,0,1,7.129-2.734,11.516,11.516,0,0,1,7.132,2.734,21.4,21.4,0,0,1,4.107,4.4,2.822,2.822,0,0,1,0,3.229,21.4,21.4,0,0,1-4.107,4.4,11.51,11.51,0,0,1-7.132,2.734A11.492,11.492,0,0,1,16027.619-15079.234Zm.927-10.853a19.948,19.948,0,0,0-3.813,4.087,1.32,1.32,0,0,0,0,1.5,19.8,19.8,0,0,0,3.81,4.084,10.018,10.018,0,0,0,6.2,2.412,10.015,10.015,0,0,0,6.2-2.412,19.886,19.886,0,0,0,3.814-4.088,1.322,1.322,0,0,0,0-1.5,19.9,19.9,0,0,0-3.81-4.083,10.011,10.011,0,0,0-6.2-2.413A10.013,10.013,0,0,0,16028.546-15090.087Zm1.454,4.836a4.754,4.754,0,0,1,4.748-4.748,4.758,4.758,0,0,1,4.752,4.748,4.758,4.758,0,0,1-4.752,4.752A4.754,4.754,0,0,1,16030-15085.251Zm1.5,0a3.253,3.253,0,0,0,3.25,3.25,3.253,3.253,0,0,0,3.249-3.25,3.253,3.253,0,0,0-3.249-3.25A3.253,3.253,0,0,0,16031.5-15085.251Z" transform="translate(-16022.748 15097.25)" fill="#7e8596"/>
@@ -26,6 +30,7 @@
                         </g>
                     </svg>
                 </i>
+                </div>
                 <span class="validation-err" v-if="validation.error && validation.errors.password">
                     {{ validation.errors.password[0] }}
                 </span>
@@ -106,8 +111,8 @@ export default {
     data() {
         return {
             form: {
-              email: 'benjaminayimah@gmail.com',
-              password: 'ajf1432#@!'
+              email: 'kkkk',
+              password: ''
             },
             validation: {
                 error: false,
@@ -118,11 +123,31 @@ export default {
             creating: false,
             created: false,
             proceeding: false,
-            user: ''
+            user: '',
         }
     },
     methods: {
-        submitSignin() {
+        isFocusedIn(id) {
+            this.$_(id).classList.add('is-focused')
+            this.$_(id).classList.remove('is-filled')
+            
+        },
+        isFocusedOut(id, input) {
+            if(this.checkInputHasValue(input)) {
+                this.$_(id).classList.add('is-iddle')
+            }
+            this.$_(id).classList.remove('is-focused')
+        },
+        checkInputHasValue(input){
+            if(this.$_(input).value !== '')
+            return true
+            else
+            return false
+        },
+        $_(x) {
+            return document.getElementById(x)
+        },
+        async submitSignin() {
             this.resertForm()
             this.creating = true
             axios.post(this.getHostname+'/api/sign-in', this.form)
@@ -169,6 +194,37 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-
+.input-wrapper{
+    position: relative;
+    label {
+        position: absolute;
+        left: 17px;
+        font-weight: 500;
+        cursor: text;
+        transition: 0.2s all;
+        margin: 0;
+        color: $gray-color;
+        top: 18px;
+        font-size: 16px;
+    }
+    input{
+        padding: 25px 16px 8px 16px !important;
+    }
+    
+}
+.is-focused{
+    label {
+        transform: translateY(-10px);
+        color: $primary-color;
+        font-size: 12px;
+    }
+}
+.is-iddle{
+    label{
+        color: $gray-color;
+        font-size: 12px;
+        transform: translateY(-10px);
+    }
+}
 
 </style>

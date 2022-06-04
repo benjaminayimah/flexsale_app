@@ -53,8 +53,8 @@
                     <div class="category-pill">
                         <div class="pill-wrap">
                             <ul class="flex-row-st">
-                                <li><router-link replace :to="{ name: 'AllProducts'}">All</router-link></li>
-                                <li v-for="tag in getTags" :key="tag.id"><router-link replace class="text-overflow-ellipsis" :to="'/products/filter/'+tag.id+'/'+tag.name">{{ tag.name }}</router-link></li>
+                                <li><router-link replace :to="{ name: 'Products', params: { id: 'all' , name: 'products'} }">All</router-link></li>
+                                <li v-for="tag in getTags" :key="tag.id"><router-link replace class="text-overflow-ellipsis" :to="{ name: 'Products', params: { id: tag.id , name: tag.name } }">{{ tag.name }}</router-link></li>
                             </ul>
                         </div>
                     </div>
@@ -67,8 +67,8 @@
                                     </svg>
                                 </a>
                             </li> -->
-                            <li>
-                                <a href="">
+                            <li id="product_filter_toggle">
+                                <a href="#" @click.prevent="doMenu('product_filter_toggle')" :class="{ 'dropdown-out' : toggleFilter }" >
                                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 21.259 20.97">
                                         <path id="Union_8_-_Outline" data-name="Union 8 - Outline" d="M-9309.519-336.817h-.561a3.5,3.5,0,0,1-3.5-3.454h-4.376v-2h4.409a3.5,3.5,0,0,1,3.467-3.019h.561a3.5,3.5,0,0,1,3.467,3.019h9.355v2h-9.322A3.5,3.5,0,0,1-9309.519-336.817Zm-.561-6.473a1.5,1.5,0,0,0-1.5,1.5v1.473a1.5,1.5,0,0,0,1.5,1.5h.561a1.5,1.5,0,0,0,1.5-1.5v-1.473a1.5,1.5,0,0,0-1.5-1.5Zm6.969-6.024h-.563a3.5,3.5,0,0,1-3.5-3.452h-10.783v-2h10.815a3.5,3.5,0,0,1,3.466-3.021h.563a3.506,3.506,0,0,1,3.468,3.021h2.946v2h-2.914A3.5,3.5,0,0,1-9303.11-349.314Zm-.563-6.473a1.5,1.5,0,0,0-1.5,1.5v1.473a1.5,1.5,0,0,0,1.5,1.5h.563a1.5,1.5,0,0,0,1.5-1.5v-1.473a1.5,1.5,0,0,0-1.5-1.5Z" transform="translate(9317.955 357.787)" fill="#0e142c"/>
                                     </svg>
@@ -77,45 +77,90 @@
                         </ul>
                     </div>
                 </div>
-                <router-view></router-view>
+                <!-- {{computedProducts}} -->
+                <!-- <router-view></router-view> -->
+                <product-row v-for="product in sortProducts(computedProducts)" :key="product.id" v-bind:product="product" />
             </div>
         </div>
     </div>
  </div>
+ <teleport to="body">
+    <transition name="fade">
+        <backdrop v-if="toggleFilter" @mousedown="closeJustMenu('product_filter_toggle')" />
+    </transition>
+    <transition :name="getMobile? 'slide' : ''">
+        <div class="menu-dropdown dropdown" v-if="toggleFilter" :class="[{ 'show-menu' : toggleFilter && !getMobile}, { 'menu-card-mob': getMobile}]" :style="{ left: !getMobile? getFloatingDiv.left-150+'px' : '', top: !getMobile? getFloatingDiv.top+45 + 'px' : ''}">
+            <div class="title" v-show="getMobile">
+                <div>Sort products</div>
+                <button @click.prevent="closeJustMenu('product_filter_toggle')">
+                    <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
+                        <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
+                    </svg>
+                </button>
+            </div>
+            <ul>
+                <li><a href="#" class="flex-row-js" @click.prevent=""><span>Latest first</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
+                <li><a href="#" class="flex-row-js" @click.prevent=""><span>Oldest first</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
+                <li><a href="#" class="flex-row-js" @click.prevent=""><span>Sort A-Z</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
+                <li><a href="#" class="flex-row-js" @click.prevent=""><span>Sort Z-A</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
+            </ul>
+        </div>
+    </transition>
+</teleport>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-
+import Backdrop from '../../components/app/includes/Backdrop.vue'
+import ProductRow from '../../components/app/includes/ProductRow.vue'
+import dropdownToggleMixin from '../../mixins/dropdownToggle'
 export default {
+  components: { Backdrop, ProductRow },
     name: 'Products',
-    computed: mapGetters(['getMobile', 'getProducts', 'getTags']),
+    mixins: [dropdownToggleMixin],
+    computed: {
+        ...mapGetters(['getMobile', 'getProducts', 'getAllFilters', 'getTags', 'getFloatingDiv']),
+        computedProducts() {
+            if(this.$route.params.id !== 'all') {
+                return this.getAllFilters.filter(product => product.tag_id === this.$route.params.id)
+            }else
+            return this.getProducts
+        },
+        computedFilters() {
+            return false
+        }
+    },
     data() {
         return {
-            title: 'All Products'
+            title: 'All Products',
+            sort: 0
         }
     },
     created() {
         this.setPage()
         window.scrollTo(0,0)
-        //this.loadProducts()
-        //this.$store.dispatch('fetchTags', this.getToken)
+        this.$store.dispatch('fetchFilters')
     },
     methods: {
         setPage() {
             const title = { title: this.title, back: false}
             this.$store.commit('setPagetitle', title)
-            
         },
-        // loadProducts() {
-        //     this.$store.dispatch('fetchProducts', this.getToken)
-        // }
+        sortProducts(product) {
+            if(this.sort === 1)
+            return product.sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+            else if(this.sort === 2)
+            return product.sort((a, b) => (a.name > b.name) ? 1 : -1)
+            else if(this.sort === 3)
+            return product.sort((a, b) => (b.name > a.name) ? 1 : -1)
+            else
+            return product.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        }
     },
 }
 </script>
 
 
 <style scoped lang="scss">
-
 
 .table-filters{
     li{
@@ -130,6 +175,39 @@ export default {
             border-radius: 14px;
         }
     }
+}
+
+.menu-card-mob{
+  padding: 25px 0;
+  position: fixed;
+  bottom: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 1.4rem;
+        button{
+          border-radius: 50%;
+          padding: 10px;
+          background-color: #f0f3ff;
+        }
+  }
+  width: 100%;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  .acct-label .user-details{
+    max-width: 100%;
+  }
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(250px);
 }
 .router-link-exact-active{
     background-color: $dark !important;

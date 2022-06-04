@@ -262,14 +262,6 @@ padding: 15px 20px;
     width: 255px;
     border-radius: 16px; 
   }
-  .menu-card-mob{
-    width: 100%;
-    border-top-right-radius: 16px;
-    border-top-left-radius: 16px;
-    .acct-label .user-details{
-      max-width: 100%;
-    }
-  }
   .logout-hold{
       
       a{
