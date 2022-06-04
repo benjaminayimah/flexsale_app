@@ -67,11 +67,19 @@
                                     </svg>
                                 </a>
                             </li> -->
-                            <li id="product_filter_toggle">
+                            <!-- <li id="product_filter_toggle">
                                 <a href="#" @click.prevent="doMenu('product_filter_toggle')" :class="{ 'dropdown-out' : toggleFilter }" >
                                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 21.259 20.97">
                                         <path id="Union_8_-_Outline" data-name="Union 8 - Outline" d="M-9309.519-336.817h-.561a3.5,3.5,0,0,1-3.5-3.454h-4.376v-2h4.409a3.5,3.5,0,0,1,3.467-3.019h.561a3.5,3.5,0,0,1,3.467,3.019h9.355v2h-9.322A3.5,3.5,0,0,1-9309.519-336.817Zm-.561-6.473a1.5,1.5,0,0,0-1.5,1.5v1.473a1.5,1.5,0,0,0,1.5,1.5h.561a1.5,1.5,0,0,0,1.5-1.5v-1.473a1.5,1.5,0,0,0-1.5-1.5Zm6.969-6.024h-.563a3.5,3.5,0,0,1-3.5-3.452h-10.783v-2h10.815a3.5,3.5,0,0,1,3.466-3.021h.563a3.506,3.506,0,0,1,3.468,3.021h2.946v2h-2.914A3.5,3.5,0,0,1-9303.11-349.314Zm-.563-6.473a1.5,1.5,0,0,0-1.5,1.5v1.473a1.5,1.5,0,0,0,1.5,1.5h.563a1.5,1.5,0,0,0,1.5-1.5v-1.473a1.5,1.5,0,0,0-1.5-1.5Z" transform="translate(9317.955 357.787)" fill="#0e142c"/>
                                     </svg>
+                                </a>
+                            </li> -->
+                            <li id="product_filter_toggle" @click.prevent="doMenu('product_filter_toggle')">
+                                <a href="#" :class="{ 'dropdown-out' : toggleFilter }" @click.prevent="doMenu('product_filter_toggle')">
+                                {{ sort.name}}
+                                <svg xmlns="http://www.w3.org/2000/svg" height="9" viewBox="0 0 10 9">
+                                    <path d="M4.126,1.573a1,1,0,0,1,1.748,0l3.3,5.941A1,1,0,0,1,8.3,9H1.7A1,1,0,0,1,.825,7.514Z" transform="translate(10 9) rotate(180)" fill="#0e142c"/>
+                                </svg>
                                 </a>
                             </li>
                         </ul>
@@ -89,7 +97,7 @@
         <backdrop v-if="toggleFilter" @mousedown="closeJustMenu('product_filter_toggle')" />
     </transition>
     <transition :name="getMobile? 'slide' : ''">
-        <div class="menu-dropdown dropdown" v-if="toggleFilter" :class="[{ 'show-menu' : toggleFilter && !getMobile}, { 'menu-card-mob': getMobile}]" :style="{ left: !getMobile? getFloatingDiv.left-150+'px' : '', top: !getMobile? getFloatingDiv.top+45 + 'px' : ''}">
+        <div class="menu-dropdown dropdown" v-if="toggleFilter" :class="[{ 'show-menu' : toggleFilter && !getMobile}, { 'menu-card-mob': getMobile}]" :style="{ left: !getMobile? getFloatingDiv.left-100+'px' : '', top: !getMobile? getFloatingDiv.top+45 + 'px' : ''}">
             <div class="title" v-show="getMobile">
                 <div>Sort products</div>
                 <button @click.prevent="closeJustMenu('product_filter_toggle')">
@@ -99,10 +107,10 @@
                 </button>
             </div>
             <ul>
-                <li><a href="#" class="flex-row-js" @click.prevent=""><span>Latest first</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
-                <li><a href="#" class="flex-row-js" @click.prevent=""><span>Oldest first</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
-                <li><a href="#" class="flex-row-js" @click.prevent=""><span>Sort A-Z</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
-                <li><a href="#" class="flex-row-js" @click.prevent=""><span>Sort Z-A</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
+                <li><a href="#" class="flex-row-js" :class="{ 'is-sorted' : sort.id == 1 }" @click.prevent="doSort(1, 'Newest')"><span>Newest first</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
+                <li><a href="#" class="flex-row-js" :class="{ 'is-sorted' : sort.id == 2 }" @click.prevent="doSort(2, 'Oldest')"><span>Oldest first</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
+                <li><a href="#" class="flex-row-js" :class="{ 'is-sorted' : sort.id == 3 }" @click.prevent="doSort(3, 'Sort A-Z')"><span>Sort by A-Z</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
+                <li><a href="#" class="flex-row-js" :class="{ 'is-sorted' : sort.id == 4 }" @click.prevent="doSort(4, 'Sort Z-A')"><span>Sort by Z-A</span><svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg></a></li>
             </ul>
         </div>
     </transition>
@@ -132,7 +140,7 @@ export default {
     data() {
         return {
             title: 'All Products',
-            sort: 0
+            sort: { id: 1, name: 'Newest'}
         }
     },
     created() {
@@ -146,14 +154,19 @@ export default {
             this.$store.commit('setPagetitle', title)
         },
         sortProducts(product) {
-            if(this.sort === 1)
-            return product.sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-            else if(this.sort === 2)
-            return product.sort((a, b) => (a.name > b.name) ? 1 : -1)
-            else if(this.sort === 3)
-            return product.sort((a, b) => (b.name > a.name) ? 1 : -1)
-            else
-            return product.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            if(this.sort.id === 1)
+            return product.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // newest
+            else if(this.sort.id === 2)
+            return product.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)) // oldest
+            else if(this.sort.id === 3)
+            return product.sort((a, b) => a.name.localeCompare(b.name)) //a-z
+            else if(this.sort.id === 4)
+            return product.sort((a, b) => b.name.localeCompare(a.name))  //z-a
+        },
+        doSort(id, name) {
+            this.sort.id = id
+            this.sort.name = name
+            this.closeJustMenu('product_filter_toggle')
         }
     },
 }
@@ -161,21 +174,13 @@ export default {
 
 
 <style scoped lang="scss">
-
-.table-filters{
-    li{
-        width: 41px;
-        justify-content: center;
-        a{
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 14px;
-        }
+.is-sorted {
+    color: $primary-color !important;
+    svg {
+        display: block !important;
     }
 }
+
 
 .menu-card-mob{
   padding: 25px 0;
