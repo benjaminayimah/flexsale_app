@@ -1,7 +1,7 @@
 <template>
     <div class="right-content-wrap">
         <div class="flex-col">
-            <div class="flex-col gap-8" id="right_top">
+            <div class="flex-col gap-8 sticky-top" id="right_top">
                 <div class="flex-row-js">
                     <div class="flex-col gap-8">
                         <label class="mg-0">Today’s sales</label>

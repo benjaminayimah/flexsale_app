@@ -12,6 +12,7 @@ import Dashboard from '@/views/app/Dashboard.vue'
 import Products from '@/views/app/Products.vue'
 import SaleRecords from '@/views/app/SaleRecords.vue'
 import Notifications from '@/views/app/Notifications.vue'
+import Search from '@/views/app/Search.vue'
 import Profile from '@/views/app/Profile.vue'
 import Trash from '@/views/app/Trash.vue'
 import Settings from '@/views/app/Settings.vue'
@@ -51,6 +52,8 @@ const routes = [
     { path: '/sales-record/filter/:name', name: 'SaleRecords', component: SaleRecords},
     { path: '/products/:id/:name', name: 'Products', component: Products},
     { path: '/notifications/:name', name: 'Notifications', component: Notifications},
+    { path: '/search/:query', name: 'Search', component: Search},
+
     { path: '/trash', name: 'Trash', component: Trash },
     { path: '/profile/:name', component: Profile, 
     children: [
