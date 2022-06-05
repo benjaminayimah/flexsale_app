@@ -54,11 +54,11 @@
                       </div>
                       <div class="noti-help align-items-center justify-content-center">
                         <li class="ml-0" v-if="(getHideRight || getMobile) && !getCurrentpage.back">
-                          <a href="#">
+                          <router-link :to="{ name: 'Search', params: { query: 'all'} }">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
                               <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)"/>
                             </svg>
-                          </a>
+                          </router-link>
                         </li>
                         <notification />
                         <li v-if="!getMobile"><a href="javascript: void">
@@ -97,12 +97,7 @@
                 <div class="header-wrap">
                   <div class="right-header-hold">
                     <div class="header-content-2">
-                      <div class="form-row" id="search_hold">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
-                          <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"/>
-                        </svg>
-                          <input id="search_field" type="text" name="searchField" class="form-control" placeholder="Search application...">
-                      </div>
+                      <search-float />
                     </div>
                   </div>
                 </div>
@@ -144,8 +139,9 @@ import NewSale from '../components/app/includes/NewSale.vue'
 import OnboardingView from '../components/app/layouts/OnboardingView.vue'
 import RestoreTrashModal from '../components/app/includes/RestoreTrashModal.vue'
 import Notification from '../components/app/includes/NotificationFloat.vue'
+import SearchFloat from '../components/app/includes/SearchFloat.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat },
     name: 'AdminHome',
     computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard','getStores']),
     created() {
@@ -374,30 +370,6 @@ header, .right-header{
 
 .form-control{
   border: 1px solid #ffffff;
-}
-#search_hold{
-  margin-bottom: 0;
-  width: 100%;
-  input{
-    border-radius: 0.9rem;
-    background-color: $primary-light;
-    padding: 10px 20px 10px 50px;
-    &:focus{
-      //border: 1px solid $primary-color !important;
-      border-width: 2px;
-      padding: 10px 19px 10px 49px;
-    }
-  }
-  input::placeholder{
-      color: $gray-color;
-  }
-  svg{
-    position: absolute;
-    z-index: 1;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 18px;
-  }
 }
 .desktop-mode .left-new-wrap{
     border: 1px solid #f0f3ff;
