@@ -1,6 +1,6 @@
 <template>
 <div class="search-hold">
-    <form  @click="showResultsFloat" @mousedown="showResultsFloat">
+    <form @submit.prevent="" @click="showResultsFloat" @mousedown="showResultsFloat">
         <label for="search_field" :class="{ 'is-focused' : isFocused }" class="justify-content-center align-items-center">
             <div class="outer-icons flex-end" @mousedown.prevent="">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon-search" width="20" height="20" viewBox="0 0 26.671 26.671">
@@ -21,28 +21,28 @@
         </label>
     </form>
     <div v-if="isFocused" class="search-results-float" @mousedown.prevent="" :style="{ maxHeight: getWindowHeight-300+'px'}">
-        <div v-if="computedResults.length > 0" class="search-result-hold">
-            <div class="flex-row-js history" v-if="historyResults.length > 0 && !searchResults.length > 0">
+        <div v-if="computedResults.array.length > 0" class="search-result-hold">
+            <div class="flex-row-js history" v-if="computedResults.type == 'history'">
                 <h3 class="mg-0">Recent</h3>
                 <button @click.prevent="clearHistory" class="button rounded-button">Clear all</button>
             </div>
             <div>
-                <li @click="setHistory(list.id, list.name, list.stock, list.image, list.prod_type)" class="search-list" v-for="list in computedResults" :key="list.id">
-                    <router-link :to="{ name: 'ProductDetailsBasic', params: { id: list.id, name: list.name } }" class="flex-row-js">
-                        <div class="flex gap-8">
+                <li @mouseup="setHistory(list.id, list.name, list.stock, list.image, list.prod_type)" class="search-list" v-for="list in computedResults.array" :key="list.id">
+                    <a href="#" @click.prevent="" class="flex-row-js">
+                        <div class="flex gap-8 a-inner" @click="goTo(list.id, list.name)" :class="{'w-100' : computedResults.type == 'search'}">
                             <div class="bg-img" :style="list.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+ getUser.current+'/'+list.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                             <div>
                                 <div class="name text-overflow-ellipsis">{{ list.name }}</div>
                                 <div class="flex gap-8" v-if="list.stock"><span class="label">Stock:</span><span>{{ list.stock }}</span></div>
-                                <div class="flex gap-8"><span class="type">{{ (list.prod_type == 0 || list.prod_type == 1) ? 'Product' : 'Tag' }}</span></div>
+                                <div class="flex gap-8"><span class="type">{{ (list.prod_type == '0' || list.prod_type == '1') ? 'Product' : 'Tag' }}</span></div>
                             </div>
                         </div>
-                        <button v-if="historyResults.length > 0 && !searchResults.length > 0" class="button button-secondary cancel-btn" @click.prevent="delThisHistory(list.id)">
+                        <button v-if="computedResults.type == 'history'" class="button button-secondary cancel-btn" @click.prevent="delThisHistory(list.id)">
                             <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 20 20">
                                 <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#566ff4"></path>
                             </svg>
                         </button>
-                    </router-link>
+                    </a>
                 </li>
             </div>
         </div>
@@ -62,14 +62,17 @@ export default {
     computed: {
         ...mapGetters(["getWindowHeight", "getToken", "getHostname", "getUserAdminID", "getUser", "getDefaultImage"]),
         computedResults() {
-            if (this.searchResults.length > 0) {
-                return this.searchResults
+            // let final = { type: '', array: []}
+            let result = this.searchResults
+            let history = this.history
+            if (result.length > 0) {
+                return { type: 'search', array: result }
             }
-            else if (this.historyResults.length > 0) {
-                return this.historyResults
+            else if (history) {
+                return { type: 'history', array: history }
             }
             else
-            return []
+            return { type: '', array: []}
         }
     },
     data() {
@@ -79,7 +82,7 @@ export default {
             },
             submitting: false,
             searchResults: [],
-            historyResults: JSON.parse(localStorage.getItem('searchHistory')) ||  [],
+            history: [],
             isFocused: false,
             dropdownIn: false
         };
@@ -95,19 +98,22 @@ export default {
         showResultsFloat: function () {
             this.isFocused = true;
             this.dropdownIn = true;
+            const history = JSON.parse(localStorage.getItem('searchHistory'))
+            history ? this.history = history : []
         },
         hideResultsFloat: function () {
             // if (this.form.input == '')
                 this.isFocused = false;
         },
         chechInput() {
-            let inputlength = this.form.input.length
+            // let inputlength = this.form.input.length
             let str = document.getElementById("search_field").value;
-            if(inputlength > 1 && !str.match(/^\s*$/)) {
+            if(!str.match(/^\s*$/)) {
                 return true
+            }else {
+                this.searchResults = []
+                return false
             }
-            else
-            return false
         },
         async doSearch() {
             if(this.chechInput()) {
@@ -116,29 +122,41 @@ export default {
                 .then((res) => {
                     this.submitting = false
                     this.searchResults = res.data.results;
+                    console.log(res.data)
                 });
             }
             
         },
+        goTo(id, name) {
+            this.$router.push({ name: 'ProductDetailsBasic', params: { id: id, name: name } })
+            this.isFocused = false;
+        },
         setHistory(id, name, stock, image, type) {
             const array = []
-            const newHistory = { id: id, name: name, stock: stock, image: image, type: type }
+            const newHistory = { id: id, name: name, stock: stock, image: image, prod_type: type }
             const oldHistory = JSON.parse(localStorage.getItem('searchHistory'))
             if(oldHistory) {
-                oldHistory.push(newHistory)
-                localStorage.setItem('searchHistory', JSON.stringify(oldHistory))
+                const duplicate = oldHistory.find(data => data.id == id)
+                if(!duplicate) {
+                    oldHistory.push(newHistory)
+                    localStorage.setItem('searchHistory', JSON.stringify(oldHistory))
+                }
             }else{
                 array.push(newHistory)
                 localStorage.setItem('searchHistory', JSON.stringify(array))
             }
         },
         delThisHistory(id) {
-            let oldHistory = JSON.parse(localStorage.getItem('searchHistory')).find(data => data.id !== id)
-            console.log(oldHistory)
-            // localStorage.removeItem('searchHistory')
+            let oldHistory = JSON.parse(localStorage.getItem('searchHistory')).filter(data => data.id !== id)
+            localStorage.removeItem('searchHistory')
+            if(oldHistory.length > 0) {
+                localStorage.setItem('searchHistory', JSON.stringify(oldHistory))
+            }
+            this.history = oldHistory
         },
         clearHistory() {
             localStorage.removeItem('searchHistory')
+            this.history = []
         }
     },
 }
