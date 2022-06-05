@@ -69,7 +69,7 @@ export default {
                 return { type: 'search', array: result }
             }
             else if (history) {
-                return { type: 'history', array: history }
+                return { type: 'history', array: history.sort((a, b) => new Date(b.time) - new Date(a.time)) }
             }
             else
             return { type: '', array: []}
@@ -124,15 +124,17 @@ export default {
                     this.searchResults = res.data.results
                 });
             }
-            
         },
         goTo(id, name) {
             this.$router.push({ name: 'ProductDetailsBasic', params: { id: id, name: name } })
-            this.isFocused = false;
+            this.isFocused = false
+            this.$refs.searchInput.blur()
+            this.searchResults = []
+            this.form.input = ''
         },
         setHistory(id, name, stock, image, type) {
             const array = []
-            const newHistory = { id: id, name: name, stock: stock, image: image, prod_type: type }
+            const newHistory = { id: id, name: name, stock: stock, image: image, prod_type: type, time: new Date()  }
             const oldHistory = JSON.parse(localStorage.getItem('searchHistory'))
             if(oldHistory) {
                 const duplicate = oldHistory.find(data => data.id == id)
