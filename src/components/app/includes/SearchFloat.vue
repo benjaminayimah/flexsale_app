@@ -121,8 +121,7 @@ export default {
                 axios.post(this.getHostname + "/api/search?token=" + this.getToken, { query: this.form.input })
                 .then((res) => {
                     this.submitting = false
-                    this.searchResults = res.data.results;
-                    console.log(res.data)
+                    this.searchResults = res.data.results
                 });
             }
             
