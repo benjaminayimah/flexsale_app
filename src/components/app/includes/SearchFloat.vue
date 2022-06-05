@@ -1,6 +1,6 @@
 <template>
 <div class="search-hold">
-    <form action="" @click="showResultsFloat" @mousedown="showResultsFloat">
+    <form  @click="showResultsFloat" @mousedown="showResultsFloat">
         <label for="search_field" :class="{ 'is-focused' : isFocused }" class="justify-content-center align-items-center">
             <div class="outer-icons flex-end" @mousedown.prevent="">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon-search" width="20" height="20" viewBox="0 0 26.671 26.671">
@@ -79,7 +79,7 @@ export default {
             },
             submitting: false,
             searchResults: [],
-            historyResults: JSON.parse(localStorage.getItem('searchHistory')),
+            historyResults: JSON.parse(localStorage.getItem('searchHistory')) ||  [],
             isFocused: false,
             dropdownIn: false
         };
