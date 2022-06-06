@@ -37,7 +37,7 @@
                                 <div class="flex gap-8"><span class="type">{{ (list.prod_type == '0' || list.prod_type == '1') ? 'Product' : 'Tag' }}</span></div>
                             </div>
                         </div>
-                        <button v-if="computedResults.type == 'history'" class="button button-secondary cancel-btn" @click.prevent="delThisHistory(list.id)">
+                        <button v-if="computedResults.type == 'history'" class="button button-secondary cancel-btn" @click.prevent="delThisHistory(list.time)">
                             <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 20 20">
                                 <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#566ff4"></path>
                             </svg>
@@ -147,8 +147,8 @@ export default {
                 localStorage.setItem('searchHistory', JSON.stringify(array))
             }
         },
-        delThisHistory(id) {
-            let oldHistory = JSON.parse(localStorage.getItem('searchHistory')).filter(data => data.id !== id)
+        delThisHistory(time) {
+            let oldHistory = JSON.parse(localStorage.getItem('searchHistory')).filter(data => data.time !== time)
             localStorage.removeItem('searchHistory')
             if(oldHistory.length > 0) {
                 localStorage.setItem('searchHistory', JSON.stringify(oldHistory))
