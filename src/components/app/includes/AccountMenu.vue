@@ -180,6 +180,12 @@ padding: 15px 20px;
       background-color: $primary-color;
     }
 }
+.menu-card-mob{
+    width: 100%;
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    padding: 25px 0 !important; 
+  }
 
 .store-info-hold{
     display: flex;
@@ -311,6 +317,5 @@ padding: 15px 20px;
   
 }
 
-  
   
 </style>

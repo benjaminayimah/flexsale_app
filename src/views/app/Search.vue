@@ -1,41 +1,118 @@
 <template>
     <div class="main-page-body">
-       <div>
-           <div class="sticky-top flex align-items-center">
-               <!-- <search-float /> -->
-           </div>
-           <div style="height:700px">
-                <!-- body -->
-                <div>dfdfddf</div>
-                <div>dfdfd</div>
-                <div>dfdfd</div>
-
+       <div class="sticky-top search-sticky-hold flex align-items-center">
+            <div class="search-hold">
+                <form @submit.prevent="" @click="showResultsFloat" @mousedown="showResultsFloat">
+                    <label for="global_search_2" class="justify-content-center align-items-center">
+                        <div class="outer-icons flex-end" @mousedown.prevent="">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-search" width="20" height="20" viewBox="0 0 26.671 26.671">
+                                <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"/>
+                            </svg>
+                        </div>
+                        <div class="fgr-1">
+                            <input id="global_search_2" v-model="form.input" @focusin="showResultsFloat" @focusout="hideResultsFloat" autocomplete="off" @input="doSearch('global_search_2')"  ref="searchInput" type="text" name="searchField" class="form-control" placeholder="Search application...">
+                        </div>
+                        <div class="outer-icons flex-start" v-if="!form.input == ''" @mousedown.prevent="">
+                            <spinner v-if="submitting" v-bind:size="21" />
+                            <span v-if="!submitting" class="clear-input-btn" @click="clearInput">
+                                <svg  xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
+                                    <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
+                                </svg>
+                            </span>
+                        </div>
+                    </label>
+                </form>
             </div>
-       </div>
+        </div>
+        <div @mousedown.prevent="">
+            <div v-if="computedResults.array.length > 0" class="search-result-hold">
+                <div class="flex-row-js history" v-if="computedResults.type == 'history'">
+                    <h3 class="mg-0">Recent</h3>
+                    <button @click.prevent="clearHistory" class="button rounded-button">Clear all</button>
+                </div>
+                <div>
+                    <li @mouseup="setHistory(list.id, list.name, list.stock, list.image, list.prod_type)" class="search-list" v-for="list in computedResults.array" :key="list.id">
+                        <a href="#" @click.prevent="" class="flex-row-js">
+                            <div class="flex gap-8 a-inner" @click="goTo(list.id, list.name)" :class="{'w-100' : computedResults.type == 'search'}">
+                                <div class="bg-img" :style="list.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+ getUser.current+'/'+list.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
+                                <div>
+                                    <div class="name text-overflow-ellipsis">{{ list.name }}</div>
+                                    <div class="flex gap-8" v-if="list.stock"><span class="label">Stock:</span><span>{{ list.stock }}</span></div>
+                                    <div class="flex gap-8"><span class="type">{{ (list.prod_type == '0' || list.prod_type == '1') ? 'Product' : 'Tag' }}</span></div>
+                                </div>
+                            </div>
+                            <button v-if="computedResults.type == 'history'" class="button button-secondary cancel-btn" @click.prevent="delThisHistory(list.time)">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 20 20">
+                                    <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#566ff4"></path>
+                                </svg>
+                            </button>
+                        </a>
+                    </li>
+                </div>
+            </div>
+            <div v-else class="search-empty">
+                <span>Try searching for products, tags, supplier or customer.</span>
+            </div>
+        </div>
     </div>
 </template>
 <script>
 // import SearchFloat from '../../components/app/includes/SearchFloat.vue'
+import { mapGetters } from 'vuex'
+import searchFunctionsMixin from '../../mixins/searchFunctions'
+import Spinner from '../../components/app/includes/Spinner.vue'
 export default {
-//   components: { SearchFloat },
-    name: 'Search',
+    name: "Search",
+    mixins: [searchFunctionsMixin],
+    components: { Spinner },
+    computed: {
+        ...mapGetters(["getUserAdminID", "getUser", "getDefaultImage"])
+    },
+    data() {
+        return {
+        }
+    },
     created() {
-        window.scrollTo(0,0)
-        this.setPage()
+        window.scrollTo(0, 0);
+        this.setPage();
+        this.showResultsFloat()
     },
     methods: {
         setPage() {
-            const title = { title: 'Search', back: true}
-            this.$store.commit('setPagetitle', title)
-        }
+            const title = { title: "Search", back: true };
+            this.$store.commit("setPagetitle", title);
+        },
+        showResultsFloat: function () {
+            const history = JSON.parse(localStorage.getItem('searchHistory'))
+            history ? this.history = history : []
+            this.$nextTick(function () {
+                this.$refs.searchInput.focus();
+            });
+        },
     }
 }
 </script>
 <style scoped lang="scss">
-.sticky-top{
+.search-sticky-hold{
     top: 80px;
     height: 100px;
     background-color: #ffffff;
 }
-
+.bg-img{
+    height: 60px;
+    width: 60px;
+}
+.cancel-btn{
+    height: 38px;
+    width: 38px;
+    margin-right: -8px;
+    margin-left: unset;
+    &:hover{
+        background-color: $primary-light;
+    }
+    &:active {
+        box-shadow: 0 0 0 0.2rem rgba(107, 95, 215, 0.132);
+        border: 1px solid $primary-color;
+    }
+}
 </style>
