@@ -111,7 +111,7 @@ export default {
     data() {
         return {
             form: {
-              email: '',
+              email: 'benjaminayimah@gmail.com',
               password: 'ajf1432#@!'
             },
             validation: {
@@ -232,4 +232,8 @@ export default {
     }
 }
 
+input:-webkit-autofill { animation-name: onAutoFillStart }
+input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
+@keyframes onAutoFillStart {from {}to {}}
+@keyframes onAutoFillCancel {from {}to {}}
 </style>
