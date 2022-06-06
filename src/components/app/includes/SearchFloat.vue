@@ -132,8 +132,6 @@ export default {
             this.$refs.searchInput.blur()
             this.searchResults = []
             this.form.input = ''
-            
-
         },
         setHistory(id, name, stock, image, type) {
             const array = []
