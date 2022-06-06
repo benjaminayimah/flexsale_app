@@ -111,7 +111,7 @@ export default {
     data() {
         return {
             form: {
-              email: '',
+              email: 'benjaminayimah@gmail.com',
               password: 'ajf1432#@!'
             },
             validation: {
