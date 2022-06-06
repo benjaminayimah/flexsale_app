@@ -263,7 +263,7 @@ export default {
                 localStorage.removeItem('newUser')
                 this.loaderFinish()
             })
-        },
+        }
     }
 }
 </script>
