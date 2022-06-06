@@ -136,7 +136,7 @@ export default {
     } ,
     data() {
         return {
-            title: 'Sales Record',
+            title: 'Sale Records',
             toggleCustomDate: false,
             classAbove: false,
             filters: {

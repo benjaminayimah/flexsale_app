@@ -41,6 +41,7 @@ export default createStore({
     saleRecords: { data: {}, array: [], title: '', startDate: '', endDate: ''},
     tempArrayCopy: [],
     currentStore: {},
+    searchIn: false,
     mobile: false,
     tablet: false,
     desktop: false,
@@ -1145,6 +1146,7 @@ export default createStore({
     getYesterdaySale: (state) => state.yesterdaySale,
     getBulkSelection: (state) => state.bulkSelection,
     getNotifications: (state) => state.notifications,
+    getSearch: (state) => state.searchIn,
     // delete this afterwards
     getSuppliersALT: (state) => state.suppliersALT,
 
