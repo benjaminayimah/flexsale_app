@@ -220,6 +220,7 @@ export default {
     box-shadow: 0 1px 6px 0 rgb(14 20 44 / 18%);
     min-height: 100px;
     overflow-y: auto;
+    top: 70px
 
 }
 .search-empty{
