@@ -53,7 +53,6 @@
                             <!-- <span class="text-overflow-ellipsis">Delete</span> -->
                         </button>
                     </div>
-                    
                 </div>
                 <div class="mini-body-content">
                     <ul v-if="getTempContainer.array.length > 0">

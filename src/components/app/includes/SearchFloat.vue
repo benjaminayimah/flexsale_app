@@ -126,7 +126,8 @@ export default {
             }
         },
         goTo(id, name) {
-            this.$router.push({ name: 'ProductDetailsBasic', params: { id: id, name: name } })
+            this.$store.dispatch('fetchThisProduct',id)
+            this.$router.push({ name: 'ProductDetailsBasic',  params: { id: id, name: name }, replace: true })
             this.isFocused = false
             this.$refs.searchInput.blur()
             this.searchResults = []
