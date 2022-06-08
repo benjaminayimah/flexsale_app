@@ -51,7 +51,7 @@
                 <!-- table row -->
                 <div class="table-menu flex-row-js">
                     <div class="category-pill">
-                        <div class="pill-wrap">
+                        <div class="pill-wrap" >
                             <ul class="flex-row-st">
                                 <li><router-link replace :to="{ name: 'Products', params: { id: 'all' , name: 'products'} }">All</router-link></li>
                                 <li v-for="tag in getTags" :key="tag.id"><router-link replace class="text-overflow-ellipsis" :to="{ name: 'Products', params: { id: tag.id , name: tag.name } }">{{ tag.name }}</router-link></li>
@@ -180,8 +180,6 @@ export default {
         display: block !important;
     }
 }
-
-
 .menu-card-mob{
   padding: 25px 0;
   position: fixed;

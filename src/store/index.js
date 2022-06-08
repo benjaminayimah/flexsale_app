@@ -9,6 +9,7 @@ export default createStore({
     token: localStorage.getItem('token') || null,
     windowHeight: '',
     windowWidth: '',
+    bodyWidth: '',
     defaultImage: require('@/assets/images/preview-img.svg'),
     onboard: { status: false, intro: false, basicInfo: false, avatar: false, final: false,
       form: {
@@ -152,6 +153,7 @@ export default createStore({
       let winWidth = window.innerWidth
       state.windowHeight = window.innerHeight
       state.windowWidth = winWidth
+      // state.bodyWidth = document.getElementById('main_home').innerWidth
       if(winWidth < 500){
         return this.commit('setMobile')
       }else if(winWidth > appWidth){
@@ -1147,6 +1149,7 @@ export default createStore({
     getBulkSelection: (state) => state.bulkSelection,
     getNotifications: (state) => state.notifications,
     getSearch: (state) => state.searchIn,
+    getBodyWidth: (state) => state.bodyWidth,
     // delete this afterwards
     getSuppliersALT: (state) => state.suppliersALT,
 

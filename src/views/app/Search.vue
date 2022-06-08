@@ -33,7 +33,7 @@
                 <div>
                     <li @mouseup="setHistory(list.id, list.name, list.stock, list.image, list.prod_type)" class="search-list" v-for="list in computedResults.array" :key="list.id">
                         <a href="#" @click.prevent="" class="flex-row-js">
-                            <div class="flex gap-8 a-inner" @click="goTo(list.id, list.name)" :class="{'w-100' : computedResults.type == 'search'}">
+                            <div class="flex gap-8 a-inner" @click="goToResult(list.id, list.name)" :class="{'w-100' : computedResults.type == 'search'}">
                                 <div class="bg-img" :style="list.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+ getUser.current+'/'+list.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                                 <div>
                                     <div class="name text-overflow-ellipsis">{{ list.name }}</div>
@@ -89,6 +89,10 @@ export default {
                 this.$refs.searchInput.focus();
             });
         },
+        goToResult(id, name) {
+            this.$store.dispatch('fetchThisProduct',id)
+            this.$router.push({ name: 'ProductDetailsBasic',  params: { id: id, name: name } })
+        }
     }
 }
 </script>

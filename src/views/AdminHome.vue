@@ -77,9 +77,7 @@
                   </div>
                 </div>
               </header>
-              <!-- <div id="form_submit_btn_holder" :style="{width: getAddingProduct.width + 'px'}"></div> -->
               <loader v-bind:size="35" />
-              <!-- <add-new v-if="getAddingProduct.status" v-bind:thisWidth="getAddingProduct.width" /> -->
 
               <div class="main-body">
                 <div class="main-body-content">
@@ -176,17 +174,6 @@ export default {
         }else{
             return this.$store.commit('unSetMobileTitle')
         }
-    },
-    windowDimension() {
-      let winWidth = window.innerWidth
-      let appWidth = 1344
-      if(winWidth < 500){
-        return this.$store.commit('setMobile')
-      }else if(winWidth > appWidth){
-        return this.$store.commit('setDesktop')
-      }else{
-        return this.$store.commit('setTablet', winWidth)
-      }
     },
     checkForNotification() {
       let counter = 0
