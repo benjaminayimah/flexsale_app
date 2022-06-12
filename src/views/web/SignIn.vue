@@ -11,7 +11,7 @@
             <div class="form-row">
                 <div class="input-wrapper" id="email_wrapper">
                     <label for="emailInput">Email</label>
-                    <input id="emailInput" v-model="form.email" @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="checkInputHasValue('emailInput')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" @mousedown="resertForm" type="email" name="email" class="form-control" :class="{ 'has-error' : validation.error && validation.errors.email}">
+                    <input id="emailInput" v-model="form.email" @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" @mousedown="resertForm" type="email" name="email" class="form-control" :class="{ 'has-error' : validation.error && validation.errors.email}">
                 </div>
                 <span class="validation-err" v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
@@ -21,7 +21,7 @@
                 <!--  -->
                 <div class="input-wrapper" id="password_wrapper">
                     <label for="passwordInput">Password</label>
-                    <input id="passwordInput" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')"  @mousedown="resertForm" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field" :class="{ 'has-error' : validation.error && validation.errors.password}">
+                    <input id="passwordInput" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')" @mousedown="resertForm" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field" :class="{ 'has-error' : validation.error && validation.errors.password}">
                     <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">
                         <g transform="translate(1.182 1.182)">
@@ -95,10 +95,11 @@ import axios from 'axios'
 import Spinner from '../../components/app/includes/Spinner.vue'
 import router from '../../router'
 import passwordToggleMixin from '../../mixins/passwordToggle'
+import inputMixin from '../../mixins/inputMixin'
 export default {
   components: { Spinner },
     name: 'SignIn',
-    mixins: [passwordToggleMixin],
+    mixins: [passwordToggleMixin, inputMixin],
     computed: {
         ...mapGetters(['getHostname', 'getUser']),
         computedUser() {
@@ -127,26 +128,6 @@ export default {
         }
     },
     methods: {
-        isFocusedIn(id) {
-            this.$_(id).classList.remove('is-filled')
-            this.$_(id).classList.remove('is-iddle')
-            this.$_(id).classList.add('is-focused')
-        },
-        isFocusedOut(id, input) {
-            if(this.checkInputHasValue(input)) {
-                this.$_(id).classList.add('is-iddle')
-            }
-            this.$_(id).classList.remove('is-focused')
-        },
-        checkInputHasValue(input){
-            if(this.$_(input).value !== '')
-            return true
-            else
-            return false
-        },
-        $_(x) {
-            return document.getElementById(x)
-        },
         async submitSignin() {
             this.resertForm()
             this.creating = true
@@ -189,51 +170,10 @@ export default {
                     router.push({ name: 'Dashboard'})
                 }
             }, 20)
-        },
-        checkThisInputOnload(id,input) {
-          if(this.checkInputHasValue(input)) {
-                this.isFocusedIn(id)
-            }
         }
     }
 }
 </script>
 <style scoped lang="scss">
-.input-wrapper{
-    position: relative;
-    label {
-        position: absolute;
-        left: 17px;
-        font-weight: 500;
-        cursor: text;
-        transition: 0.2s all;
-        margin: 0;
-        color: $gray-color;
-        top: 18px;
-        font-size: 16px;
-    }
-    input{
-        padding: 25px 16px 8px 16px !important;
-    }
-    
-}
-.is-focused{
-    label {
-        transform: translateY(-10px);
-        color: $primary-color;
-        font-size: 12px;
-    }
-}
-.is-iddle{
-    label{
-        color: $gray-color;
-        font-size: 12px;
-        transform: translateY(-10px);
-    }
-}
 
-input:-webkit-autofill { animation-name: onAutoFillStart }
-input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
-@keyframes onAutoFillStart {from {}to {}}
-@keyframes onAutoFillCancel {from {}to {}}
 </style>

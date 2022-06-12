@@ -1,6 +1,6 @@
 <template>
     <h1 id="page_title">{{ title }}</h1>
-    <div class="main-page-body">
+    <div class="main-page-body" v-if="getCustomers.length > 0">
         <div class="main-page-header flex-row-js">
             <div class="form-row" id="search_hold">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
@@ -23,6 +23,22 @@
             </ul>
         </div>
     </div>
+    <div v-else class="flex-col empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 204 204">
+            <g id="discount" transform="translate(60.818 60.818)">
+                <path d="M102,0A102,102,0,1,1,0,102,102,102,0,0,1,102,0Z" transform="translate(-60.818 -60.818)" fill="#d7dcfa"/>
+                <path d="M20412.469-3712.345c.014-13.573,11.9-31.047,25.475-31.062h15.531c13.572.015,24.824,17.489,24.84,31.062,0,.509-13.139,0-32.605,0S20412.469-3711.837,20412.469-3712.345Zm15.123-58.151a18.12,18.12,0,0,1,18.117-18.121,17.909,17.909,0,0,1,17.867,18.121c0,9.734-7.5,17.49-17.867,17.49S20427.592-3760.763,20427.592-3770.5Z" transform="translate(-20404.209 3791.551)" fill="#566ff4"/>
+            </g>
+        </svg>
+        <h1>{{ title }} list is empty</h1>
+        <div>Add your {{ title }}</div>
+        <button class="button button-primary" @click.prevent="getStores.length > 0 ? $store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'customer'}) : this.$store.commit('forceSetOnboard', 'intro')">
+            <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 15.882 15.882">
+                <path d="M-7843.453-4503.179v-5.94h-5.94a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.94v-5.94a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.94h5.94a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.94v5.94a1,1,0,0,1-1,1A1,1,0,0,1-7843.453-4503.179Z" transform="translate(7850.395 4518.06)" fill="#fff"/>
+            </svg>
+            <span>Add {{ title }}</span>
+        </button>
+    </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -30,7 +46,7 @@ import CustomersPageList from '../../components/app/includes/CustomersPageList.v
 export default {
   components: { CustomersPageList },
     name: 'Customers',
-    computed: mapGetters(['getCustomers']),
+    computed: mapGetters(['getCustomers', 'getStores']),
 
     data() {
         return {

@@ -1,97 +1,113 @@
 <template>
 <h1 id="page_title">{{ title }}</h1>
- <div id="all_products" class="main-page-body">   
+<div class="main-page-body" v-if="getProducts.length > 0">
     <div class="prod-main-custom-table">
-        <div class="table">
-            <div class="table-head">
-                <div class="flex-row-js tbh-row">
-                    <div class="prod-stat-hold">
-                        <div class="prod-stat-item">
-                            <a href="#">
-                                <div class="stat-count">1,435</div>
-                                <span class="label">Expired products</span>
-                            </a>
+            <div class="table">
+                <div class="table-head">
+                    <div class="flex-row-js tbh-row">
+                        <div class="prod-stat-hold">
+                            <div class="prod-stat-item">
+                                <a href="#">
+                                    <div class="stat-count">1,435</div>
+                                    <span class="label">Expired products</span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="prod-stat-hold">
-                        <div class="prod-stat-item">
-                            <a href="#">
-                                <div class="stat-count">217</div>
-                                <span class="label">Low stock</span>
-                            </a>
+                        <div class="prod-stat-hold">
+                            <div class="prod-stat-item">
+                                <a href="#">
+                                    <div class="stat-count">217</div>
+                                    <span class="label">Low stock</span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="prod-stat-hold">
-                        <div class="add-new">
-                            <a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'tag'})">
-                                <i class="flex-column">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582">
-                                    <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff"/>
-                                </svg>
-                                </i>
-                                <span>Create Tags</span>
-                            </a>
+                        <div class="prod-stat-hold">
+                            <div class="add-new">
+                                <a href="#" @click.prevent="getStores.length > 0 ? $store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'tag'}) : this.$store.commit('forceSetOnboard', 'intro')">
+                                    <i class="flex-column">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582">
+                                        <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff"/>
+                                    </svg>
+                                    </i>
+                                    <span>Create Tags</span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="prod-stat-hold">
-                        <div class="add-new">
-                            <a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'product'})">
-                                <i class="flex-column">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582">
-                                    <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff"/>
-                                </svg>
-                                </i>
-                                <span>Add product</span>
-                            </a>
+                        <div class="prod-stat-hold">
+                            <div class="add-new">
+                                <a href="#" @click.prevent="getStores.length > 0 ? $store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'product'}) : this.$store.commit('forceSetOnboard', 'intro')">
+                                    <i class="flex-column">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20.582 20.582">
+                                        <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff"/>
+                                    </svg>
+                                    </i>
+                                    <span>Add product</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="table-body">
-                <!-- table row -->
-                <div class="table-menu flex-row-js">
-                    <div class="category-pill">
-                        <div class="pill-wrap" >
-                            <ul class="flex-row-st">
-                                <li><router-link replace :to="{ name: 'Products', params: { id: 'all' , name: 'products'} }">All</router-link></li>
-                                <li v-for="tag in getTags" :key="tag.id"><router-link replace class="text-overflow-ellipsis" :to="{ name: 'Products', params: { id: tag.id , name: tag.name } }">{{ tag.name }}</router-link></li>
+                <div class="table-body">
+                    <!-- table row -->
+                    <div class="table-menu flex-row-js">
+                        <div class="category-pill">
+                            <div class="pill-wrap" >
+                                <ul class="flex-row-st">
+                                    <li><router-link replace :to="{ name: 'Products', params: { id: 'all' , name: 'products'} }">All</router-link></li>
+                                    <li v-for="tag in getTags" :key="tag.id"><router-link replace class="text-overflow-ellipsis" :to="{ name: 'Products', params: { id: tag.id , name: tag.name } }">{{ tag.name }}</router-link></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="table-filters">
+                            <ul>
+                                <!-- <li>
+                                    <a href="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 22.73 22.73">
+                                            <path d="M-9229.858-332.653l-4.5-4.5a10.129,10.129,0,0,1-6.584,2.408,10.141,10.141,0,0,1-7.212-2.986,10.138,10.138,0,0,1-2.985-7.211,10.138,10.138,0,0,1,2.985-7.211,10.141,10.141,0,0,1,7.212-2.986,10.136,10.136,0,0,1,7.211,2.986,10.138,10.138,0,0,1,2.985,7.211,10.127,10.127,0,0,1-2.408,6.584l4.5,4.5a.853.853,0,0,1,0,1.2.85.85,0,0,1-.6.248A.843.843,0,0,1-9229.858-332.653Zm-19.572-12.284a8.5,8.5,0,0,0,8.493,8.493,8.469,8.469,0,0,0,5.926-2.415.751.751,0,0,1,.071-.081.886.886,0,0,1,.079-.07,8.464,8.464,0,0,0,2.416-5.927,8.5,8.5,0,0,0-8.492-8.493A8.5,8.5,0,0,0-9249.431-344.937Z" transform="translate(9251.135 355.134)" fill="#0e142c"/>
+                                        </svg>
+                                    </a>
+                                </li> -->
+                                <!-- <li id="product_filter_toggle">
+                                    <a href="#" @click.prevent="doMenu('product_filter_toggle')" :class="{ 'dropdown-out' : toggleFilter }" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 21.259 20.97">
+                                            <path id="Union_8_-_Outline" data-name="Union 8 - Outline" d="M-9309.519-336.817h-.561a3.5,3.5,0,0,1-3.5-3.454h-4.376v-2h4.409a3.5,3.5,0,0,1,3.467-3.019h.561a3.5,3.5,0,0,1,3.467,3.019h9.355v2h-9.322A3.5,3.5,0,0,1-9309.519-336.817Zm-.561-6.473a1.5,1.5,0,0,0-1.5,1.5v1.473a1.5,1.5,0,0,0,1.5,1.5h.561a1.5,1.5,0,0,0,1.5-1.5v-1.473a1.5,1.5,0,0,0-1.5-1.5Zm6.969-6.024h-.563a3.5,3.5,0,0,1-3.5-3.452h-10.783v-2h10.815a3.5,3.5,0,0,1,3.466-3.021h.563a3.506,3.506,0,0,1,3.468,3.021h2.946v2h-2.914A3.5,3.5,0,0,1-9303.11-349.314Zm-.563-6.473a1.5,1.5,0,0,0-1.5,1.5v1.473a1.5,1.5,0,0,0,1.5,1.5h.563a1.5,1.5,0,0,0,1.5-1.5v-1.473a1.5,1.5,0,0,0-1.5-1.5Z" transform="translate(9317.955 357.787)" fill="#0e142c"/>
+                                        </svg>
+                                    </a>
+                                </li> -->
+                                <li id="product_filter_toggle" @click.prevent="doMenu('product_filter_toggle')">
+                                    <a href="#" :class="{ 'dropdown-out' : toggleFilter }" @click.prevent="doMenu('product_filter_toggle')">
+                                    {{ sort.name}}
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="8" viewBox="0 0 18.312 11.241">
+                                        <path d="M766.473,22.642a.989.989,0,0,1-.643-.232.784.784,0,0,1-.034-1.19l8.374-7.937-8.357-7.518a.784.784,0,0,1,0-1.19,1.009,1.009,0,0,1,1.321,0l9.646,8.678-9.63,9.127A.984.984,0,0,1,766.473,22.642Z" transform="translate(22.642 -765.539) rotate(90)" fill="#0e142c"/>
+                                    </svg>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="table-filters">
-                        <ul>
-                            <!-- <li>
-                                <a href="">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 22.73 22.73">
-                                        <path d="M-9229.858-332.653l-4.5-4.5a10.129,10.129,0,0,1-6.584,2.408,10.141,10.141,0,0,1-7.212-2.986,10.138,10.138,0,0,1-2.985-7.211,10.138,10.138,0,0,1,2.985-7.211,10.141,10.141,0,0,1,7.212-2.986,10.136,10.136,0,0,1,7.211,2.986,10.138,10.138,0,0,1,2.985,7.211,10.127,10.127,0,0,1-2.408,6.584l4.5,4.5a.853.853,0,0,1,0,1.2.85.85,0,0,1-.6.248A.843.843,0,0,1-9229.858-332.653Zm-19.572-12.284a8.5,8.5,0,0,0,8.493,8.493,8.469,8.469,0,0,0,5.926-2.415.751.751,0,0,1,.071-.081.886.886,0,0,1,.079-.07,8.464,8.464,0,0,0,2.416-5.927,8.5,8.5,0,0,0-8.492-8.493A8.5,8.5,0,0,0-9249.431-344.937Z" transform="translate(9251.135 355.134)" fill="#0e142c"/>
-                                    </svg>
-                                </a>
-                            </li> -->
-                            <!-- <li id="product_filter_toggle">
-                                <a href="#" @click.prevent="doMenu('product_filter_toggle')" :class="{ 'dropdown-out' : toggleFilter }" >
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 21.259 20.97">
-                                        <path id="Union_8_-_Outline" data-name="Union 8 - Outline" d="M-9309.519-336.817h-.561a3.5,3.5,0,0,1-3.5-3.454h-4.376v-2h4.409a3.5,3.5,0,0,1,3.467-3.019h.561a3.5,3.5,0,0,1,3.467,3.019h9.355v2h-9.322A3.5,3.5,0,0,1-9309.519-336.817Zm-.561-6.473a1.5,1.5,0,0,0-1.5,1.5v1.473a1.5,1.5,0,0,0,1.5,1.5h.561a1.5,1.5,0,0,0,1.5-1.5v-1.473a1.5,1.5,0,0,0-1.5-1.5Zm6.969-6.024h-.563a3.5,3.5,0,0,1-3.5-3.452h-10.783v-2h10.815a3.5,3.5,0,0,1,3.466-3.021h.563a3.506,3.506,0,0,1,3.468,3.021h2.946v2h-2.914A3.5,3.5,0,0,1-9303.11-349.314Zm-.563-6.473a1.5,1.5,0,0,0-1.5,1.5v1.473a1.5,1.5,0,0,0,1.5,1.5h.563a1.5,1.5,0,0,0,1.5-1.5v-1.473a1.5,1.5,0,0,0-1.5-1.5Z" transform="translate(9317.955 357.787)" fill="#0e142c"/>
-                                    </svg>
-                                </a>
-                            </li> -->
-                            <li id="product_filter_toggle" @click.prevent="doMenu('product_filter_toggle')">
-                                <a href="#" :class="{ 'dropdown-out' : toggleFilter }" @click.prevent="doMenu('product_filter_toggle')">
-                                {{ sort.name}}
-                                <svg xmlns="http://www.w3.org/2000/svg" height="9" viewBox="0 0 10 9">
-                                    <path d="M4.126,1.573a1,1,0,0,1,1.748,0l3.3,5.941A1,1,0,0,1,8.3,9H1.7A1,1,0,0,1,.825,7.514Z" transform="translate(10 9) rotate(180)" fill="#0e142c"/>
-                                </svg>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <!-- {{computedProducts}} -->
+                    <!-- <router-view></router-view> -->
+                    <product-row v-for="product in sortProducts(computedProducts)" :key="product.id" v-bind:product="product" />
                 </div>
-                <!-- {{computedProducts}} -->
-                <!-- <router-view></router-view> -->
-                <product-row v-for="product in sortProducts(computedProducts)" :key="product.id" v-bind:product="product" />
             </div>
         </div>
-    </div>
- </div>
+</div>
+<div v-else class="flex-col empty-state">
+    <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 204 204">
+        <g id="discount" transform="translate(60.818 60.818)">
+            <path d="M102,0A102,102,0,1,1,0,102,102,102,0,0,1,102,0Z" transform="translate(-60.818 -60.818)" fill="#d7dcfa"/>
+            <path d="M48.966-1209.653l-.049-.051,23.891-23.891a12.273,12.273,0,0,0,3.618-8.736,12.275,12.275,0,0,0-3.618-8.735L45.873-1278H58.647a6.591,6.591,0,0,1,4.659,1.928l21.51,21.71c7.073,7.715,5.02,19.772-.347,24.534l-20.1,20.175c-1.288,1.286-4.5,1.929-7.7,1.929S50.252-1208.367,48.966-1209.653Zm-19.6-1.233L.894-1239.329A3.035,3.035,0,0,1,0-1241.48v-33.153a3.044,3.044,0,0,1,3.044-3.043H36.2a3.044,3.044,0,0,1,2.152.892l28.475,28.477.007.005a9.612,9.612,0,0,1,2.812,6.821,9.61,9.61,0,0,1-2.812,6.819l-.007.007-23.769,23.769a9.611,9.611,0,0,1-6.844,2.835A9.615,9.615,0,0,1,29.367-1210.886Z" transform="translate(-3.493 1286.587)" fill="#566ff4"/>
+        </g>
+    </svg>
+    <h1>Product list is empty</h1>
+    <div>Upload new product</div>
+    <button class="button button-primary" @click.prevent="getStores.length > 0 ? $store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'product'}) : this.$store.commit('forceSetOnboard', 'intro')">
+        <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 15.882 15.882">
+            <path d="M-7843.453-4503.179v-5.94h-5.94a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.94v-5.94a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.94h5.94a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.94v5.94a1,1,0,0,1-1,1A1,1,0,0,1-7843.453-4503.179Z" transform="translate(7850.395 4518.06)" fill="#fff"/>
+        </svg>
+        <span>Add products</span>
+    </button>
+</div>
  <teleport to="body">
     <transition name="fade">
         <backdrop v-if="toggleFilter" @mousedown="closeJustMenu('product_filter_toggle')" />
@@ -126,7 +142,7 @@ export default {
     name: 'Products',
     mixins: [dropdownToggleMixin],
     computed: {
-        ...mapGetters(['getMobile', 'getProducts', 'getAllFilters', 'getTags', 'getFloatingDiv']),
+        ...mapGetters(['getMobile', 'getProducts', 'getAllFilters', 'getTags', 'getFloatingDiv', 'getStores']),
         computedProducts() {
             if(this.$route.params.id !== 'all') {
                 return this.getAllFilters.filter(product => product.tag_id === this.$route.params.id)

@@ -4,7 +4,6 @@
 </teleport>
 <teleport to="#onboarding_top_button">
     <div class="flex">
-        <!-- <button class="button button-secondary top-submit-btn" @click.prevent="this.$store.commit('forceSetOnboard', 'basicInfo')">Back</button> -->
         <button class="button button-primary top-submit-btn" v-if="getOnboard.imageForm.store == ''" @click.prevent="afterOnboardImageUpdate">Save</button>
         <button class="button button-primary top-submit-btn" v-else @click.prevent="onboardImageUpload">Done</button>
     </div>

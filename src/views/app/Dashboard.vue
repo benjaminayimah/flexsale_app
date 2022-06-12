@@ -1,93 +1,79 @@
 <template>
 <h1 id="page_title">{{ title }}</h1>
+<div v-if="getStores.length > 0">
+    <div class="ovw-wrap">
+        <div class="overview-row">
+            <div class="flex-row-st">
+                <span id="left_scroll_indicator"></span>
+                <span id="right_scroll_indicator"></span>
+                <button v-show="leftShow" class="scroll-button scrl-left" @click="scrollLeft">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17.033" height="17.033" viewBox="0 0 17.033 17.033">
+                        <path  d="M15561.452,6480.315h-12.044v-12.044h1.5v10.544h10.544Z" transform="translate(-6412.817 -15568.85) rotate(45)" fill="#0e142c"/>
+                    </svg>
+                </button>
+                <button v-show="rightShow" class="scroll-button scrl-right" @click="scrollRight">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17.033" height="17.033" viewBox="0 0 17.033 17.033">
+                        <path  d="M12.044,0H0V12.045H1.5V1.5H12.044Z" transform="translate(17.033 8.517) rotate(135)" fill="#0e142c"/>
+                    </svg>
+                </button>
 
- <div class="ovw-wrap" v-if="getStores.length > 0">
-     <div id="overview_row">
-         <div class="flex-row-st">
-             <span id="left_scroll_indicator"></span>
-             <span id="right_scroll_indicator"></span>
-             <button v-show="leftShow" class="scroll-button scrl-left" @click="scrollLeft">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="17.033" height="17.033" viewBox="0 0 17.033 17.033">
-                    <path  d="M15561.452,6480.315h-12.044v-12.044h1.5v10.544h10.544Z" transform="translate(-6412.817 -15568.85) rotate(45)" fill="#0e142c"/>
-                </svg>
-             </button>
-             <button v-show="rightShow" class="scroll-button scrl-right" @click="scrollRight">
-                <svg xmlns="http://www.w3.org/2000/svg" width="17.033" height="17.033" viewBox="0 0 17.033 17.033">
-                    <path  d="M12.044,0H0V12.045H1.5V1.5H12.044Z" transform="translate(17.033 8.517) rotate(135)" fill="#0e142c"/>
-                </svg>
-
-             </button>
-
-             <div class="ovw-hold" @scroll="ovwScroll">
-                 <div class="ovw-content" id="ovw_content">
-                     <ul>
-                         <li :id="'ovw'+stat.index" v-for="stat in getStats" :key="stat.id" :style="{ transform: 'translateX('+parseInt(stat.index * 170+(transitionVal))+'px )'}">
-                             <div class="a-wrap">
-                                 <a href="#" class="li-hold">
-                                    <div class="overview-content">
-                                        <div>
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 0 50.043 50.042">
-                                                <path d="M-514.957-141.053-539-165.1V-189.14h24.044l24.043,24.044a6.63,6.63,0,0,1,1.955,4.718,6.63,6.63,0,0,1-1.955,4.719l-14.608,14.607a6.626,6.626,0,0,1-4.718,1.955A6.626,6.626,0,0,1-514.957-141.053Zm-20.707-25.425,23.066,23.066a3.318,3.318,0,0,0,2.36.977,3.315,3.315,0,0,0,2.359-.977l14.608-14.607a3.318,3.318,0,0,0,.977-2.36,3.315,3.315,0,0,0-.977-2.359L-516.338-185.8h-19.326Zm5-7.65a6.679,6.679,0,0,1,6.673-6.672,6.679,6.679,0,0,1,6.673,6.672,6.68,6.68,0,0,1-6.673,6.673A6.68,6.68,0,0,1-530.66-174.128Zm3.336,0a3.34,3.34,0,0,0,3.336,3.336,3.34,3.34,0,0,0,3.336-3.336,3.34,3.34,0,0,0-3.336-3.336A3.34,3.34,0,0,0-527.323-174.128Z" transform="translate(539 189.14)" fill="#fff"/>
-                                            </svg>
+                <div class="ovw-hold" @scroll="ovwScroll">
+                    <div class="ovw-content" id="ovw_content">
+                        <ul>
+                            <li :id="'ovw'+stat.index" v-for="stat in stats" :key="stat.id" :style="{ transform: 'translateX('+parseInt(stat.index * 170+(transitionVal))+'px )'}">
+                                <div class="a-wrap">
+                                    <a href="#" class="li-hold">
+                                        <div class="overview-content">
+                                            <div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 0 50.043 50.042">
+                                                    <path d="M-514.957-141.053-539-165.1V-189.14h24.044l24.043,24.044a6.63,6.63,0,0,1,1.955,4.718,6.63,6.63,0,0,1-1.955,4.719l-14.608,14.607a6.626,6.626,0,0,1-4.718,1.955A6.626,6.626,0,0,1-514.957-141.053Zm-20.707-25.425,23.066,23.066a3.318,3.318,0,0,0,2.36.977,3.315,3.315,0,0,0,2.359-.977l14.608-14.607a3.318,3.318,0,0,0,.977-2.36,3.315,3.315,0,0,0-.977-2.359L-516.338-185.8h-19.326Zm5-7.65a6.679,6.679,0,0,1,6.673-6.672,6.679,6.679,0,0,1,6.673,6.672,6.68,6.68,0,0,1-6.673,6.673A6.68,6.68,0,0,1-530.66-174.128Zm3.336,0a3.34,3.34,0,0,0,3.336,3.336,3.34,3.34,0,0,0,3.336-3.336,3.34,3.34,0,0,0-3.336-3.336A3.34,3.34,0,0,0-527.323-174.128Z" transform="translate(539 189.14)" fill="#fff"/>
+                                                </svg>
+                                            </div>
+                                            <div class="stat-count">{{ stat.count }}</div>
+                                            <div>{{ stat.title }}</div>
                                         </div>
-                                        <div class="stat-count">{{ stat.count }}</div>
-                                        <div>{{ stat.title }}</div>
-                                    </div>
-                                </a>
-                             </div>
-                         </li>
-                     </ul>
-                 </div>
-             </div>
-             <!-- <button @click.prevent="counter">Click me {{ count }}</button> -->
-             
-             <!--
-            <div class="ovw-colum" v-for="stat in stats" :key="stat.id">
-                <div class="overview-content">
-                    <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 0 50.043 50.042">
-                        <path d="M-514.957-141.053-539-165.1V-189.14h24.044l24.043,24.044a6.63,6.63,0,0,1,1.955,4.718,6.63,6.63,0,0,1-1.955,4.719l-14.608,14.607a6.626,6.626,0,0,1-4.718,1.955A6.626,6.626,0,0,1-514.957-141.053Zm-20.707-25.425,23.066,23.066a3.318,3.318,0,0,0,2.36.977,3.315,3.315,0,0,0,2.359-.977l14.608-14.607a3.318,3.318,0,0,0,.977-2.36,3.315,3.315,0,0,0-.977-2.359L-516.338-185.8h-19.326Zm5-7.65a6.679,6.679,0,0,1,6.673-6.672,6.679,6.679,0,0,1,6.673,6.672,6.68,6.68,0,0,1-6.673,6.673A6.68,6.68,0,0,1-530.66-174.128Zm3.336,0a3.34,3.34,0,0,0,3.336,3.336,3.34,3.34,0,0,0,3.336-3.336,3.34,3.34,0,0,0-3.336-3.336A3.34,3.34,0,0,0-527.323-174.128Z" transform="translate(539 189.14)" fill="#fff"/>
-                        </svg>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="stat-count">{{ stat.count }}</div>
-                    <div>{{ stat.title }}</div>
-                </div>
-            </div>
-            -->
-        </div>
-     </div>
- </div>
- <!-- <input type="date" value="2022-09-01">
- <input type="time" value="00:00:00">
- <input type="color" title="Color" value="#00ff00"> -->
- <div class="dash-section-holder">
-    <div class="flex-row-js dashboard-title-wrap">
-        <h1 class="dashboard-title">Suppliers</h1>
-        <a href="" class="see-all">See all (10)</a>
-    </div>
-    <div class="h-list-wrap">
-        <div class="overview">
-            <div class="list-hold">
-                <div class="list-content">
-                    <ul>
-                        <supplier-horizontal-list v-for="supplier in getSuppliersALT" :key="supplier.id" v-bind:supplier="supplier" />
-                    </ul>
                 </div>
             </div>
         </div>
     </div>
- </div>
- <div class="dash-section-holder">
-    <div class="flex-row-js dashboard-title-wrap">
-        <h1 class="dashboard-title">Activity log</h1>
-        <a href="" class="see-all">See all logs</a>
-    </div>
-    <div class="activity-wrap">
-        <div class="act-hold flex">
-            <activity-list-row v-for="activity in getActivities" :key="activity.id" v-bind:activity="activity" />
+    <div class="dash-section-holder">
+        <div class="flex-row-js dashboard-title-wrap">
+            <h1 class="dashboard-title">Suppliers</h1>
+            <a href="" class="see-all">See all (10)</a>
+        </div>
+        <div class="h-list-wrap">
+            <div class="overview">
+                <div class="list-hold">
+                    <div class="list-content">
+                        <ul>
+                            <supplier-horizontal-list v-for="supplier in suppliersALT" :key="supplier.id" v-bind:supplier="supplier" />
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
- </div>
+    <div class="dash-section-holder">
+        <div class="flex-row-js dashboard-title-wrap">
+            <h1 class="dashboard-title">Activity log</h1>
+            <a href="" class="see-all">See all logs</a>
+        </div>
+        <div class="activity-wrap">
+            <div class="act-hold">
+                <activity-list-row v-for="activity in getActivities" :key="activity.id" v-bind:activity="activity" />
+            </div>
+        </div>
+    </div>
+</div>
+<div v-else class="flex-col gap-32">
+    <welcome-screen-top />
+    <welcome-screen-bottom />
+</div>
 
 </template>
 <script>
@@ -95,11 +81,21 @@ import CouterMixin from '../../mixins/counter'
 import { mapGetters } from 'vuex'
 import ActivityListRow from '../../components/app/includes/ActivityListRow.vue'
 import SupplierHorizontalList from '../../components/app/includes/SupplierHorizontalList.vue'
+import WelcomeScreenTop from '../../components/app/includes/WelcomeScreenTop.vue'
+import WelcomeScreenBottom from '../../components/app/includes/WelcomeScreenBottom.vue'
 export default {
-  components: { SupplierHorizontalList, ActivityListRow },
+  components: { SupplierHorizontalList, ActivityListRow, WelcomeScreenTop, WelcomeScreenBottom },
     name: 'Dashboard',
     mixins: [CouterMixin],
-    computed: mapGetters(['getStores', 'getSuppliersALT', 'getStats', 'getActivities']),
+    computed: {
+        ...mapGetters(['getStores', 'getActivities', 'getProducts', 'getUser', 'getThisHostname']),
+        computedUser() {
+            if(this.getUser.name) {
+                return this.getUser.name.split(' ')[0]
+            }else
+            return ''
+        }
+    },
     data() {
         return {
             title: 'Home',
@@ -107,7 +103,31 @@ export default {
             leftShow: false,
             rightShow: true,
             firstVal: '',
-            lastVal: ''
+            lastVal: '',
+            suppliersALT: [
+                {id: 1, index: 0, name: 'Jon Doe', image: 'profile-1.png'},
+                {id: 2, index: 1, name: 'Walter White', image: 'profile-2.png'},
+                {id: 3, index: 2, name: 'Jane Smith', image: 'profile-3.png'},
+                {id: 4, index: 3, name: 'monicca brown', image: ''},
+                {id: 5, index: 4, name: 'monicca brown', image: 'profile-4.png'},
+                {id: 6, index: 5, name: 'Tyler Cooper', image: 'profile-5.png'},
+                {id: 7, index: 6, name: 'Harisson Smichel', image: ''},
+                {id: 8, index: 7, name: 'Harisson Smichel', image: 'profile-6.png'},
+                {id: 9, index: 8, name: 'Jadon Sancho', image: 'profile-7.png'},
+                {id: 10, index: 9, name: 'Sarah', image: ''},
+                {id: 11, index: 10, name: 'Sarah', image: 'profile-8.png'},
+                {id: 12, index: 11, name: 'Chris Sharw', image: 'profile-9.png'},
+                {id: 13, index: 12, name: 'Dominic Campbel', image: 'profile-10.png'},
+            ],
+            stats: [
+                {id: 1, index: 0, count: '1,200', title: 'Products'},
+                {id: 2, index: 1, count: '200', title: 'Low stocks'},
+                {id: 3, index: 2, count: '50', title: 'Expiry alert'},
+                {id: 4, index: 3, count: '15', title: 'Expiry alert'},
+                {id: 5, index: 4, count: '15', title: 'Expiry alert'},
+                {id: 6, index: 5, count: '15', title: 'Expiry alert'},
+                {id: 7, index: 6, count: '15', title: 'Expiry alert'},
+            ],
         }
     },
     created() {
@@ -121,7 +141,7 @@ export default {
         },
        
         scrollLeft() {
-            let no = this.getStats.length -1
+            let no = this.stats.length -1
             let elem_1 = document.getElementById('ovw'+0).getBoundingClientRect().left + 170
             let lastElem = document.getElementById('ovw'+no).getBoundingClientRect().left + 170
             this.firstVal = elem_1
@@ -130,7 +150,7 @@ export default {
             this.transitionVal += 170
         },
         scrollRight() {
-            let no = this.getStats.length -1
+            let no = this.stats.length -1
             let elem_1 = document.getElementById('ovw'+0).getBoundingClientRect().left - 170
             let lastElem = document.getElementById('ovw'+no).getBoundingClientRect().left - 170
             this.firstVal = elem_1
@@ -207,10 +227,9 @@ export default {
 .ovw-wrap{
     display: block;
     overflow-y: hidden;
-    align-items: stretch;
     position: relative;
 }
-#overview_row{
+.overview-row{
     display: flex;
     flex-direction: column;
     position: relative;

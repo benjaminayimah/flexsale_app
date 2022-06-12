@@ -1,0 +1,31 @@
+<template>
+    <div class="wlc-container wlc-cont-2 flex-row-js">
+        <div class="wlc-wrap flex-col justify-content-center align-items-start">
+            <h1>Multiple branches support</h1>
+            <div>You can create upto a maximum of two separate stores  on this Flexsale account.</div>
+        </div>
+        <div class="flex justify-content-center align-items-center flex-g-1">
+            <svg xmlns="http://www.w3.org/2000/svg" height="100" viewBox="0 0 158.145 148.035">
+                <g id="Group_4026" data-name="Group 4026" transform="translate(-1012.803 -717.482)">
+                    <path id="Subtraction_10" data-name="Subtraction 10" d="M21551.193,9360.356H21505.7a9.846,9.846,0,0,1-9.818-9.817v-34.066c-.176-.194-.375-.382-.551-.547a6.617,6.617,0,0,1-.824-.877,16.364,16.364,0,0,1-3.141-6.7,16.787,16.787,0,0,1,.1-7.437l5.148-21.45a9.789,9.789,0,0,1,3.395-5.368,9.546,9.546,0,0,1,5.934-2.092h68.182a9.47,9.47,0,0,1,5.957,2.073,9.791,9.791,0,0,1,3.422,5.387l5.15,21.45a16.52,16.52,0,0,1-3.043,14.187,9.5,9.5,0,0,1-.939.959c-.137.128-.293.273-.436.415v7.008a49.353,49.353,0,0,0-9.77,4.427v-6.969c-.127.017-.248.037-.391.063a4.112,4.112,0,0,1-.738.085,15.334,15.334,0,0,1-10.992-4.662,16.031,16.031,0,0,1-5.057,3.436,15.049,15.049,0,0,1-5.939,1.227,16.112,16.112,0,0,1-11.242-4.564,15.577,15.577,0,0,1-10.947,4.564,16.1,16.1,0,0,1-6.24-1.227,15.8,15.8,0,0,1-5.1-3.436,15.339,15.339,0,0,1-11,4.662,4.046,4.046,0,0,1-.732-.085c-.117-.021-.254-.045-.393-.062v29.6h48.65a49.158,49.158,0,0,0-3.156,9.816Zm22.787-78.587h0l-9.477.049,2.848,23.853a6.41,6.41,0,0,0,1.977,4,5.805,5.805,0,0,0,3.967,1.6,5.727,5.727,0,0,0,4.613-2.3,6.632,6.632,0,0,0,1.23-5.743l-5.156-21.45Zm-29.014.05h0v23.021a6.619,6.619,0,0,0,1.764,4.538,5.753,5.753,0,0,0,4.229,1.89,5.882,5.882,0,0,0,4.662-2.01,6.607,6.607,0,0,0,1.619-5.254l-2.65-22.185Zm-19.436,0h0l-2.7,22.184a7,7,0,0,0,1.619,5.254,5.869,5.869,0,0,0,4.367,2.01,6.314,6.314,0,0,0,6.336-6.428v-23.021Zm-19.584,0-4.963,21.4a6.479,6.479,0,0,0,1.277,5.743,5.681,5.681,0,0,0,4.564,2.3,6.179,6.179,0,0,0,5.943-5.6l2.848-23.853Z" transform="translate(-20478.195 -8554.52)" fill="#fff" opacity="0.896"/>
+                    <g id="Group_4025" data-name="Group 4025">
+                    <circle id="Ellipse_753" data-name="Ellipse 753" cx="49.5" cy="49.5" r="49.5" transform="translate(1071.947 766.518)" fill="rgba(255,255,255,0.05)"/>
+                    <g id="store_mall_directory" transform="translate(1093.402 790.494)">
+                        <path id="Path_1863" data-name="Path 1863" d="M45.741,17.913l1.67,8.348H8.677l1.67-8.348ZM50.3,4H5.783V9.565H50.3Zm0,8.348H5.783L3,26.261v5.565H5.783v16.7H33.609v-16.7H44.74v16.7H50.3v-16.7h2.783V26.261ZM11.348,42.957V31.826h16.7V42.957Z" fill="#fff"/>
+                    </g>
+                    </g>
+                </g>
+            </svg>
+        </div>
+    </div>
+</template>
+<script>
+import { mapGetters } from 'vuex'
+export default {
+    name: 'WelcomeScreenBottom',
+    computed: {
+        ...mapGetters(['getThisHostname'])
+    },
+}
+</script>
+            <!-- <lottie-player class="lottie-player" :src="getThisHostname+'/img/store-locations.json'" background="transparent"  speed="1" loop autoplay></lottie-player> -->

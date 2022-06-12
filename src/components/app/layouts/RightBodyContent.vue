@@ -32,7 +32,7 @@
                         <i></i>
                     </button>
                 </div>
-                <button class="button button-primary add-sale-btn" @click.prevent="$store.commit('addToSale')">
+                <button class="button button-primary add-sale-btn" @click.prevent="getStores.length > 0 ? $store.commit('addToSale') : this.$store.commit('forceSetOnboard', 'intro')">
                     <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 15.882 15.882">
                         <path d="M-7843.453-4503.179v-5.94h-5.94a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.94v-5.94a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.94h5.94a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.94v5.94a1,1,0,0,1-1,1A1,1,0,0,1-7843.453-4503.179Z" transform="translate(7850.395 4518.06)" fill="#fff"/>
                     </svg>
@@ -43,11 +43,20 @@
                 <h1 class="dashboard-title">Recent sales</h1>
                 <router-link :to="'/sales-record/filter/todays-sales'" class="see-all">See all</router-link>
             </div>
-            <div class="flex-col" id="dash_sales" v-if="getTodaysales.length > 0">
-                <today-sales-row v-for="sale in getTodaysales.slice(0, 3)" :key="sale.id" v-bind:sale="sale" />
+            <div v-if="getStores.length > 0">
+                <div class="flex-col" id="dash_sales" v-if="getTodaysales.length > 0">
+                    <today-sales-row v-for="sale in getTodaysales.slice(0, 3)" :key="sale.id" v-bind:sale="sale" />
+                </div>
+                <div v-else>
+                    No sales today
+                </div>
             </div>
-            <div v-else>
-                No sales today
+            <div v-else class="flex-col gap-32">
+                <div class="wlc-container wlc-cont-1 flex align-items-center justify-content-center">
+                    <div class="wlc-wrap flex-col">
+                        <h3>Recent sale activities shows up here</h3>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -59,7 +68,7 @@ export default {
     name: 'RightBodyContent',
     components: { TodaySalesRow },
     computed: {
-        ...mapGetters(['getCurrency', 'getTodaysales', 'getWindowHeight', 'getYesterdaySale']),
+        ...mapGetters(['getCurrency', 'getTodaysales', 'getWindowHeight', 'getYesterdaySale', 'getStores']),
         computeTotal() {
           return this.getTodaysales.reduce((acc, item) => acc + Number(item.total_paid), 0);
         },
@@ -103,6 +112,9 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+.wlc-container{
+    margin: 0;
+}
 .currency{
     margin-top: 4px;
 }
