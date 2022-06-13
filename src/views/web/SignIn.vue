@@ -91,7 +91,7 @@
     <!-- <sign-up-with-social-float v-bind:oauthUser="oAuthSignUpModal" v-bind:creating="creating" v-on:closeModal="closeOAuthModal" /> -->
 </template>
 <script>
-import jwt_decode from "jwt-decode";
+// import jwt_decode from "jwt-decode";
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import Spinner from '../../components/app/includes/Spinner.vue'
@@ -132,49 +132,49 @@ export default {
         }
     },
     created() {
-            window.addEventListener('load', () => {
-                console.log(window.google);
-                window.google.accounts.id.initialize({
-                    client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
-                    callback: this.handleCredentialResponse
-                });
-                window.google.accounts.id.renderButton(
-                    document.getElementById("signin_button"),
-                    { theme: "outline", size: "large" }  // customization attributes
-                );
-            })
+            // window.addEventListener('load', () => {
+            //     console.log(window.google);
+            //     window.google.accounts.id.initialize({
+            //         client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
+            //         callback: this.handleCredentialResponse
+            //     });
+            //     window.google.accounts.id.renderButton(
+            //         document.getElementById("signin_button"),
+            //         { theme: "outline", size: "large" }  // customization attributes
+            //     );
+            // })
     },
     methods: {
-        handleCredentialResponse(response) {
-            const responsePayload = jwt_decode(response.credential)
-            // console.log(responsePayload)
-            const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
-            this.OAuthSignIn(user)
-        },
-        signInWithGoogle() {
-            window.google.accounts.id.prompt();
-        },
-        signOutOauth() {
-           window.google.accounts.id.cancel();
-        },
-        async OAuthSignIn(user) {
-            axios.post(this.getHostname+'/api/oauth-signin', user)
-            .then((res) => {
-                if(res.data.status === 1) {
-                    this.$store.commit('setAuthToken', res.data.token)
-                    localStorage.setItem('token', res.data.token)
-                    this.$store.dispatch('getAuthUser')
-                    this.created = true
-                    this.creating = false
-                    this.loadDashboard()
-                }else {
-                    this.openOAuthModal(user)
-                }
-            }).catch((err) => {
-                console.log(err.response.status)
+        // handleCredentialResponse(response) {
+        //     const responsePayload = jwt_decode(response.credential)
+        //     // console.log(responsePayload)
+        //     const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
+        //     this.OAuthSignIn(user)
+        // },
+        // signInWithGoogle() {
+        //     window.google.accounts.id.prompt();
+        // },
+        // signOutOauth() {
+        //    window.google.accounts.id.cancel();
+        // },
+        // async OAuthSignIn(user) {
+        //     axios.post(this.getHostname+'/api/oauth-signin', user)
+        //     .then((res) => {
+        //         if(res.data.status === 1) {
+        //             this.$store.commit('setAuthToken', res.data.token)
+        //             localStorage.setItem('token', res.data.token)
+        //             this.$store.dispatch('getAuthUser')
+        //             this.created = true
+        //             this.creating = false
+        //             this.loadDashboard()
+        //         }else {
+        //             this.openOAuthModal(user)
+        //         }
+        //     }).catch((err) => {
+        //         console.log(err.response.status)
                 
-            })
-        },
+        //     })
+        // },
         async submitSignin() {
             this.resertForm()
             this.creating = true
