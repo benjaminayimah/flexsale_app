@@ -1099,6 +1099,7 @@ export default createStore({
     getTempContainer: (state) => state.tempDataContainer,
     getEditContainer: (state) => state.editContainer,
     getDeleteModal: (state) => state.deleteModal,
+    // getOAuthSignUpModal: (state) => state.oAuthSignUpModal,
     getTrashRestoreDeleteModal: (state) => state.trashModal,
     getDefaultImage: (state) => state.defaultImage,
     getCurrency: (state) => state.currency,

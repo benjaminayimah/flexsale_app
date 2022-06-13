@@ -30,6 +30,9 @@ li:last-child a, li:last-child .info-section-hold{
   background-color: $gray-light;
   margin: 0 8px;
 }
+.br-50{
+  border-radius: 50%;
+}
 .horizontal-separator::after{
   content: '';
   margin: 0 8px;

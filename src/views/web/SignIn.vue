@@ -66,7 +66,6 @@
                 <span>Don't have an account?</span><router-link :to="{ name: 'SignUp'}">Create account</router-link>
                 <!--<router-link id="go_hm" :to="{ name: 'Home' }">Back Home</router-link>-->
             </div>
-            <button class="button" @click="signOutOauth">logout</button>
         </form>
     </div>
     <div v-else class="flex justify-content-center align-items-center flex-col after-created">
@@ -89,7 +88,7 @@
             </div>
         </div>
     </div>
-
+    <!-- <sign-up-with-social-float v-bind:oauthUser="oAuthSignUpModal" v-bind:creating="creating" v-on:closeModal="closeOAuthModal" /> -->
 </template>
 <script>
 import jwt_decode from "jwt-decode";
@@ -99,8 +98,9 @@ import Spinner from '../../components/app/includes/Spinner.vue'
 import router from '../../router'
 import passwordToggleMixin from '../../mixins/passwordToggle'
 import inputMixin from '../../mixins/inputMixin'
+// import SignUpWithSocialFloat from '../../components/app/includes/SignUpWithSocialFloat.vue';
 export default {
-  components: { Spinner },
+  components: { Spinner, /*SignUpWithSocialFloat*/ },
     name: 'SignIn',
     mixins: [passwordToggleMixin, inputMixin],
     computed: {
@@ -123,6 +123,7 @@ export default {
                 errors: '',
                 message: ''
             },
+            oAuthSignUpModal: { active: false, user: {}, type: '' },
             progressFill: 1,
             creating: false,
             created: false,
@@ -147,8 +148,8 @@ export default {
         handleCredentialResponse(response) {
             const responsePayload = jwt_decode(response.credential)
             // console.log(responsePayload)
-            const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, token: response.credential }
-           this.OAuthSignIn(user)
+            const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
+            this.OAuthSignIn(user)
         },
         signInWithGoogle() {
             window.google.accounts.id.prompt();
@@ -160,16 +161,14 @@ export default {
             axios.post(this.getHostname+'/api/oauth-signin', user)
             .then((res) => {
                 if(res.data.status === 1) {
-                    console.log(res.data)
-
-                    // this.$store.commit('setAuthToken', res.data.token)
-                    // localStorage.setItem('token', res.data.token)
-                    // this.$store.dispatch('getAuthUser')
-                    // this.created = true
-                    // this.creating = false
-                    // this.loadDashboard()
+                    this.$store.commit('setAuthToken', res.data.token)
+                    localStorage.setItem('token', res.data.token)
+                    this.$store.dispatch('getAuthUser')
+                    this.created = true
+                    this.creating = false
+                    this.loadDashboard()
                 }else {
-                    console.log(res.data)
+                    this.openOAuthModal(user)
                 }
             }).catch(() => {
                 //
@@ -217,6 +216,17 @@ export default {
                     router.push({ name: 'Dashboard'})
                 }
             }, 20)
+        },
+        openOAuthModal(payload) {
+            console.log(payload)
+            this.oAuthSignUpModal.user = payload.user
+            this.oAuthSignUpModal = payload.user.type
+            this.oAuthSignUpModal.active = true
+        },
+        closeOAuthModal() {
+            this.oAuthSignUpModal.active = false
+            this.oAuthSignUpModal.user = ''
+            this.oAuthSignUpModal = ''
         }
     }
 }

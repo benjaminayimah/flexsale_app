@@ -12,7 +12,7 @@
     <li></li>
 </ul> -->
 <section id="welcome_page" :style="{ minHeight: getWindowHeight+'px' }">
-    <div id="g_id_onload" data-client_id="617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com"></div>
+    <!-- <div id="g_id_onload" data-client_id="617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com"></div> -->
     <div class="container-fluid">
             <div class="login-wrapper">
             <header>
@@ -30,11 +30,11 @@
                 </svg>
             </header>
             <router-view v-slot="{ Component }">
-            <transition name="slide-fade" mode="out-in">
-                <component :is="Component" />
-            </transition>
+                <transition name="slide-fade" mode="out-in">
+                    <component :is="Component" />
+                </transition>
             </router-view>
-            <!-- <transition name="slide-fade">
+            <!-- <transition name="slide-fade" mode="out-in">
                 <router-view />
             </transition> -->
             </div>
