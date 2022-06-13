@@ -111,7 +111,7 @@ export default {
     data() {
         return {
             form: {
-              email: 'kkkk',
+              email: '',
               password: ''
             },
             validation: {
