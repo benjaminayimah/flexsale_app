@@ -59,7 +59,7 @@ export default {
             setTimeout(()=> {
             this.$store.commit('computeWindow')
       }, 100)
-    },
+    }
     }
 }
 </script>
