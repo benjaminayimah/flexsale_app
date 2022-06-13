@@ -5,10 +5,12 @@ import router from '@/router'
 export default createStore({
   state: {
     hostname: 'http://localhost:8000',
+    thisHostname: 'http://localhost:8080',
     //hostname: 'http://api.flexsale.store',
     token: localStorage.getItem('token') || null,
     windowHeight: '',
     windowWidth: '',
+    bodyWidth: '',
     defaultImage: require('@/assets/images/preview-img.svg'),
     onboard: { status: false, intro: false, basicInfo: false, avatar: false, final: false,
       form: {
@@ -67,45 +69,7 @@ export default createStore({
 
 
     submitting: true,
-    stats: [
-        {id: 1, index: 0, count: '1,200', title: 'Products'},
-        {id: 2, index: 1, count: '200', title: 'Low stocks'},
-        {id: 3, index: 2, count: '50', title: 'Expiry alert'},
-        {id: 4, index: 3, count: '15', title: 'Expiry alert'},
-        {id: 5, index: 4, count: '15', title: 'Expiry alert'},
-        {id: 6, index: 5, count: '15', title: 'Expiry alert'},
-        {id: 7, index: 6, count: '15', title: 'Expiry alert'},
-    ],
-    suppliersALT: [
-        {id: 1, index: 0, name: 'Jon Doe', image: 'profile-1.png'},
-        {id: 2, index: 1, name: 'Walter White', image: 'profile-2.png'},
-        {id: 3, index: 2, name: 'Jane Smith', image: 'profile-3.png'},
-        {id: 4, index: 3, name: 'monicca brown', image: ''},
-        {id: 5, index: 4, name: 'monicca brown', image: 'profile-4.png'},
-        {id: 6, index: 5, name: 'Tyler Cooper', image: 'profile-5.png'},
-        {id: 7, index: 6, name: 'Harisson Smichel', image: ''},
-        {id: 8, index: 7, name: 'Harisson Smichel', image: 'profile-6.png'},
-        {id: 9, index: 8, name: 'Jadon Sancho', image: 'profile-7.png'},
-        {id: 10, index: 9, name: 'Sarah', image: ''},
-        {id: 11, index: 10, name: 'Sarah', image: 'profile-8.png'},
-        {id: 12, index: 11, name: 'Chris Sharw', image: 'profile-9.png'},
-        {id: 13, index: 12, name: 'Dominic Campbel', image: 'profile-10.png'},
-    ],
-    customers: [
-      {id: 1, index: 0, name: 'Jon Doe', image: 'profile-1.png'},
-      {id: 2, index: 1, name: 'Walter White', image: 'profile-2.png'},
-      {id: 3, index: 2, name: 'Jane Smith', image: 'profile-3.png'},
-      {id: 4, index: 3, name: 'monicca brown', image: ''},
-      {id: 5, index: 4, name: 'monicca brown', image: 'profile-4.png'},
-      {id: 6, index: 5, name: 'Tyler Cooper', image: 'profile-5.png'},
-      {id: 7, index: 6, name: 'Harisson Smichel', image: ''},
-      {id: 8, index: 7, name: 'Harisson Smichel', image: 'profile-6.png'},
-      {id: 9, index: 8, name: 'Jadon Sancho', image: 'profile-7.png'},
-      {id: 10, index: 9, name: 'Sarah', image: ''},
-      {id: 11, index: 10, name: 'Sarah', image: 'profile-8.png'},
-      {id: 12, index: 11, name: 'Chris Sharw', image: 'profile-9.png'},
-      {id: 13, index: 12, name: 'Dominic Campbel', image: 'profile-10.png'},
-  ],
+    customers: [],
     activities: [
       {id: 1, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
       {id: 2, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
@@ -152,6 +116,7 @@ export default createStore({
       let winWidth = window.innerWidth
       state.windowHeight = window.innerHeight
       state.windowWidth = winWidth
+      // state.bodyWidth = document.getElementById('main_home').innerWidth
       if(winWidth < 500){
         return this.commit('setMobile')
       }else if(winWidth > appWidth){
@@ -199,6 +164,11 @@ export default createStore({
         state.onboard.avatar = false
         state.onboard.final = true
         this.commit('resetForm')
+      }else {
+        state.onboard.avatar = false
+        state.onboard.final = false
+        state.onboard.basicInfo = false
+        state.onboard.intro = true
       }
     },
     forceCloseOnboard(state) {
@@ -774,7 +744,7 @@ export default createStore({
           state.commit('fetchDiscounts', res.data.discounts)
           state.commit('fetchSuppliers', res.data.suppliers)
           state.commit('fetchTodaysSales', { sales: res.data.sales, saleItems: res.data.sales_items, yesterdaySale: res.data.yesterday_sale })
-          state.commit('checkOnboard')
+          // state.commit('checkOnboard')
           state.commit('setLoader')
         } catch (e) {
           state.commit('setLoader')
@@ -1096,6 +1066,7 @@ export default createStore({
   },
   getters: {
     getHostname: (state) => state.hostname,
+    getThisHostname: (state) => state.thisHostname,
     getWindowHeight: (state) => state.windowHeight,
     getWindowWidth: (state) => state.windowWidth,
     auth(state){
@@ -1128,12 +1099,12 @@ export default createStore({
     getTempContainer: (state) => state.tempDataContainer,
     getEditContainer: (state) => state.editContainer,
     getDeleteModal: (state) => state.deleteModal,
+    // getOAuthSignUpModal: (state) => state.oAuthSignUpModal,
     getTrashRestoreDeleteModal: (state) => state.trashModal,
     getDefaultImage: (state) => state.defaultImage,
     getCurrency: (state) => state.currency,
     getSuppliers: (state) => state.suppliers,
     getCustomers: (state) => state.customers,
-    getStats: (state) => state.stats,
     getActivities: (state) => state.activities,
     getTempArrayCopy: (state) => state.tempArrayCopy,
     getTodaysales: (state) => state.todaysales,
@@ -1147,8 +1118,8 @@ export default createStore({
     getBulkSelection: (state) => state.bulkSelection,
     getNotifications: (state) => state.notifications,
     getSearch: (state) => state.searchIn,
-    // delete this afterwards
-    getSuppliersALT: (state) => state.suppliersALT,
+    getBodyWidth: (state) => state.bodyWidth,
+
 
 
 

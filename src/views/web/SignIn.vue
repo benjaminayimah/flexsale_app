@@ -4,6 +4,7 @@
             <h1>Welcome back!</h1>
             <span>Sign in to continue</span>
         </div>
+        <div id="signin_button"></div>
         <!-- <div v-if="validation.error" class="validation-error">
             <span>{{ validation.message }}</span>
         </div> -->
@@ -11,7 +12,7 @@
             <div class="form-row">
                 <div class="input-wrapper" id="email_wrapper">
                     <label for="emailInput">Email</label>
-                    <input id="emailInput" v-model="form.email" @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="checkInputHasValue('emailInput')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" @mousedown="resertForm" type="email" name="email" class="form-control" :class="{ 'has-error' : validation.error && validation.errors.email}">
+                    <input id="emailInput" v-model="form.email" @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" @mousedown="resertForm" type="email" name="email" class="form-control" :class="{ 'has-error' : validation.error && validation.errors.email}">
                 </div>
                 <span class="validation-err" v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
@@ -21,7 +22,7 @@
                 <!--  -->
                 <div class="input-wrapper" id="password_wrapper">
                     <label for="passwordInput">Password</label>
-                    <input id="passwordInput" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')"  @mousedown="resertForm" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field" :class="{ 'has-error' : validation.error && validation.errors.password}">
+                    <input id="passwordInput" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')" @mousedown="resertForm" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field" :class="{ 'has-error' : validation.error && validation.errors.password}">
                     <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">
                         <g transform="translate(1.182 1.182)">
@@ -48,7 +49,7 @@
                     </div>
                 </div>
             <div class="flex social-signin">
-                <button @click.prevent="">
+                <button @click.prevent="signInWithGoogle">
                     <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 20.919 21.262">
                         <path  d="M20.919,11.442c0,6.066-4.154,10.382-10.288,10.382a10.631,10.631,0,1,1,0-21.262A10.223,10.223,0,0,1,17.76,3.345L14.866,6.127C11.081,2.474,4.042,5.218,4.042,11.193a6.659,6.659,0,0,0,6.589,6.713,5.749,5.749,0,0,0,6.036-4.582H10.631V9.667H20.752A9.32,9.32,0,0,1,20.919,11.442Z" transform="translate(0 -0.562)"/>
                     </svg>
@@ -87,18 +88,21 @@
             </div>
         </div>
     </div>
-
+    <!-- <sign-up-with-social-float v-bind:oauthUser="oAuthSignUpModal" v-bind:creating="creating" v-on:closeModal="closeOAuthModal" /> -->
 </template>
 <script>
+// import jwt_decode from "jwt-decode";
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import Spinner from '../../components/app/includes/Spinner.vue'
 import router from '../../router'
 import passwordToggleMixin from '../../mixins/passwordToggle'
+import inputMixin from '../../mixins/inputMixin'
+// import SignUpWithSocialFloat from '../../components/app/includes/SignUpWithSocialFloat.vue';
 export default {
-  components: { Spinner },
+  components: { Spinner, /*SignUpWithSocialFloat*/ },
     name: 'SignIn',
-    mixins: [passwordToggleMixin],
+    mixins: [passwordToggleMixin, inputMixin],
     computed: {
         ...mapGetters(['getHostname', 'getUser']),
         computedUser() {
@@ -119,6 +123,7 @@ export default {
                 errors: '',
                 message: ''
             },
+            oAuthSignUpModal: { active: false, user: {}, type: '' },
             progressFill: 1,
             creating: false,
             created: false,
@@ -126,27 +131,50 @@ export default {
             user: '',
         }
     },
+    created() {
+            // window.addEventListener('load', () => {
+            //     console.log(window.google);
+            //     window.google.accounts.id.initialize({
+            //         client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
+            //         callback: this.handleCredentialResponse
+            //     });
+            //     window.google.accounts.id.renderButton(
+            //         document.getElementById("signin_button"),
+            //         { theme: "outline", size: "large" }  // customization attributes
+            //     );
+            // })
+    },
     methods: {
-        isFocusedIn(id) {
-            this.$_(id).classList.remove('is-filled')
-            this.$_(id).classList.remove('is-iddle')
-            this.$_(id).classList.add('is-focused')
-        },
-        isFocusedOut(id, input) {
-            if(this.checkInputHasValue(input)) {
-                this.$_(id).classList.add('is-iddle')
-            }
-            this.$_(id).classList.remove('is-focused')
-        },
-        checkInputHasValue(input){
-            if(this.$_(input).value !== '')
-            return true
-            else
-            return false
-        },
-        $_(x) {
-            return document.getElementById(x)
-        },
+        // handleCredentialResponse(response) {
+        //     const responsePayload = jwt_decode(response.credential)
+        //     // console.log(responsePayload)
+        //     const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
+        //     this.OAuthSignIn(user)
+        // },
+        // signInWithGoogle() {
+        //     window.google.accounts.id.prompt();
+        // },
+        // signOutOauth() {
+        //    window.google.accounts.id.cancel();
+        // },
+        // async OAuthSignIn(user) {
+        //     axios.post(this.getHostname+'/api/oauth-signin', user)
+        //     .then((res) => {
+        //         if(res.data.status === 1) {
+        //             this.$store.commit('setAuthToken', res.data.token)
+        //             localStorage.setItem('token', res.data.token)
+        //             this.$store.dispatch('getAuthUser')
+        //             this.created = true
+        //             this.creating = false
+        //             this.loadDashboard()
+        //         }else {
+        //             this.openOAuthModal(user)
+        //         }
+        //     }).catch((err) => {
+        //         console.log(err.response.status)
+                
+        //     })
+        // },
         async submitSignin() {
             this.resertForm()
             this.creating = true
@@ -190,50 +218,20 @@ export default {
                 }
             }, 20)
         },
-        checkThisInputOnload(id,input) {
-          if(this.checkInputHasValue(input)) {
-                this.isFocusedIn(id)
-            }
+        openOAuthModal(payload) {
+            console.log(payload)
+            this.oAuthSignUpModal.user = payload.user
+            this.oAuthSignUpModal = payload.user.type
+            this.oAuthSignUpModal.active = true
+        },
+        closeOAuthModal() {
+            this.oAuthSignUpModal.active = false
+            this.oAuthSignUpModal.user = ''
+            this.oAuthSignUpModal = ''
         }
     }
 }
 </script>
 <style scoped lang="scss">
-.input-wrapper{
-    position: relative;
-    label {
-        position: absolute;
-        left: 17px;
-        font-weight: 500;
-        cursor: text;
-        transition: 0.2s all;
-        margin: 0;
-        color: $gray-color;
-        top: 18px;
-        font-size: 16px;
-    }
-    input{
-        padding: 25px 16px 8px 16px !important;
-    }
-    
-}
-.is-focused{
-    label {
-        transform: translateY(-10px);
-        color: $primary-color;
-        font-size: 12px;
-    }
-}
-.is-iddle{
-    label{
-        color: $gray-color;
-        font-size: 12px;
-        transform: translateY(-10px);
-    }
-}
 
-input:-webkit-autofill { animation-name: onAutoFillStart }
-input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
-@keyframes onAutoFillStart {from {}to {}}
-@keyframes onAutoFillCancel {from {}to {}}
 </style>

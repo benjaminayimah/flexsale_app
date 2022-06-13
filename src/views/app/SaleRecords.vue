@@ -1,5 +1,6 @@
 <template>
 <h1 id="page_title">{{ title }}</h1>
+<div v-if="getStores.length > 0">
  <div class="main-page-body">   
     <div class="prod-main-custom-table">
         <div class="table">
@@ -27,8 +28,8 @@
                             <li id="custom_date_toggle">
                                 <a href="#" :class="{ 'dropdown-out' : toggleCustomDate }" @click.prevent="doDateToggle('custom_date_toggle')">
                                 Custom range
-                                <svg xmlns="http://www.w3.org/2000/svg" height="9" viewBox="0 0 10 9">
-                                    <path d="M4.126,1.573a1,1,0,0,1,1.748,0l3.3,5.941A1,1,0,0,1,8.3,9H1.7A1,1,0,0,1,.825,7.514Z" transform="translate(10 9) rotate(180)" fill="#0e142c"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="8" viewBox="0 0 18.312 11.241">
+                                    <path d="M766.473,22.642a.989.989,0,0,1-.643-.232.784.784,0,0,1-.034-1.19l8.374-7.937-8.357-7.518a.784.784,0,0,1,0-1.19,1.009,1.009,0,0,1,1.321,0l9.646,8.678-9.63,9.127A.984.984,0,0,1,766.473,22.642Z" transform="translate(22.642 -765.539) rotate(90)" fill="#0e142c"/>
                                 </svg>
                                 </a>
                             </li>
@@ -70,6 +71,10 @@
         </div>
     </div>
  </div>
+</div>
+<div v-else>
+    <welcome-screen-top />
+</div>
  <teleport to="body">
     <transition name="fade">
         <backdrop v-if="toggleFilter" @mousedown="closeJustMenu('record_filter_toggle')" />
@@ -127,12 +132,13 @@ import { mapGetters } from 'vuex'
 import dropdownToggleMixin from '../../mixins/dropdownToggle'
 import Backdrop from '../../components/app/includes/Backdrop.vue'
 import SaleReportView from '../../components/app/layouts/SaleReportView.vue'
+import WelcomeScreenTop from '../../components/app/includes/WelcomeScreenTop.vue'
 export default {
-  components: { SaleReportView, Backdrop },
+  components: { SaleReportView, Backdrop, WelcomeScreenTop },
     name: 'SaleRecords',
     mixins: [dropdownToggleMixin],
     computed: {
-        ...mapGetters(['getMobile', 'getFloatingDiv', 'getSaleRecords', 'getHostname', 'getToken'])
+        ...mapGetters(['getMobile', 'getFloatingDiv', 'getSaleRecords', 'getHostname', 'getToken', 'getStores'])
     } ,
     data() {
         return {

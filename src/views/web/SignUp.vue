@@ -41,7 +41,7 @@
                 </transition>
             </div>
                 <button class="button button-primary logon-btn" @click.prevent="submitSignUp"  :class="{ 'button-disabled' : creating }" :disabled="creating? true : false">
-                <span>{{ creating ? 'Creating account' : 'Create Account'}}</span>
+                    <span>{{ creating ? 'Creating account' : 'Create Account'}}</span>
                     <spinner v-if="creating" v-bind:size="20" v-bind:white="true" />
                 </button>
                 <div class="or">

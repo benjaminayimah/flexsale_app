@@ -22,11 +22,11 @@
         </svg>
         <h1>Discount is Empty</h1>
         <div>To apply the discount value, add items</div>
-        <button class="button button-primary" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'discount'})">
+        <button class="button button-primary" @click.prevent="getStores.length > 0 ? $store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'discount'}) : this.$store.commit('forceSetOnboard', 'intro')">
             <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 15.882 15.882">
                 <path d="M-7843.453-4503.179v-5.94h-5.94a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.94v-5.94a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.94h5.94a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.94v5.94a1,1,0,0,1-1,1A1,1,0,0,1-7843.453-4503.179Z" transform="translate(7850.395 4518.06)" fill="#fff"/>
             </svg>
-            <span>Add items</span>
+            <span>Add discount</span>
         </button>
     </div>
 </template>
@@ -36,7 +36,7 @@ import { mapGetters } from 'vuex'
 export default {
   components: { DiscountRow },
     name: 'Discount',
-    computed: mapGetters(['getDiscounts', 'getCurrency']),
+    computed: mapGetters(['getDiscounts', 'getCurrency', 'getStores']),
     data() {
         return {
             title: 'Discounts',

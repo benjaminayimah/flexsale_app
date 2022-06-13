@@ -49,13 +49,13 @@
                 </g>
         </svg>
         <div class="heading">
-            <h3>Welcome onboard, {{ getUser.name.split(' ')[0] }}</h3>
+            <h3>Welcome on board, {{ getUser.name.split(' ')[0] }}</h3>
             <h2>Create Your First Store</h2>
             <span>Let's get your first store set up real quick.</span>
         </div>
         <div>
             <button @click.prevent="this.$store.commit('forceSetOnboard', 'basicInfo')" class="button button-primary ob-begin-btn">
-            <span>Get started</span>
+            <span>Let's go!</span>
         </button>
         <button class="button ob-begin-btn ob-btn-2" @click.prevent="$store.commit('forceCloseOnboard')">
             <span>Later</span>

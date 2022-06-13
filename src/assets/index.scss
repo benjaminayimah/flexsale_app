@@ -30,6 +30,9 @@ li:last-child a, li:last-child .info-section-hold{
   background-color: $gray-light;
   margin: 0 8px;
 }
+.br-50{
+  border-radius: 50%;
+}
 .horizontal-separator::after{
   content: '';
   margin: 0 8px;
@@ -143,6 +146,13 @@ li:last-child a, li:last-child .info-section-hold{
       fill: #ffffff;
     }
   }
+}
+.beta{
+  color: #f9a216;
+  font-weight: 500;
+  border: 1px #f9a216 solid;
+  padding: 4px 12px;
+  border-radius: 15px;
 }
 
 //sign up sign in
@@ -433,6 +443,12 @@ ul{
 .gap-8{
   gap: 8px;
 }
+.gap-16 {
+  gap: 16px;
+}
+.gap-32 {
+  gap: 32px
+}
 .flx-shrink-0{
   flex-shrink: 0;
 }
@@ -523,6 +539,9 @@ button.add-more{
 .w-100{
   width: 100%;
 }
+.w-50{
+  width: 50%;
+}
 .hide{
   display: none;
 }
@@ -534,6 +553,7 @@ button{
   padding: 0;
   cursor: pointer;
   transition: 0.2s all;
+  white-space: nowrap;
 }
 .add-new{
   &:hover{
@@ -661,6 +681,9 @@ button{
 .align-items-center{
   align-items: center;
 }
+.align-items-start{
+  align-items: flex-start;
+}
 .justify-content-center{
   justify-content: center;
 }
@@ -676,6 +699,9 @@ button{
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.flex-g-1{
+  flex-grow: 1;
 }
 .flex-row{
   display: flex;
@@ -987,6 +1013,89 @@ textarea{
 .checkbox-hold:hover input ~ .checkbox-custom {
   border: 1px solid $primary-color;
 }
+
+//no store
+.wlc-cont-2{
+  .wlc-wrap {
+    width: 70%;
+  }
+}
+.wlc-container{
+  border-radius: 20px;
+  padding: 30px 50px;
+  min-height: 340px;
+  background-color: $dark-light;
+  margin: 0 30px;
+  h1{
+    font-size: 2.1rem;
+    margin: 0;
+  }
+  .wlc-wrap{
+      display: flex;
+      gap: 16px;
+      .button {
+        white-space: nowrap;
+        height: 50px;
+        background-color: transparent;
+        border: 2px solid #fff;
+        color: #fff;
+        max-width: 200px;
+        margin-top: 10px;
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.235);
+        }
+      }
+  }
+}
+.wlc-cont-1{
+  background-image: linear-gradient(to right bottom, #2f60d0, #3b6ed6, #497cdc, #588ae1, #6798e6);
+  color: #fff;
+}
+.wlc-cont-2{
+  background-image: linear-gradient(to right bottom, #0e142c, #1b213a, #282e48, #353c56, #434a65);
+  color: #fff;
+}
+
+//input
+.input-wrapper{
+  position: relative;
+  label {
+      position: absolute;
+      left: 17px;
+      font-weight: 500;
+      cursor: text;
+      transition: 0.2s all;
+      margin: 0;
+      color: $gray-color;
+      top: 18px;
+      font-size: 16px;
+  }
+  input{
+      padding: 25px 16px 8px 16px !important;
+  }
+  
+}
+.input-is-focused{
+  label {
+      transform: translateY(-10px);
+      color: $primary-color;
+      font-size: 12px;
+  }
+}
+.is-iddle{
+  label{
+      color: $gray-color;
+      font-size: 12px;
+      transform: translateY(-10px);
+  }
+}
+
+input:-webkit-autofill { animation-name: onAutoFillStart }
+input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
+@keyframes onAutoFillStart {from {}to {}}
+@keyframes onAutoFillCancel {from {}to {}}
+
+
 //detailed banner
 .detailed-items-banner-holder{
     .cover-image{
@@ -1278,6 +1387,7 @@ textarea{
           text-decoration: none;
           font-weight: 500;
           transition: 0.3s all;
+          white-space: nowrap;
           }
       }
     }
@@ -1303,7 +1413,7 @@ textarea{
   }
   button {
       height: 52px;
-      width: 150px;
+      min-width: 150px;
       margin-top: 16px;
       svg{
           margin-right: 5px;
@@ -1317,7 +1427,6 @@ textarea{
     }
   }
 }
-
 // Onboarding screen
 .ob-wrap{
   width: 100%;
@@ -1423,6 +1532,7 @@ textarea{
       padding: 15px 30px;
       .form-control{
           height: 50px;
+          line-height: 35px;
       }
       .form-row{
           margin-bottom: 18px;
@@ -1689,19 +1799,6 @@ hr{
 }
 
 
-.tb-mw2{
-  .prod-stat-hold{
-    // padding-right: 10px;
-    // padding-left: 0;
-    &:first-child{
-      // padding-left: 0;
-  }
-  &:last-child{
-      // padding-right: 0;
-  }
-  }
-}
-
 .no-store-profile-large{
   height: 200px;
   width: 200px;
@@ -1734,6 +1831,7 @@ hr{
     width: 83%;
   }
 }
+
 .table-filters{
   ul{
       overflow: hidden;
@@ -1752,6 +1850,7 @@ hr{
           text-decoration: none;
           font-weight: 500;
           gap: 4px;
+          white-space: nowrap;
       }
   }
 }
@@ -1802,7 +1901,7 @@ hr{
     margin-left: 10px;
   }
   .main-body .main-body-content{
-    padding: 15px 0 100px 0;
+    padding: 15px 0 140px 0;
   }
   #page_title{
     display: block;
@@ -1960,6 +2059,36 @@ hr{
     height: 70px;
     background-color: #ffffff;
 }
+.wlc-container{
+  margin: 0 15px;
+  align-items: center;
+  text-align: center;
+  padding: 50px 30px;
+  h1 {
+    font-size: 1.5rem;
+  }
+  svg{
+    height: 70px;
+  }
+}
+.align-items-start{
+  align-items: center;
+}
+.wlc-cont-1, .wlc-cont-2{
+  flex-direction: column-reverse;
+}
+.wlc-cont-2{
+  .wlc-wrap {
+    width: 100%;
+  }
+}
+.w-50 {
+  width: 100%;
+}
+.lottie-player{
+  height: 140px;
+}
+
 
 
 

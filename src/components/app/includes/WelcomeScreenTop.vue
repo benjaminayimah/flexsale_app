@@ -1,0 +1,27 @@
+<template>
+    <div class="wlc-container flex wlc-cont-1">
+        <div class="wlc-wrap flex-col w-50 justify-content-center align-items-start">
+            <h1>Welcome on board, {{ computedUser }}</h1>
+            <div>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</div>
+            <button @click.prevent="this.$store.commit('forceSetOnboard', 'intro')" class="button">Set up your store</button>
+        </div>
+        <div class="w-50">
+            <lottie-player class="lottie-player" :src="getThisHostname+'/img/setupanime.json'" background="transparent"  speed="1" loop autoplay></lottie-player>
+        </div>
+    </div>
+</template>
+<script>
+import { mapGetters } from 'vuex'
+export default {
+    name: 'WelcomeScreenTop',
+    computed: {
+        ...mapGetters(['getUser', 'getThisHostname']),
+        computedUser() {
+            if(this.getUser.name) {
+                return this.getUser.name.split(' ')[0]
+            }else
+            return ''
+        }
+    },
+}
+</script>

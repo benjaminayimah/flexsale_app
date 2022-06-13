@@ -3,7 +3,6 @@
     <span>Store Details</span>
 </teleport>
 <teleport to="#onboarding_top_button">
-    <!-- this.$store.commit('forceSetOnboard', 'avatar') -->
     <button class="button button-primary top-submit-btn" @click.prevent="submitStore">Submit store</button>
 </teleport>
 <teleport to="#onboard_body_content">

@@ -11,8 +11,9 @@
     <li></li>
     <li></li>
 </ul> -->
-  <section id="welcome_page" :style="{ minHeight: getWindowHeight+'px' }">
-      <div class="container-fluid">
+<section id="welcome_page" :style="{ minHeight: getWindowHeight+'px' }">
+    <!-- <div id="g_id_onload" data-client_id="617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com"></div> -->
+    <div class="container-fluid">
             <div class="login-wrapper">
             <header>
                 <svg id="large_logo" xmlns="http://www.w3.org/2000/svg" height="45" viewBox="0 0 583.301 171.521">
@@ -29,11 +30,11 @@
                 </svg>
             </header>
             <router-view v-slot="{ Component }">
-            <transition name="slide-fade" mode="out-in">
-                <component :is="Component" />
-            </transition>
+                <transition name="slide-fade" mode="out-in">
+                    <component :is="Component" />
+                </transition>
             </router-view>
-            <!-- <transition name="slide-fade">
+            <!-- <transition name="slide-fade" mode="out-in">
                 <router-view />
             </transition> -->
             </div>
@@ -58,7 +59,7 @@ export default {
             setTimeout(()=> {
             this.$store.commit('computeWindow')
       }, 100)
-    },
+    }
     }
 }
 </script>
