@@ -79,7 +79,6 @@
                 </div>
               </header>
               <loader v-bind:size="35" />
-
               <div class="main-body">
                 <div class="main-body-content">
                     <router-view />
