@@ -170,8 +170,9 @@ export default {
                 }else {
                     this.openOAuthModal(user)
                 }
-            }).catch(() => {
-                //
+            }).catch((err) => {
+                console.log(err.response.status)
+                
             })
         },
         async submitSignin() {
