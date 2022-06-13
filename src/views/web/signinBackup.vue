@@ -86,17 +86,19 @@
             </div>
         </div>
     </div>
+    <sign-up-with-social-float v-bind:oauthUser="oAuthSignUpModal" v-bind:creating="creating" v-on:closeModal="closeOAuthModal" />
 </template>
 <script>
-// import jwt_decode from "jwt-decode";
+import jwt_decode from "jwt-decode";
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import Spinner from '../../components/app/includes/Spinner.vue'
 import router from '../../router'
 import passwordToggleMixin from '../../mixins/passwordToggle'
 import inputMixin from '../../mixins/inputMixin'
+import SignUpWithSocialFloat from '../../components/app/includes/SignUpWithSocialFloat.vue';
 export default {
-  components: { Spinner },
+  components: { Spinner, SignUpWithSocialFloat },
     name: 'SignIn',
     mixins: [passwordToggleMixin, inputMixin],
     computed: {
@@ -111,14 +113,15 @@ export default {
     data() {
         return {
             form: {
-              email: '',
-              password: ''
+              email: 'benjaminayimah@gmail.com',
+              password: 'ajf1432#@!'
             },
             validation: {
                 error: false,
                 errors: '',
                 message: ''
             },
+            oAuthSignUpModal: { active: false, user: {}, type: '' },
             progressFill: 1,
             creating: false,
             created: false,
@@ -127,30 +130,30 @@ export default {
         }
     },
     created() {
-        // window.addEventListener('load', () => {
-        //     console.log(window.google);
-        //     window.google.accounts.id.initialize({
-        //         client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
-        //         callback: this.handleCredentialResponse
-        //     });
-        //     window.google.accounts.id.renderButton(
-        //         document.getElementById("signin_button"),
-        //         { theme: "outline", size: "large" }  // customization attributes
-        //     );
-        // })
+            window.addEventListener('load', () => {
+                console.log(window.google);
+                window.google.accounts.id.initialize({
+                    client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
+                    callback: this.handleCredentialResponse
+                });
+                window.google.accounts.id.renderButton(
+                    document.getElementById("signin_button"),
+                    { theme: "outline", size: "large" }  // customization attributes
+                );
+            })
     },
     methods: {
-        // handleCredentialResponse(response) {
-        //     const responsePayload = jwt_decode(response.credential)
-        //     const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
-        //     this.OAuthSignIn(user)
-        // },
-        // signInWithGoogle() {
-        //     window.google.accounts.id.prompt();
-        // },
-        // signOutOauth() {
-        //    window.google.accounts.id.cancel();
-        // },
+        handleCredentialResponse(response) {
+            const responsePayload = jwt_decode(response.credential)
+            const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
+            this.OAuthSignIn(user)
+        },
+        signInWithGoogle() {
+            window.google.accounts.id.prompt();
+        },
+        signOutOauth() {
+           window.google.accounts.id.cancel();
+        },
         async OAuthSignIn(user) {
             axios.post(this.getHostname+'/api/oauth-signin', user)
             .then((res) => {
@@ -162,7 +165,7 @@ export default {
                     this.creating = false
                     this.loadDashboard()
                 }else {
-                    // this.openOAuthModal(user)
+                    this.openOAuthModal(user)
                 }
             }).catch((err) => {
                 console.log(err.response.status)
@@ -212,17 +215,17 @@ export default {
                 }
             }, 20)
         },
-        // openOAuthModal(payload) {
-        //     console.log(payload)
-        //     this.oAuthSignUpModal.user = payload.user
-        //     this.oAuthSignUpModal = payload.user.type
-        //     this.oAuthSignUpModal.active = true
-        // },
-        // closeOAuthModal() {
-        //     this.oAuthSignUpModal.active = false
-        //     this.oAuthSignUpModal.user = ''
-        //     this.oAuthSignUpModal = ''
-        // }
+        openOAuthModal(payload) {
+            console.log(payload)
+            this.oAuthSignUpModal.user = payload.user
+            this.oAuthSignUpModal = payload.user.type
+            this.oAuthSignUpModal.active = true
+        },
+        closeOAuthModal() {
+            this.oAuthSignUpModal.active = false
+            this.oAuthSignUpModal.user = ''
+            this.oAuthSignUpModal = ''
+        }
     }
 }
 </script>

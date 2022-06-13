@@ -57,9 +57,10 @@ export default {
     methods: {
         windowSize() {
             setTimeout(()=> {
-            this.$store.commit('computeWindow')
-      }, 100)
-    }
+
+                this.$store.commit('computeWindow')
+            }, 100)
+        }
     }
 }
 </script>

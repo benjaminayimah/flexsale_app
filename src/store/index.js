@@ -51,6 +51,7 @@ export default createStore({
     alert: { status: { show: false, success: false, danger: false, warning: false, info: false }, title: '', body: '' },
     loader: false,
     deleteModal: {active: false, trash: false, deleting: false, id: '', type: '' },
+    oAuthSignUpModal: { active: false, user: {}, type: '' },
     trashModal: { active: false, restore: false, type: '', deleting: false, count: ''},
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
