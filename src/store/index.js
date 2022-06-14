@@ -787,7 +787,7 @@ export default createStore({
         console.log(err.response)
       })
   },*/
-  async getAuthUser(state) {  
+    async getAuthUser(state) {  
       state.commit('setLoader')          
         try {
           const res = await axios.post(this.getters.getHostname+'/api/user?token='+this.getters.getToken)
@@ -805,7 +805,18 @@ export default createStore({
           state.commit('destroyToken') 
         }      
     },
-
+    async resfreshUser(state) {  
+      state.commit('setLoader')          
+        try {
+          const res = await axios.post(this.getters.getHostname+'/api/refresh-user?token='+this.getters.getToken)
+          if (res.data.user) {
+            state.commit('setUser', res.data.user)
+          }
+          state.commit('setLoader')
+        } catch (e) {
+          state.commit('setLoader')
+        }      
+    },
     async getLogout(state){
         axios.delete(this.getters.getHostname+'/api/logout?token='+this.getters.getToken)
         .then(()=> {
