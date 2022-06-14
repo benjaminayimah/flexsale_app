@@ -36,9 +36,10 @@
         </div>
         <div class="form-row" v-if="getEditContainer.active && getEditContainer.password && getUser.id === getEditContainer.data.id">
             <label>Current password:</label>
-            <input v-model="form.password" @mousedown="resetError" :class="{ 'err-exist-border':error.pass }" type="password" name="password" class="form-control password-field" placeholder="Current password" required>
+            <input v-model="form.password" @mousedown="resetError" :class="[{ 'err-exist-border':error.pass }, { 'input-disabled' : getUser.oauth && !getUser.has_pass }]" type="password" name="password" :disabled="getUser.oauth && !getUser.has_pass ? true : false" class="form-control password-field" placeholder="Current password" required>
             <div class="forgot-pass">
-                <a href="#" class="">Forgot your password?</a>
+                <div v-if="getUser.oauth && !getUser.has_pass" class="flex oauth-provider-wrap gap-8"><span>You are currently logged in with</span><span class="provider">{{ getUser.oauth_provider }}</span></div>
+                <a v-else href="#" class="">Forgot your password?</a>
             </div>
             <div v-if="error.pass" class="error-hold"><span class="error">{{ error.message }}</span></div>
         </div>
@@ -163,13 +164,15 @@ export default {
                         title: res.data.title,
                         body: res.data.message
                     }
+                    if(res.data.status == 1) {
+                        this.$store.dispatch('resfreshUser')
+                    }
                     if(res.status == 201){
                         this.error.pass = true
                         this.error.message = res.data.message
                     }else{
                         this.$store.commit('showAlert', payload)
                         this.$store.commit('unsetMainHomeWidth', true)
-
                     }
                 }).catch((err) => {
                     console.log(err.data)
@@ -251,6 +254,12 @@ ul{
     height: 200px;
     width: 200px;
     border-radius: 50%;
+}
+.oauth-provider-wrap{
+    .provider{
+        text-transform: capitalize;
+        font-weight: 600;
+    }
 }
 
 .error-hold{

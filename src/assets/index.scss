@@ -635,6 +635,13 @@ button{
     cursor: default
   }
 }
+.input-disabled{
+  background-color: $gray-light !important;
+  &:hover {
+    border-color: $gray-light !important;
+    cursor: default
+  }
+}
 .button-alt{
   background-color: $dark;
   color: $white-color;
