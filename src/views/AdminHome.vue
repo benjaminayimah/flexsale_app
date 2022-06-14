@@ -119,7 +119,6 @@
 <onboarding-view v-bind:winHeight="getWindowHeight" v-if="getOnboard.status" />
 <add-new v-bind:winHeight="getWindowHeight" v-if="getAddingProduct.status" />
 
-
 </template>
 <script>
 import AccountMenu from '../components/app/includes/AccountMenu.vue'

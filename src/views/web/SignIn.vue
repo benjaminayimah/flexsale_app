@@ -1,4 +1,9 @@
 <template>
+<div>
+    <div id="g_id_onload"
+        data-client_id="617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com"
+        data-cancel_on_tap_outside="false">
+    </div>
     <div v-if="!getSignInStatus.created" id="login_card">
         <div class="title">
             <h1>Welcome back!</h1>
@@ -8,7 +13,6 @@
             <span>{{ validation.message }}</span>
         </div> -->
         <form @submit.prevent="">
-        <div id="signin_button"></div>
             <div class="form-row">
                 <div class="input-wrapper" id="email_wrapper">
                     <label for="emailInput">Email</label>
@@ -45,25 +49,33 @@
                 </button>
                 <div class="or">
                     <div>
-                        <span>Or</span><span class="hide-mob">continue with social sign-in</span>
+                        <span>Or</span><!--<span class="hide-mob">continue with social sign-in</span>-->
                     </div>
                 </div>
-            <div class="flex social-signin">
-                <button @click.prevent="signInWithGoogle">
+            <div class="flex social-signin justify-content-center">
+                <!-- <button @click.prevent="signInWithGoogle">
                     <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 20.919 21.262">
                         <path  d="M20.919,11.442c0,6.066-4.154,10.382-10.288,10.382a10.631,10.631,0,1,1,0-21.262A10.223,10.223,0,0,1,17.76,3.345L14.866,6.127C11.081,2.474,4.042,5.218,4.042,11.193a6.659,6.659,0,0,0,6.589,6.713,5.749,5.749,0,0,0,6.036-4.582H10.631V9.667H20.752A9.32,9.32,0,0,1,20.919,11.442Z" transform="translate(0 -0.562)"/>
                     </svg>
                     <span class="show-mob">Sign in with</span><span>Google</span>
-                </button>
-                <button @click.prevent="">
+                </button> -->
+                <div class="g_id_signin"
+                    data-type="standard"
+                    data-size="large"
+                    data-theme="outline"
+                    data-text="signin_with"
+                    data-shape="pill"
+                    data-logo_alignment="left">
+                </div>
+                <!-- <button @click.prevent="">
                     <svg xmlns="http://www.w3.org/2000/svg"  height="18" viewBox="0 0 11.387 21.262">
                         <path d="M12.251,11.96l.591-3.848H9.149v-2.5a1.924,1.924,0,0,1,2.169-2.079H13V.26A20.469,20.469,0,0,0,10.017,0C6.977,0,4.989,1.843,4.989,5.179V8.112H1.609V11.96h3.38v9.3h4.16v-9.3Z" transform="translate(-1.609)"/>
                     </svg>
                     <span class="show-mob">Sign in with</span><span>Facebook</span>
-                </button>
+                </button> -->
             </div>
             <div class="flex create-acct">
-                <span>Don't have an account?</span><router-link :to="{ name: 'SignUp'}">Create account</router-link>
+                <span>New to Flexsale?</span><a href="/signup">Create an account</a>
             </div>
         </form>
     </div>
@@ -87,6 +99,8 @@
             </div>
         </div>
     </div>
+    <sign-up-with-social-float />
+</div>
 </template>
 <script>
 import jwt_decode from "jwt-decode";
@@ -95,8 +109,9 @@ import axios from 'axios'
 import Spinner from '../../components/app/includes/Spinner.vue'
 import passwordToggleMixin from '../../mixins/passwordToggle'
 import inputMixin from '../../mixins/inputMixin'
+import SignUpWithSocialFloat from '../../components/app/includes/SignUpWithSocialFloat.vue';
 export default {
-  components: { Spinner },
+  components: { Spinner, SignUpWithSocialFloat },
     name: 'SignIn',
     mixins: [passwordToggleMixin, inputMixin],
     computed: {
@@ -118,12 +133,7 @@ export default {
                 error: false,
                 errors: '',
                 message: ''
-            },
-            progressFill: 1,
-            
-            creating: false,
-            created: false,
-            proceeding: false,
+            }
         }
     },
     created() {
@@ -134,19 +144,20 @@ export default {
 
             window.google.accounts.id.initialize({
                 client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
+                cancel_on_tap_outside: "false",
                 callback: this.handleCredentialResponse
             });
-            window.google.accounts.id.renderButton(
-                document.getElementById("signin_button"),
-                { theme: "outline", size: "large" }  // customization attributes
-            );
+            // window.google.accounts.id.renderButton(
+            //     document.getElementById("signin_button"),
+            //     { theme: "outline", size: "large" }  // customization attributes
+            // );
         })
     },
     methods: {
         handleCredentialResponse(response) {
             const responsePayload = jwt_decode(response.credential)
             const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
-            this.OAuthSignIn(user)
+            this.OAuthAttemptSignIn(user)
         },
         signInWithGoogle() {
             window.google.accounts.id.prompt();
@@ -154,12 +165,11 @@ export default {
         signOutOauth() {
            window.google.accounts.id.cancel();
         },
-        async OAuthSignIn(user) {
+        async OAuthAttemptSignIn(user) {
             axios.post(this.getHostname+'/api/oauth-signin', user)
             .then((res) => {
                 if(res.data.status === 1) {
                     this.$store.commit('signInSuccess', res.data.token)
-
                 }else {
                     const payload = { user: user }
                     this.$store.commit('showOAuthModal', payload)
@@ -189,14 +199,6 @@ export default {
 
             })
         },
-        // signInSuccess(token) {
-        //     this.$store.commit('setAuthToken', token)
-        //     localStorage.setItem('token', token)
-        //     this.$store.dispatch('getAuthUser')
-        //     this.created = true
-        //     this.creating = false
-        //     this.loadDashboard()
-        // },
         resertForm() {
             if (this.validation.error === true)
             this.validation.error = false
@@ -205,16 +207,7 @@ export default {
             this.$store.commit('unSetCreating')
             return
         },
-        // loadDashboard() {
-        //     this.proceeding = true
-        //     var interval = setInterval(() => {
-        //             this.progressFill++
-        //         if (this.progressFill === 254) {
-        //             clearInterval(interval)
-        //             router.push({ name: 'Dashboard'})
-        //         }
-        //     }, 20)
-        // }
+       
     }
 }
 </script>
