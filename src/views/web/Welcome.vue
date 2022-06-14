@@ -12,7 +12,6 @@
     <li></li>
 </ul> -->
 <section id="welcome_page" :style="{ minHeight: getWindowHeight+'px' }">
-    <div id="g_id_onload" data-client_id="617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com"></div>
     <div class="container-fluid">
             <div class="login-wrapper">
             <header>
@@ -40,15 +39,12 @@
             </div>
       </div>
   </section>
-  <sign-up-with-social-float />
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import SignUpWithSocialFloat from '../../components/app/includes/SignUpWithSocialFloat.vue'
 export default {
     name: "Welcome",
-    components: { SignUpWithSocialFloat },
     computed: mapGetters(["getWindowHeight"]),
     created() {
         this.$store.commit("computeWindow");

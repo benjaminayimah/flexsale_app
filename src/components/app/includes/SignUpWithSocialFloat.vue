@@ -57,11 +57,6 @@ export default {
     name: "SignUpWithSocialFloat",
     computed: mapGetters(['getOAuthModal', 'getHostname', 'getSignInStatus']),
     components: { Spinner },
-    data() {
-        return {
-            creating: false
-        }
-    },
     methods: {
         async signInOAuthUser() {  
             this.$store.commit('setCreating')    
@@ -75,8 +70,7 @@ export default {
             } catch (e) {
                 console.log(e.response.data)
                 this.creating = false
-                this.$store.commit('unSetCreating')    
-
+                this.$store.commit('unSetCreating')
             }      
         },
     }
