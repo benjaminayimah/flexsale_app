@@ -58,7 +58,7 @@
                     data-type="standard"
                     data-size="large"
                     data-theme="outline"
-                    data-text="signin_with"
+                    data-text="signup_with"
                     data-shape="pill"
                     data-logo_alignment="left">
                 </div>
