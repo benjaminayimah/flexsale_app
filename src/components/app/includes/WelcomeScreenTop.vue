@@ -23,5 +23,12 @@ export default {
             return ''
         }
     },
+    created() {
+         window.addEventListener('load', () => {
+            // let lottiePlayer = document.createElement('script')
+            // lottiePlayer.src = 'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'
+            // document.head.appendChild(lottiePlayer)
+        })
+    }
 }
 </script>

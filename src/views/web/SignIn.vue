@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!created" id="login_card">
+    <div v-if="!getSignInStatus.created" id="login_card">
         <div class="title">
             <h1>Welcome back!</h1>
             <span>Sign in to continue</span>
@@ -8,6 +8,7 @@
             <span>{{ validation.message }}</span>
         </div> -->
         <form @submit.prevent="">
+        <div id="signin_button"></div>
             <div class="form-row">
                 <div class="input-wrapper" id="email_wrapper">
                     <label for="emailInput">Email</label>
@@ -38,9 +39,9 @@
                     <router-link :to="{ name: 'ForgotPassword'}">Forgot your password?</router-link>
                 </div>
             </div>
-                <button class="button button-primary logon-btn" @click.prevent="submitSignin" :class="{ 'button-disabled' : creating }" :disabled="creating? true : false">
-                    <span>{{ creating ? 'Signing in' : 'Sign in'}}</span>
-                    <spinner v-if="creating" v-bind:size="20" v-bind:white="true" />
+                <button class="button button-primary logon-btn" @click.prevent="submitSignin" :class="{ 'button-disabled' : getSignInStatus.creating }" :disabled="getSignInStatus.creating? true : false">
+                    <span>{{ getSignInStatus.creating ? 'Signing in' : 'Sign in'}}</span>
+                    <spinner v-if="getSignInStatus.creating" v-bind:size="20" v-bind:white="true" />
                 </button>
                 <div class="or">
                     <div>
@@ -72,27 +73,26 @@
             <span>{{ computedUser }}</span>
         </div>
         <div class="flex justify-content-center align-items-center bottom-hold">
-            <div v-if="proceeding">
+            <div v-if="getSignInStatus.proceeding">
                 <svg xmlns="http://www.w3.org/2000/svg" width="259" height="5" viewBox="0 0 259 5">
                     <g transform="translate(-830.5 -590)">
                         <line x2="254" transform="translate(833 592.5)" fill="none" stroke="rgba(0,0,0,0.2)" stroke-linecap="round" stroke-width="5"/>
-                        <line :x2="progressFill" transform="translate(833 592.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5"/>
+                        <line :x2="getSignInStatus.progressFill" transform="translate(833 592.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5"/>
                     </g>
                 </svg>
                 <!-- <div>{{ ((progressFill/254)*100).toFixed(0) }}%</div> -->
             </div>
             <div v-else>
-                <button class="button" @click="loadDashboard">Proceed to Dashboard</button>
+                <button class="button" @click="this.$store.commit('loadDashboard')">Proceed to Dashboard</button>
             </div>
         </div>
     </div>
 </template>
 <script>
-// import jwt_decode from "jwt-decode";
+import jwt_decode from "jwt-decode";
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import Spinner from '../../components/app/includes/Spinner.vue'
-import router from '../../router'
 import passwordToggleMixin from '../../mixins/passwordToggle'
 import inputMixin from '../../mixins/inputMixin'
 export default {
@@ -100,7 +100,7 @@ export default {
     name: 'SignIn',
     mixins: [passwordToggleMixin, inputMixin],
     computed: {
-        ...mapGetters(['getHostname', 'getUser']),
+        ...mapGetters(['getHostname', 'getUser', 'getSignInStatus']),
         computedUser() {
             if(this.getUser.name) {
                 return this.getUser.name.split(' ')[0]
@@ -120,49 +120,49 @@ export default {
                 message: ''
             },
             progressFill: 1,
+            
             creating: false,
             created: false,
             proceeding: false,
-            user: '',
         }
     },
     created() {
-        // window.addEventListener('load', () => {
-        //     console.log(window.google);
-        //     window.google.accounts.id.initialize({
-        //         client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
-        //         callback: this.handleCredentialResponse
-        //     });
-        //     window.google.accounts.id.renderButton(
-        //         document.getElementById("signin_button"),
-        //         { theme: "outline", size: "large" }  // customization attributes
-        //     );
-        // })
+        window.addEventListener('load', () => {
+            // let googleScript = document.createElement('script')
+            // googleScript.src = 'https://accounts.google.com/gsi/client'
+            // document.head.appendChild(googleScript)
+
+            window.google.accounts.id.initialize({
+                client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
+                callback: this.handleCredentialResponse
+            });
+            window.google.accounts.id.renderButton(
+                document.getElementById("signin_button"),
+                { theme: "outline", size: "large" }  // customization attributes
+            );
+        })
     },
     methods: {
-        // handleCredentialResponse(response) {
-        //     const responsePayload = jwt_decode(response.credential)
-        //     const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
-        //     this.OAuthSignIn(user)
-        // },
-        // signInWithGoogle() {
-        //     window.google.accounts.id.prompt();
-        // },
-        // signOutOauth() {
-        //    window.google.accounts.id.cancel();
-        // },
+        handleCredentialResponse(response) {
+            const responsePayload = jwt_decode(response.credential)
+            const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
+            this.OAuthSignIn(user)
+        },
+        signInWithGoogle() {
+            window.google.accounts.id.prompt();
+        },
+        signOutOauth() {
+           window.google.accounts.id.cancel();
+        },
         async OAuthSignIn(user) {
             axios.post(this.getHostname+'/api/oauth-signin', user)
             .then((res) => {
                 if(res.data.status === 1) {
-                    this.$store.commit('setAuthToken', res.data.token)
-                    localStorage.setItem('token', res.data.token)
-                    this.$store.dispatch('getAuthUser')
-                    this.created = true
-                    this.creating = false
-                    this.loadDashboard()
+                    this.$store.commit('signInSuccess', res.data.token)
+
                 }else {
-                    // this.openOAuthModal(user)
+                    const payload = { user: user }
+                    this.$store.commit('showOAuthModal', payload)
                 }
             }).catch((err) => {
                 console.log(err.response.status)
@@ -171,18 +171,13 @@ export default {
         },
         async submitSignin() {
             this.resertForm()
-            this.creating = true
+            this.$store.commit('setCreating')
             axios.post(this.getHostname+'/api/sign-in', this.form)
             .then((res) => {
-                this.$store.commit('setAuthToken', res.data.token)
-                localStorage.setItem('token', res.data.token)
-                this.$store.dispatch('getAuthUser')
-                this.created = true
-                this.creating = false
-                this.loadDashboard()
+                this.$store.commit('signInSuccess', res.data.token)
             }).catch((err) => {
                 console.log(err.response.status)
-                this.creating = false
+                this.$store.commit('unSetCreating')
                 if (err.response.status == 401) {
                     this.validation.error = true
                     this.validation.message = err.response.data.status
@@ -194,34 +189,31 @@ export default {
 
             })
         },
+        // signInSuccess(token) {
+        //     this.$store.commit('setAuthToken', token)
+        //     localStorage.setItem('token', token)
+        //     this.$store.dispatch('getAuthUser')
+        //     this.created = true
+        //     this.creating = false
+        //     this.loadDashboard()
+        // },
         resertForm() {
             if (this.validation.error === true)
             this.validation.error = false
             this.validation.errors = ''
             this.validation.message = null
-            this.creating = false
+            this.$store.commit('unSetCreating')
             return
         },
-        loadDashboard() {
-            this.proceeding = true
-            var interval = setInterval(() => {
-                    this.progressFill++
-                if (this.progressFill === 254) {
-                    clearInterval(interval)
-                    router.push({ name: 'Dashboard'})
-                }
-            }, 20)
-        },
-        // openOAuthModal(payload) {
-        //     console.log(payload)
-        //     this.oAuthSignUpModal.user = payload.user
-        //     this.oAuthSignUpModal = payload.user.type
-        //     this.oAuthSignUpModal.active = true
-        // },
-        // closeOAuthModal() {
-        //     this.oAuthSignUpModal.active = false
-        //     this.oAuthSignUpModal.user = ''
-        //     this.oAuthSignUpModal = ''
+        // loadDashboard() {
+        //     this.proceeding = true
+        //     var interval = setInterval(() => {
+        //             this.progressFill++
+        //         if (this.progressFill === 254) {
+        //             clearInterval(interval)
+        //             router.push({ name: 'Dashboard'})
+        //         }
+        //     }, 20)
         // }
     }
 }
