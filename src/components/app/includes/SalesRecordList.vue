@@ -183,21 +183,6 @@ hr{
         border-bottom: 1px dashed #dde0e6;
         padding: 12px 0;
     }
-    .bottom-1{
-        // .item-list{
-        //     display: grid;
-        //     grid-template-columns: repeat(4, 1fr);
-        //     div:nth-child(2){
-        //         text-align: center;
-        //     }
-        //     div:nth-child(3){
-        //         text-align: center;
-        //     }
-        //     div:last-child{
-        //         text-align: right;
-        //     }
-        // }
-    }
     .bottom-2{
         align-items: flex-end;
         .bottom-2-content{
