@@ -67,7 +67,7 @@ export default createStore({
     trash: [],
     bulkSelection: { active: false, array: []},
     notifications: [],
-
+    signinStatus: { creating: false, created: false, proceeding: false, progressFill: 1 },
 
     submitting: true,
     customers: [],
@@ -111,6 +111,18 @@ export default createStore({
         if(element.id == state.user.current)
         state.currentStore = element
       });
+    },
+    closeOAuthModal(state) {
+      const modal = state.oAuthSignUpModal
+      modal.active = false
+      modal.user = ''
+      modal.type = ''
+    },
+    showOAuthModal(state, payload) {
+      const modal = state.oAuthSignUpModal
+      modal.user = payload.user
+      modal.type = payload.user.type
+      modal.active = true
     },
     computeWindow(state) {
       let appWidth = 1344
@@ -366,6 +378,47 @@ export default createStore({
           state.alert.status.show = true
       }   
     },
+
+    setCreating(state) {
+      state.signinStatus.creating = true
+    },
+    setCreated(state) {
+      state.signinStatus.created = true
+    },
+    setProceeding(state) {
+      state.signinStatus.proceeding = true
+    },
+    unSetCreating(state) {
+      state.signinStatus.creating = false
+    },
+    unSetCreated(state) {
+      state.signinStatus.created = false
+    },
+    unSetProceeding(state) {
+      state.signinStatus.proceeding = false
+    },
+    signInSuccess(state, payload) {
+      this.commit('setAuthToken', payload)
+      localStorage.setItem('token', payload)
+      this.dispatch('getAuthUser')
+      this.commit('setCreated')
+      this.commit('unSetCreating')
+      this.commit('loadDashboard')
+    },
+    loadDashboard(state) {
+      this.commit('setProceeding')
+      var interval = setInterval(() => {
+        // let progress = state.signinStatus.progressFill
+        state.signinStatus.progressFill++
+          if (state.signinStatus.progressFill === 254) {
+              clearInterval(interval)
+              router.push({ name: 'Dashboard'})
+            }
+      }, 20)
+    },
+
+
+
     dismisAlert(state) {
         for (let i in state.alert.status)
         state.alert.status[i] = false
@@ -1100,7 +1153,7 @@ export default createStore({
     getTempContainer: (state) => state.tempDataContainer,
     getEditContainer: (state) => state.editContainer,
     getDeleteModal: (state) => state.deleteModal,
-    // getOAuthSignUpModal: (state) => state.oAuthSignUpModal,
+    getOAuthModal: (state) => state.oAuthSignUpModal,
     getTrashRestoreDeleteModal: (state) => state.trashModal,
     getDefaultImage: (state) => state.defaultImage,
     getCurrency: (state) => state.currency,
@@ -1120,6 +1173,7 @@ export default createStore({
     getNotifications: (state) => state.notifications,
     getSearch: (state) => state.searchIn,
     getBodyWidth: (state) => state.bodyWidth,
+    getSignInStatus: (state) => state.signinStatus,
 
 
 
