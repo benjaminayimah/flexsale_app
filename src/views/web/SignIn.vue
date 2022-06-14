@@ -59,14 +59,7 @@
                     </svg>
                     <span class="show-mob">Sign in with</span><span>Google</span>
                 </button> -->
-                <div class="g_id_signin"
-                    data-type="standard"
-                    data-size="large"
-                    data-theme="outline"
-                    data-text="signin_with"
-                    data-shape="pill"
-                    data-logo_alignment="left">
-                </div>
+                <div id="signin_button"></div>
                 <!-- <button @click.prevent="">
                     <svg xmlns="http://www.w3.org/2000/svg"  height="18" viewBox="0 0 11.387 21.262">
                         <path d="M12.251,11.96l.591-3.848H9.149v-2.5a1.924,1.924,0,0,1,2.169-2.079H13V.26A20.469,20.469,0,0,0,10.017,0C6.977,0,4.989,1.843,4.989,5.179V8.112H1.609V11.96h3.38v9.3h4.16v-9.3Z" transform="translate(-1.609)"/>
@@ -144,13 +137,12 @@ export default {
 
             window.google.accounts.id.initialize({
                 client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
-                cancel_on_tap_outside: "false",
                 callback: this.handleCredentialResponse
             });
-            // window.google.accounts.id.renderButton(
-            //     document.getElementById("signin_button"),
-            //     { theme: "outline", size: "large" }  // customization attributes
-            // );
+            window.google.accounts.id.renderButton(
+                document.getElementById("signin_button"),
+                { theme: "outline", size: "large", shape: "pill", type: "standard", text: "signin_with" }  // customization attributes
+            );
         })
     },
     methods: {

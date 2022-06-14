@@ -4,7 +4,7 @@
             <h1>Reset password</h1>
             <span>Enter your email to continue</span>
         </div>
-        <div id="g_id_onload"
+        <!-- <div id="g_id_onload"
          data-client_id="617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com"
          data-login_uri="http://localhost:8080"
          data-cancel_on_tap_outside="false">
@@ -16,7 +16,7 @@
          data-text="signup_with"
          data-shape="pill"
          data-logo_alignment="left">
-      </div>
+      </div> -->
         <form @submit.prevent="">
             <div class="form-row">
                 <!-- <label>Email:</label> -->
