@@ -1,7 +1,7 @@
 <template>
     <div class="wlc-container flex wlc-cont-1">
         <div class="wlc-wrap flex-col w-50 justify-content-center align-items-start">
-            <h1>Welcome on board, {{ computedUser }}</h1>
+            <h1>Welcome on board, <strong>{{ computedUser }}</strong></h1>
             <div>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</div>
             <button @click.prevent="this.$store.commit('forceSetOnboard', 'intro')" class="button">Set up your store</button>
         </div>
