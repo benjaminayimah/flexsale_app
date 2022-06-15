@@ -401,16 +401,13 @@ export default createStore({
       this.commit('setAuthToken', payload)
       localStorage.setItem('token', payload)
       this.dispatch('getAuthUser')
-      this.commit('setCreated')
-      this.commit('unSetCreating')
-      this.commit('loadDashboard')
+      return true
     },
     loadDashboard(state) {
       this.commit('setProceeding')
       var interval = setInterval(() => {
-        // let progress = state.signinStatus.progressFill
         state.signinStatus.progressFill++
-          if (state.signinStatus.progressFill === 254) {
+            if (state.signinStatus.progressFill === 254) {
               clearInterval(interval)
               router.push({ name: 'Dashboard'})
             }
@@ -805,6 +802,10 @@ export default createStore({
           state.commit('destroyToken') 
         }      
     },
+    //OAuth signin
+    async signUpnOAuthUser(state, payload) {  
+        return await axios.post(this.getters.getHostname+'/api/oauth-sign-up', payload)    
+    },
     async resfreshUser(state) {  
       state.commit('setLoader')          
         try {
@@ -824,6 +825,7 @@ export default createStore({
         })
     },
     //end auth && logout
+
     getSwitchStore(state, payload) { 
       axios.post(this.getters.getHostname+'/api/switch-store?token='+this.getters.getToken, 
       { 'storeID' : payload})

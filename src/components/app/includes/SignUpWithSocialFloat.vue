@@ -41,7 +41,7 @@
                         <div class="oauth-user-email text-overflow-ellipsis">{{ getOAuthModal.user.email }}</div>
                     </div>
                 </div>
-                <button class="button button-primary logon-btn" @click.prevent="signInOAuthUser"  :class="{ 'button-disabled' : getSignInStatus.creating }" :disabled="getSignInStatus.creating? true : false">
+                <button class="button button-primary logon-btn" @click.prevent="signUpOAuthUser"  :class="{ 'button-disabled' : getSignInStatus.creating }" :disabled="getSignInStatus.creating? true : false">
                     <span>{{ getSignInStatus.creating ? 'Creating account' : 'Sign Up with '+ getOAuthModal.user.given_name }}</span>
                     <spinner v-if="getSignInStatus.creating" v-bind:size="20" v-bind:white="true" />
                 </button>
@@ -50,7 +50,6 @@
     </transition>
 </template>
 <script>
-import axios from 'axios'
 import { mapGetters } from 'vuex';
 import Spinner from './Spinner.vue';
 export default {
@@ -58,21 +57,28 @@ export default {
     computed: mapGetters(['getOAuthModal', 'getHostname', 'getSignInStatus']),
     components: { Spinner },
     methods: {
-        async signInOAuthUser() {  
-            this.$store.commit('setCreating')    
-            try {
-                const res = await axios.post(this.getHostname+'/api/oauth-sign-up', this.getOAuthModal.user)
-                this.creating = false
+        signUpOAuthUser() { 
+            this.$store.commit('setCreating')
+            this.$store.dispatch('signUpnOAuthUser', this.getOAuthModal.user)
+            .then((res) => {
+
+                console.log(res.data)
+                
+                this.$store.commit('unSetCreating')
                 if(res.data.token !== null) {
                     this.$store.commit('signInSuccess', res.data.token)
                     this.$store.commit('closeOAuthModal')
+                    this.$store.commit('setCreated')
+                    this.$store.commit('loadDashboard')
                 }
-            } catch (e) {
-                console.log(e.response.data)
-                this.creating = false
+            }).catch((err) => {
+                console.log(err.response.data)
                 this.$store.commit('unSetCreating')
-            }      
+            })
         },
+        
+
+        
     }
 }
 </script>

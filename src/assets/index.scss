@@ -58,6 +58,7 @@ li:last-child a, li:last-child .info-section-hold{
   padding: 20px 0;
   text-align: center;
   position: relative;
+  font-size: 0.9rem;
   &::before{
     background-color: $gray-light;
     bottom: 0;
@@ -271,7 +272,6 @@ li:last-child a, li:last-child .info-section-hold{
         span{
             font-weight: 500;
             color: $gray-color;
-            font-size: 1.1rem;
         }
     }
     .social-signin{
@@ -283,7 +283,6 @@ li:last-child a, li:last-child .info-section-hold{
         align-items: center;
         line-height: 52px;
         border-radius: 14px;
-        //border: 2px solid $gray-light;
         background-color: $white-color;
         &:first-child{
             margin-right: 8px;
@@ -302,7 +301,7 @@ li:last-child a, li:last-child .info-section-hold{
             }
         }
         svg{
-        margin-right: 10px
+          margin-right: 10px
         }
         span{
             font-weight: 600;
@@ -377,7 +376,7 @@ li:last-child a, li:last-child .info-section-hold{
       .title{
           h1{
               font-size: 1.6rem;
-                  padding-bottom: 5px;
+              padding-bottom: 5px;
           }
       }
       .form-control{

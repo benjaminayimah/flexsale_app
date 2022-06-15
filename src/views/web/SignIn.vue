@@ -68,7 +68,7 @@
                 </button> -->
             </div>
             <div class="flex create-acct">
-                <span>New to Flexsale?</span><a href="/signup">Create an account</a>
+                <span>New to Flexsale?</span><routerLink :to="{ name: 'SignUp'}">Create an account</routerLink>
             </div>
         </form>
     </div>
@@ -131,17 +131,13 @@ export default {
     },
     created() {
         window.addEventListener('load', () => {
-            // let googleScript = document.createElement('script')
-            // googleScript.src = 'https://accounts.google.com/gsi/client'
-            // document.head.appendChild(googleScript)
-
             window.google.accounts.id.initialize({
                 client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
                 callback: this.handleCredentialResponse
             });
             window.google.accounts.id.renderButton(
                 document.getElementById("signin_button"),
-                { theme: "outline", size: "large", shape: "pill", type: "standard", text: "signin_with" }  // customization attributes
+                { theme: "outline", size: "large", shape: "pill", type: "standard", text: "signin_with" }
             );
         })
     },
@@ -151,17 +147,11 @@ export default {
             const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
             this.OAuthAttemptSignIn(user)
         },
-        signInWithGoogle() {
-            window.google.accounts.id.prompt();
-        },
-        signOutOauth() {
-           window.google.accounts.id.cancel();
-        },
         async OAuthAttemptSignIn(user) {
             axios.post(this.getHostname+'/api/oauth-signin', user)
             .then((res) => {
                 if(res.data.status === 1) {
-                    this.$store.commit('signInSuccess', res.data.token)
+                    this.setSuccessRes(res.data.token)
                 }else {
                     const payload = { user: user }
                     this.$store.commit('showOAuthModal', payload)
@@ -176,7 +166,7 @@ export default {
             this.$store.commit('setCreating')
             axios.post(this.getHostname+'/api/sign-in', this.form)
             .then((res) => {
-                this.$store.commit('signInSuccess', res.data.token)
+                this.setSuccessRes(res.data.token)
             }).catch((err) => {
                 console.log(err.response.status)
                 this.$store.commit('unSetCreating')
@@ -188,8 +178,13 @@ export default {
                     this.validation.errors = err.response.data.errors
                     this.validation.message = err.response.data.message
                 }
-
             })
+        },
+        setSuccessRes(token) {
+            this.$store.commit('signInSuccess', token)
+            this.$store.commit('unSetCreating')
+            this.$store.commit('setCreated')
+            this.$store.commit('loadDashboard')
         },
         resertForm() {
             if (this.validation.error === true)
