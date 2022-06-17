@@ -68,7 +68,7 @@
                 </button> -->
             </div>
             <div class="flex create-acct">
-                <span>New to Flexsale?</span><routerLink :to="{ name: 'SignUp'}">Create an account</routerLink>
+                <span>New to Flexsale?</span><a href="/signup">Create an account</a>
             </div>
         </form>
     </div>
@@ -144,12 +144,15 @@ export default {
     methods: {
         handleCredentialResponse(response) {
             const responsePayload = jwt_decode(response.credential)
-            const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
+            const user = { email: responsePayload.email, sub: responsePayload.sub, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
+            // const user = { token: response.credential }
+            // console.log(user)
             this.OAuthAttemptSignIn(user)
         },
         async OAuthAttemptSignIn(user) {
             axios.post(this.getHostname+'/api/oauth-signin', user)
             .then((res) => {
+                // console.log(res.data)
                 if(res.data.status === 1) {
                     this.setSuccessRes(res.data.token)
                 }else {

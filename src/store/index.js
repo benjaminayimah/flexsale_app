@@ -131,11 +131,11 @@ export default createStore({
       state.windowWidth = winWidth
       // state.bodyWidth = document.getElementById('main_home').innerWidth
       if(winWidth < 500){
-        return this.commit('setMobile')
+        this.commit('setMobile')
       }else if(winWidth > appWidth){
-        return this.commit('setDesktop')
+        this.commit('setDesktop')
       }else{
-        return this.commit('setTablet', winWidth)
+        this.commit('setTablet', winWidth)
       }
     },
     setStoreTempImg(state, payload) {
@@ -202,7 +202,6 @@ export default createStore({
       state.onboard.form.country = ''
       state.onboard.imageForm.store = '',
       state.onboard.imageForm.image = ''
-      return
     },
     editProfileImage(state) {
       const image = state.currentStore.image

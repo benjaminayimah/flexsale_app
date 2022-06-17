@@ -2,6 +2,7 @@
     <div id="login_card" v-if="!created">
         <div id="g_id_onload"
             data-client_id="617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com"
+            data-context="signup"
             data-cancel_on_tap_outside="false">
         </div>
         <div class="title">
@@ -54,7 +55,7 @@
                     </div>
                 </div>
             <div class="flex social-signin justify-content-center">
-                <div id="signin_button"></div>
+                <div id="signup_button"></div>
                 <!-- <button @click.prevent="">
                     <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 20.919 21.262">
                         <path  d="M20.919,11.442c0,6.066-4.154,10.382-10.288,10.382a10.631,10.631,0,1,1,0-21.262A10.223,10.223,0,0,1,17.76,3.345L14.866,6.127C11.081,2.474,4.042,5.218,4.042,11.193a6.659,6.659,0,0,0,6.589,6.713,5.749,5.749,0,0,0,6.036-4.582H10.631V9.667H20.752A9.32,9.32,0,0,1,20.919,11.442Z" transform="translate(0 -0.562)"/>
@@ -69,7 +70,7 @@
                 </button> -->
             </div>
             <div class="flex create-acct">
-                <span>Already have an account?</span><router-link :to="{ name: 'SignIn'}">Sign in</router-link>
+                <span>Already have an account?</span><a href="/signin">Sign in</a>
                 <!--<router-link id="go_hm" :to="{ name: 'Home' }">Back Home</router-link>-->
             </div>
         </form>
@@ -145,18 +146,19 @@ export default {
         window.addEventListener('load', () => {
             window.google.accounts.id.initialize({
                 client_id: "617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com",
+                context: "signup",
                 callback: this.handleCredentialResponse
             });
             window.google.accounts.id.renderButton(
-                document.getElementById("signin_button"),
-                { theme: "outline", size: "large", shape: "pill", type: "standard", text: "signin_with" }
+                document.getElementById("signup_button"),
+                { theme: "outline", size: "large", shape: "pill", type: "standard", text: "continue_with" }
             );
         })
     },
     methods: {
         handleCredentialResponse(response) {
             const responsePayload = jwt_decode(response.credential)
-            const user = { email: responsePayload.email, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
+            const user = { email: responsePayload.email, sub: responsePayload.sub, verified: responsePayload.email_verified, name: responsePayload.name, given_name: responsePayload.given_name, picture: responsePayload.picture, type: 'google' }
             this.signUpOAuthUser(user)
         },
         submitSignUp() {
@@ -186,7 +188,7 @@ export default {
             this.creating = true
             this.$store.dispatch('signUpnOAuthUser', user)
             .then((res) => {
-                console.log(res.data)
+                // console.log(res.data)
                 this.creating = false
                 if(res.data.token !== null) {
                     this.$store.commit('signInSuccess', res.data.token)
