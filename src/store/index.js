@@ -743,7 +743,6 @@ export default createStore({
       state.dynamicFloatingDiv.top = null
       state.dynamicFloatingDiv.bottom = null
       payload.classList.remove('this-will-change')
-
     },
     addToSale(state) {
       const payload = { id: 1, title: 'New sale: 001'}
