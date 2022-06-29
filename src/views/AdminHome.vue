@@ -142,6 +142,7 @@ export default {
     name: 'AdminHome',
     computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard','getStores']),
     created() {
+      this.$store.commit('setBodyBgColor')
       this.$store.dispatch('getAuthUser')
       window.addEventListener('resize', this.windowSize )
       window.addEventListener('scroll', this.pageScroll)

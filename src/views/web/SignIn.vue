@@ -68,7 +68,7 @@
                 </button> -->
             </div>
             <div class="flex create-acct">
-                <span>New to Flexsale?</span><a href="/signup">Create an account</a>
+                <!-- <span>New to Flexsale?</span><a href="/signup">Create an account</a> -->
             </div>
         </form>
     </div>

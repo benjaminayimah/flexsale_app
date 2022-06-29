@@ -14,6 +14,13 @@ $button-disabled: #9ea7d8;
 
 $myFont: 'Urbanist', Helvetica, sans-serif;
 
+.body-light {
+  background-color: #fff;
+}
+.body-dark {
+  background-color: #131D52;
+}
+
 .h-list-wrap ul li:last-child div, #ovw_content ul li:last-child .a-wrap{
   padding-right: 20px;
 }
