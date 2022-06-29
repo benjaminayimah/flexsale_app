@@ -62,9 +62,6 @@ export default {
             this.$store.commit('setCreating')
             this.$store.dispatch('signUpnOAuthUser', this.getOAuthModal.user)
             .then((res) => {
-
-                console.log(res.data)
-                
                 this.$store.commit('unSetCreating')
                 if(res.data.token !== null) {
                     this.$store.commit('signInSuccess', res.data.token)

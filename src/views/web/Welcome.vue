@@ -13,7 +13,7 @@
 </ul> -->
 <section id="welcome_page" :style="{ minHeight: getWindowHeight+'px' }">
     <div class="container-fluid">
-            <div class="login-wrapper">
+        <div class="login-wrapper">
             <header>
                 <a href="http://localhost:8081/">
                     <svg id="large_logo" xmlns="http://www.w3.org/2000/svg" height="45" viewBox="0 0 583.301 171.521">
@@ -35,12 +35,9 @@
                     <component :is="Component" />
                 </transition>
             </router-view>
-            <!-- <transition name="slide-fade" mode="out-in">
-                <router-view />
-            </transition> -->
-            </div>
-      </div>
-  </section>
+        </div>
+    </div>
+</section>
 </template>
 
 <script>
@@ -50,7 +47,9 @@ export default {
     computed: mapGetters(["getWindowHeight"]),
     created() {
         this.$store.commit("computeWindow");
-        window.addEventListener("resize", this.windowSize);
+        window.addEventListener("resize", this.windowSize)
+        this.$store.commit('setBodyBgColor')
+
     },
     unmounted() {
         window.removeEventListener("resize", this.windowSize);
@@ -72,7 +71,6 @@ header{
 }
 
 #welcome_page{
-    background-color: #131D52;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;

@@ -158,6 +158,13 @@ export default createStore({
         }
       }, 1000);
     },
+    setBodyBgColor(state) {
+      if(state.token !== null) {
+        document.body.classList.remove('body-dark')
+      }else {
+        document.body.classList.add('body-dark')
+      }
+    },
     forceSetOnboard(state, payload) {
       state.onboard.status = true
       document.body.classList.add('fixed-body')
