@@ -3,9 +3,9 @@ import { createStore } from 'vuex'
 import router from '@/router'
 export default createStore({
   state: {
-    hostname: 'http://localhost:8000',
+    // hostname: 'http://localhost:8000',
     thisHostname: 'https://flexsale.store',
-    //hostname: 'https://api.flexsale.store',
+    hostname: 'https://api.flexsale.store',
     token: localStorage.getItem('token') || null,
     windowHeight: '',
     windowWidth: '',
