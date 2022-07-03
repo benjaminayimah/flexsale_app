@@ -387,21 +387,6 @@ header, .right-header{
 .menu{
   margin-top: 10px;
 }
-.mob-title{
-  animation: fade-in 0.7s
-}
-@keyframes fade-in {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-.mob-logo{
-  animation: fade-out 0.7s
-}
-@keyframes fade-out {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
 
 
 </style>
