@@ -174,8 +174,8 @@ export default {
   bottom: 0;
   width: 100%;
   left: 0;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   box-shadow: rgb(86 111 244 / 33%) 0 5px 12px 0;
   background-color: $white-color;
 }
@@ -184,7 +184,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   padding-bottom: 15px;
-  height: 70px;
+  height: 68px;
   padding: 0 15px;
   li{
     list-style-type: none;
@@ -195,8 +195,9 @@ export default {
     a{
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       text-decoration: none;
+      padding: 10px;
       font-size: 0.75rem;
       i{
         display: flex;
@@ -217,7 +218,7 @@ export default {
   }
   #add_button{
     position: absolute;
-    top: -16px;
+    top: -20px;
   }
 }
 
