@@ -87,7 +87,7 @@ export default {
     name: 'Dashboard',
     mixins: [CouterMixin],
     computed: {
-        ...mapGetters(['getStores', 'getActivities', 'getProducts', 'getUser', 'getThisHostname']),
+        ...mapGetters(['getStores', 'getActivities', 'getProducts', 'getUser']),
         computedUser() {
             if(this.getUser.name) {
                 return this.getUser.name.split(' ')[0]
