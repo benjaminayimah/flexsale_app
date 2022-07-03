@@ -73,10 +73,7 @@ export default {
                 console.log(err.response.data)
                 this.$store.commit('unSetCreating')
             })
-        },
-        
-
-        
+        } 
     }
 }
 </script>
