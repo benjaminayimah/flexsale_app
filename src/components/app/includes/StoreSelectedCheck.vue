@@ -32,7 +32,7 @@ export default {
             const newObj = {
                 id: id
             }
-            this.$emit('check',newObj)
+            this.$emit('check', newObj)
         }
     }
 

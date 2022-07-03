@@ -290,7 +290,6 @@ li{
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(250px);
-  
 }
   
 </style>
