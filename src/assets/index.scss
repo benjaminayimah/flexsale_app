@@ -611,6 +611,12 @@ button{
   span{
       font-size: 1.2rem;
   }
+  .progress-bg{
+    stroke: rgba(0,0,0,0.2);
+  }
+  .progress{
+    stroke: #fff;
+  }
   button{
       line-height: 2.5rem;
       padding: 8px 20px;
@@ -1434,6 +1440,16 @@ input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
   }
 }
 
+.progress-secondary{
+  color: $primary-color;
+  .progress {
+    stroke: $primary-color;
+  }
+  .progress-bg{
+    stroke: $primary-light;
+  }
+}
+
 
 //empty state
 .empty-state{
@@ -2127,7 +2143,6 @@ hr{
 .lottie-player{
   height: 140px;
 }
-
 
 
 

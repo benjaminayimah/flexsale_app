@@ -75,7 +75,7 @@
             </div>
         </form>
     </div>
-    <div v-else class="flex justify-content-center align-items-center flex-col after-created">
+    <div v-else class="flex justify-content-center align-items-center flex-col after-created" :class="{ 'progress-secondary' : getMobile }">
         <div>
             <h1>Hello!</h1>
             <span>{{ user }}</span>
@@ -84,8 +84,8 @@
             <div v-if="proceeding">
                 <svg xmlns="http://www.w3.org/2000/svg" width="259" height="5" viewBox="0 0 259 5">
                     <g transform="translate(-830.5 -590)">
-                        <line x2="254" transform="translate(833 592.5)" fill="none" stroke="rgba(0,0,0,0.2)" stroke-linecap="round" stroke-width="5"/>
-                        <line :x2="progressFill" transform="translate(833 592.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5"/>
+                        <line class="progress-bg" x2="254" transform="translate(833 592.5)" fill="none" stroke="rgba(0,0,0,0.2)" stroke-linecap="round" stroke-width="5"/>
+                        <line class="progress" :x2="progressFill" transform="translate(833 592.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5"/>
                     </g>
                 </svg>
             </div>
@@ -107,7 +107,7 @@ export default {
     name: 'SignUp',
     mixins: [passwordToggleMixin],
     computed: {
-        ...mapGetters(['getHostname', 'getUser'])
+        ...mapGetters(['getHostname', 'getUser', 'getMobile'])
     },
     data() {
         return {
