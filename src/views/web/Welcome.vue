@@ -78,7 +78,6 @@ header{
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
-    transition: 0.5s all;
     padding: 50px 0;
 }
 .login-wrapper{
