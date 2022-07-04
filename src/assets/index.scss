@@ -259,7 +259,7 @@ li:last-child a, li:last-child .info-section-hold{
 
     a{
         color: $primary-color;
-        font-weight: 500;
+        font-weight: 600;
         text-decoration: none;
         &:hover{
             text-decoration: underline;
@@ -372,26 +372,27 @@ li:last-child a, li:last-child .info-section-hold{
           }
       }
   }
-  .or div{
-       background-color: $primary-light;
-  }
+  
  
   #login_card{
      background-color: transparent;
-      padding: 0;
-      
+      padding: 0 10px;
       .title{
+        margin-bottom: 30px;
           h1{
               font-size: 1.6rem;
               padding-bottom: 5px;
           }
+      }
+      label {
+        left: 0;
       }
       .form-control{
           border-radius: 0;
           background-color: transparent;
           border: none;
           border-bottom: 1px solid $gray-color;
-          padding-left: 0;
+          padding-left: 0 !important;
           transition: all 0.1s linear;
           box-shadow: none;
           height: 50px;
@@ -399,6 +400,9 @@ li:last-child a, li:last-child .info-section-hold{
               border-bottom-width: 2px;
               border-bottom-color: $primary-color;
           }
+      }
+      .form-row {
+        margin-bottom: 15px !important;
       }
 
   }

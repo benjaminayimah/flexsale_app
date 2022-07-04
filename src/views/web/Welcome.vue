@@ -74,7 +74,6 @@ header{
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    // background-image: url('../../assets/images/shapes.svg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -97,10 +96,8 @@ header{
         margin-bottom: 20px;
     }
     #welcome_page{
-        background-color: $primary-light;
-        background-image: none;
+        background-color: $white-color;
         padding-top: 15%;
-        background-image: url('../../assets/images/shapes-mob.svg');
         
     }
     #mini_logo{

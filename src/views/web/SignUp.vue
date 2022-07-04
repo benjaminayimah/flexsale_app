@@ -54,7 +54,7 @@
                         <span>Or</span><!--<span class="hide-mob">continue with social sign-up</span>-->
                     </div>
                 </div>
-            <div class="flex social-signin justify-content-center">
+            <div class="flex social-signin justify-content-center align-items-center">
                 <div id="signup_button"></div>
                 <!-- <button @click.prevent="">
                     <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 20.919 21.262">
