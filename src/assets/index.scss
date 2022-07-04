@@ -284,46 +284,61 @@ li:last-child a, li:last-child .info-section-hold{
             color: $gray-color;
         }
     }
-    .social-signin{
-      flex-direction: row;
-      button{
-        box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        line-height: 52px;
-        border-radius: 14px;
-        background-color: $white-color;
-        &:first-child{
-            margin-right: 8px;
-        }
-        &:last-child{
-            margin-left: 8px;
-        }
-        &:hover{
-            background-color: $primary-light;
-            border-color: $primary-color;
-            span{
-                color:$primary-color;
-            }
-            path{
-                fill: $primary-color ;
-            }
-        }
-        svg{
-          margin-right: 10px
-        }
-        span{
-            font-weight: 600;
-            color: $dark;
-        }
+      .social-signin{
+        flex-direction: row;
+        button{
+          box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          line-height: 52px;
+          border-radius: 14px;
+          background-color: $white-color;
+          &:first-child{
+              margin-right: 8px;
+          }
+          &:last-child{
+              margin-left: 8px;
+          }
+          &:hover{
+              background-color: $primary-light;
+              border-color: $primary-color;
+              span{
+                  color:$primary-color;
+              }
+              path{
+                  fill: $primary-color ;
+              }
+          }
+          svg{
+            margin-right: 10px
+          }
+          span{
+              font-weight: 600;
+              color: $dark;
+          }
+      }
     }
-  }
-  .password{
+    .password{
       font-family: 'Helvetica', sans-serif;
     }
     .show-mob{
         display: none;
+    }
+    .disclaimer{
+        display: block;
+        text-align: center;
+        font-size: 0.96rem;
+        font-weight: 500;
+        color: $gray-color;
+        margin-top: 20px;
+          a {
+            color: $primary-color;
+            text-decoration: none;
+          &:hover {
+              text-decoration: underline;
+          }
+        }
     }
 }
 .hide-show-pass{
@@ -408,7 +423,6 @@ li:last-child a, li:last-child .info-section-hold{
         margin-bottom: 15px !important;
       }
       .logon-btn{
-        margin-top: 20px;
         height: 50px;
       }
 
@@ -586,6 +600,7 @@ button{
 .logon-btn{
   height: 56px;
   gap: 8px;
+  margin-top: 20px;
 }
 .after-created{
   margin-top: 60%;

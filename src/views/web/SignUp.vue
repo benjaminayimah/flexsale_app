@@ -54,15 +54,16 @@
                     </div>
                 </transition>
             </div>
-                <button class="button button-primary logon-btn" @click.prevent="submitSignUp"  :class="{ 'button-disabled' : creating }" :disabled="creating? true : false">
-                    <span>{{ creating ? 'Creating account' : 'Create Account'}}</span>
-                    <spinner v-if="creating" v-bind:size="20" v-bind:white="true" />
-                </button>
-                <div class="or">
-                    <div>
-                        <span>Or</span><!--<span class="hide-mob">continue with social sign-up</span>-->
-                    </div>
+            <span class="disclaimer">By creating an account you, I have agreed to Flexsale's <a href="https://www.flexsale.store/terms-and-conditions">Terms</a>, <a href="https://www.flexsale.store/privacy-policy">Privacy policy</a> & <a href="https://www.flexsale.store/cookies-policy">Cookie policy.</a></span>
+            <button class="button button-primary logon-btn" @click.prevent="submitSignUp"  :class="{ 'button-disabled' : creating }" :disabled="creating? true : false">
+                <span>{{ creating ? 'Creating account' : 'Create Account'}}</span>
+                <spinner v-if="creating" v-bind:size="20" v-bind:white="true" />
+            </button>
+            <div class="or">
+                <div>
+                    <span>Or</span><!--<span class="hide-mob">continue with social sign-up</span>-->
                 </div>
+            </div>
             <div class="flex social-signin justify-content-center align-items-center">
                 <div id="signup_button"></div>
                 <!-- <button @click.prevent="">
