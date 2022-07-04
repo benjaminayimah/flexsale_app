@@ -97,7 +97,7 @@ header{
     }
     #welcome_page{
         background-color: $white-color;
-        padding-top: 15%;
+        padding-top: 10%;
         
     }
     #mini_logo{
