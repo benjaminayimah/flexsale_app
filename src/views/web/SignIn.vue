@@ -70,7 +70,7 @@
             <div class="flex create-acct">
                 <!-- <span>New to Flexsale?</span><a href="/signup">Create an account</a> -->
             </div>
-            <span class="disclaimer">This application is protected by Flexsale's <a href="">Terms & Conditions</a>, <a href="">Privacy policy</a> & <a href="">Cookie policy</a></span>
+            <span class="disclaimer">This application is protected by Flexsale's <a href="">Terms & Conditions</a>, <a href="">Privacy policy</a> & <a href="">Cookie policy.</a></span>
         </form>
     </div>
     <div v-else class="flex justify-content-center align-items-center flex-col after-created">
