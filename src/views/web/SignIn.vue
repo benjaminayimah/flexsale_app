@@ -73,7 +73,7 @@
             <span class="disclaimer">This application is protected by Flexsale's <a href="">Terms & Conditions</a>, <a href="">Privacy policy</a> & <a href="">Cookie policy.</a></span>
         </form>
     </div>
-    <div v-else class="flex justify-content-center align-items-center flex-col after-created">
+    <div v-else class="flex justify-content-center align-items-center flex-col after-created" :class="{ 'progress-secondary' : getMobile }">
         <div v-if="computedUser">
             <h1>Hello!</h1>
             <span>{{ computedUser }}</span>
@@ -82,8 +82,8 @@
             <div v-if="getSignInStatus.proceeding">
                 <svg xmlns="http://www.w3.org/2000/svg" width="259" height="5" viewBox="0 0 259 5">
                     <g transform="translate(-830.5 -590)">
-                        <line x2="254" transform="translate(833 592.5)" fill="none" stroke="rgba(0,0,0,0.2)" stroke-linecap="round" stroke-width="5"/>
-                        <line :x2="getSignInStatus.progressFill" transform="translate(833 592.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5"/>
+                        <line class="progress-bg" x2="254" transform="translate(833 592.5)" fill="none" stroke-linecap="round" stroke-width="5"/>
+                        <line class="progress" :x2="getSignInStatus.progressFill" transform="translate(833 592.5)" fill="none" stroke-linecap="round" stroke-width="5"/>
                     </g>
                 </svg>
                 <!-- <div>{{ ((progressFill/254)*100).toFixed(0) }}%</div> -->
@@ -109,7 +109,7 @@ export default {
     name: 'SignIn',
     mixins: [passwordToggleMixin, inputMixin],
     computed: {
-        ...mapGetters(['getHostname', 'getUser', 'getSignInStatus']),
+        ...mapGetters(['getHostname', 'getUser', 'getSignInStatus', 'getMobile']),
         computedUser() {
             if(this.getUser.name) {
                 return this.getUser.name.split(' ')[0]
