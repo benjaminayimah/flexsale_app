@@ -217,7 +217,19 @@ li:last-child a, li:last-child .info-section-hold{
     border-color: #e0eee4;
   }
   .has-error{
-    border-color: $danger;
+    input {
+      border-color: $danger;
+    }
+    label {
+      color: $danger;
+    }
+    span{
+      color: $danger;
+      padding-top: 8px;
+      display: flex;
+      font-size: 14px;
+      font-weight: 500;
+    }
   }
   .pass-has-error{
     color: $danger;
@@ -227,6 +239,15 @@ li:last-child a, li:last-child .info-section-hold{
         fill: rgba(230, 50, 50, 0.1);
     }
   }
+  .invalid-credentials{
+    font-weight: 500;
+    color: $danger;
+    background-color: #ffeeee;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
 
 // .validation-error {
 //     padding: 15px;
@@ -239,12 +260,6 @@ li:last-child a, li:last-child .info-section-hold{
 //         font-size: 14px;
 //     }
 // }
-  .validation-err{
-    color: $danger;
-    padding-top: 8px;
-    display: flex;
-    font-size: 14px;
-  }
 
   .hide-mob{
     margin-left: 5px;

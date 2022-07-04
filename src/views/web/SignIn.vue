@@ -9,24 +9,24 @@
             <h1>Welcome back!</h1>
             <span>Sign in to continue</span>
         </div>
-        <!-- <div v-if="validation.error" class="validation-error">
-            <span>{{ validation.message }}</span>
-        </div> -->
+        <div v-if="userError.error" class="invalid-credentials">
+            <span>{{ userError.message }}</span>
+        </div>
         <form @submit.prevent="">
-            <div class="form-row">
+            <div class="form-row" :class="{ 'has-error' : validation.error && validation.errors.email}">
                 <div class="input-wrapper" id="email_wrapper">
                     <label for="emailInput">Email</label>
-                    <input id="emailInput" v-model="form.email" @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" @mousedown="resertForm" type="email" name="email" class="form-control" :class="{ 'has-error' : validation.error && validation.errors.email}">
+                    <input id="emailInput" v-model="form.email" @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" type="email" name="email" class="form-control">
                 </div>
-                <span class="validation-err" v-if="validation.error && validation.errors.email">
+                <span v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
                 </span>
             </div>
-            <div class="form-row">
+            <div class="form-row" :class="{ 'has-error' : validation.error && validation.errors.password}">
                 <!--  -->
                 <div class="input-wrapper" id="password_wrapper">
                     <label for="passwordInput">Password</label>
-                    <input id="passwordInput" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')" @mousedown="resertForm" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field" :class="{ 'has-error' : validation.error && validation.errors.password}">
+                    <input id="passwordInput" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field">
                     <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">
                         <g transform="translate(1.182 1.182)">
@@ -36,7 +36,7 @@
                     </svg>
                 </i>
                 </div>
-                <span class="validation-err" v-if="validation.error && validation.errors.password">
+                <span v-if="validation.error && validation.errors.password">
                     {{ validation.errors.password[0] }}
                 </span>
                 <div class="forgot-pass">
@@ -127,6 +127,10 @@ export default {
                 error: false,
                 errors: '',
                 message: ''
+            },
+            userError: {
+                error: false,
+                message: ''
             }
         }
     },
@@ -175,9 +179,10 @@ export default {
                 console.log(err.response.status)
                 this.$store.commit('unSetCreating')
                 if (err.response.status == 401) {
-                    this.validation.error = true
-                    this.validation.message = err.response.data.status
-                }if(err.response.status == 422){
+                    this.userError.error = true
+                    this.userError.message = 'Invalid Email or Password. Please try again or try resetting your password.'
+                }
+                if(err.response.status == 422){
                     this.validation.error = true
                     this.validation.errors = err.response.data.errors
                     this.validation.message = err.response.data.message
@@ -191,10 +196,12 @@ export default {
             this.$store.commit('loadDashboard')
         },
         resertForm() {
-            if (this.validation.error === true)
+            if (this.validation.error === true || this.userError.error === true)
             this.validation.error = false
+            this.userError.error = false
             this.validation.errors = ''
             this.validation.message = null
+            this.userError.message = null
             this.$store.commit('unSetCreating')
             return
         },
@@ -217,4 +224,5 @@ export default {
         }
     }
 }
+
 </style>
