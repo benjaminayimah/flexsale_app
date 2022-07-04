@@ -49,7 +49,6 @@ export default {
         this.$store.commit("computeWindow");
         window.addEventListener("resize", this.windowSize)
         this.$store.commit('setBodyBgColor')
-
     },
     unmounted() {
         window.removeEventListener("resize", this.windowSize);
@@ -57,7 +56,9 @@ export default {
     methods: {
         windowSize() {
             setTimeout(() => {
-                this.$store.commit("computeWindow");
+                this.$store.commit("computeWindow")
+                this.$store.commit('setBodyBgColor')
+
             }, 100);
         }
     },
