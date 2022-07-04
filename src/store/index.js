@@ -161,6 +161,7 @@ export default createStore({
       if(state.token !== null) {
         document.body.classList.remove('body-dark')
       }else {
+        if(!state.mobile)
         document.body.classList.add('body-dark')
       }
     },
