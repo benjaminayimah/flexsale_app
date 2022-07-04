@@ -8,6 +8,7 @@ $dark-light: #e9ebf0;
 $accent-color: #ffab23;
 $white-color: #ffffff;
 $danger: #e63232;
+$danger-alt: #ad1616;
 $success: #20C647;
 $warning: #EFB91C;
 $button-disabled: #9ea7d8;
@@ -196,25 +197,25 @@ li:last-child a, li:last-child .info-section-hold{
     background-color: $dark-light;
     border-radius: 8px;
     margin-top: 8px;
-    border: 1px solid #e6e7eb;
+    // border: 1px solid #e6e7eb;
     .this-bold{
         font-weight: 600;
         margin: 0 4px;
     }
     svg{
-        margin-left: 8px;
+        margin-right: 8px;
+        flex-shrink: 0;
     }
     .is-valid{
-        color: #189f38;
+        color: #0f6824;
         path {
             fill: #189f38;
         }
     }
   }
   .all-correct{
-    background-color: #f0f7f1;
-    color: #0f6824;
-    border-color: #e0eee4;
+    background-color: #f0f7f1 !important;
+    color: #0f6824 !important;
   }
   .has-error{
     input {
@@ -223,8 +224,8 @@ li:last-child a, li:last-child .info-section-hold{
     label {
       color: $danger;
     }
-    span{
-      color: $danger;
+    .span{
+      color: $danger-alt;
       padding-top: 8px;
       display: flex;
       font-size: 14px;
@@ -232,34 +233,21 @@ li:last-child a, li:last-child .info-section-hold{
     }
   }
   .pass-has-error{
-    color: $danger;
-    background-color: rgba(230, 50, 50, 0.05);
-    border-color: #fce9e9;
+    color: $danger-alt;
+    background-color: #ffeaea;
     svg path{
         fill: rgba(230, 50, 50, 0.1);
     }
   }
   .invalid-credentials{
     font-weight: 500;
-    color: $danger;
-    background-color: #ffeeee;
+    color: $danger-alt;
+    background-color: #ffeaea;
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 15px;
     line-height: 1.5;
 }
-
-// .validation-error {
-//     padding: 15px;
-//     border-radius: 6px;
-//     background-color: rgba(230, 50, 50, 0.1);
-//     // border: 1px solid rgba(230, 50, 50, 0.5);
-//     color: $danger;
-//     margin-bottom: 20px;
-//     & span{
-//         font-size: 14px;
-//     }
-// }
 
   .hide-mob{
     margin-left: 5px;
