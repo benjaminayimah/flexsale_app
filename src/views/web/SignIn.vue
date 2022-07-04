@@ -70,7 +70,7 @@
             <div class="flex create-acct">
                 <span>New to Flexsale?</span><a href="/signup">Create an account</a>
             </div>
-            <span class="disclaimer">This application is protected by Flexsale's <a href="">Terms & Conditions</a>, <a href="">Privacy policy</a> & <a href="">Cookie policy.</a></span>
+            <span class="disclaimer">This application is protected by Flexsale's <a href="https://www.flexsale.store/terms-and-conditions">Terms</a>, <a href="https://www.flexsale.store/privacy-policy">Privacy policy</a> & <a href="https://www.flexsale.store/cookies-policy">Cookie policy.</a></span>
         </form>
     </div>
     <div v-else class="flex justify-content-center align-items-center flex-col after-created" :class="{ 'progress-secondary' : getMobile }">
@@ -210,20 +210,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.disclaimer{
-    display: block;
-    text-align: center;
-    font-size: 0.96rem;
-    font-weight: 500;
-    color: $gray-color;
-    margin-top: 20px;
-    a {
-        color: $primary-color;
-        text-decoration: none;
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-}
+
 
 </style>
