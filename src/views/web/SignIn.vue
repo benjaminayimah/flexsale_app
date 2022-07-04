@@ -18,7 +18,7 @@
                     <label for="emailInput">Email</label>
                     <input id="emailInput" v-model="form.email" @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" type="email" name="email" class="form-control">
                 </div>
-                <span v-if="validation.error && validation.errors.email">
+                <span class="span" v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
                 </span>
             </div>
@@ -36,7 +36,7 @@
                     </svg>
                 </i>
                 </div>
-                <span v-if="validation.error && validation.errors.password">
+                <span class="span" v-if="validation.error && validation.errors.password">
                     {{ validation.errors.password[0] }}
                 </span>
                 <div class="forgot-pass">
@@ -49,7 +49,7 @@
                 </button>
                 <div class="or">
                     <div>
-                        <span>Or</span><!--<span class="hide-mob">continue with social sign-in</span>-->
+                        <span>Or</span>
                     </div>
                 </div>
             <div class="flex social-signin justify-content-center align-items-center">
@@ -68,7 +68,7 @@
                 </button> -->
             </div>
             <div class="flex create-acct">
-                <!-- <span>New to Flexsale?</span><a href="/signup">Create an account</a> -->
+                <span>New to Flexsale?</span><a href="/signup">Create an account</a>
             </div>
             <span class="disclaimer">This application is protected by Flexsale's <a href="">Terms & Conditions</a>, <a href="">Privacy policy</a> & <a href="">Cookie policy.</a></span>
         </form>
@@ -180,7 +180,7 @@ export default {
                 this.$store.commit('unSetCreating')
                 if (err.response.status == 401) {
                     this.userError.error = true
-                    this.userError.message = 'Invalid Email or Password. Please try again or try resetting your password.'
+                    this.userError.message = 'Invalid email or password. Please try again or try resetting your password.'
                 }
                 if(err.response.status == 422){
                     this.validation.error = true
@@ -216,6 +216,7 @@ export default {
     font-size: 0.96rem;
     font-weight: 500;
     color: $gray-color;
+    margin-top: 20px;
     a {
         color: $primary-color;
         text-decoration: none;

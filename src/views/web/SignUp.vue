@@ -13,20 +13,29 @@
             <span>{{ validation.message }}</span>
         </div> -->
         <form @submit.prevent="">
-            <div class="form-row">
-                <input v-model="form.name" @mousedown="resertForm" type="text" name="name" class="form-control" placeholder="Full name" :class="{ 'has-error' : validation.error && validation.errors.name}">
-                <span class="validation-err" v-if="validation.error && validation.errors.name">
+            <div class="form-row"  :class="{ 'has-error' : validation.error && validation.errors.name}">
+                <div class="input-wrapper" id="name_wrapper">
+                    <label for="nameInput">Full name</label>
+                    <input id="nameInput" v-model="form.name" @animationstart="isFocusedOut('name_wrapper','nameInput')" @input="isFocusedIn('name_wrapper')" @focusin="isFocusedIn('name_wrapper')" @focusout="isFocusedOut('name_wrapper', 'nameInput')"  type="text" name="name" class="form-control">
+                </div>
+                <span class="span" v-if="validation.error && validation.errors.name">
                     {{ validation.errors.name[0] }}
                 </span>
             </div>
-            <div class="form-row">
-                <input v-model="form.email" @mousedown="resertForm" type="email" name="email" class="form-control" placeholder="Email" :class="{ 'has-error' : validation.error && validation.errors.email}">
-                <span class="validation-err" v-if="validation.error && validation.errors.email">
+            <div class="form-row" :class="{ 'has-error' : validation.error && validation.errors.email}">
+                <div class="input-wrapper" id="email_wrapper">
+                    <label for="emailInput">Email</label>
+                    <input id="emailInput" v-model="form.email" @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" type="email" name="email" class="form-control">
+                </div>
+                <span class="span" v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
                 </span>
             </div>
-            <div class="form-row">
-                <input v-model="form.password" @keyup="checkPassword" @focusin="showPassRules" @focusout="hidePassRules"  @mousedown="resertForm" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password" placeholder="Enter password" :class="{ 'has-error' : validation.error && validation.errors.password}">
+            <div class="form-row" :class="{ 'has-error' : validation.error && validation.errors.password}">
+                <div class="input-wrapper" id="password_wrapper">
+                    <label for="passwordInput">Password</label>
+                    <input id="passwordInput" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @input="isFocusedIn('password_wrapper')" @keyup="checkPassword" @focusin="showPassRules" @focusout="hidePassRules" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password">
+                </div>
                 <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">
                         <g transform="translate(1.182 1.182)">
@@ -38,10 +47,10 @@
                 <transition name="fade">
                     <div v-if="validation.rules || validation.errors.password" class="password-rules" :class="[{ 'all-correct' : validation.allCorrect},{ 'pass-has-error' : validation.error && validation.errors.password}]">
                         <div>Password must be a minimum of <strong :class="{ 'is-valid' : validation.char}">6 characters</strong> and must contain at least one of each of the following;</div>
-                        <div class="flex align-items-center" :class="{'is-valid' : validation.number}">[<span class="this-bold">0-9</span>]<svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 29.25 29.25"><path fill="#C7C8CC" d="M18,3.375A14.625,14.625,0,1,0,32.625,18,14.623,14.623,0,0,0,18,3.375Zm7.488,10.582-9.4,9.443H16.08a1.27,1.27,0,0,1-.816.387,1.231,1.231,0,0,1-.823-.4L10.5,19.448a.28.28,0,0,1,0-.4L11.756,17.8a.272.272,0,0,1,.394,0l3.122,3.122,8.578-8.641a.278.278,0,0,1,.2-.084h0a.255.255,0,0,1,.2.084l1.23,1.273A.277.277,0,0,1,25.488,13.957Z" transform="translate(-3.375 -3.375)"/></svg></div>
-                        <div class="flex align-items-center" :class="{'is-valid' : validation.lowercase}">[<span class="this-bold">a-z</span>]<svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 29.25 29.25"><path fill="#C7C8CC" d="M18,3.375A14.625,14.625,0,1,0,32.625,18,14.623,14.623,0,0,0,18,3.375Zm7.488,10.582-9.4,9.443H16.08a1.27,1.27,0,0,1-.816.387,1.231,1.231,0,0,1-.823-.4L10.5,19.448a.28.28,0,0,1,0-.4L11.756,17.8a.272.272,0,0,1,.394,0l3.122,3.122,8.578-8.641a.278.278,0,0,1,.2-.084h0a.255.255,0,0,1,.2.084l1.23,1.273A.277.277,0,0,1,25.488,13.957Z" transform="translate(-3.375 -3.375)"/></svg></div>
-                        <div class="flex align-items-center" :class="{'is-valid' : validation.uppercase}">[<span class="this-bold">A-Z</span>]<svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 29.25 29.25"><path fill="#C7C8CC" d="M18,3.375A14.625,14.625,0,1,0,32.625,18,14.623,14.623,0,0,0,18,3.375Zm7.488,10.582-9.4,9.443H16.08a1.27,1.27,0,0,1-.816.387,1.231,1.231,0,0,1-.823-.4L10.5,19.448a.28.28,0,0,1,0-.4L11.756,17.8a.272.272,0,0,1,.394,0l3.122,3.122,8.578-8.641a.278.278,0,0,1,.2-.084h0a.255.255,0,0,1,.2.084l1.23,1.273A.277.277,0,0,1,25.488,13.957Z" transform="translate(-3.375 -3.375)"/></svg></div>
-                        <div class="flex align-items-center" :class="{'is-valid' : validation.special}">Special characters. For example [<span class="this-bold">!, @, #, $, %, &, *</span>]<svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 29.25 29.25"><path fill="#C7C8CC" d="M18,3.375A14.625,14.625,0,1,0,32.625,18,14.623,14.623,0,0,0,18,3.375Zm7.488,10.582-9.4,9.443H16.08a1.27,1.27,0,0,1-.816.387,1.231,1.231,0,0,1-.823-.4L10.5,19.448a.28.28,0,0,1,0-.4L11.756,17.8a.272.272,0,0,1,.394,0l3.122,3.122,8.578-8.641a.278.278,0,0,1,.2-.084h0a.255.255,0,0,1,.2.084l1.23,1.273A.277.277,0,0,1,25.488,13.957Z" transform="translate(-3.375 -3.375)"/></svg></div>
+                        <div class="flex align-items-center" :class="{'is-valid' : validation.number}"><svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 29.25 29.25"><path fill="#C7C8CC" d="M18,3.375A14.625,14.625,0,1,0,32.625,18,14.623,14.623,0,0,0,18,3.375Zm7.488,10.582-9.4,9.443H16.08a1.27,1.27,0,0,1-.816.387,1.231,1.231,0,0,1-.823-.4L10.5,19.448a.28.28,0,0,1,0-.4L11.756,17.8a.272.272,0,0,1,.394,0l3.122,3.122,8.578-8.641a.278.278,0,0,1,.2-.084h0a.255.255,0,0,1,.2.084l1.23,1.273A.277.277,0,0,1,25.488,13.957Z" transform="translate(-3.375 -3.375)"/></svg>[<span class="this-bold">0-9</span>]</div>
+                        <div class="flex align-items-center" :class="{'is-valid' : validation.lowercase}"><svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 29.25 29.25"><path fill="#C7C8CC" d="M18,3.375A14.625,14.625,0,1,0,32.625,18,14.623,14.623,0,0,0,18,3.375Zm7.488,10.582-9.4,9.443H16.08a1.27,1.27,0,0,1-.816.387,1.231,1.231,0,0,1-.823-.4L10.5,19.448a.28.28,0,0,1,0-.4L11.756,17.8a.272.272,0,0,1,.394,0l3.122,3.122,8.578-8.641a.278.278,0,0,1,.2-.084h0a.255.255,0,0,1,.2.084l1.23,1.273A.277.277,0,0,1,25.488,13.957Z" transform="translate(-3.375 -3.375)"/></svg>[<span class="this-bold">a-z</span>]</div>
+                        <div class="flex align-items-center" :class="{'is-valid' : validation.uppercase}"><svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 29.25 29.25"><path fill="#C7C8CC" d="M18,3.375A14.625,14.625,0,1,0,32.625,18,14.623,14.623,0,0,0,18,3.375Zm7.488,10.582-9.4,9.443H16.08a1.27,1.27,0,0,1-.816.387,1.231,1.231,0,0,1-.823-.4L10.5,19.448a.28.28,0,0,1,0-.4L11.756,17.8a.272.272,0,0,1,.394,0l3.122,3.122,8.578-8.641a.278.278,0,0,1,.2-.084h0a.255.255,0,0,1,.2.084l1.23,1.273A.277.277,0,0,1,25.488,13.957Z" transform="translate(-3.375 -3.375)"/></svg>[<span class="this-bold">A-Z</span>]</div>
+                        <div :class="{'is-valid' : validation.special}"><svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 29.25 29.25"><path fill="#C7C8CC" d="M18,3.375A14.625,14.625,0,1,0,32.625,18,14.623,14.623,0,0,0,18,3.375Zm7.488,10.582-9.4,9.443H16.08a1.27,1.27,0,0,1-.816.387,1.231,1.231,0,0,1-.823-.4L10.5,19.448a.28.28,0,0,1,0-.4L11.756,17.8a.272.272,0,0,1,.394,0l3.122,3.122,8.578-8.641a.278.278,0,0,1,.2-.084h0a.255.255,0,0,1,.2.084l1.23,1.273A.277.277,0,0,1,25.488,13.957Z" transform="translate(-3.375 -3.375)"/></svg>Special characters. For example [<span class="this-bold">!, @, #, $, %, &, *</span>]</div>
                     </div>
                 </transition>
             </div>
@@ -99,13 +108,14 @@
 import jwt_decode from "jwt-decode";
 import { mapGetters } from 'vuex'
 import passwordToggleMixin from '../../mixins/passwordToggle'
+import inputMixin from '../../mixins/inputMixin'
 import axios from 'axios'
 import Spinner from '../../components/app/includes/Spinner.vue'
 import router from '../../router'
 export default {
   components: { Spinner },
     name: 'SignUp',
-    mixins: [passwordToggleMixin],
+    mixins: [passwordToggleMixin, inputMixin],
     computed: {
         ...mapGetters(['getHostname', 'getUser', 'getMobile'])
     },
@@ -209,9 +219,11 @@ export default {
         },
         showPassRules() {
             this.validation.rules = true
+            this.isFocusedIn('password_wrapper')
         },
         hidePassRules() {
             this.form.password == '' ? this.validation.rules = false : ''
+            this.isFocusedOut('password_wrapper', 'passwordInput')
         },
         showErr(payload) {
             this.validation.error = true
