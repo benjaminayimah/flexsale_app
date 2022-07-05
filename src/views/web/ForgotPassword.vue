@@ -20,7 +20,7 @@
         <form @submit.prevent="">
             <div class="form-row">
                 <!-- <label>Email:</label> -->
-                <input v-model="form.email"  type="email" name="email" class="form-control" placeholder="Enter email" :class="{ 'has-error' : validation.error && validation.errors.email}">
+                <input v-model="form.email"  type="email" name="email" class="form-control" placeholder="Enter email" :class="{ 'input-has-error' : validation.error && validation.errors.email}">
                 <span class="validation-err" v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
                 </span>

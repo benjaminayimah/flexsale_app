@@ -4,7 +4,7 @@
         </transition>
         <div class="onboarding-wrap" v-if="getOnboard.status" :class="computeWidth ? 'width-active': 'width-inactive'">
             <div class="ob-hold">
-                <div id="onboard_header" class="ob-head">
+                <div id="onboard_header" class="ob-head flex-row-js">
                     <button class="button button-secondary cancel-btn" @click.prevent="$store.commit('forceCloseOnboard')">
                         <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
                             <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"/>
@@ -58,16 +58,7 @@ export default {
       
         }
     }
-    .ob-head{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    h1{
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin: 0 0 0 20px;
-    }
+    
 }
 .width-inactive{
     border-radius: 18px;

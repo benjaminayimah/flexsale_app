@@ -13,7 +13,7 @@
             <span>{{ userError.message }}</span>
         </div>
         <form @submit.prevent="">
-            <div class="form-row" :class="{ 'has-error' : validation.error && validation.errors.email}">
+            <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.email}">
                 <div class="input-wrapper" id="email_wrapper">
                     <label for="emailInput">Email</label>
                     <input id="emailInput" v-model="form.email" @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" type="email" name="email" class="form-control">
@@ -22,7 +22,7 @@
                     {{ validation.errors.email[0] }}
                 </span>
             </div>
-            <div class="form-row" :class="{ 'has-error' : validation.error && validation.errors.password}">
+            <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.password}">
                 <!--  -->
                 <div class="input-wrapper" id="password_wrapper">
                     <label for="passwordInput">Password</label>
