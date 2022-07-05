@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { createStore } from 'vuex'
 import router from '@/router'
+import country from './modules/country'
 export default createStore({
   state: {
     hostname: 'http://localhost:8000',
-    thisHostname: 'https://app.flexsale.store',
     // hostname: 'https://api.flexsale.store',
+    thisHostname: 'https://app.flexsale.store',
     token: localStorage.getItem('token') || null,
     windowHeight: '',
     windowWidth: '',
@@ -19,7 +20,7 @@ export default createStore({
         address: '',
         city: '',
         region: '',
-        country: ''
+        country: null
       },
       imageForm: {
         store: '',
@@ -206,7 +207,7 @@ export default createStore({
       state.onboard.form.address = '',
       state.onboard.form.city = '',
       state.onboard.form.region = '',
-      state.onboard.form.country = ''
+      state.onboard.form.country = null,
       state.onboard.imageForm.store = '',
       state.onboard.imageForm.image = ''
     },
@@ -1198,21 +1199,10 @@ export default createStore({
 
 
 
-    getSubmitting: (state) => state.submitting
+  getSubmitting: (state) => state.submitting
     
-
-
-
-
-
-    
-
-
-    
-
-
-
-
-
+  },
+  modules: {
+    country
   }
 })

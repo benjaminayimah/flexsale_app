@@ -127,7 +127,7 @@
             <select id="category" class="form-control select">
                 <option selected="selected">Select a category</option>
                 <option value="men">men</option>
-                </select>
+            </select>
             <div class="a-btn">
                 <a href="#">
                     <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
@@ -203,7 +203,7 @@
             <select v-model="form.supplier" id="supplier" class="form-control select">
                 <option selected="selected" :value="null">Select a supplier</option>
                 <option :value="supplier.id" v-for="supplier in getSuppliers" :key="supplier.id">{{ supplier.name }}</option>
-                </select>
+            </select>
             <div class="a-btn">
                 <a href="#">
                     <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">

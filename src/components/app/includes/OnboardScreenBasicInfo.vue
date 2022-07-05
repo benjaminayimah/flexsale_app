@@ -46,7 +46,10 @@
             </div>
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.country}">
                 <label>Country*:</label>
-                <input v-model="getOnboard.form.country" type="text" name="country" class="form-control" placeholder="Country" required>
+                <select v-model="getOnboard.form.country" class="form-control select">
+                    <option selected="selected" disabled :value="null">Select your country</option>
+                    <option v-for="country in getCountries" :key="country" :value="country">{{ country }}</option>
+                </select>
                 <span class="span" v-if="validation.error && validation.errors.country">
                     {{ validation.errors.country[0] }}
                 </span>
@@ -65,7 +68,7 @@ export default {
     name: "OnboardScreenBasicInfo",
     mixins: [validationMixin],
     components: { Spinner },
-    computed: mapGetters(["getOnboard", "getHostname", "getToken"]),
+    computed: mapGetters(["getOnboard", "getHostname", "getToken", "getCountries"]),
     methods: {
         async submitStore() {
             this.validation.error ? this.clearErrs() : ''

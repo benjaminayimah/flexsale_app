@@ -327,19 +327,21 @@ li:last-child a, li:last-child .info-section-hold{
         }
     }
 }
-.input-has-error{
-  input {
-    border-color: $danger;
-  }
-  label {
-    color: $danger;
-  }
-  .span{
-    color: $danger-alt;
-    padding-top: 8px;
-    display: flex;
-    font-size: 14px;
-    font-weight: 500;
+form {
+  .input-has-error{
+    input,select {
+      border-color: $danger !important;
+    }
+    label {
+      color: $danger;
+    }
+    .span{
+      color: $danger-alt;
+      padding-top: 8px;
+      display: flex;
+      font-size: 14px;
+      font-weight: 500;
+    }
   }
 }
 .hide-show-pass{
