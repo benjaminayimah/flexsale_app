@@ -59,11 +59,6 @@ export default {
     background-color: #ffffff;
     position: fixed;
     z-index: 202;
-    h1{
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin: 0 0 0 20px;
-    }
     .add-master-head{
         border-bottom: 1px solid $dark-light;
     }

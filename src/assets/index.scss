@@ -125,6 +125,7 @@ li:last-child a, li:last-child .info-section-hold{
   height: 45px;
   border-radius: 13px;
   min-width: 80px;
+  gap: 5px;
 }
 .relative{
   position: relative;
@@ -217,21 +218,6 @@ li:last-child a, li:last-child .info-section-hold{
     background-color: #f0f7f1 !important;
     color: #0f6824 !important;
   }
-  .has-error{
-    input {
-      border-color: $danger;
-    }
-    label {
-      color: $danger;
-    }
-    .span{
-      color: $danger-alt;
-      padding-top: 8px;
-      display: flex;
-      font-size: 14px;
-      font-weight: 500;
-    }
-  }
   .pass-has-error{
     color: $danger-alt;
     background-color: #ffeaea;
@@ -247,7 +233,7 @@ li:last-child a, li:last-child .info-section-hold{
     border-radius: 8px;
     margin-bottom: 15px;
     line-height: 1.5;
-}
+  }
 
   .hide-mob{
     margin-left: 5px;
@@ -340,6 +326,21 @@ li:last-child a, li:last-child .info-section-hold{
           }
         }
     }
+}
+.input-has-error{
+  input {
+    border-color: $danger;
+  }
+  label {
+    color: $danger;
+  }
+  .span{
+    color: $danger-alt;
+    padding-top: 8px;
+    display: flex;
+    font-size: 14px;
+    font-weight: 500;
+  }
 }
 .hide-show-pass{
   position: absolute;
@@ -929,6 +930,17 @@ textarea{
 .time-remains{
   color: $danger;
   font-size: 0.9rem;
+}
+.ob-head, .add-head-content{
+  h1{
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+  }
+  
 }
 
 //delete container
