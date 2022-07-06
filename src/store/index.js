@@ -1077,9 +1077,8 @@ export default createStore({
           body: res.data.status
       }
       state.commit('showAlert', newPayload)
-
       state.commit('closeDeleteModal')
-      router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter'  ? '' : router.go(-1)
+      router.currentRoute.value.name === 'Products' ? '' : router.go(-1)
     }).catch((err) => {
         console.log(err)
     })
@@ -1095,7 +1094,7 @@ export default createStore({
       }
       state.commit('showAlert', newPayload)
       state.commit('closeTrashRestoreDeleteModal')
-      router.currentRoute.value.name === 'AllProducts' || router.currentRoute.value.name === 'ProdFilter' || router.currentRoute.value.name === 'Trash'  ? '' : router.go(-1)
+      router.currentRoute.value.name === 'Products' || router.currentRoute.value.name === 'Trash'  ? '' : router.go(-1)
     }).catch((err) => {
         console.log(err)
     })

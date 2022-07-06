@@ -79,6 +79,9 @@ export default {
         }
     }
 }
+.add-master-wrap{
+    height: 100%;
+}
 .width-inactive{
     border-radius: 16px;
     width: 600px;
@@ -104,8 +107,8 @@ export default {
         padding: 0 15px;
     }
     .add-master-body{
-        height: 100% !important;
-        padding: 0 15px;
+        max-height: 100% !important;
+        padding: 0 15px 50px 15px;
     }
 }
 
