@@ -13,7 +13,7 @@
        <form @submit.prevent="">
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.name}">
                 <label>Store name*:</label>
-                <input v-model="getOnboard.form.name" type="text" name="name" class="form-control" placeholder="Store name" required>
+                <input v-model="getOnboard.form.name" type="text" name="name" class="form-control" placeholder="Eg. ABC Enterprise" required>
                 <span class="span" v-if="validation.error && validation.errors.name">
                     {{ validation.errors.name[0] }}
                 </span>

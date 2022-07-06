@@ -49,19 +49,38 @@
         </div>
         <div class="form-row">
             <div id="unit_bg">
-                <div>
-                    <div class="form-check flex-row-st">
-                        <input v-model="form.prodType" id="retail" value="0" class="form-check-input" type="radio" :checked="form.prodType == '0' ? true : false">
-                        <label for="retail">Add Product Units</label>
+                <div class="form-check flex-row-st">
+                    <input v-model="form.prodType" id="wholesale" value="1" class="form-check-input" type="radio" :checked="form.prodType == '1' ? true : false" >
+                    <label for="wholesale">Add stock number directly.</label>
+                </div>
+                <div class="flex justify-between align-items-center" :class="{ 'activate-dst': form.prodType == '0'}">
+                    <div style="margin-right:10px">
+                        <label>Stock:</label>
+                        <input type="text" name="stockNumber" v-model="direct.quantity" :disabled="form.prodType == '1' ? false : true" class="form-control stk2" placeholder="0">
                     </div>
-                    <div :class="{ 'activate-dst': form.prodType == '1'}">
-                        <div>If there are several units in this product, you may proceed to add the individual units here.</div>
-                    <div class="flex-row align-content-center">
+                    <div style="margin-right:10px">
+                        <label>Batch No.:</label>
+                        <input type="text" name="stockNumber" @blur="addToUnit(this.direct.batch)" v-model="direct.batch" :disabled="form.prodType == '1' ? false : true" class="form-control" placeholder="Batch number">
+                    </div>
+                    <div class="unit-input-hold" style="margin:0; padding: 10px 0">
+                        <label>Expiry date:</label>
+                        <input type="date" v-model="expiryDate2" class="form-control" :disabled="form.prodType == '1' ? false : true">
+                    </div>
+                </div>
+                <div class="or">
+                    <div>Or</div>
+                </div>  
+                <div class="form-check flex-row-st">
+                    <input v-model="form.prodType" id="retail" value="0" class="form-check-input" type="radio" :checked="form.prodType == '0' ? true : false">
+                    <label for="retail">Add Product Units</label>
+                </div>
+                <div :class="{ 'activate-dst': form.prodType == '1'}">
+                    <div>If there are several units in this product, you may proceed to add the individual units here.</div>
+                    <div class="flex justify-between align-items-center">
                         <div class="unit-input-hold">
                             <input type="text" name="BatchNumber" @click="dismisUnitError" :disabled="form.prodType == '0' ? false : true" v-model="unitForm.batch" class="form-control" placeholder="Batch number">
                         </div>
                         <div class="unit-input-hold">
-                            <!-- <Datepicker v-model="month" monthPicker :disabled="form.prodType == '0' ? false : true"></Datepicker> -->
                             <input type="date" v-model="expiryDate1" class="form-control" :disabled="form.prodType == '0' ? false : true">
                         </div>
                         <button class="button add-unit-btn button-primary" :disabled="form.prodType == '0' ? false : true" @click.prevent="addToUnit(this.unitForm.batch)">Add</button>
@@ -84,68 +103,17 @@
                             </li>
                         </ul>
                     </div>
-                    </div>
                 </div>
-                <div>
-                    <div class="or">
-                        <div>Or</div>
-                    </div>
-                    <!-- <label class="checkbox-hold">
-                        <input v-model="form.directStock" type="checkbox">
-                        <span class="checkbox-custom"></span>
-                        <span class="chk-label">Add stock number directly.</span>
-                    </label> -->
-                    
-                    <div class="form-check flex-row-st">
-                    <input v-model="form.prodType" id="wholesale" value="1" class="form-check-input" type="radio" :checked="form.prodType == '1' ? true : false" >
-                    <label for="wholesale">Add stock number directly.</label>
-                </div>
-                    <div class="flex-row-st" :class="{ 'activate-dst': form.prodType == '0'}">
-                        <div style="margin-right:10px">
-                            <label>Stock:</label>
-                            <input type="text" name="stockNumber" v-model="direct.quantity" :disabled="form.prodType == '1' ? false : true" class="form-control stk2" placeholder="100">
-                        </div>
-                        <div style="margin-right:10px">
-                            <label>Batch No.:</label>
-                            <input type="text" name="stockNumber" @blur="addToUnit(this.direct.batch)" v-model="direct.batch" :disabled="form.prodType == '1' ? false : true" class="form-control" placeholder="Batch number">
-                        </div>
-                        <div class="unit-input-hold" style="margin:0; padding: 10px 0">
-                            <label>Expiry date:</label>
-                            <!-- <Datepicker v-model="month2" monthPicker :disabled="form.prodType == '1' ? false : true"></Datepicker> -->
-                            <input type="date" v-model="expiryDate2" class="form-control" :disabled="form.prodType == '1' ? false : true">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- <div class="form-row">
-            <label>Batch number:</label>
-            <input v-model="form.batchNumber" type="text" name="BatchNumber" class="form-control" placeholder="Batch No.,Barcode, ISBN">
-        </div> -->
-        <div class="form-row">
-            <label>Category:</label>
-            <select id="category" class="form-control select">
-                <option selected="selected">Select a category</option>
-                <option value="men">men</option>
-            </select>
-            <div class="a-btn">
-                <a href="#">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
-                        <path d="M-12729.059-1230.178v-5.942H-12735a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.942v-5.942a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.942h5.941a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.941v5.942a1,1,0,0,1-1,1A1,1,0,0,1-12729.059-1230.178Z" transform="translate(12736.001 1245.061)" fill="#566ff4"/>
-                    </svg>
-                    Create new Category
-                </a>
             </div>
         </div>
         <div class="form-row">
             <label>Type of product:</label>
-            
         </div>
         <div class="form-row">
             <label>Supply Cost per unit:</label>
             <div class="form-row-col">
                 <div class="col-2 pl-0">
-                    <input v-model="form.cost" type="number" name="costPrice" class="form-control" placeholder="100">
+                    <input v-model="form.cost" type="number" name="costPrice" class="form-control" placeholder="0">
                 </div>
             </div>
         </div>
@@ -153,7 +121,7 @@
             <label>Selling price per unit:</label>
             <div class="form-row-col">
                 <div class="col-2">
-                    <input v-model="form.sellingPrice" type="number" name="sellingPrice" class="form-control" placeholder="100">
+                    <input v-model="form.sellingPrice" type="number" name="sellingPrice" class="form-control" placeholder="0">
                 </div>
                 <div class="col-2">
                     <div class="profit-row">
@@ -162,7 +130,7 @@
                                 Profit per unit:
                             </div>
                             <div class="vals">
-                                <span>GH₵</span><span>{{ computeProfit }}</span>
+                                <span>GH₵</span><span>{{ Intl.NumberFormat("en-US").format(computeProfit) }}</span>
                             </div>
                         </div>
                         <div class="flex-row-st">
@@ -177,23 +145,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="form-row">
-            <label>Stock:</label>
-            <div class="form-row-col">
-                <div class="col-2">
-                    <input v-model="form.stock" type="text" name="stock" class="form-control" placeholder="100">
-                </div>
-                <div class="col-2">
-                    <div class="profit-row">
-                        <label class="checkbox-hold">
-                                <input v-model="form.trackQty" type="checkbox">
-                                <span class="checkbox-custom"></span>
-                                <span class="chk-label">Automatically track quantity</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <div class="form-row">
             <label>Description:</label>
             <textarea v-model="form.description" class="form-control" name="description" rows="5"></textarea>
@@ -204,14 +155,14 @@
                 <option selected="selected" :value="null">Select a supplier</option>
                 <option :value="supplier.id" v-for="supplier in getSuppliers" :key="supplier.id">{{ supplier.name }}</option>
             </select>
-            <div class="a-btn">
+            <!-- <div class="a-btn">
                 <a href="#">
                     <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
                         <path d="M-12729.059-1230.178v-5.942H-12735a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.942v-5.942a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.942h5.941a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.941v5.942a1,1,0,0,1-1,1A1,1,0,0,1-12729.059-1230.178Z" transform="translate(12736.001 1245.061)" fill="#566ff4"/>
                     </svg>
                     Create new Supplier
                 </a>
-            </div>
+            </div> -->
         </div>
     </form>
 </teleport>
@@ -227,13 +178,13 @@ export default {
     computed: {
         ...mapGetters(["getToken", "getHostname", "getUser", "getDefaultImage", "getEditContainer", "getUserAdminID", "getDiscounts", "getSuppliers"]),
         computeProfit() {
-            let profit = (this.form.sellingPrice - this.form.cost).toFixed(2);
-            return Intl.NumberFormat("en-US").format(profit);
+            let profit = (this.form.sellingPrice - this.form.cost);
+            return profit.toFixed(2);
         },
         computePM() {
             if (this.computeProfit > 0) {
-                let pm = ((this.computeProfit / this.form.sellingPrice) * 100).toFixed(2);
-                return pm;
+                let pm = ((this.computeProfit / this.form.sellingPrice) * 100);
+                return pm.toFixed(2);
             }
             else
                 return 0;
@@ -257,12 +208,12 @@ export default {
             form: {
                 tempImage: "",
                 name: "",
-                cost: 0,
-                sellingPrice: 0,
+                cost: '',
+                sellingPrice: '',
                 stock: "",
                 description: "",
                 supplier: null,
-                prodType: "0",
+                prodType: "1",
                 batch: ""
                 //directStock: false,
             },
@@ -516,9 +467,8 @@ export default {
             }
         },
         clearPreloader() {
-            //console.log('cleared')
             for (let i in this.form)
-                this.form[i] = "";
+            this.form[i] = "";
         }
     },
     created() {
@@ -537,7 +487,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-
 .img-hold{
     width: 100%;
     height: 300px;
@@ -551,7 +500,7 @@ export default {
     margin-top: 10px;
   }
   .empty-state-container{
-      background-color: #f0f3ff6b;
+      background-color: rgba(240, 243, 255, 0.4);
       border-radius: 16px;
       display: flex;
       flex-direction: column;
@@ -621,7 +570,6 @@ export default {
               &:active{
                 box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 10%);
                 border: 1px solid $white-color;
-                //background-color: #ffffff;
             }
           }
           #loading_hold{
@@ -666,6 +614,9 @@ export default {
     justify-content: flex-start;
     align-items: center;
 }
+.form-check-input:checked {
+  flex-shrink: 0;
+}
 
 .form-row-col{
     display: flex;
@@ -704,16 +655,16 @@ label{
      border: 2px solid rgba(21, 31, 57, 0.6);
 }
 #unit_bg{
-    background-color: $primary-light;
+    background-color: #F9FAFF;
     padding: 20px;
     border-radius: 16px;
+    border: 1px solid #f0f3ff;
     .add-unit-btn{
         height: 48px;
     }
 }
 .unit-input-hold{
     padding: 15px 0;
-    margin-right: 10px
 }
 .exp-date{
     max-width: 140px;
@@ -779,7 +730,7 @@ hr{
     border-color: $gray-light;
 }
 .or div{
-         background-color: $primary-light;
+    background-color: #F9FAFF;
 }
 .stk2{
     max-width: 65px;

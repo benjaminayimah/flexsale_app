@@ -63,7 +63,7 @@ export default {
 .width-inactive{
     border-radius: 18px;
     top: 10%;
-    width: 600px;
+    width: 550px;
     left: 50%;
     transform: translateX(-50%);
     .ob-head{

@@ -838,7 +838,6 @@ textarea{
 }
 //radio
 .form-check{
-  width: 50%;
   display: flex;
   align-items: center;
 }
@@ -914,19 +913,7 @@ textarea{
     span{
       margin-left: 5px;
     }
-    .noti-count{
-      font-size: 12px;
-      font-weight: 600;
-      color: #ffffff;
-      height: 20px;
-      width: 20px;
-      background-color: $danger;
-      position: absolute;
-      border-radius: 50%;
-      border: 1px $white-color solid;
-      top: 5px;
-      right: 5px;
-    }
+    
   }
 }
 .time-remains{
@@ -2159,6 +2146,10 @@ hr{
 }
 .lottie-player{
   height: 140px;
+}
+.noti-count{
+  top: 2px;
+  right: 2px;
 }
 
 

@@ -124,6 +124,19 @@ a{
         }
     }
 }
+.noti-count{
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    height: 20px;
+    width: 20px;
+    background-color: $danger;
+    position: absolute;
+    border-radius: 50%;
+    border: 1px $white-color solid;
+    top: 5px;
+    right: 5px;
+}
 .noti-isActive path{
     fill: $dark;
 }

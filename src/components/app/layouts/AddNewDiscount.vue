@@ -271,4 +271,7 @@ ul{
     margin: 0;
     padding-left: 0;
 }
+.form-check{
+  width: 50%;
+}
 </style>
