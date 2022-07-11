@@ -22,7 +22,7 @@
                 </a>
             </div>
             <new-stock-row v-for="newRow in newRows" :key="newRow.id" v-bind:row="newRow" v-on:removeRow="rmRow" v-bind:id="getEditContainer.data.id" />
-            <stock-update-row v-for="stock in getEditContainer.array" :key="stock.id" v-bind:stock="stock" v-bind:id="getEditContainer.data.id" />
+            <stock-update-row v-for="stock in getEditContainer.array.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))" :key="stock.id" v-bind:stock="stock" v-bind:id="getEditContainer.data.id" />
         </div>
     </teleport>
 </div>

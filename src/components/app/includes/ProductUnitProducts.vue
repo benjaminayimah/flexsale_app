@@ -2,12 +2,6 @@
     <li>
         <div class="unit-pill flex" :class="{'expired-prod' :  unit.active == 0 }">
             <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batch_no }}</span>
-            <button v-if="unit.active == 0" class="flex align-items-center justify-content-center">
-                <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 21.5 23.166">
-                    <path d="M-162.427-433a2.727,2.727,0,0,1-2.714-2.539l-.912-13.682,1.5-.1.912,13.683a1.222,1.222,0,0,0,1.217,1.138h9.118a1.222,1.222,0,0,0,1.217-1.139l.912-13.682,1.5.1-.912,13.682A2.727,2.727,0,0,1-153.309-433Zm-6.039-18v-1.5h6.4v-3.666h8.394v3.666h6.705v1.5Zm13.295-1.5v-2.165h-5.394v2.165Z" transform="translate(168.466 456.167)" fill="#e63232">
-                    </path>
-                </svg>
-            </button>
         </div>
         <div class="pop-over">
             <div class="has-expired" v-if="unit.active == 0">
@@ -37,26 +31,13 @@ export default {
     border-radius: 27px;
     padding: 0 10px;
     background-color: #fff;
-    //box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
     span{
         align-items: center;
         display: flex;
-        //margin-right: 20px;
         height: 38px;
         color: $dark;
         font-weight: 500;
         font-size: 15px;
-    }
-    button{
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        display: flex;
-        background-color: transparent;
-        margin-right: -10px;
-        &:hover{
-            background-color: rgba(206, 58, 58, 0.1);
-        }
     }
 }
 .expired-prod{
@@ -67,7 +48,6 @@ export default {
     }
 }
 li{
-    cursor: pointer;
     &:hover{
         .pop-over{
             display: block;
@@ -86,7 +66,16 @@ li{
     font-size: 0.9rem;
     label{
         margin: 0 5px 0 0;
-
+    }
+    &::after{
+        content: " ";
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -8px;
+        border-width: 8px;
+        border-style: solid;
+        border-color: transparent transparent #fff transparent;
     }
 }
 hr{

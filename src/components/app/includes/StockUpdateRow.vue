@@ -1,5 +1,5 @@
 <template>
-    <div class="stk-row" :class="[{'edit-mode' : edit}, {'expired' : !stock.active}]">
+    <div class="stk-row" :class="[{'edit-mode' : edit}, {'expired' : stock.active == 0}]">
         <div class="flex-row-js">
             <div class="flex">
                 <div class="col batch-col">
@@ -141,7 +141,7 @@ export default {
     width: 44px;
     border-radius: 50%;
     &:hover {
-        background-color: $dark-light;
+        background-color: rgba(0, 0, 0, 0.03);
     }
 }
 .qty{

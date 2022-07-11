@@ -19,10 +19,10 @@
     </div>
     <div class="units-wrap item-row" v-if="getTempContainer.array.length > 0">
         <div class="flex flex-wrap flx-gap-1">
-            <product-unit-products v-for="unit in getTempContainer.array.slice(0, 12)" :key="unit.id" v-bind:unit="unit" />
+            <product-unit-products v-for="unit in getTempContainer.array.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 12)" :key="unit.id" v-bind:unit="unit" />
         </div>
-        <div v-if="getTempContainer.array.length > 12">
-            <a href="" >View all</a>
+        <div v-if="getTempContainer.array.length > 12" class="mt-16">
+            <a href="#"  @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: getTempContainer.data.id })">View all</a>
         </div>
     </div>
     <div v-else>

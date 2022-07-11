@@ -51,7 +51,7 @@
                             <span class="count">{{ getTempContainer.array.length }}</span><span>items in this discount</span>
                         </div>
                         <div>
-                            <button class="flex-row button add-more" @click.prevent="$store.commit('doSelectionSheet')">
+                            <button class="flex-row button add-more" @click.prevent="$store.commit('setSelectionSheet', { type: 'product' })">
                                 <svg xmlns="http://www.w3.org/2000/svg"  height="13" viewBox="0 0 16.721 16.72">
                                     <path d="M-23237.838-313.921v-6.359h-6.359a1,1,0,0,1-1-1,1,1,0,0,1,1-1h6.359v-6.359a1,1,0,0,1,1-1,1,1,0,0,1,1,1v6.359h6.359a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-6.359v6.359a1,1,0,0,1-1,1A.994.994,0,0,1-23237.838-313.921Z" transform="translate(23245.201 329.643)" fill="#0e142c"/>
                                 </svg>
@@ -59,7 +59,6 @@
                             </button>
                         </div>
                     </div>
-                    <!-- :style="{maxHeight: (getWindowHeight-380)+'px'}" -->
                     <div class="selected-products-hold">
                         <ul style="margin-top:20px">
                             <selected-tag-row v-for="checked in getTempContainer.array" :key="checked.id" v-bind:checkedProduct="checked" v-bind:editMode="getTempContainer.editMode" v-bind:addMode="true" />
@@ -76,15 +75,9 @@
                     </button>
                 </div>
             </div>
-            <!-- <teleport to="#form_submit_btn_holder">
-                <div class="btn-wrap2">
-                    <button v-if="!getTempContainer.active" class="button button-primary" @click.prevent="submitDiscount">Submit</button>
-                    <button v-else class="button button-primary" @click.prevent="submitEditDiscount">Save changes</button>
-                </div>
-            </teleport> -->
         </form>
-        <select-products-overlay v-if="getSelectionSheet" v-bind:windowHeight="getWindowHeight" />
     </teleport>
+    <select-products-overlay v-if="getSelectionSheet.selectProd"/>
 </div>
 </template>
 <script>
@@ -95,7 +88,7 @@ import SelectedTagRow from '../includes/SelectedTagRow.vue';
 export default {
     name: 'AddNewDiscount',
      components: { SelectProductsOverlay, SelectedTagRow },
-     computed: mapGetters(['getToken', 'getHostname', 'getWindowHeight', 'getSelectionSheet', 'getTempContainer', 'getAddingProduct']),
+     computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getAddingProduct']),
     data() {
         return {
             form: {
