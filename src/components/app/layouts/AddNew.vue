@@ -14,17 +14,17 @@
                 </div>
             </div>
             <div class="add-master-body" :style="{maxHeight: (winHeight-180)+'px'}">
-                <div id="add_master_body_container">
-                </div>
+                <div id="add_master_body_container"></div>
             </div>
         </div>
     </div>
-    <add-new-product v-if="getAddingProduct.product" />
-    <add-new-tag v-else-if="getAddingProduct.tag" />
-    <add-new-discount v-else-if="getAddingProduct.discount" />
-    <add-new-user v-else-if="getAddingProduct.admin" />
-    <add-new-store v-else-if="getAddingProduct.store" />
-    <add-new-supplier v-else-if="getAddingProduct.supplier" />
+    <add-new-product />
+    <add-new-tag />
+    <add-new-discount />
+    <add-new-user />
+    <add-new-store />
+    <add-new-supplier />
+    <update-stock />
 </template>
 <script>
 
@@ -36,12 +36,13 @@ import AddNewDiscount from './AddNewDiscount.vue'
 import AddNewUser from './AddNewUser.vue'
 import AddNewStore from './AddNewStore.vue'
 import AddNewSupplier from './AddNewSupplier.vue'
+import UpdateStock from './UpdateStock.vue'
 export default {
-  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser, AddNewStore, AddNewSupplier },
+  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser, AddNewStore, AddNewSupplier, UpdateStock },
     name: 'AddNew',
     props: ['winHeight'],
     computed: {
-        ...mapGetters(['getAddingProduct', 'getTempContainer', 'getEditContainer', 'getWindowWidth']),
+        ...mapGetters(['getAddingProduct', 'getWindowWidth']),
         computeWidth() {
             if(this.getWindowWidth <= 600) {
                 return true

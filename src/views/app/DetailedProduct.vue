@@ -48,10 +48,10 @@
                                 </button>
                             </div>
                             <ul>
-                                <li v-if="!getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="javascript: void" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product'})">Edit product</a></li>
-                                <li v-if="!getTempContainer.data.deleted"><a href="javascript: void">Update stock</a></li>
-                                <li v-if="getTempContainer.data.deleted"><a href="javascript: void">Restore</a></li>
-                                <li @click.prevent="closeJustMenu()"><a :class="{ 'perm-delete' : getTempContainer.data.deleted }" href="javascript: void" @click.prevent="$store.commit('setDeleteModal', { id: $route.params.id, type: 'trash' } )">Delete</a></li>
+                                <li v-if="!getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product', id: $route.params.id })">Edit product</a></li>
+                                <li v-if="!getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: $route.params.id })">Update stock</a></li>
+                                <li v-if="getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.dispatch('restoreThisProduct', getTempContainer.data.id)">Restore</a></li>
+                                <li @click.prevent="closeJustMenu()"><a :class="{ 'perm-delete' : getTempContainer.data.deleted }" href="#" @click.prevent="$store.commit('setDeleteModal', { id: $route.params.id, type: 'trash' } )">Delete</a></li>
                             </ul>
                         </div>
                     </transition>
@@ -84,7 +84,7 @@ export default {
   components: { Backdrop },
     name: 'DetailedProduct',
     computed: {
-        ...mapGetters(['getProducts', 'getHostname', 'getUser', 'getTempContainer', 'getMobile', 'getDefaultImage', 'getUserAdminID', 'getSuppliers']),
+        ...mapGetters(['getHostname', 'getUser', 'getTempContainer', 'getMobile', 'getDefaultImage', 'getUserAdminID', 'getSuppliers']),
         computeSupplier() {
             if(this.getTempContainer.data.suppler_id !== null) {
                 let supplier = this.getSuppliers.find(supplier => supplier.id == this.getTempContainer.data.supplier_id)

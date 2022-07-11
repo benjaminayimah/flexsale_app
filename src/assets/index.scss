@@ -117,7 +117,7 @@ li:last-child a, li:last-child .info-section-hold{
   color: $gray-color;
 }
 #add_master_body_container{
-  form{
+  .overlay-hero-form{
     margin: 20px 0 90px 0;
   }
 }
@@ -329,7 +329,7 @@ li:last-child a, li:last-child .info-section-hold{
 }
 form {
   .input-has-error{
-    input,select {
+    input[type="text"],select {
       border-color: $danger !important;
     }
     label {
@@ -473,6 +473,9 @@ ul{
 }
 .mg-0{
   margin: 0;
+}
+.gap-4{
+  gap: 4px;
 }
 .gap-8{
   gap: 8px;
@@ -930,6 +933,57 @@ textarea{
       transform: translateX(-50%);
   }
   
+}
+//stock row
+
+form.stock-form {
+  margin: 10px 0 0 0;
+  .form-control {
+    height: 45px;
+    border-radius: 10px;
+  }
+  .button-wrap {
+    margin-top: 15px;
+      a {
+          padding: 8px 10px;
+          text-decoration: none;
+          font-size: 15px;
+          border-radius: 6px;
+          display: flex;
+          transition: 0.2s all;
+      }
+  }
+  .submit-edit{
+      font-weight: 600;
+      background-color: $primary-color;
+      color: #fff;
+      // min-width: 67px;
+      justify-content: center;
+      &:hover {
+          background-color: $primary-hover;
+      }
+  }
+  .cancel-edit {
+      color: $dark;
+      font-weight: 500;
+      &:hover {
+          background-color: $dark-light;
+      }
+  }
+  .stk-val{
+      padding: 6px;
+      width: 60px;
+      text-align: center;
+  }
+  .stk-input-wrap{
+      svg {
+          margin:0 5px;
+          flex-shrink: 0;
+      }
+  }
+  .expiry{
+      max-width: 165px;
+  }
 }
 
 //delete container

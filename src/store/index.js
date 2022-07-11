@@ -4,8 +4,8 @@ import router from '@/router'
 import country from './modules/country'
 export default createStore({
   state: {
-    // hostname: 'http://localhost:8000',
-    hostname: 'https://api.flexsale.store',
+    hostname: 'http://localhost:8000',
+    // hostname: 'https://api.flexsale.store',
     thisHostname: 'https://app.flexsale.store',
     token: localStorage.getItem('token') || null,
     windowHeight: '',
@@ -41,7 +41,7 @@ export default createStore({
     tempDataContainer: { active: false, editMode: false, data: {}, array: [], propertyName: ''},
     editContainer: { active: false, data: {}, array: [], propertyName: '', password: false},
     saleRecords: { data: {}, array: [], title: '', startDate: '', endDate: ''},
-    tempArrayCopy: [],
+    // tempArrayCopy: [],
     currentStore: {},
     searchIn: false,
     mobile: false,
@@ -56,7 +56,7 @@ export default createStore({
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
-    addingProduct: { status: false, product: false, tag: false, discount: false, admin: false, store: false, supplier: false},
+    addingProduct: { status: false, product: false, tag: false, discount: false, admin: false, store: false, supplier: false, stock: false},
     sale: { active: false, minimize: false, maximize: false, array: []
     },
     todaysales: [],
@@ -146,7 +146,6 @@ export default createStore({
       state.onboard.imageForm.image = ''
       state.onboard.uploaded = false
     },
-
     checkOnboard(state) {
       setTimeout(() => {
         if(state.stores.length < 1){
@@ -285,13 +284,15 @@ export default createStore({
       if(payload.type == 'product'){
         state.addingProduct.product = true
         if(payload.mode == 'edit') {
-          const newPayload = { data: state.tempDataContainer.data, array: state.tempDataContainer.array, propertyName: state.tempDataContainer.propertyName }
+          const newPayload = { data: state.products.find(data => data.id == payload.id)}
           this.commit('setEditContainer', newPayload)
         }
       }else if(payload.type == 'tag'){
         state.addingProduct.tag = true
+        payload.mode == 'edit' ? this.commit('editMode') : ''
       }else if(payload.type == 'discount'){
         state.addingProduct.discount = true
+        payload.mode == 'edit' ? this.commit('editMode') : ''
       }else if(payload.type == 'admin') {
         if(payload.mode == 'edit'){
           this.dispatch('fetchThisAdmin', payload.id)
@@ -317,18 +318,28 @@ export default createStore({
           const newPayload = { data: state.suppliers.find(data => data.id == payload.id)}
           this.commit('setEditContainer', newPayload)
         }
+      }else if(payload.type == 'stock') {
+        state.addingProduct.stock = true
+        this.dispatch('fetchProdBatch', payload.id)
       }
-      if(payload.mode == 'edit') {
-        this.commit('editMode')
-        const newArray = state.tempDataContainer.array.slice();
-        state.tempArrayCopy = newArray
-      }
-      //copy to tempArrayCopy
-      //for removing rows
     },
+    updateStock(state, payload) {
+      const i = state.editContainer.array.findIndex(x => x.id === payload.id)
+      state.editContainer.array.splice(i, 1, payload)
+      if(state.tempDataContainer.active) {
+        const i = state.tempDataContainer.array.findIndex(x => x.id === payload.id)
+        state.tempDataContainer.array.splice(i, 1, payload)
+      }
+    },
+    addToStock(state, payload) {
+      state.editContainer.array.push(payload)
+      state.tempDataContainer.active ? state.tempDataContainer.array.push(payload) : ''
+    },
+    
     editMode(state) {
       state.tempDataContainer.editMode = true
-      return
+        const newArray = state.tempDataContainer.array.slice();
+        state.tempArrayCopy = newArray
     },
     toggleBulkSeletion(state) {
       state.bulkSelection.active = !state.bulkSelection.active
@@ -354,8 +365,8 @@ export default createStore({
       state.addingProduct.admin = false
       state.addingProduct.store = false
       state.addingProduct.supplier = false
+      state.addingProduct.stock = false
       document.body.classList.remove('fixed-body')
-    
       if(!state.tempDataContainer.active) {
         state.tempDataContainer.array = []
       }
@@ -420,9 +431,6 @@ export default createStore({
             }
       }, 20)
     },
-
-
-
     dismisAlert(state) {
         for (let i in state.alert.status)
         state.alert.status[i] = false
@@ -448,19 +456,24 @@ export default createStore({
     },
     doDelete(state) {
       state.deleteModal.deleting = true
-      if(state.deleteModal.type === 'discount'){
-        this.dispatch('deleteDiscount', state.deleteModal.id)
-      }else if(state.deleteModal.type === 'tag') {
-        this.dispatch('deleteTag', state.deleteModal.id)
-      }else if(state.deleteModal.type === 'product') {
-        this.dispatch('deleteProduct', state.deleteModal.id)
-      }else if(state.deleteModal.type === 'user') {
+      const id = state.deleteModal.id
+      const type = state.deleteModal.type
+      if(type === 'discount'){
+        this.dispatch('deleteDiscount', id)
+      }else if(type === 'tag') {
+        this.dispatch('deleteTag', id)
+      }else if(type === 'product') {
+        this.dispatch('deleteProduct', id)
+      }else if(type === 'user') {
         this.dispatch('deleteUser', state.deleteModal.id)
-      }else if(state.deleteModal.type === 'supplier') {
-        this.dispatch('deleteSupplier', state.deleteModal.id)
+      }else if(type === 'supplier') {
+        this.dispatch('deleteSupplier', id)
       }
-      else if(state.deleteModal.type === 'trash') {
-        this.dispatch('moveToTrash', state.deleteModal.id)
+      else if(type === 'trash') {
+        this.dispatch('moveToTrash', id)
+      }
+      else if(type === 'stock') {
+        this.dispatch('deleteStock', id)
       }
       else{
         const newPayload = {
@@ -523,12 +536,6 @@ export default createStore({
       state.todaysales.push(payload.sale)
       state.todaysaleItems = payload.saleItems
       const tmp = state.tempDataContainer
-      for (let i = 0; i < payload.items.length; i++) {
-        const element = payload.items[i];
-        if(tmp.active && tmp.array.length > 0 && tmp.propertyName == 'product' && element.prod_type == 0) {
-          tmp.array = tmp.array.filter(item => item.id != element.id)
-        }
-      }
       const j = state.products.findIndex(x => x.id == payload.product.id)
       state.products.splice(j, 1, payload.product);
       if(tmp.active && tmp.propertyName == 'product') {
@@ -550,7 +557,7 @@ export default createStore({
     updateStore(state, payload) {
       state.currentStore = payload
       const i = state.stores.findIndex(x => x.id === payload.id)
-      state.stores.splice(i, 1, payload);
+      state.stores.splice(i, 1, payload)
     },
     updateAvatar(state, payload) {
       const i = state.stores.findIndex(x => x.id === payload.id)
@@ -572,10 +579,9 @@ export default createStore({
       state.tempDataContainer.data = payload.data
     },
     updateProduct(state, payload) {
-        const i = state.products.findIndex(x => x.id === payload.product.id)
-        state.products.splice(i, 1, payload.product);
-        state.tempDataContainer.array = payload.units
-        state.tempDataContainer.data = payload.product
+        const i = state.products.findIndex(x => x.id === payload.id)
+        state.products.splice(i, 1, payload);
+        state.tempDataContainer.data = payload
     },
     updateTrash(state, payload) {
       const i = state.products.findIndex(x => x.id === payload.product.id)
@@ -627,12 +633,11 @@ export default createStore({
         state.tempDataContainer.data = payload
       }
     },
-    
     setEditContainer(state, payload) {
       state.editContainer.active = true
-      state.editContainer.array = payload.array
       state.editContainer.data = payload.data
-      state.editContainer.propertyName = payload.propertyName
+      payload.array ? state.editContainer.array = payload.array : ''
+      payload.propertyName ? state.editContainer.propertyName = payload.propertyName : ''
       if (payload.propertyName == 'user') {
           state.addingProduct.admin = true 
       }
@@ -730,6 +735,10 @@ export default createStore({
     },
     removeDeletedSupplier(state, payload) {
       state.suppliers = state.suppliers.filter(supplier => supplier.id != payload)
+    },
+    removeDeletedStock(state, payload) {
+      state.editContainer.array = state.editContainer.array.filter(stock => stock.id != payload)
+      state.tempDataContainer.active ? state.tempDataContainer.array = state.tempDataContainer.array.filter(stock => stock.id != payload) : ''
     },
     
     setDynamicFloatingDiv(state, payload) {
@@ -865,14 +874,22 @@ export default createStore({
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-this-admin-user?token='+this.getters.getToken, {id: payload})
       if(res.data.admin){
-        const newData = { data: res.data.admin, array: [], propertyName: 'user' }
+        const newData = { data: res.data.admin, propertyName: 'user' }
         state.commit('setEditContainer', newData)
       }else{
         console.log('does not exist')
       }
       state.commit('setLoader') 
     },
-    
+    async fetchProdBatch(state, payload){
+      state.commit('setLoader') 
+      const res = await axios.post(this.getters.getHostname+'/api/fetch-prod-batches?token='+this.getters.getToken, {id: payload})
+      if(res.data.units) {
+        const newPayload = { data: res.data.product, array: res.data.units}
+        state.commit('setEditContainer', newPayload)
+      }
+      state.commit('setLoader') 
+    },
     async fetchThisFilter(state, payload){
       state.commit('setLoader') 
       const res = await axios.post(this.getters.getHostname+'/api/get-this-filter?token='+this.getters.getToken, {id: payload})
@@ -1068,6 +1085,21 @@ export default createStore({
         console.log(err)
     })
   },
+  deleteStock(state, payload) {
+    axios.delete(this.getters.getHostname+'/api/product-batch/'+payload+'?token='+this.getters.getToken)
+    .then((res) => {
+      state.commit('removeDeletedStock', res.data.id)
+      state.commit('updateProduct', res.data.stock)
+      const newPayload = {
+          id: 'success',
+          body: res.data.status
+      }
+      state.commit('showAlert', newPayload)
+      state.commit('closeDeleteModal')
+    }).catch((err) => {
+        console.log(err)
+    })
+  },
   moveToTrash(state, payload) {
     axios.post( this.getters.getHostname+'/api/move-to-trash?token='+this.getters.getToken, { id: payload})
     .then((res) => {
@@ -1178,7 +1210,6 @@ export default createStore({
     getSuppliers: (state) => state.suppliers,
     getCustomers: (state) => state.customers,
     getActivities: (state) => state.activities,
-    getTempArrayCopy: (state) => state.tempArrayCopy,
     getTodaysales: (state) => state.todaysales,
     getTodaysaleItems: (state) => state.todaysaleItems,
     getSale: (state) => state.sale,

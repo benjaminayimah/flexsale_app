@@ -19,12 +19,12 @@ export default {
     props: ['store', 'checked'],
     computed: {
         thisCheck() {
-             let items = this.checked.filter(check => check.id == this.store.id)
-             if(items != '') {
-                 return true
-             }else {
-                 return false
-             }
+            let items = this.checked.filter(check => check.id == this.store.id)
+            if(items != '') {
+                return true
+            }else {
+                return false
+            }
         }
     },
     methods: {
@@ -35,7 +35,6 @@ export default {
             this.$emit('check', newObj)
         }
     }
-
 }
 </script>
 <style scoped lang="scss">

@@ -2,12 +2,16 @@
 <div class="section">
     <div class="flex align-items-center content-row">
         <div class="row-title">inventory</div>
+        <a href="#" class="add-more flex align-items-center" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: getTempContainer.data.id })">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 18.002 18.002">
+                <path d="M3,17.25V21H6.75L17.81,9.94,14.06,6.19ZM20.71,7.04a1,1,0,0,0,0-1.41L18.37,3.29a1,1,0,0,0-1.41,0L15.13,5.12l3.75,3.75,1.83-1.83Z" transform="translate(-3 -2.998)"/>
+            </svg>
+            Update stock</a>
     </div>
     <div class="flex lign-items-center item-row">
         <div class="item-label">Total stock:</div>
         <div class="item-value">
-            <span v-if="getTempContainer.data.prod_type == 0">{{ getTempContainer.array.length }}</span>
-            <span v-else>{{ getTempContainer.data.stock }}</span>
+            <span>{{ computedStock }}</span>
         </div>
     </div>
     <div class="flex lign-items-cente item-row">
@@ -120,6 +124,9 @@ export default {
                 let pm = ((this.getTempContainer.data.selling_price - this.getTempContainer.data.cost) / this.getTempContainer.data.selling_price)*100
                 return pm.toFixed(2)
             }
+        },
+        computedStock() {
+            return this.getTempContainer.array.reduce((acc, item) => acc + Number(item.unit_stock), 0)
         }
     },
     data() {
@@ -219,6 +226,13 @@ hr{
         font-weight: 500;
         padding: 15px 0;
         color: $gray-color;
+    }
+}
+.add-more{
+    margin-left: 20px;
+    gap: 4px;
+    path {
+        fill: $primary-color;
     }
 }
 
