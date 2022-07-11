@@ -27,7 +27,6 @@
     <update-stock />
 </template>
 <script>
-
 import { mapGetters } from 'vuex'
 import AddNewTag from './AddNewTag.vue'
 import SecondaryBackdrop from '../includes/SecondaryBackdrop.vue'
@@ -50,12 +49,10 @@ export default {
                 return false
             }
         }
-    }
-        
+    }  
 }
 </script>
 <style scoped lang="scss">
-
 #add_hero_modal{
     background-color: #ffffff;
     position: fixed;
@@ -112,13 +109,8 @@ export default {
         padding: 0 15px 50px 15px;
     }
 }
-
-
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(200px);
 }
-
-
-
 </style>

@@ -41,7 +41,6 @@
                         <input class="hide" @change="uploadTemp" name="image" id="prod_img" type="file" ref="img">
                         <image-status-overlay v-if="imageStatus.status" v-bind:imageStatus="imageStatus" @clrError="clrError" />
                     </div>
-
                 </div>
             </div>
             <div class="form-row">
@@ -50,10 +49,6 @@
             </div>
             <div class="form-row">
                 <div id="unit_bg" v-if="!this.getEditContainer.active">
-                    <!-- <div class="form-check flex-row-st">
-                        <input v-model="form.prodType" id="wholesale" value="1" class="form-check-input" type="radio" :checked="form.prodType == '1' ? true : false" >
-                        <label for="wholesale">Add stock directly.</label>
-                    </div> -->
                     <div class="flex justify-between align-items-center">
                         <div style="margin-right:10px">
                             <label>Stock:</label>
@@ -69,48 +64,8 @@
                         </div>
                     </div>
                     <span v-if="error.active" class="err">{{ error.message }}</span>
-                    <!-- <div class="or">
-                        <div>Or</div>
-                    </div>   -->
-                    <!-- <div class="form-check flex-row-st">
-                        <input v-model="form.prodType" id="retail" value="0" class="form-check-input" type="radio" :checked="form.prodType == '0' ? true : false">
-                        <label for="retail">Add Product Units</label>
-                    </div> -->
-                    <!-- <div :class="{ 'activate-dst': form.prodType == '1'}">
-                        <div>If there are several units in this product, you may proceed to add the individual units here.</div>
-                        <div class="flex justify-between align-items-center">
-                            <div class="unit-input-hold">
-                                <input type="text" name="BatchNumber" :disabled="form.prodType == '0' ? false : true" v-model="unitForm.batch" class="form-control input-height-2" placeholder="Batch number">
-                            </div>
-                            <div class="unit-input-hold">
-                                <input type="date" v-model="expiryDate1" class="form-control input-height-2" :disabled="form.prodType == '0' ? false : true">
-                            </div>
-                            <button class="button add-unit-btn button-primary input-height-2" :disabled="form.prodType == '0' ? false : true" @click.prevent="addToUnit(this.unitForm.batch)">Add</button>
-                        </div>
-                        <span v-if="error.active" class="err">{{ error.message }}</span>
-                        <div class="unit-added-wrap" v-if="units.length > 0">
-                            <ul v-show="form.prodType == '0'">
-                                <li v-for="unit in units" :key="unit.batch">
-                                    <div class="unit-pill flex align-items-center">
-                                        <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batch_no }}</span>
-                                        <span class="divider" v-show="unit.expiry_date">|</span>
-                                        <span class="expiry-date text-overflow-ellipsis" v-show="unit.expiry_date">{{ unit.expiry_date }}</span>
-                                        <button class="flex align-items-center justify-content-center" @click.prevent="delUnit(unit.batch_no)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
-                                                <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#ffffff">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div> -->
                 </div>
             </div>
-            <!-- <div class="form-row">
-                <label>Type of product:</label>
-            </div> -->
             <div class="form-row">
                 <label>Supply Cost per unit:</label>
                 <div class="form-row-col">
@@ -168,7 +123,6 @@
             </div>
         </form>
     </teleport>
-
 </div>
 </template>
 <script>
@@ -196,15 +150,6 @@ export default {
     data() {
         return {
             doingProductUpload: false,
-            // duplicate: false,
-            // unitForm: {
-            //     batch: "",
-            //     expiry_date: ""
-            // },
-            // units: [],
-            // direct: { quantity: "", batch: "" },
-            // expiryDate1: new Date().toISOString().slice(0, 10),
-            // expiryDate2: new Date().toISOString().slice(0, 10),
             profit: "",
             profitMargin: "",
             image: "",

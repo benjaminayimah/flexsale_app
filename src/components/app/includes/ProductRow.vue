@@ -55,7 +55,7 @@
                     <ul @mouseup="dismissMenu">
                         <li v-if="!product.deleted"><router-link :to="{ name: 'ProductDetailsBasic', params: { id: product.id, name: product.name }}">View details</router-link></li>
                         <li v-if="!product.deleted"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product', id: product.id })">Edit product</a></li>
-                        <li v-if="!product.deleted"><a href="#" @click.prevent="">Add to Tag</a></li>
+                        <li v-if="!product.deleted"><a href="#" @click.prevent="$store.commit('setSelectionSheet', { type: 'tag', id: product.id })">Add to Tag</a></li>
                         <li v-if="!product.deleted"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: product.id })">Update stock</a></li>
                         <li v-if="product.deleted"><a href="#" @click.prevent="$store.dispatch('restoreThisProduct', product.id)">Restore</a></li>
                         <li><a :class="{ 'perm-delete' : product.deleted }" href="#" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: product.deleted ? 'product' : 'trash' })">{{ !product.deleted ? 'Move to Trash' : 'Delete' }}</a></li>
@@ -124,7 +124,7 @@ export default {
             let elem = document.getElementById(id).getBoundingClientRect().top
             this.toggleMenu = true
             document.body.classList.add('fixed-body')
-            if((this.getWindowHeight-elem) > 200)
+            if((this.getWindowHeight-elem) > 300)
             this.classAbove = true
             else
             this.classAbove = false
@@ -137,9 +137,6 @@ export default {
             const find = this.getBulkSelection.array.find(item => item === id)
             find ? this.$store.commit('removeFromSelections', id) : this.$store.commit('addToSelections', id)
         }
-    },
-    created () {
-        console.log(this.product)
     }
     
 }
@@ -214,7 +211,7 @@ export default {
   top: 55%;
 }
 .class-below{
-    top: -100%;
+    top: -120%;
 }
 li{
     list-style-type: none;

@@ -47,7 +47,7 @@
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.country}">
                 <label>Country*:</label>
                 <select v-model="getOnboard.form.country" class="form-control select">
-                    <option selected="selected" disabled :value="null">Select your country</option>
+                    <option selected="selected" :value="null">Select your country</option>
                     <option v-for="country in getCountries" :key="country" :value="country">{{ country }}</option>
                 </select>
                 <span class="span" v-if="validation.error && validation.errors.country">
@@ -107,7 +107,6 @@ export default {
 .ob-wrap{
     border-top: 1px solid $dark-light;
 }
-
 .flex-col{
     width: 100%;
 }

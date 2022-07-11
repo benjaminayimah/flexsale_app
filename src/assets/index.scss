@@ -471,6 +471,9 @@ ul{
 .mt-0{
   margin-top: 0 !important;
 }
+.mt-16{
+  margin-top: 16px;
+}
 .mg-0{
   margin: 0;
 }
@@ -710,6 +713,9 @@ button{
       border: 1px solid $primary-color !important;
       background-color: $primary-light !important;
     }
+}
+.grid{
+  display: grid;
 }
 .flex{
   display: flex;
@@ -967,7 +973,7 @@ form.stock-form {
       color: $dark;
       font-weight: 500;
       &:hover {
-          background-color: $dark-light;
+          background-color: rgba(0, 0, 0, 0.04);
       }
   }
   .stk-val{

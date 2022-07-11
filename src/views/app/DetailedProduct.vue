@@ -50,6 +50,7 @@
                             <ul>
                                 <li v-if="!getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product', id: $route.params.id })">Edit product</a></li>
                                 <li v-if="!getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: $route.params.id })">Update stock</a></li>
+                                <li v-if="!getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('setSelectionSheet', { type: 'tag', id: $route.params.id })">Add to tag</a></li>
                                 <li v-if="getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.dispatch('restoreThisProduct', getTempContainer.data.id)">Restore</a></li>
                                 <li @click.prevent="closeJustMenu()"><a :class="{ 'perm-delete' : getTempContainer.data.deleted }" href="#" @click.prevent="$store.commit('setDeleteModal', { id: $route.params.id, type: 'trash' } )">Delete</a></li>
                             </ul>
@@ -72,19 +73,20 @@
                 <router-view></router-view>
             </div>
         </div>
-        
     <!-- </transition> -->
     </div>
+<select-tag-overlay v-if="getSelectionSheet.selectTag"  />
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import SelectTagOverlay from '../../components/app/includes/SelectTagOverlay.vue'
 import moment from 'moment'
 import Backdrop from '../../components/app/includes/Backdrop.vue'
 export default {
-  components: { Backdrop },
+  components: { Backdrop, SelectTagOverlay },
     name: 'DetailedProduct',
     computed: {
-        ...mapGetters(['getHostname', 'getUser', 'getTempContainer', 'getMobile', 'getDefaultImage', 'getUserAdminID', 'getSuppliers']),
+        ...mapGetters(['getHostname', 'getUser', 'getTempContainer', 'getMobile', 'getDefaultImage', 'getUserAdminID', 'getSuppliers', 'getSelectionSheet']),
         computeSupplier() {
             if(this.getTempContainer.data.suppler_id !== null) {
                 let supplier = this.getSuppliers.find(supplier => supplier.id == this.getTempContainer.data.supplier_id)

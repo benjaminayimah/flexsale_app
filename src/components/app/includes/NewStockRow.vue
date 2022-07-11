@@ -17,7 +17,7 @@
         </div>
         <div class="flex gap-8 button-wrap">
             <a class="submit-edit" href="#" @click.prevent="submitNewBatch">Add</a>
-            <a class="cancel-edit" href="#" @click.prevent="removeRow(row.id)">Cancel</a>
+            <a class="cancel-edit" href="#" @click.prevent="removeRow(row.id)">Remove</a>
         </div>
     </form>
 </template>
@@ -54,7 +54,6 @@ export default {
                     },
                 }
             ).then((res) => {
-                console.log(res.data)
                 if(res.data.unit || res.data.stock) {
                     this.$store.commit('updateProduct', res.data.stock)
                     this.$store.commit('addToStock', res.data.unit)

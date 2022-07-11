@@ -14,11 +14,7 @@ export default {
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-
-    /* backdrop-filter: saturate(180%) blur(20px); */
-
-
-
     z-index: 200;
+    /* backdrop-filter: saturate(180%) blur(20px); */
 }
 </style>

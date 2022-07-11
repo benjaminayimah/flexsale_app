@@ -129,18 +129,20 @@
         </div>
     </transition>
 </teleport>
+<select-tag-overlay v-if="getSelectionSheet.selectTag"  />
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import Backdrop from '../../components/app/includes/Backdrop.vue'
 import ProductRow from '../../components/app/includes/ProductRow.vue'
 import dropdownToggleMixin from '../../mixins/dropdownToggle'
+import SelectTagOverlay from '../../components/app/includes/SelectTagOverlay.vue'
 export default {
-  components: { Backdrop, ProductRow },
+  components: { Backdrop, ProductRow, SelectTagOverlay },
     name: 'Products',
     mixins: [dropdownToggleMixin],
     computed: {
-        ...mapGetters(['getMobile', 'getProducts', 'getAllFilters', 'getTags', 'getFloatingDiv', 'getStores']),
+        ...mapGetters(['getMobile', 'getProducts', 'getAllFilters', 'getTags', 'getFloatingDiv', 'getStores', 'getSelectionSheet']),
         computedProducts() {
             if(this.$route.params.id !== 'all') {
                 return this.getAllFilters.filter(product => product.tag_id === this.$route.params.id)

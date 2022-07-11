@@ -36,7 +36,7 @@ export default createStore({
     thisProduct: {},
     tags: [],
     filters: [],
-    selectionSheet: false,
+    selectionSheet: { active: false, selectProd: false, selectTag: false, prodID: '' },
     discounts: [],
     tempDataContainer: { active: false, editMode: false, data: {}, array: [], propertyName: ''},
     editContainer: { active: false, data: {}, array: [], propertyName: '', password: false},
@@ -56,7 +56,7 @@ export default createStore({
     navPage: { title: '', mobile: false, back: true},
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
-    addingProduct: { status: false, product: false, tag: false, discount: false, admin: false, store: false, supplier: false, stock: false},
+    addingProduct: { active: false, product: false, tag: false, discount: false, admin: false, store: false, supplier: false, stock: false},
     sale: { active: false, minimize: false, maximize: false, array: []
     },
     todaysales: [],
@@ -268,9 +268,24 @@ export default createStore({
     unSetMobileTitle(state) {
       state.navPage.mobile = false
     },
-    doSelectionSheet(state) {
-      state.selectionSheet = !state.selectionSheet
+    setSelectionSheet(state, payload) {
+      if(payload.type == 'product') {
+        state.selectionSheet.selectProd = true
+      }else {
+        state.selectionSheet.selectTag = true
+        state.selectionSheet.prodID = payload.id
+      }
+      state.selectionSheet.active = true
+      document.body.classList.add('fixed-body')
     },
+    unSetSelectionSheet(state) {
+      state.selectionSheet.active = false
+      state.selectionSheet.selectProd = false
+      state.selectionSheet.selectTag = false
+      state.selectionSheet.prodID = ''
+      document.body.classList.remove('fixed-body')
+    },
+
     setLoader(state) {
         state.loader = !state.loader
     },
@@ -280,7 +295,7 @@ export default createStore({
       this.commit('setMainHomeWidth', thispayload)
     },
     setMainHomeWidth(state, payload) {
-      state.addingProduct.status = true
+      state.addingProduct.active = true
       if(payload.type == 'product'){
         state.addingProduct.product = true
         if(payload.mode == 'edit') {
@@ -358,7 +373,7 @@ export default createStore({
     unsetMainHomeWidth(state, payload){
       // this.commit('dismisAlert')
       this.commit('clearEditContainer')
-      state.addingProduct.status = false
+      state.addingProduct.active = false
       state.addingProduct.tag = false
       state.addingProduct.product = false
       state.addingProduct.discount = false
