@@ -85,8 +85,6 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- {{computedProducts}} -->
-                    <!-- <router-view></router-view> -->
                     <product-row v-for="product in sortProducts(computedProducts)" :key="product.id" v-bind:product="product" />
                 </div>
             </div>

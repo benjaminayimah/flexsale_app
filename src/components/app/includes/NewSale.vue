@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="flex align-items-center" v-if="searchResult.prod_type === 1 && searchResult.active !== 0">
+                                <div class="flex align-items-center" v-if="searchResult.active !== 0">
                                     <label>Qty:</label>
                                     <input type="number" class="form-control qty-input">
                                 </div>
@@ -153,12 +153,11 @@ export default {
     computed: {
       ...mapGetters(['getCurrency', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID']),
       computeTotal() {
-          return this.thisSale.reduce((acc, item) => acc + item.price, 0);
+            return this.thisSale.reduce((acc, item) => acc + item.price, 0)
       },
       computedItems() {
           if(this.thisSale.length > 0) {
               const newSales = this.thisSale.slice();
-              
               return newSales
           }else
             return []
@@ -243,7 +242,7 @@ export default {
             const price = this.computePrice(searchResult.selling_price, searchResult.discount)
             let unitTotal = price * qty
             const payload = {
-                id: searchResult.id, image: searchResult.image, qty: qty, name: searchResult.name, unit_price: Number(price), price: Number(unitTotal), og_price: searchResult.selling_price, prod_id: searchResult.product_id, discount: searchResult.discount, batch_no: searchResult.batch_no, prod_type: searchResult.prod_type
+                id: searchResult.id, image: searchResult.image, qty: qty, name: searchResult.name, unit_price: Number(price), price: Number(unitTotal), og_price: searchResult.selling_price, prod_id: searchResult.product_id, discount: searchResult.discount, batch_no: searchResult.batch_no
             }
             this.thisSale.push(payload)
             this.searchResult = ''
@@ -258,7 +257,7 @@ export default {
                     const price = this.computePrice(element.selling_price, element.discount)
                     let unitTotal = price * qty
                     const itemPayload = {
-                        id: element.id, image: element.image, qty: qty, name: element.name, unit_price: Number(price), price: Number(unitTotal), og_price: element.selling_price, prod_id: element.product_id, discount: element.discount, batch_no: element.batch_no, prod_type: element.prod_type
+                        id: element.id, image: element.image, qty: qty, name: element.name, unit_price: Number(price), price: Number(unitTotal), og_price: element.selling_price, prod_id: element.product_id, discount: element.discount, batch_no: element.batch_no
                     }
                     items.push(itemPayload)
                 });

@@ -1,54 +1,56 @@
 <template>
-<teleport to="#add_title">
-    <span v-if="getEditContainer.password">Reset Password</span>
-    <span v-else-if="getEditContainer.active && getUser.id !== getEditContainer.data.id">Edit User</span>
-    <span v-else-if="getUser.id == getEditContainer.data.id">Edit Profile</span>
-    <span v-else>Add New User</span>
-</teleport>
-<teleport to="#add_submit_button">
-    <button v-if="getEditContainer.password" class="button button-primary top-submit-btn" @click.prevent="doSubmitPassword">Save</button>
-    <button v-else class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Submit user'}}</button>
-</teleport>
-<teleport to="#add_master_body_container">
-    <form id="product_form" @submit.prevent="">
-        <div class="form-row justify-content-center flex" v-if="getEditContainer.active && !getEditContainer.password && getUser.id === getEditContainer.data.id && getUser.role == 1">
-            <div v-if="getStores.length > 0" class="justify-content-center align-items-center profile-pg-avatar" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ !getCurrentStore.image ? computeInitials: '' }}</div>
-            <div v-else class="no-store-profile-large justify-content-center align-items-center">{{ computeInitials }}</div>
-        </div>
-        <div class="form-row" v-if="!getEditContainer.password">
-            <label>Name:</label>
-            <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Full name" required>
-        </div>
-        <div class="form-row" v-if="!getEditContainer.password">
-            <label>Email:</label>
-            <input v-model="form.email" type="email" name="email" class="form-control" placeholder="example@gmail.com" required>
-        </div>
-        <div class="form-row" v-if="getUser.id !== getEditContainer.data.id && !getEditContainer.password">
-            <label>Select Store:</label>
-            <span class="sub-info">Your users (sellers) can only access the selected stores.</span>
-            <ul>
-                <store-selected-check v-for="store in getStores" :key="store.id" v-bind:store="store" v-bind:checked="this.form.store" v-on:check="check" />
-            </ul>
-        </div>
-        <div class="form-row" v-if="!getEditContainer.active">
-            <label>Password:</label>
-            <input v-model="form.password" type="password" name="password" class="form-control password-field"  placeholder="Enter password" required>
-        </div>
-        <div class="form-row" v-if="getEditContainer.active && getEditContainer.password && getUser.id === getEditContainer.data.id">
-            <label>Current password:</label>
-            <input v-model="form.password" @mousedown="resetError" :class="[{ 'err-exist-border':error.pass }, { 'input-disabled' : getUser.oauth && !getUser.has_pass }]" type="password" name="password" :disabled="getUser.oauth && !getUser.has_pass ? true : false" class="form-control password-field" placeholder="Current password" required>
-            <div class="forgot-pass">
-                <div v-if="getUser.oauth && !getUser.has_pass" class="flex oauth-provider-wrap gap-8"><span>You are currently logged in with</span><span class="provider">{{ getUser.oauth_provider }}</span></div>
-                <a v-else href="#" class="">Forgot your password?</a>
+<div v-if="getAddingProduct.admin">
+    <teleport to="#add_title">
+        <span v-if="getEditContainer.password">Reset Password</span>
+        <span v-else-if="getEditContainer.active && getUser.id !== getEditContainer.data.id">Edit User</span>
+        <span v-else-if="getUser.id == getEditContainer.data.id">Edit Profile</span>
+        <span v-else>Add New User</span>
+    </teleport>
+    <teleport to="#add_submit_button">
+        <button v-if="getEditContainer.password" class="button button-primary top-submit-btn" @click.prevent="doSubmitPassword">Save</button>
+        <button v-else class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Submit user'}}</button>
+    </teleport>
+    <teleport to="#add_master_body_container">
+        <form id="product_form" @submit.prevent="" class="overlay-hero-form">
+            <div class="form-row justify-content-center flex" v-if="getEditContainer.active && !getEditContainer.password && getUser.id === getEditContainer.data.id && getUser.role == 1">
+                <div v-if="getStores.length > 0" class="justify-content-center align-items-center profile-pg-avatar" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ !getCurrentStore.image ? computeInitials: '' }}</div>
+                <div v-else class="no-store-profile-large justify-content-center align-items-center">{{ computeInitials }}</div>
             </div>
-            <div v-if="error.pass" class="error-hold"><span class="error">{{ error.message }}</span></div>
-        </div>
-        <div class="form-row" v-if="getEditContainer.active && getEditContainer.password">
-            <label>New password:</label>
-            <input v-model="form.newPassword" type="password" name="password" class="form-control password-field" placeholder="New password" required>
-        </div>
-    </form>
-</teleport>
+            <div class="form-row" v-if="!getEditContainer.password">
+                <label>Name:</label>
+                <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Full name" required>
+            </div>
+            <div class="form-row" v-if="!getEditContainer.password">
+                <label>Email:</label>
+                <input v-model="form.email" type="email" name="email" class="form-control" placeholder="example@gmail.com" required>
+            </div>
+            <div class="form-row" v-if="getUser.id !== getEditContainer.data.id && !getEditContainer.password">
+                <label>Select Store:</label>
+                <span class="sub-info">Your users (sellers) can only access the selected stores.</span>
+                <ul>
+                    <store-selected-check v-for="store in getStores" :key="store.id" v-bind:store="store" v-bind:checked="this.form.store" v-on:check="check" />
+                </ul>
+            </div>
+            <div class="form-row" v-if="!getEditContainer.active">
+                <label>Password:</label>
+                <input v-model="form.password" type="password" name="password" class="form-control password-field"  placeholder="Enter password" required>
+            </div>
+            <div class="form-row" v-if="getEditContainer.active && getEditContainer.password && getUser.id === getEditContainer.data.id">
+                <label>Current password:</label>
+                <input v-model="form.password" @mousedown="resetError" :class="[{ 'err-exist-border':error.pass }, { 'input-disabled' : getUser.oauth && !getUser.has_pass }]" type="password" name="password" :disabled="getUser.oauth && !getUser.has_pass ? true : false" class="form-control password-field" placeholder="Current password" required>
+                <div class="forgot-pass">
+                    <div v-if="getUser.oauth && !getUser.has_pass" class="flex oauth-provider-wrap gap-8"><span>You are currently logged in with</span><span class="provider">{{ getUser.oauth_provider }}</span></div>
+                    <a v-else href="#" class="">Forgot your password?</a>
+                </div>
+                <div v-if="error.pass" class="error-hold"><span class="error">{{ error.message }}</span></div>
+            </div>
+            <div class="form-row" v-if="getEditContainer.active && getEditContainer.password">
+                <label>New password:</label>
+                <input v-model="form.newPassword" type="password" name="password" class="form-control password-field" placeholder="New password" required>
+            </div>
+        </form>
+    </teleport>
+</div>
 </template>
 <script>
 import axios from 'axios'
@@ -58,7 +60,7 @@ export default {
   components: { StoreSelectedCheck },
     name: 'AddNewUser',
     computed: {
-        ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser', 'getCurrentStore', 'getUserAdminID']),
+        ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser', 'getCurrentStore', 'getUserAdminID', 'getAddingProduct']),
         computeInitials() {
             if(this.getUser.name && this.getStores.length < 1) {
                 let name = this.getUser.name.split(' ')
@@ -85,7 +87,7 @@ export default {
         }
     },
     methods: {
-        async doSubmit() {
+        doSubmit() {
             if(this.getEditContainer.active) {
                 let id = this.getEditContainer.data.id
                 const putUrl = this.getHostname+'/api/edit-admin-user/'+id+'?token='+this.getToken

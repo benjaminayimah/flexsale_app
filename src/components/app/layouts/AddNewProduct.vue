@@ -1,172 +1,175 @@
 <template>
-<teleport to="#add_title">
-    <span>{{ getEditContainer.active ? 'Edit Product' : 'Add New Product'}}</span>
-</teleport>
-<teleport to="#add_submit_button">
-    <button class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Add'}}</button>
-</teleport>
-<teleport to="#add_master_body_container">
-     <form id="product_form" @submit.prevent="">
-        <div class="form-row">
-            <label>Product Image:</label>
-            <div class="img-hold">
-                <div v-if="doingtempUpload" class="img-container">
-                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getDefaultImage+')'}">
-                        <div id="loading_hold">
-                            <i class="lazy-loader" :class="{ 'loader' : load }"></i>
+<div v-if="getAddingProduct.product">
+    <teleport to="#add_title">
+        <span>{{ getEditContainer.active ? 'Edit Product' : 'Add New Product'}}</span>
+    </teleport>
+    <teleport to="#add_submit_button">
+        <button :class="{ 'button-disabled' : error.active }" :disabled="error.active? true : false" class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Done'}}</button>
+    </teleport>
+    <teleport to="#add_master_body_container">
+        <form id="product_form" @submit.prevent="" class="overlay-hero-form">
+            <div class="form-row">
+                <label>Product Image:</label>
+                <div class="img-hold">
+                    <div v-if="doingtempUpload" class="img-container">
+                        <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getDefaultImage+')'}">
+                            <div id="loading_hold">
+                                <i class="lazy-loader" :class="{ 'loader' : load }"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div v-else-if="imageUploaded" class="img-container">
-                    <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/temp/'+form.tempImage+')'}">
-                        <div v-if="deleting" id="loading_hold">
-                            <i class="lazy-loader" :class="{ 'loader' : load }"></i>
+                    <div v-else-if="imageUploaded" class="img-container">
+                        <div class="img-main-wrap" id="img_main" :style="{backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/temp/'+form.tempImage+')'}">
+                            <div v-if="deleting" id="loading_hold">
+                                <i class="lazy-loader" :class="{ 'loader' : load }"></i>
+                            </div>
+                            <button v-else class="button-secondary" id="deltmp" @click.prevent="deltmp(form.tempImage)">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 17.063 18">
+                                    <path fill="#0e142c"  d="M-163.673-438.167a2.146,2.146,0,0,1-2.154-1.973l-.724-10.631,1.188-.078.724,10.632a.961.961,0,0,0,.966.884h7.236a.962.962,0,0,0,.966-.885l.724-10.631,1.188.078-.724,10.631a2.146,2.146,0,0,1-2.154,1.973Zm-4.793-13.986v-1.166h5.08v-2.848h6.662v2.848h5.321v1.166Zm10.551-1.166V-455H-162.2v1.683Z" transform="translate(168.466 456.167)"/>
+                                </svg>
+                            </button>
                         </div>
-                        <button v-else class="button-secondary" id="deltmp" @click.prevent="deltmp(form.tempImage)">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 17.063 18">
-                                <path fill="#0e142c"  d="M-163.673-438.167a2.146,2.146,0,0,1-2.154-1.973l-.724-10.631,1.188-.078.724,10.632a.961.961,0,0,0,.966.884h7.236a.962.962,0,0,0,.966-.885l.724-10.631,1.188.078-.724,10.631a2.146,2.146,0,0,1-2.154,1.973Zm-4.793-13.986v-1.166h5.08v-2.848h6.662v2.848h5.321v1.166Zm10.551-1.166V-455H-162.2v1.683Z" transform="translate(168.466 456.167)"/>
+                    </div>
+                    <div v-else class="empty-state-container">
+                        <button class="flex-column" @click.prevent="uploadClick('prod_img')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20.291 20.29">
+                                <path d="M-4280.267-699.712a2.84,2.84,0,0,1-2.837-2.838v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a1.339,1.339,0,0,0,1.337,1.338h14.615a1.34,1.34,0,0,0,1.338-1.338v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a2.842,2.842,0,0,1-2.839,2.838Zm6.558-7.013v-10.717l-3.939,3.94a.751.751,0,0,1-1.061,0,.751.751,0,0,1,0-1.061l5.22-5.22a.748.748,0,0,1,.531-.219h.018a.745.745,0,0,1,.33.085h0l.012.006.007,0,.007,0,.01.006,0,0,.014.009h0a.762.762,0,0,1,.126.1l5.22,5.22a.751.751,0,0,1,0,1.061.748.748,0,0,1-.531.219.749.749,0,0,1-.53-.219l-3.939-3.94v10.718a.749.749,0,0,1-.749.749A.749.749,0,0,1-4273.709-706.725Z" transform="translate(4283.104 720.002)" fill="#566ff4"/>
                             </svg>
                         </button>
+                        <span>Upload product image</span>
+                        <span class="instruction">The file type must be <strong>"png, jpg or jpeg"</strong> and <strong>Less than 1MB</strong></span>
+                        <input class="hide" @change="uploadTemp" name="image" id="prod_img" type="file" ref="img">
+                        <image-status-overlay v-if="imageStatus.status" v-bind:imageStatus="imageStatus" @clrError="clrError" />
                     </div>
-                </div>
-                <div v-else class="empty-state-container">
-                    <button class="flex-column" @click.prevent="uploadClick('prod_img')">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20.291 20.29">
-                            <path d="M-4280.267-699.712a2.84,2.84,0,0,1-2.837-2.838v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a1.339,1.339,0,0,0,1.337,1.338h14.615a1.34,1.34,0,0,0,1.338-1.338v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a2.842,2.842,0,0,1-2.839,2.838Zm6.558-7.013v-10.717l-3.939,3.94a.751.751,0,0,1-1.061,0,.751.751,0,0,1,0-1.061l5.22-5.22a.748.748,0,0,1,.531-.219h.018a.745.745,0,0,1,.33.085h0l.012.006.007,0,.007,0,.01.006,0,0,.014.009h0a.762.762,0,0,1,.126.1l5.22,5.22a.751.751,0,0,1,0,1.061.748.748,0,0,1-.531.219.749.749,0,0,1-.53-.219l-3.939-3.94v10.718a.749.749,0,0,1-.749.749A.749.749,0,0,1-4273.709-706.725Z" transform="translate(4283.104 720.002)" fill="#566ff4"/>
-                        </svg>
-                    </button>
-                    <span>Upload product image</span>
-                    <span class="instruction">The file type must be <strong>"png, jpg or jpeg"</strong> and <strong>Less than 1MB</strong></span>
-                    <input class="hide" @change="uploadTemp" name="image" id="prod_img" type="file" ref="img">
-                    <image-status-overlay v-if="imageStatus.status" v-bind:imageStatus="imageStatus" @clrError="clrError" />
-                </div>
 
+                </div>
             </div>
-        </div>
-        <div class="form-row">
-            <label>Product name:</label>
-            <input v-model="form.name" type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Ideal Milk" required>
-        </div>
-        <div class="form-row">
-            <div id="unit_bg">
-                <div class="form-check flex-row-st">
-                    <input v-model="form.prodType" id="wholesale" value="1" class="form-check-input" type="radio" :checked="form.prodType == '1' ? true : false" >
-                    <label for="wholesale">Add stock number directly.</label>
-                </div>
-                <div class="flex justify-between align-items-center" :class="{ 'activate-dst': form.prodType == '0'}">
-                    <div style="margin-right:10px">
-                        <label>Stock:</label>
-                        <input type="text" name="stockNumber" v-model="direct.quantity" :disabled="form.prodType == '1' ? false : true" class="form-control stk2" placeholder="0">
-                    </div>
-                    <div style="margin-right:10px">
-                        <label>Batch No.:</label>
-                        <input type="text" name="stockNumber" @blur="addToUnit(this.direct.batch)" v-model="direct.batch" :disabled="form.prodType == '1' ? false : true" class="form-control" placeholder="Batch number">
-                    </div>
-                    <div class="unit-input-hold" style="margin:0; padding: 10px 0">
-                        <label>Expiry date:</label>
-                        <input type="date" v-model="expiryDate2" class="form-control" :disabled="form.prodType == '1' ? false : true">
-                    </div>
-                </div>
-                <div class="or">
-                    <div>Or</div>
-                </div>  
-                <div class="form-check flex-row-st">
-                    <input v-model="form.prodType" id="retail" value="0" class="form-check-input" type="radio" :checked="form.prodType == '0' ? true : false">
-                    <label for="retail">Add Product Units</label>
-                </div>
-                <div :class="{ 'activate-dst': form.prodType == '1'}">
-                    <div>If there are several units in this product, you may proceed to add the individual units here.</div>
+            <div class="form-row">
+                <label>Product name:</label>
+                <input v-model="form.name" type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Ideal Milk" required>
+            </div>
+            <div class="form-row">
+                <div id="unit_bg" v-if="!this.getEditContainer.active">
+                    <!-- <div class="form-check flex-row-st">
+                        <input v-model="form.prodType" id="wholesale" value="1" class="form-check-input" type="radio" :checked="form.prodType == '1' ? true : false" >
+                        <label for="wholesale">Add stock directly.</label>
+                    </div> -->
                     <div class="flex justify-between align-items-center">
-                        <div class="unit-input-hold">
-                            <input type="text" name="BatchNumber" @click="dismisUnitError" :disabled="form.prodType == '0' ? false : true" v-model="unitForm.batch" class="form-control" placeholder="Batch number">
+                        <div style="margin-right:10px">
+                            <label>Stock:</label>
+                            <input type="text" name="stockNumber" v-model="form.stock"  class="form-control stk2 input-height-2" placeholder="0">
                         </div>
-                        <div class="unit-input-hold">
-                            <input type="date" v-model="expiryDate1" class="form-control" :disabled="form.prodType == '0' ? false : true">
+                        <div style="margin-right:10px">
+                            <label>Batch No.:</label>
+                            <input type="text" name="stockNumber" @blur="addToUnit(this.form.batch)" v-model="form.batch" class="form-control input-height-2" placeholder="Batch number">
                         </div>
-                        <button class="button add-unit-btn button-primary" :disabled="form.prodType == '0' ? false : true" @click.prevent="addToUnit(this.unitForm.batch)">Add</button>
+                        <div class="unit-input-hold" style="margin:0; padding: 10px 0">
+                            <label>Expiry date:</label>
+                            <input type="date" v-model="form.expiryDate" class="form-control input-height-2" >
+                        </div>
                     </div>
                     <span v-if="error.active" class="err">{{ error.message }}</span>
-                    <div class="unit-added-wrap" v-if="units.length > 0">
-                        <ul v-show="form.prodType == '0'">
-                            <li v-for="unit in units" :key="unit.batch">
-                                <div class="unit-pill flex align-items-center">
-                                    <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batch_no }}</span>
-                                    <span class="divider" v-show="unit.expiry_date">|</span>
-                                    <span class="expiry-date text-overflow-ellipsis" v-show="unit.expiry_date">{{ unit.expiry_date }}</span>
-                                    <button class="flex align-items-center justify-content-center" @click.prevent="delUnit(unit.batch_no)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
-                                            <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#ffffff">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <label>Type of product:</label>
-        </div>
-        <div class="form-row">
-            <label>Supply Cost per unit:</label>
-            <div class="form-row-col">
-                <div class="col-2 pl-0">
-                    <input v-model="form.cost" type="number" name="costPrice" class="form-control" placeholder="0">
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <label>Selling price per unit:</label>
-            <div class="form-row-col">
-                <div class="col-2">
-                    <input v-model="form.sellingPrice" type="number" name="sellingPrice" class="form-control" placeholder="0">
-                </div>
-                <div class="col-2">
-                    <div class="profit-row">
-                        <div class="flex-row-st">
-                            <div class="profit-label">
-                                Profit per unit:
+                    <!-- <div class="or">
+                        <div>Or</div>
+                    </div>   -->
+                    <!-- <div class="form-check flex-row-st">
+                        <input v-model="form.prodType" id="retail" value="0" class="form-check-input" type="radio" :checked="form.prodType == '0' ? true : false">
+                        <label for="retail">Add Product Units</label>
+                    </div> -->
+                    <!-- <div :class="{ 'activate-dst': form.prodType == '1'}">
+                        <div>If there are several units in this product, you may proceed to add the individual units here.</div>
+                        <div class="flex justify-between align-items-center">
+                            <div class="unit-input-hold">
+                                <input type="text" name="BatchNumber" :disabled="form.prodType == '0' ? false : true" v-model="unitForm.batch" class="form-control input-height-2" placeholder="Batch number">
                             </div>
-                            <div class="vals">
-                                <span>GH₵</span><span>{{ Intl.NumberFormat("en-US").format(computeProfit) }}</span>
+                            <div class="unit-input-hold">
+                                <input type="date" v-model="expiryDate1" class="form-control input-height-2" :disabled="form.prodType == '0' ? false : true">
                             </div>
+                            <button class="button add-unit-btn button-primary input-height-2" :disabled="form.prodType == '0' ? false : true" @click.prevent="addToUnit(this.unitForm.batch)">Add</button>
                         </div>
-                        <div class="flex-row-st">
-                            <div class="profit-label">
-                                Profit margin:
-                            </div>
-                            <div class="vals">
-                                <span>{{ computePM }}</span><span class="percent value">%</span>
-                            </div>
+                        <span v-if="error.active" class="err">{{ error.message }}</span>
+                        <div class="unit-added-wrap" v-if="units.length > 0">
+                            <ul v-show="form.prodType == '0'">
+                                <li v-for="unit in units" :key="unit.batch">
+                                    <div class="unit-pill flex align-items-center">
+                                        <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batch_no }}</span>
+                                        <span class="divider" v-show="unit.expiry_date">|</span>
+                                        <span class="expiry-date text-overflow-ellipsis" v-show="unit.expiry_date">{{ unit.expiry_date }}</span>
+                                        <button class="flex align-items-center justify-content-center" @click.prevent="delUnit(unit.batch_no)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
+                                                <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#ffffff">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
-        </div>
-        <div class="form-row">
-            <label>Description:</label>
-            <textarea v-model="form.description" class="form-control" name="description" rows="5"></textarea>
-        </div>
-        <div class="form-row">
-            <label>Supplier:</label>
-            <select v-model="form.supplier" id="supplier" class="form-control select">
-                <option selected="selected" :value="null">Select a supplier</option>
-                <option :value="supplier.id" v-for="supplier in getSuppliers" :key="supplier.id">{{ supplier.name }}</option>
-            </select>
-            <!-- <div class="a-btn">
-                <a href="#">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
-                        <path d="M-12729.059-1230.178v-5.942H-12735a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.942v-5.942a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.942h5.941a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.941v5.942a1,1,0,0,1-1,1A1,1,0,0,1-12729.059-1230.178Z" transform="translate(12736.001 1245.061)" fill="#566ff4"/>
-                    </svg>
-                    Create new Supplier
-                </a>
+            <!-- <div class="form-row">
+                <label>Type of product:</label>
             </div> -->
-        </div>
-    </form>
-</teleport>
-   
+            <div class="form-row">
+                <label>Supply Cost per unit:</label>
+                <div class="form-row-col">
+                    <div class="col-2 pl-0">
+                        <input v-model="form.cost" type="number" name="costPrice" class="form-control" placeholder="0">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Selling price per unit:</label>
+                <div class="form-row-col">
+                    <div class="col-2">
+                        <input v-model="form.sellingPrice" type="number" name="sellingPrice" class="form-control" placeholder="0">
+                    </div>
+                    <div class="col-2">
+                        <div class="profit-row">
+                            <div class="flex-row-st">
+                                <div class="profit-label">
+                                    Profit per unit:
+                                </div>
+                                <div class="vals">
+                                    <span>GH₵</span><span>{{ Intl.NumberFormat("en-US").format(computeProfit) }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-row-st">
+                                <div class="profit-label">
+                                    Profit margin:
+                                </div>
+                                <div class="vals">
+                                    <span>{{ computePM }}</span><span class="percent value">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Description:</label>
+                <textarea v-model="form.description" class="form-control" name="description" rows="5"></textarea>
+            </div>
+            <div class="form-row">
+                <label>Supplier:</label>
+                <select v-model="form.supplier" id="supplier" class="form-control select">
+                    <option selected="selected" :value="null">Select a supplier</option>
+                    <option :value="supplier.id" v-for="supplier in getSuppliers" :key="supplier.id">{{ supplier.name }}</option>
+                </select>
+                <!-- <div class="a-btn">
+                    <a href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.883 15.882">
+                            <path d="M-12729.059-1230.178v-5.942H-12735a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.942v-5.942a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.942h5.941a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.941v5.942a1,1,0,0,1-1,1A1,1,0,0,1-12729.059-1230.178Z" transform="translate(12736.001 1245.061)" fill="#566ff4"/>
+                        </svg>
+                        Create new Supplier
+                    </a>
+                </div> -->
+            </div>
+        </form>
+    </teleport>
+
+</div>
 </template>
 <script>
 import axios from 'axios'
@@ -176,7 +179,7 @@ export default {
     name: "AddNewProduct",
     components: { ImageStatusOverlay },
     computed: {
-        ...mapGetters(["getToken", "getHostname", "getUser", "getDefaultImage", "getEditContainer", "getUserAdminID", "getDiscounts", "getSuppliers"]),
+        ...mapGetters(["getToken", "getHostname", "getUser", "getDefaultImage", "getEditContainer", "getUserAdminID", "getDiscounts", "getSuppliers", "getAddingProduct"]),
         computeProfit() {
             let profit = (this.form.sellingPrice - this.form.cost);
             return profit.toFixed(2);
@@ -193,15 +196,15 @@ export default {
     data() {
         return {
             doingProductUpload: false,
-            duplicate: false,
-            unitForm: {
-                batch: "",
-                expiry_date: ""
-            },
-            units: [],
-            direct: { quantity: "", batch: "" },
-            expiryDate1: new Date().toISOString().slice(0, 10),
-            expiryDate2: new Date().toISOString().slice(0, 10),
+            // duplicate: false,
+            // unitForm: {
+            //     batch: "",
+            //     expiry_date: ""
+            // },
+            // units: [],
+            // direct: { quantity: "", batch: "" },
+            // expiryDate1: new Date().toISOString().slice(0, 10),
+            // expiryDate2: new Date().toISOString().slice(0, 10),
             profit: "",
             profitMargin: "",
             image: "",
@@ -213,9 +216,11 @@ export default {
                 stock: "",
                 description: "",
                 supplier: null,
-                prodType: "1",
-                batch: ""
-                //directStock: false,
+                prodType: "0",
+                batch: "",
+                expiryDate: new Date().toISOString().slice(0, 10),
+
+
             },
             doingtempUpload: false,
             imageUploaded: false,
@@ -282,59 +287,55 @@ export default {
         },
         doSubmit() {
             let x = this.form;
-            if (x.prodType == "0") {
-                x.batch = this.units;
-            }
-            else {
-                if (this.direct.batch !== "") {
-                    const direct = { batch_no: this.direct.batch, stock: this.direct.quantity, expiry_date: this.expiryDate2 };
-                    x.batch = direct;
-                }
-                else {
-                    x.batch = "";
-                }
-            }
+            // if (x.prodType == "0") {
+            //     x.batch = this.units;
+            // }else {
+            //     if (this.direct.batch !== "") {
+            //         const direct = { batch_no: this.direct.batch, stock: this.direct.quantity, expiry_date: this.expiryDate2 };
+            //         x.batch = direct;
+            //     }else {
+            //         x.batch = "";
+            //     }
+            // }
             if (x.name == "") {
                 this.alertMsg("danger", "Submition error", "The name field is required");
             }
-            else if (x.batch == "") {
-                this.alertMsg("danger", "Submition error", "The batch field is required");
-            }
             else {
-                let id = this.getEditContainer.data.id;
-                const putUrl = this.getHostname + "/api/products/" + id + "?token=" + this.getToken;
                 if (this.getEditContainer.active) {
+                    let id = this.getEditContainer.data.id;
+                    const putUrl = this.getHostname + "/api/products/" + id + "?token=" + this.getToken;
                     axios.put(putUrl, x, {
                         headers: {
                             "Content-Type": ["application/json"]
                         },
                     }).then((res) => {
-                        const newData = {
-                            product: res.data.product,
-                            units: res.data.units
-                        };
-                        this.$store.commit("updateProduct", newData);
-                        this.alertMsg("success", res.data.title, res.data.body);
-                        this.$store.commit("unsetMainHomeWidth", true);
-                        this.$router.push({ name: this.$router.currentRoute.value.name, params: { id: res.data.product.id, name: res.data.product.name }, replace: true });
+                        this.$store.commit("updateProduct", res.data.product)
+                        this.alertMsg("success", res.data.title, res.data.body)
+                        this.$store.commit("unsetMainHomeWidth", true)
+                        console.log(this.$router.currentRoute.value.name)
+                        this.$router.currentRoute.value.name !='Products' ? this.$router.push({ name: this.$router.currentRoute.value.name, params: { id: res.data.product.id, name: res.data.product.name }, replace: true }) : ''
                     }).catch((err) => {
                         console.log(err.response);
                     });
                 }
                 else {
-                    const postUrl = this.getHostname + "/api/products?token=";
-                    axios.post(postUrl + this.getToken, x, {
-                        headers: {
-                            "Content-Type": ["application/json"]
-                        },
-                    }).then((res) => {
-                        this.$store.commit("addToProducts", res.data.product);
-                        this.alertMsg("success", res.data.title, res.data.body);
-                        this.resetTempImg();
-                        this.units = [];
-                    }).catch((err) => {
-                        console.log(err.response);
-                    });
+                    if (x.batch == "") {
+                        this.alertMsg("danger", "Submition error", "The batch field is required");
+                    }else {
+                        const postUrl = this.getHostname + "/api/products?token=";
+                        axios.post(postUrl + this.getToken, x, {
+                            headers: {
+                                "Content-Type": ["application/json"]
+                            },
+                        }).then((res) => {
+                            this.$store.commit("addToProducts", res.data.product);
+                            this.alertMsg("success", res.data.title, res.data.body);
+                            this.resetTempImg();
+                            // this.units = [];
+                        }).catch((err) => {
+                            console.log(err.response);
+                        });
+                    }
                 }
             }
         },
@@ -350,61 +351,57 @@ export default {
             }
             if (id !== "") {
                 axios.post(this.getHostname + "/api/check-unit?token=" + this.getToken, { batch_no: id })
-                    .then((res) => {
-                    if (res.data.status === 1) {
-                        this.form.prodType == "0" ? this.doUnitLocalCheck() : "";
-                    }
-                    else if (res.data.status === 2) {
+                .then((res) => {
+                    if (res.data.status === 2) {
                         this.showUnitError();
                     }
-                })
-                    .catch((e) => {
+                }).catch((e) => {
                     console.log(e.response);
                 });
             }
         },
-        doUnitLocalCheck() {
-            const newUnit = { batch_no: this.unitForm.batch, expiry_date: this.expiryDate1 };
-            if (this.units.length === 0) {
-                this.units.push(newUnit);
-                this.resetInput();
-            }
-            else if (this.units.length !== 0) {
-                this.units.forEach(element => {
-                    if (element.batch_no === this.unitForm.batch) {
-                        this.showUnitError();
-                        return false;
-                    }
-                });
-                if (!this.duplicate) {
-                    this.units.push(newUnit);
-                    this.resetInput();
-                }
-                else {
-                    this.duplicate = false;
-                }
-            }
-        },
+        // doUnitLocalCheck() {
+        //     const newUnit = { batch_no: this.unitForm.batch, expiry_date: this.expiryDate1 };
+        //     if (this.units.length === 0) {
+        //         this.units.push(newUnit);
+        //         this.resetInput();
+        //     }
+        //     else if (this.units.length !== 0) {
+        //         this.units.forEach(element => {
+        //             if (element.batch_no === this.unitForm.batch) {
+        //                 this.showUnitError();
+        //                 return false;
+        //             }
+        //         });
+        //         if (!this.duplicate) {
+        //             this.units.push(newUnit);
+        //             this.resetInput();
+        //         }
+        //         else {
+        //             this.duplicate = false;
+        //         }
+        //     }
+        // },
         showUnitError() {
-            this.duplicate = true;
+            // this.duplicate = true;
             this.error.active = true;
             this.error.message = "This batch number already exist";
             return;
         },
         dismisUnitError() {
             if (this.error.active) {
-                this.duplicate = false;
+                // this.duplicate = false;
                 this.error.active = false;
                 this.error.message = "";
             }
         },
-        resetInput() {
-            this.unitForm.batch = "";
-            this.duplicate = false;
-        },
-        delUnit(id) {
-            this.units = this.units.filter(filter => filter.batch_no != id);
-        },
+        // resetInput() {
+        //     this.unitForm.batch = "";
+        //     this.duplicate = false;
+        // },
+        // delUnit(id) {
+        //     this.units = this.units.filter(filter => filter.batch_no != id);
+        // },
         deltmp(id) {
             this.deleting = true;
             this.load = true;
@@ -446,24 +443,22 @@ export default {
             this.doingtempUpload = false;
         },
         preloadForEdit() {
-            //console.log(this.getEditContainer)
             if (this.getEditContainer.active) {
                 this.form.name = this.getEditContainer.data.name;
                 this.form.cost = this.getEditContainer.data.cost;
                 this.form.sellingPrice = this.getEditContainer.data.selling_price;
-                this.form.stock = this.getEditContainer.data.end;
+                // this.form.stock = this.getEditContainer.data.end;
                 this.form.description = this.getEditContainer.data.description;
                 this.form.supplier = this.getEditContainer.data.supplier;
-                this.form.prodType = this.getEditContainer.data.prod_type;
                 this.form.supplier = this.getEditContainer.data.supplier_id;
-                if (this.getEditContainer.data.prod_type === 0) {
-                    this.units = this.getEditContainer.array;
-                }
-                else {
-                    this.direct.quantity = this.getEditContainer.data.stock;
-                    this.direct.batch = this.getEditContainer.array[0].batch_no;
-                    this.expiryDate2 = this.getEditContainer.array[0].expiry_date;
-                }
+                // if (this.getEditContainer.data.prod_type === 0) {
+                //     this.units = this.getEditContainer.array;
+                // }
+                // else {
+                //     this.direct.quantity = this.getEditContainer.data.stock;
+                //     this.direct.batch = this.getEditContainer.array[0].batch_no;
+                //     this.expiryDate2 = this.getEditContainer.array[0].expiry_date;
+                // }
             }
         },
         clearPreloader() {
@@ -659,9 +654,6 @@ label{
     padding: 20px;
     border-radius: 16px;
     border: 1px solid #f0f3ff;
-    .add-unit-btn{
-        height: 48px;
-    }
 }
 .unit-input-hold{
     padding: 15px 0;
@@ -737,8 +729,9 @@ hr{
     text-align: center;
     padding: 6px;
 }
-.activate-dst{
-    opacity: 0.5;
+
+.input-height-2 {
+    height: 48px !important;
 }
 
 

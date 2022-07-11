@@ -136,7 +136,6 @@ export default {
                 errors: '',
                 message: ''
             },
-            
             progressFill: 1,
             creating: false,
             created: false,

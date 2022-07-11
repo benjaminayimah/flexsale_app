@@ -54,8 +54,9 @@
                     </div>
                     <ul @mouseup="dismissMenu">
                         <li v-if="!product.deleted"><router-link :to="{ name: 'ProductDetailsBasic', params: { id: product.id, name: product.name }}">View details</router-link></li>
+                        <li v-if="!product.deleted"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product', id: product.id })">Edit product</a></li>
                         <li v-if="!product.deleted"><a href="#" @click.prevent="">Add to Tag</a></li>
-                        <li v-if="!product.deleted"><a href="#" @click.prevent="">Update stock</a></li>
+                        <li v-if="!product.deleted"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: product.id })">Update stock</a></li>
                         <li v-if="product.deleted"><a href="#" @click.prevent="$store.dispatch('restoreThisProduct', product.id)">Restore</a></li>
                         <li><a :class="{ 'perm-delete' : product.deleted }" href="#" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: product.deleted ? 'product' : 'trash' })">{{ !product.deleted ? 'Move to Trash' : 'Delete' }}</a></li>
                     </ul>
@@ -136,6 +137,9 @@ export default {
             const find = this.getBulkSelection.array.find(item => item === id)
             find ? this.$store.commit('removeFromSelections', id) : this.$store.commit('addToSelections', id)
         }
+    },
+    created () {
+        console.log(this.product)
     }
     
 }
