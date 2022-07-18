@@ -19,7 +19,7 @@
             </div>
             <div class="form-row" >
                 <label>Phone:</label>
-                <input v-model="form.phone" type="number" name="phone" class="form-control" placeholder="+233 24 123 4567">
+                <input v-model="form.phone" type="tel" name="phone" class="form-control" placeholder="+233 24 123 4567">
             </div>
             <div class="form-row">
                 <label>Location:</label>

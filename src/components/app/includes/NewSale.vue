@@ -63,7 +63,7 @@
                                 
                                 <div class="flex align-items-center" v-if="searchResult.active !== 0">
                                     <label>Qty:</label>
-                                    <input type="number" class="form-control qty-input">
+                                    <input type="number" v-model="quantity" class="form-control qty-input">
                                 </div>
                                 <div class="flex align-items-center">
                                     <span class="expired" v-if="searchResult.active == 0">
@@ -75,7 +75,6 @@
                                         </svg>
                                         ADD
                                     </button>
-
                                     <button class="button clear-btn" @click.prevent="clearSearch">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 14 14">
                                             <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#C18383"></path>
@@ -166,16 +165,18 @@ export default {
     data() {
         return {
             searchResult: '',
+            quantity: Number(1),
             thisSale: [],
-            saleCopy: [],
+            // saleCopy: [],
             searchInput: '',
-            error: { active: false, msg: ''}
+            error: { active: false, msg: ''},
+            
         }
     },
     methods: {
         removeItem(id) {
             this.thisSale = this.thisSale.filter(filter => filter.id != id)
-            this.saleCopy = this.saleCopy.filter(filter => filter.id != id)
+            // this.saleCopy = this.saleCopy.filter(filter => filter.id != id)
         },
         async doSearch() {
             const item = this.searchInput
@@ -225,7 +226,7 @@ export default {
                 if(discount_price[0].percentage == 1 && discount_price[0].active == 1) {
                     let newPrice = Number(price) - ((discount_price[0].value)/100) * price
                     return Number(newPrice)
-                }else if(discount_price[0].percentage == 1 && discount_price[0].active == 1){
+                }else if(discount_price[0].percentage == 0 && discount_price[0].active == 1){
                     let newPrice = Number(price) - Number(discount_price[0].value)
                     return Number(newPrice)
                 }else{
@@ -237,8 +238,8 @@ export default {
         },
         addToSale(searchResult) {
             //let items = this.searchResult
-            this.saleCopy.push(searchResult)
-            let qty = this.checkUnitQty(searchResult.product_id) + 1
+            // this.saleCopy.push(searchResult)
+            let qty = this.checkUnitQty(searchResult.product_id) + this.quantity
             const price = this.computePrice(searchResult.selling_price, searchResult.discount)
             let unitTotal = price * qty
             const payload = {
@@ -247,31 +248,32 @@ export default {
             this.thisSale.push(payload)
             this.searchResult = ''
             this.searchInput = ''
-            
+            this.quantity = Number(1)
+            console.log(payload)
         },
         doSubmitSale() {
             if(this.thisSale.length > 0) {
-                const items = []
-                this.saleCopy.forEach(element => {
-                    let qty = 1
-                    const price = this.computePrice(element.selling_price, element.discount)
-                    let unitTotal = price * qty
-                    const itemPayload = {
-                        id: element.id, image: element.image, qty: qty, name: element.name, unit_price: Number(price), price: Number(unitTotal), og_price: element.selling_price, prod_id: element.product_id, discount: element.discount, batch_no: element.batch_no
-                    }
-                    items.push(itemPayload)
-                });
+                // const items = []
+                // this.saleCopy.forEach(element => {
+                //     let qty = 1
+                //     const price = this.computePrice(element.selling_price, element.discount)
+                //     let unitTotal = price * qty
+                //     const itemPayload = {
+                //         id: element.id, image: element.image, qty: qty, name: element.name, unit_price: Number(price), price: Number(unitTotal), og_price: element.selling_price, prod_id: element.product_id, discount: element.discount, batch_no: element.batch_no
+                //     }
+                //     items.push(itemPayload)
+                // });
                 let date = new Date()
                 const receipt = '' + date.getFullYear() + parseInt(date.getMonth()+1) + date.getDate()  + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds()
                 axios.post(this.getHostname+'/api/perform-sale?token='+this.getToken,
-                { items: items, total: this.computeTotal, receipt: receipt, currency: this.getCurrency  })
+                { items: this.thisSale, total: this.computeTotal, receipt: receipt, currency: this.getCurrency  })
                 .then((res) => {
                     const payload = {
                         sale: res.data.sale, saleItems: res.data.sale_items, items: res.data.items, product: res.data.product
                     }
                     this.$store.commit('addToTodaysSale', payload)
                     this.thisSale = []
-                    this.saleCopy = []
+                    // this.saleCopy = []
                 }).catch((err) => {
                     console.log(err.response) 
                 }) 

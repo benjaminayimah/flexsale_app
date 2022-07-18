@@ -20,11 +20,11 @@
             </div>
             <div class="form-row">
                 <label>Phone 1:</label>
-                <input v-model="getOnboard.form.phone1" type="text" name="phone" class="form-control" placeholder="Phone number">
+                <input v-model="getOnboard.form.phone1" type="tel" name="phone" class="form-control" placeholder="Phone number">
             </div>
             <div class="form-row">
                 <label>Phone 2:</label>
-                <input v-model="getOnboard.form.phone2" type="text" name="Otherphone" class="form-control" placeholder="Phone number">
+                <input v-model="getOnboard.form.phone2" type="tel" name="Otherphone" class="form-control" placeholder="Phone number">
             </div>
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.address}">
                 <label>Address*:</label>

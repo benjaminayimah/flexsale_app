@@ -14,6 +14,7 @@ $warning: #EFB91C;
 $button-disabled: #9ea7d8;
 
 $myFont: 'Urbanist', Helvetica, sans-serif;
+$r-20: 20px;
 
 .body-light {
   background-color: #fff;
@@ -1513,7 +1514,9 @@ input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
     stroke: $primary-light;
   }
 }
-
+.stk-edit-wrap .stk-row:last-child{
+  border-bottom: none;
+}
 
 //empty state
 .empty-state{
@@ -1521,7 +1524,6 @@ input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
   padding-top: 120px;
   text-align: center;
   align-items: center;
- 
   h1{
       margin: 32px 0 16px 0;
   }

@@ -48,18 +48,18 @@ export default {
         ...mapGetters(['getUser', 'getUserAdminID', 'getHostname', 'getDefaultImage', 'getDiscounts', 'getCurrency']),
         computeDiscount: function () {
             if(this.getDiscounts.length > 0) {
-                return this.getDiscounts.filter(discount => discount.id == this.product.discount)
+                return this.getDiscounts.find(discount => discount.id == this.product.discount)
             }else{
                 return false
             }
         },
         computePrice() {
-            if(this.product.discount !== null && this.computeDiscount.length > 0 && this.computeDiscount[0].active == 1 ) {
-                if(this.computeDiscount[0].percentage == 1 && this.product.selling_price > 0 ) {
-                    let price = this.product.selling_price - ((this.computeDiscount[0].value)/100) * this.product.selling_price
+            if(this.product.discount !== null && this.computeDiscount && this.computeDiscount.active == 1 ) {
+                if(this.computeDiscount.percentage == 1 && this.product.selling_price > 0 ) {
+                    let price = this.product.selling_price - ((this.computeDiscount.value)/100) * this.product.selling_price
                     return price
                 }else{
-                    let price = this.product.selling_price - this.computeDiscount[0].value
+                    let price = this.product.selling_price - this.computeDiscount.value
                     return price
                 }
             }else {

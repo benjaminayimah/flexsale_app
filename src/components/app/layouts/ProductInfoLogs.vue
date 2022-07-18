@@ -1,5 +1,5 @@
 <template>
-    <div>Activity Logs ~ {{ $route.params.name }}</div>
+    <h2>Activity Logs  ~ {{ $route.params.name }}</h2>
 </template>
 <script>
 export default {

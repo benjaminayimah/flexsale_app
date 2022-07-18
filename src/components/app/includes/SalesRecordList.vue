@@ -33,7 +33,7 @@
                         <tr v-for="item in saleItemList" :key="item.id">
                             <td>{{ item.product_name }}</td>
                             <td>{{ item.quantity }}</td>
-                            <td>{{ item.total_paid }}</td>
+                            <td>{{ item.price_before }}</td>
                             <td>{{ item.total_paid }}</td>
                         </tr>
                     </tbody>
@@ -62,7 +62,6 @@
                     <div>Total Amount ({{ getCurrency }}):</div>
                     <div>{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</div>
                 </div>
-
             </div>
             <div v-else class="loading">
                 <spinner v-bind:size="25" />
@@ -92,8 +91,8 @@ export default {
                 {id: 2, label: 'Date', value: this.dateTime(this.record.created_at)},
                 {id: 3, label: 'Sold by', value: this.record.added_by},
                 {id: 4, label: 'Total amount', value: this.record.total_paid, currency: true},
-                {id: 5, label: 'Amount received', value: this.record.amount_recieved, currency: true},
-                {id: 6, label: 'Change', value: this.record.balance, currency: true},
+                {id: 5, label: 'Amount received', value: this.record.amount_recieved || 0, currency: true},
+                {id: 6, label: 'Change', value: this.record.balance || 0, currency: true},
             ],
             saleItemList: [],
             otherCharges: [
@@ -218,6 +217,9 @@ table{
             text-align: center;
         }
         &:nth-child(3){
+            text-align: center;
+        }
+        &:nth-child(4){
             text-align: center;
         }
         &:last-child{
