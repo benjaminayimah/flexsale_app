@@ -64,10 +64,9 @@ export default {
         }
     },
     methods: {
-        async doSubmitUpdate() {
+        doSubmitUpdate() {
             let id = this.getCurrentStore.id
                 const putUrl = this.getHostname+'/api/store/'+id+'?token='+this.getToken
-
                     axios.put(putUrl, this.form,
                         {
                             headers: {

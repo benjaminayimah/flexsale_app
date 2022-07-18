@@ -232,16 +232,6 @@ export default {
         },
         doSubmit() {
             let x = this.form;
-            // if (x.prodType == "0") {
-            //     x.batch = this.units;
-            // }else {
-            //     if (this.direct.batch !== "") {
-            //         const direct = { batch_no: this.direct.batch, stock: this.direct.quantity, expiry_date: this.expiryDate2 };
-            //         x.batch = direct;
-            //     }else {
-            //         x.batch = "";
-            //     }
-            // }
             if (x.name == "") {
                 this.alertMsg("danger", "Submition error", "The name field is required");
             }
@@ -257,7 +247,6 @@ export default {
                         this.$store.commit("updateProduct", res.data.product)
                         this.alertMsg("success", res.data.title, res.data.body)
                         this.$store.commit("unsetMainHomeWidth", true)
-                        console.log(this.$router.currentRoute.value.name)
                         this.$router.currentRoute.value.name !='Products' ? this.$router.push({ name: this.$router.currentRoute.value.name, params: { id: res.data.product.id, name: res.data.product.name }, replace: true }) : ''
                     }).catch((err) => {
                         console.log(err.response);
@@ -305,30 +294,7 @@ export default {
                 });
             }
         },
-        // doUnitLocalCheck() {
-        //     const newUnit = { batch_no: this.unitForm.batch, expiry_date: this.expiryDate1 };
-        //     if (this.units.length === 0) {
-        //         this.units.push(newUnit);
-        //         this.resetInput();
-        //     }
-        //     else if (this.units.length !== 0) {
-        //         this.units.forEach(element => {
-        //             if (element.batch_no === this.unitForm.batch) {
-        //                 this.showUnitError();
-        //                 return false;
-        //             }
-        //         });
-        //         if (!this.duplicate) {
-        //             this.units.push(newUnit);
-        //             this.resetInput();
-        //         }
-        //         else {
-        //             this.duplicate = false;
-        //         }
-        //     }
-        // },
         showUnitError() {
-            // this.duplicate = true;
             this.error.active = true;
             this.error.message = "This batch number already exist";
             return;
@@ -340,13 +306,6 @@ export default {
                 this.error.message = "";
             }
         },
-        // resetInput() {
-        //     this.unitForm.batch = "";
-        //     this.duplicate = false;
-        // },
-        // delUnit(id) {
-        //     this.units = this.units.filter(filter => filter.batch_no != id);
-        // },
         deltmp(id) {
             this.deleting = true;
             this.load = true;
@@ -392,18 +351,9 @@ export default {
                 this.form.name = this.getEditContainer.data.name;
                 this.form.cost = this.getEditContainer.data.cost;
                 this.form.sellingPrice = this.getEditContainer.data.selling_price;
-                // this.form.stock = this.getEditContainer.data.end;
                 this.form.description = this.getEditContainer.data.description;
                 this.form.supplier = this.getEditContainer.data.supplier;
                 this.form.supplier = this.getEditContainer.data.supplier_id;
-                // if (this.getEditContainer.data.prod_type === 0) {
-                //     this.units = this.getEditContainer.array;
-                // }
-                // else {
-                //     this.direct.quantity = this.getEditContainer.data.stock;
-                //     this.direct.batch = this.getEditContainer.array[0].batch_no;
-                //     this.expiryDate2 = this.getEditContainer.array[0].expiry_date;
-                // }
             }
         },
         clearPreloader() {

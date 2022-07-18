@@ -103,6 +103,7 @@ export default {
                         body: res.data.status
                     }
                     this.$store.commit('showAlert', successPayload)
+                    this.form.stock = ''
                 }else if(res.data.exists) {
                     this.validation.error = true
                     const payload = { batch_no: [res.data.exists] }

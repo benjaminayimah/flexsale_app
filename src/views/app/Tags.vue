@@ -11,7 +11,7 @@
                     <span>Create new</span>
                 </button>
             </div>
-                <tag-items v-for="tag in getTags.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))" :key="tag.id" v-bind:tag="tag" v-bind:filters="getAllFilters" />
+            <tag-items v-for="tag in getTags.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))" :key="tag.id" v-bind:tag="tag" v-bind:filters="getAllFilters" />
         </div>
     </div>
     <div v-else class="flex-col empty-state">

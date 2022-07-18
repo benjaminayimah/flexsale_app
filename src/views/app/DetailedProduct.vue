@@ -1,13 +1,13 @@
 <template>
 <div class="main-page-body">
     <!-- <transition name="fade"> -->
-        <div class="prod-main-custom-table" v-if="getTempContainer.data.name">
+        <div class="prod-main-custom-table" v-if="getTempProduct.data.name">
             <div class="header detailed-items-banner-holder">
-                <div v-if="getTempContainer.data.deleted" class="flex gap-8 justify-content-center perm-delete-row">
-                <button class="button button-secondary rounded-button" @click.prevent="$store.dispatch('restoreThisProduct', getTempContainer.data.id)">Restore this product</button>
-                <button class="button button-secondary perm-delete" @click.prevent="$store.commit('setDeleteModal', { id: getTempContainer.data.id, type: 'product' })">Permanently Delete</button>
+                <div v-if="getTempProduct.data.deleted" class="flex gap-8 justify-content-center perm-delete-row">
+                <button class="button button-secondary rounded-button" @click.prevent="$store.dispatch('restoreThisProduct', getTempProduct.data.id)">Restore this product</button>
+                <button class="button button-secondary perm-delete" @click.prevent="$store.commit('setDeleteModal', { id: getTempProduct.data.id, type: 'product' })">Permanently Delete</button>
                 </div>
-                <div class="cover-image bg-img" :style="getTempContainer.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+getTempContainer.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
+                <div class="cover-image bg-img" :style="getTempProduct.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+getTempProduct.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     <div class="cover-image-backdrop"></div>
                     <div class="flex-row action-btn-hold">
                         <!-- <button class="icon-label-btn image-icon menu-toggle-btn flex-row">
@@ -23,14 +23,14 @@
                     </div>
                     <div class="cover-caption">
                         <div class="flex align-items-center">
-                            <h1>{{ getTempContainer.data.name }}</h1>
+                            <h1>{{ getTempProduct.data.name }}</h1>
                         </div>
                         <div v-if="!computeSupplier == false">
                             <div class="flex-row caption-row"><label>Supplied by:</label><router-link :to="{ name: 'DetailedSupplier', params: { id: computeSupplier.id, name: computeSupplier.name} }">{{computeSupplier.name }}</router-link></div>
                         </div>
-                        <div class="flex-row caption-row"><span v-if="getTempContainer.data.batch_no">({{ getTempContainer.data.batch_no }})</span></div>
-                        <div class="flex-row caption-row"><label>Created:</label><span>{{ dateTime(getTempContainer.data.created_at) }}</span></div>
-                        <div class="flex-row caption-row"><label>By:</label><span>{{ getTempContainer.data.added_by }}</span></div>
+                        <div class="flex-row caption-row"><span v-if="getTempProduct.data.batch_no">({{ getTempProduct.data.batch_no }})</span></div>
+                        <div class="flex-row caption-row"><label>Created:</label><span>{{ dateTime(getTempProduct.data.created_at) }}</span></div>
+                        <div class="flex-row caption-row"><label>By:</label><span>{{ getTempProduct.data.added_by }}</span></div>
                     </div>
                     <teleport to="body">
                         <transition name="fade">
@@ -48,11 +48,11 @@
                                 </button>
                             </div>
                             <ul>
-                                <li v-if="!getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product', id: $route.params.id })">Edit product</a></li>
-                                <li v-if="!getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: $route.params.id })">Update stock</a></li>
-                                <li v-if="!getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('setSelectionSheet', { type: 'tag', id: $route.params.id })">Add to tag</a></li>
-                                <li v-if="getTempContainer.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.dispatch('restoreThisProduct', getTempContainer.data.id)">Restore</a></li>
-                                <li @click.prevent="closeJustMenu()"><a :class="{ 'perm-delete' : getTempContainer.data.deleted }" href="#" @click.prevent="$store.commit('setDeleteModal', { id: $route.params.id, type: 'trash' } )">Delete</a></li>
+                                <li v-if="!getTempProduct.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product', id: $route.params.id })">Edit product</a></li>
+                                <li v-if="!getTempProduct.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: $route.params.id })">Update stock</a></li>
+                                <li v-if="!getTempProduct.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.commit('setSelectionSheet', { type: 'tag', id: $route.params.id })">Add to tag</a></li>
+                                <li v-if="getTempProduct.data.deleted" @click.prevent="closeJustMenu()"><a href="#" @click.prevent="$store.dispatch('restoreThisProduct', getTempProduct.data.id)">Restore</a></li>
+                                <li @click.prevent="closeJustMenu()"><a :class="{ 'perm-delete' : getTempProduct.data.deleted }" href="#" @click.prevent="$store.commit('setDeleteModal', { id: $route.params.id, type: 'trash' } )">Delete</a></li>
                             </ul>
                         </div>
                     </transition>
@@ -63,9 +63,9 @@
                     <div class="category-pill pill">
                         <div class="pill-wrap">
                             <ul class="flex-row-st">
-                                <li><router-link replace :to="{ name: 'ProductDetailsBasic', params: { id: getTempContainer.data.id, name: getTempContainer.data.name }}">Details</router-link></li>
-                                <li><router-link replace :to="{ name: 'ProductDetailsStats', params: { id: getTempContainer.data.id, name: getTempContainer.data.name }}">Statistics</router-link></li>
-                                <li><router-link replace :to="{ name: 'ProductDetailsLogs', params: { id: getTempContainer.data.id, name: getTempContainer.data.name }}">Activity logs</router-link></li>
+                                <li><router-link replace :to="{ name: 'ProductDetailsBasic', params: { id: getTempProduct.data.id, name: getTempProduct.data.name }}">Details</router-link></li>
+                                <li><router-link replace :to="{ name: 'ProductDetailsStats', params: { id: getTempProduct.data.id, name: getTempProduct.data.name }}">Statistics</router-link></li>
+                                <li><router-link replace :to="{ name: 'ProductDetailsLogs', params: { id: getTempProduct.data.id, name: getTempProduct.data.name }}">Activity logs</router-link></li>
                             </ul>
                         </div>
                     </div>
@@ -86,10 +86,10 @@ export default {
   components: { Backdrop, SelectTagOverlay },
     name: 'DetailedProduct',
     computed: {
-        ...mapGetters(['getHostname', 'getUser', 'getTempContainer', 'getMobile', 'getDefaultImage', 'getUserAdminID', 'getSuppliers', 'getSelectionSheet']),
+        ...mapGetters(['getHostname', 'getUser', 'getTempProduct', 'getMobile', 'getDefaultImage', 'getUserAdminID', 'getSuppliers', 'getSelectionSheet']),
         computeSupplier() {
-            if(this.getTempContainer.data.suppler_id !== null) {
-                let supplier = this.getSuppliers.find(supplier => supplier.id == this.getTempContainer.data.supplier_id)
+            if(this.getTempProduct.data.suppler_id !== null) {
+                let supplier = this.getSuppliers.find(supplier => supplier.id == this.getTempProduct.data.supplier_id)
                 return supplier
             }
             else
@@ -134,7 +134,7 @@ export default {
         this.setPage()
     },
     unmounted() {
-        this.$store.commit('clearTempDataContainer')
+        this.$store.commit('setTempProduct', { active: false})
     },
 }
 </script>
