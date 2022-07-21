@@ -150,7 +150,7 @@ export default {
     components: { TertiaryBackdrop },
      props: ['sale'],
     computed: {
-      ...mapGetters(['getCurrency', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID']),
+      ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID']),
       computeTotal() {
             return this.thisSale.reduce((acc, item) => acc + item.price, 0)
       },
@@ -167,7 +167,6 @@ export default {
             searchResult: '',
             quantity: Number(1),
             thisSale: [],
-            // saleCopy: [],
             searchInput: '',
             error: { active: false, msg: ''},
             
@@ -176,13 +175,12 @@ export default {
     methods: {
         removeItem(id) {
             this.thisSale = this.thisSale.filter(filter => filter.id != id)
-            // this.saleCopy = this.saleCopy.filter(filter => filter.id != id)
         },
         async doSearch() {
             const item = this.searchInput
             if(item != '') {
                 try {
-                    const res = await axios.post(this.getHostname+'/api/fetch-item?token='+this.getToken, { item: item })
+                    const res = await axios.post(this.getHostname+'/api/fetch-item?token='+this.getToken, { item: item }, { store: this.getCurrentStore.id})
                     if(res.data.item == null){
                         this.showError('Item not found')
                         this.clearSearch()
@@ -237,8 +235,6 @@ export default {
             }
         },
         addToSale(searchResult) {
-            //let items = this.searchResult
-            // this.saleCopy.push(searchResult)
             let qty = this.checkUnitQty(searchResult.product_id) + this.quantity
             const price = this.computePrice(searchResult.selling_price, searchResult.discount)
             let unitTotal = price * qty
@@ -249,23 +245,12 @@ export default {
             this.searchResult = ''
             this.searchInput = ''
             this.quantity = Number(1)
-            console.log(payload)
         },
         doSubmitSale() {
             if(this.thisSale.length > 0) {
-                // const items = []
-                // this.saleCopy.forEach(element => {
-                //     let qty = 1
-                //     const price = this.computePrice(element.selling_price, element.discount)
-                //     let unitTotal = price * qty
-                //     const itemPayload = {
-                //         id: element.id, image: element.image, qty: qty, name: element.name, unit_price: Number(price), price: Number(unitTotal), og_price: element.selling_price, prod_id: element.product_id, discount: element.discount, batch_no: element.batch_no
-                //     }
-                //     items.push(itemPayload)
-                // });
                 let date = new Date()
                 const receipt = '' + date.getFullYear() + parseInt(date.getMonth()+1) + date.getDate()  + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds()
-                axios.post(this.getHostname+'/api/perform-sale?token='+this.getToken,
+                axios.post(this.getHostname+'/api/perform-sale?token='+this.getToken, { store: this.getCurrentStore.id},
                 { items: this.thisSale, total: this.computeTotal, receipt: receipt, currency: this.getCurrency  })
                 .then((res) => {
                     const payload = {
@@ -273,7 +258,6 @@ export default {
                     }
                     this.$store.commit('addToTodaysSale', payload)
                     this.thisSale = []
-                    // this.saleCopy = []
                 }).catch((err) => {
                     console.log(err.response) 
                 }) 

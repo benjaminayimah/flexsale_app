@@ -28,7 +28,7 @@ import validationMixin from '../../../mixins/validationMixin'
 export default {
     name: 'NewStockRow',
     props: ['row', 'id'],
-    computed: mapGetters(['getHostname','getToken']),
+    computed: mapGetters(['getHostname','getToken', 'getCurrentStore']),
     mixins: [validationMixin],
     data() {
         return {
@@ -48,7 +48,7 @@ export default {
         submitNewBatch: function () {
             this.validation.error ? this.clearErrs() : ''
             axios.post(this.getHostname+'/api/product-batch?token='+this.getToken,
-                this.form, {
+                this.form, { store: this.getCurrentStore.id}, {
                     headers: {
                         'Content-Type': ['application/json']
                     },

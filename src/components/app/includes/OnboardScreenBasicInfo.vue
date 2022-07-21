@@ -68,29 +68,30 @@ export default {
     name: "OnboardScreenBasicInfo",
     mixins: [validationMixin],
     components: { Spinner },
-    computed: mapGetters(["getOnboard", "getHostname", "getToken", "getCountries"]),
+    computed: mapGetters(["getOnboard", "getHostname", "getToken", "getCountries", 'getCurrentStore']),
     methods: {
         async submitStore() {
             this.validation.error ? this.clearErrs() : ''
             this.submiting = true
-            axios.post(this.getHostname + "/api/store?token=" + this.getToken, this.getOnboard.form, {
+            axios.post(this.getHostname + "/api/store?token=" + this.getToken, this.getOnboard.form, { store: this.getCurrentStore.id}, {
                 headers: {
                     "Content-Type": ["application/json"]
                 },
             }).then((res) => {
+                console.log(res.data)
                 this.submiting = false
                 const newPayload = {
                     store: res.data.store,
                     user: res.data.user
                 };
-                this.$store.commit("addStore", newPayload);
+                this.$store.commit('addStore', newPayload);
                 const payload = {
                     id: "success",
                     title: res.data.title,
                     body: res.data.message
                 };
-                this.$store.commit("showAlert", payload);
-                this.$store.commit("forceSetOnboard", "avatar");
+                this.$store.commit('showAlert', payload);
+                this.$store.commit('forceSetOnboard', 'avatar');
             }).catch((err) => {
                 this.submiting = false
                 if (err.response.status == 422) {

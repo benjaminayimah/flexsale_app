@@ -61,7 +61,7 @@ export default {
     name: 'StockUpdateRow',
     mixins: [validationMixin],
     props: ['stock', 'id'],
-    computed: mapGetters(['getHostname', 'getToken']),
+    computed: mapGetters(['getHostname', 'getToken', 'getCurrentStore']),
     data() {
         return {
             edit: false,
@@ -89,7 +89,7 @@ export default {
         submitBatch: function() {
             this.validation.error ? this.clearErrs() : ''
             axios.put(this.getHostname+'/api/product-batch/'+this.id+'?token='+this.getToken,
-                this.form, {
+                this.form, { store: this.getCurrentStore.id}, {
                     headers: {
                         'Content-Type': ['application/json']
                     },

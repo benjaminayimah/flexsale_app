@@ -4,9 +4,12 @@
 </teleport>
 <teleport to="#onboarding_top_button">
     <div class="flex">
-        <button class="button button-primary top-submit-btn" v-if="getOnboard.imageForm.store == ''" @click.prevent="afterOnboardImageUpdate">Save</button>
-        <button class="button button-primary top-submit-btn" v-else @click.prevent="onboardImageUpload">
-            <span>Done</span>
+        <button class="button button-primary top-submit-btn" v-if="getOnboard.imageForm.storeID == ''" @click.prevent="afterOnboardImageUpdate">
+            <span>Save</span>
+            <spinner v-if="submiting" v-bind:size="16" v-bind:white="true" />
+        </button>
+        <button class="button button-primary top-submit-btn" v-else @click.prevent="onboardImageUpload" :class="{ 'button-disabled' : !imageUploaded }" :disabled="!imageUploaded? true : false">
+            <span>Upload image</span>
             <spinner v-if="submiting" v-bind:size="16" v-bind:white="true" />
         </button>
     </div>
@@ -51,7 +54,7 @@ export default {
     name: "OnboardScreenAvatar",
     mixins: [validationMixin],
     components: { Spinner, ImageStatusOverlay },
-    computed: mapGetters(["getDefaultImage", "getOnboard", "getHostname", "getToken", "getUser", "getUserAdminID"]),
+    computed: mapGetters(["getDefaultImage", "getOnboard", "getHostname", "getToken", "getUser", "getUserAdminID", 'getCurrentStore']),
     data() {
         return {
             imageStatus: { status: false, msg: "" },
@@ -94,7 +97,7 @@ export default {
                         this.load = true;
                         let formData = new FormData();
                         formData.append("image", file);
-                        axios.post(this.getHostname + "/api/store-temp-upload?token=" + this.getToken, formData, {
+                        axios.post(this.getHostname + "/api/store-temp-upload?token=" + this.getToken, formData, { store: this.getCurrentStore.id}, {
                             headers: {
                                 "Content-Type": ["multipart/form-data", "application/json"]
                             },
@@ -128,20 +131,22 @@ export default {
             return this.doSubmitImage(url);
         },
         afterOnboardImageUpdate() {
+            this.submiting = true
             const url = this.getHostname + "/api/update-store-image?token=" + this.getToken;
             return this.doSubmitImage(url);
         },
         async doSubmitImage(Url) {
-            axios.post(Url, this.getOnboard.imageForm, {
+            axios.post(Url, this.getOnboard.imageForm, { store: this.getCurrentStore.id}, {
                 headers: {
                     "Content-Type": ["application/json"]
                 },
             }).then((res) => {
                 this.submiting = false
+                console.log(res.data)
                 if (res.data.store != "") {
                     this.$store.commit("updateAvatar", res.data.store);
                 }
-                if (this.getOnboard.imageForm.store == "") {
+                if (this.getOnboard.imageForm.storeID == "") {
                     const payload = {
                         id: "success",
                         title: res.data.title,
@@ -163,7 +168,8 @@ export default {
             this.load = true;
             axios.delete(this.getHostname + "/api/del-store-temp/" + id + "?token=" + this.getToken)
                 .then(() => {
-                this.$store.commit("delStoreTempImg");
+                this.$store.commit("delStoreTempImg")
+                this.imageUploaded = false
                 // this.deleting = false
                 // this.load = false
             }).catch((err) => {

@@ -4,8 +4,8 @@ import router from '@/router'
 import country from './modules/country'
 export default createStore({
   state: {
-    hostname: 'http://localhost:8000',
-    // hostname: 'https://api.flexsale.store',
+    // hostname: 'http://localhost:8000',
+    hostname: 'https://api.flexsale.store',
     thisHostname: 'https://app.flexsale.store',
     token: localStorage.getItem('token') || null,
     windowHeight: '',
@@ -23,7 +23,7 @@ export default createStore({
         country: null
       },
       imageForm: {
-        store: '',
+        storeID: '',
         image: ''
       },
       uploaded: false,
@@ -80,8 +80,6 @@ export default createStore({
       {id: 5, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
     ],
   },
-  
-
   mutations: {
     //authentication
       setAuthToken(state, payload){
@@ -208,7 +206,7 @@ export default createStore({
       state.onboard.form.city = '',
       state.onboard.form.region = '',
       state.onboard.form.country = null,
-      state.onboard.imageForm.store = '',
+      state.onboard.imageForm.storeID = '',
       state.onboard.imageForm.image = ''
     },
     editProfileImage(state) {
@@ -608,7 +606,7 @@ export default createStore({
       }
       state.stores.push(payload.store)
       state.user = payload.user
-      state.onboard.imageForm.store = payload.store.id
+      state.onboard.imageForm.storeID = payload.store.id
     },
     updateTags(state, payload) {
       state.tags = payload.tags
@@ -842,22 +840,10 @@ export default createStore({
 
   },
   actions: {
-    //authentication && Logout
-    /*
-    async signIn(state, credentials){
-      axios.post(this.getters.getHostname+'/api/sign-in', credentials)
-      .then((res) => {
-          state.commit('setAuthToken', res.data.token)
-          localStorage.setItem('token', res.data.token)
-          location.reload()
-      }).catch((err) => {
-        console.log(err.response)
-      })
-  },*/
     async getAuthUser(state) {  
       state.commit('setLoader')          
         try {
-          const res = await axios.post(this.getters.getHostname+'/api/user?token='+this.getters.getToken)
+          const res = await axios.post(this.getters.getHostname+'/api/user?token='+this.getters.getToken, { store: this.getters.getCurrentStore.id})
           state.commit('setUser', res.data.user)
           state.commit('setStore', res.data.stores)
           state.commit('fetchTags', res.data.tags)
@@ -875,12 +861,12 @@ export default createStore({
     },
     //OAuth signin
     async signUpnOAuthUser(state, payload) {  
-        return await axios.post(this.getters.getHostname+'/api/oauth-sign-up', payload)    
+        return await axios.post(this.getters.getHostname+'/api/oauth-sign-up', payload, { store: this.getters.getCurrentStore.id})    
     },
     async resfreshUser(state) {  
       state.commit('setLoader')          
         try {
-          const res = await axios.post(this.getters.getHostname+'/api/refresh-user?token='+this.getters.getToken)
+          const res = await axios.post(this.getters.getHostname+'/api/refresh-user?token='+this.getters.getToken, { store: this.getters.getCurrentStore.id})
           if (res.data.user) {
             state.commit('setUser', res.data.user)
           }
@@ -890,7 +876,7 @@ export default createStore({
         }      
     },
     async getLogout(state){
-        axios.delete(this.getters.getHostname+'/api/logout?token='+this.getters.getToken)
+        axios.delete(this.getters.getHostname+'/api/logout?token='+this.getters.getToken, { store: this.getters.getCurrentStore.id})
         .then(()=> {
           state.commit('destroyToken')
         })
@@ -910,14 +896,14 @@ export default createStore({
     },
     async fetchFilters(state){
       state.commit('setLoader') 
-      const res = await axios.post(this.getters.getHostname+'/api/get-all-filters?token='+this.getters.getToken)
+      const res = await axios.post(this.getters.getHostname+'/api/get-all-filters?token='+this.getters.getToken, { store: this.getters.getCurrentStore.id})
       state.commit('fetchFilters', res.data.filters)
       state.commit('unSetLoader') 
     },
     async fetchAdmins(state){
       state.commit('setLoader') 
       try {
-        const res = await axios.post(this.getters.getHostname+'/api/get-admin-users?token='+this.getters.getToken)
+        const res = await axios.post(this.getters.getHostname+'/api/get-admin-users?token='+this.getters.getToken, { store: this.getters.getCurrentStore.id})
         state.commit('fetchAdmins', res.data.admins)
         state.commit('unSetLoader') 
       } catch (e) {
@@ -926,7 +912,7 @@ export default createStore({
     },
     async fetchThisAdmin(state, payload){
       state.commit('setLoader') 
-      const res = await axios.post(this.getters.getHostname+'/api/get-this-admin-user?token='+this.getters.getToken, {id: payload})
+      const res = await axios.post(this.getters.getHostname+'/api/get-this-admin-user?token='+this.getters.getToken, {id: payload}, { store: this.getters.getCurrentStore.id})
       if(res.data.admin){
         const newData = { data: res.data.admin, propertyName: 'user' }
         state.commit('setEditContainer', newData)
@@ -937,7 +923,7 @@ export default createStore({
     },
     async fetchProdBatch(state, payload){
       state.commit('setLoader') 
-      const res = await axios.post(this.getters.getHostname+'/api/fetch-prod-batches?token='+this.getters.getToken, {id: payload})
+      const res = await axios.post(this.getters.getHostname+'/api/fetch-prod-batches?token='+this.getters.getToken, {id: payload},{ store: this.getters.getCurrentStore.id})
       if(res.data.units) {
         const newPayload = { data: res.data.product, array: res.data.units}
         state.commit('setEditContainer', newPayload)
@@ -946,7 +932,7 @@ export default createStore({
     },
     async fetchThisFilter(state, payload){
       state.commit('setLoader') 
-      const res = await axios.post(this.getters.getHostname+'/api/get-this-filter?token='+this.getters.getToken, {id: payload})
+      const res = await axios.post(this.getters.getHostname+'/api/get-this-filter?token='+this.getters.getToken, {id: payload}, { store: this.getters.getCurrentStore.id})
       if(res.data.tag){
         const newData = { data: res.data.tag, array: res.data.filters, propertyName: 'tag' }
         state.commit('setTempDataContainer', newData)
@@ -958,7 +944,7 @@ export default createStore({
     
     async fetchThisSupplier(state, payload){
       state.commit('setLoader') 
-       const res = await axios.post(this.getters.getHostname+'/api/supplier-this-supplier?token='+this.getters.getToken, {id: payload})
+       const res = await axios.post(this.getters.getHostname+'/api/supplier-this-supplier?token='+this.getters.getToken, {id: payload}, { store: this.getters.getCurrentStore.id})
        if(res.data.supplier) {
         //  console.log(res.data)
         const newData = { data: res.data.supplier, array: res.data.products, propertyName: 'supplier'}
@@ -970,7 +956,7 @@ export default createStore({
     },
     async fetchThisProduct(state, payload){
       state.commit('setLoader') 
-       const res = await axios.post(this.getters.getHostname+'/api/product-detail?token='+this.getters.getToken, {id: payload})
+       const res = await axios.post(this.getters.getHostname+'/api/product-detail?token='+this.getters.getToken, {id: payload},  { store: this.getters.getCurrentStore.id})
        if(res.data.product) {
         const newData = { data: res.data.product, array: res.data.units, active: true}
         state.commit('setTempProduct', newData)
@@ -981,7 +967,7 @@ export default createStore({
     },
     async fetchSaleRecords(state, payload) {
       state.commit('setLoader') 
-       const res = await axios.post(this.getters.getHostname+'/api/filter-sale-record?token='+this.getters.getToken, payload)
+       const res = await axios.post(this.getters.getHostname+'/api/filter-sale-record?token='+this.getters.getToken, payload, { store: this.getters.getCurrentStore.id})
        if(res.data.result) {
         const newData = { data: '', array: res.data.result, resultTItle: res.data.title, startDate: res.data.start_date, endDate: res.data.end_date}
         state.commit('setSaleRecordResult', newData)
@@ -997,7 +983,7 @@ export default createStore({
 
     async fetchThisDiscount(state, payload){
       state.commit('setLoader') 
-      const res = await axios.post(this.getters.getHostname+'/api/get-this-discount?token='+this.getters.getToken, {id: payload})
+      const res = await axios.post(this.getters.getHostname+'/api/get-this-discount?token='+this.getters.getToken, {id: payload}, { store: this.getters.getCurrentStore.id})
       if(res.data.discount){
         const newData = { data: res.data.discount, array: res.data.products, propertyName: 'discount'}
         state.commit('setTempDataContainer', newData)
@@ -1007,7 +993,7 @@ export default createStore({
       state.commit('unSetLoader') 
     },
     async setTempImage(state, payload) {
-      axios.post( this.getters.getHostname+'/api/reset-temp-img?token='+this.getters.getToken, { id: payload})
+      axios.post( this.getters.getHostname+'/api/reset-temp-img?token='+this.getters.getToken, { id: payload}, { store: this.getters.getCurrentStore.id})
       .then(() => {
           state.commit('resetStoreImage')
       }).catch((e) => {
@@ -1015,7 +1001,7 @@ export default createStore({
       })
   },
   async fetchTrash(state) {
-    axios.get(this.getters.getHostname+'/api/trash?token='+this.getters.getToken)
+    axios.get(this.getters.getHostname+'/api/trash?token='+this.getters.getToken, { store: this.getters.getCurrentStore.id})
       .then((res) => {
           state.commit('fetchTrash', res.data.trash)
       }).catch((e) => {
@@ -1023,7 +1009,7 @@ export default createStore({
       })
   },
   async restoreThisProduct(state, payload) {
-    axios.put(this.getters.getHostname+'/api/trash/'+payload+'?token='+this.getters.getToken)
+    axios.put(this.getters.getHostname+'/api/trash/'+payload+'?token='+this.getters.getToken, { store: this.getters.getCurrentStore.id})
       .then((res) => {
         state.commit('restoreThisProduct', res.data.product)
         const newPayload = {
@@ -1036,7 +1022,7 @@ export default createStore({
       })
   },
   async bulkRestoreTrash(state, payload) {
-    axios.post(this.getters.getHostname+'/api/bulk-restore-trash?token='+this.getters.getToken, { items: payload})
+    axios.post(this.getters.getHostname+'/api/bulk-restore-trash?token='+this.getters.getToken, { items: payload}, { store: this.getters.getCurrentStore.id})
       .then((res) => {
         state.commit('restoreSelectdTrash', res.data.products)
         const newPayload = {
@@ -1050,7 +1036,7 @@ export default createStore({
       })
   },
   async setNotification(state) {
-    axios.post( this.getters.getHostname+'/api/notification?token='+this.getters.getToken, { id: 'me' })
+    axios.post( this.getters.getHostname+'/api/notification?token='+this.getters.getToken, { id: 'me' }, { store: this.getters.getCurrentStore.id})
     .then((res) => {
       state.commit('setNotifications', res.data.notifications)
       console.log(res.data)
@@ -1076,7 +1062,7 @@ export default createStore({
       })
   },
   deleteDiscount(state, payload) {
-    axios.delete(this.getters.getHostname+'/api/discount/'+payload+'?token='+this.getters.getToken)
+    axios.delete(this.getters.getHostname+'/api/discount/'+payload+'?token='+this.getters.getToken, { store: this.getters.getCurrentStore.id})
     .then((res) => {
         const payload = {
           disID: res.data.id, array: res.data.products 

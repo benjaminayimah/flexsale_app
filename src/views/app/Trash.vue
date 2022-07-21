@@ -1,8 +1,11 @@
 <template>
     <div class="main-page-body" v-if="getTrash.length > 0">
         <div class="prod-main-custom-table">
-            <div class="page-info">
-                Items in Trash will be permanently deleted after <strong>30 days.</strong> 
+            <div class="page-info flex">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                    <path id="Path_2104" data-name="Path 2104" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm1,15H11V11h2Zm0-8H11V7h2Z" transform="translate(-2 -2)" fill="#212121"/>
+                </svg>
+                <span>Items in Trash will be permanently deleted after <strong>30 days.</strong> </span>
             </div>
             <div class="table">
                 <div class="table-body">
@@ -88,9 +91,12 @@ export default {
     font-size: 1.1rem;
     border-radius: 8px;
     background-color: #F2F2F7;
-    text-align: center;
     margin-bottom: 20px;
-    border: 1px solid $dark-light
+    border: 1px solid $dark-light;
+    svg {
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
 }
 .table-menu{
     justify-content: space-between;
