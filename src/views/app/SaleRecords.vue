@@ -138,7 +138,7 @@ export default {
     name: 'SaleRecords',
     mixins: [dropdownToggleMixin],
     computed: {
-        ...mapGetters(['getMobile', 'getFloatingDiv', 'getSaleRecords', 'getHostname', 'getToken', 'getStores'])
+        ...mapGetters(['getMobile', 'getFloatingDiv', 'getSaleRecords', 'getHostname', 'getToken', 'getStores', 'getCurrentStore'])
     } ,
     data() {
         return {
@@ -234,7 +234,7 @@ export default {
         async submitReceiptQuery() {
             if (!this.receiptSearch.input == '') {
                 this.clrError()
-                axios.post(this.getHostname+'/api/receipt-detailed-record?token='+this.getToken, {receipt: this.receiptSearch.input})
+                axios.post(this.getHostname+'/api/receipt-detailed-record?token='+this.getToken, {receipt: this.receiptSearch.input}, { store: this.getCurrentStore.id})
                 .then((res) => {
                     this.receiptSearch.submited = true
                     this.receiptSearch.result = res.data.result

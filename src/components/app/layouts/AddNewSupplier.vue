@@ -34,7 +34,7 @@ import axios from 'axios'
 import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewSupplier',
-    computed: mapGetters(['getToken', 'getHostname', 'getEditContainer', 'getAddingProduct']),
+    computed: mapGetters(['getToken', 'getHostname', 'getEditContainer', 'getAddingProduct', 'getCurrentStore' ]),
     data() {
         return {
             form: {
@@ -59,7 +59,7 @@ export default {
             }
         },
         doPost(url) {
-             axios.post(url, this.form,
+             axios.post(url, this.form, { store: this.getCurrentStore.id},
                     {
                         headers: {
                             'Content-Type': ['application/json']
@@ -73,7 +73,7 @@ export default {
 
         },
         doUpdate(url) {
-            axios.put(url, this.form,
+            axios.put(url, this.form, { store: this.getCurrentStore.id},
                     {
                         headers: {
                             'Content-Type': ['application/json']

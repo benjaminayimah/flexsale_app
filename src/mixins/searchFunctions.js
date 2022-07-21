@@ -2,7 +2,7 @@ import axios from 'axios'
 import { mapGetters } from "vuex"
 export default {
     computed: {
-        ...mapGetters(["getWindowHeight", "getToken", "getHostname",]),
+        ...mapGetters(['getWindowHeight', 'getToken', 'getHostname', 'getCurrentStore']),
         computedResults() {
             let result = this.searchResults
             let history = this.history
@@ -58,7 +58,7 @@ export default {
         async doSearch(input) {
             if(this.chechInput(input)) {
                 this.submitting = true
-                axios.post(this.getHostname + "/api/search?token=" + this.getToken, { query: this.form.input })
+                axios.post(this.getHostname + "/api/search?token=" + this.getToken, { query: this.form.input }, { store: this.getCurrentStore.id})
                 .then((res) => {
                     this.submitting = false
                     this.searchResults = res.data.results

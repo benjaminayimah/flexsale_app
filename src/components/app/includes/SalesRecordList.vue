@@ -79,7 +79,7 @@ export default {
     name: 'SalesRecordList',
     props: ['record'],
     computed: {
-        ...mapGetters(['getCurrency', 'getHostname', 'getToken']),
+        ...mapGetters(['getCurrency', 'getHostname', 'getToken', 'getCurrentStore']),
         computeTotal() {
             return this.saleItemList.reduce((acc, item) => acc + Number(item.total_paid), 0);
         },
@@ -109,7 +109,7 @@ export default {
         },
         async fetchDetailedRecordList() {
             this.toggleList = true
-            const res = await axios.post(this.getHostname+'/api/fetch-detailed-record-list?token='+this.getToken, { id: this.record.id })
+            const res = await axios.post(this.getHostname+'/api/fetch-detailed-record-list?token='+this.getToken, { id: this.record.id }, { store: this.getCurrentStore.id})
             if(res.data.result) {
                 this.saleItemList = res.data.result
             }

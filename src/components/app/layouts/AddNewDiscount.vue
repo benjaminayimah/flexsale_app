@@ -88,7 +88,7 @@ import SelectedTagRow from '../includes/SelectedTagRow.vue';
 export default {
     name: 'AddNewDiscount',
      components: { SelectProductsOverlay, SelectedTagRow },
-     computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getAddingProduct']),
+     computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getAddingProduct', 'getCurrentStore']),
     data() {
         return {
             form: {
@@ -108,13 +108,14 @@ export default {
             this.form.products = this.getTempContainer.array
             //console.log(this.form.startDate.toJSON())
             axios.post( this.getHostname+'/api/discount?token='+this.getToken,
-                    this.form,
+                    this.form, {store: this.getCurrentStore.id},
                     {
                         headers: {
                             'Content-Type': ['application/json']
                         },
                     }
             ).then((res) => {
+                console.log(res.data)
                 if(res.data.status === 1) {
                     const addTo = {
                         discount: res.data.discount, products: res.data.products
@@ -153,7 +154,7 @@ export default {
         },
         async submitEditDiscount() {
             this.form.products = this.getTempContainer.array
-            axios.put( this.getHostname+'/api/discount/'+this.form.id+'?token='+this.getToken, this.form)
+            axios.put( this.getHostname+'/api/discount/'+this.form.id+'?token='+this.getToken, this.form, { store: this.getCurrentStore.id})
             .then((res) => {
                 if(res.data.status === 1) {
                     const newData = {

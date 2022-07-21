@@ -13,8 +13,8 @@ export default {
     top: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
     z-index: 200;
+    background-color: rgba(0, 0, 0, 0.8);
     /* backdrop-filter: saturate(180%) blur(20px); */
 }
 </style>

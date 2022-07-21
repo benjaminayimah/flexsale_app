@@ -62,7 +62,7 @@ import SelectedTagRow from '../includes/SelectedTagRow.vue'
 import SelectProductsOverlay from '../includes/SelectProductsOverlay.vue'
 export default {
   components: { SelectedTagRow, SelectProductsOverlay },
-    computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getAddingProduct']),
+    computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getAddingProduct', 'getCurrentStore']),
     name: 'AddNewTag',
     data() {
         return {
@@ -81,7 +81,7 @@ export default {
     methods: {
         submitTag() {
             this.form.products = this.getTempContainer.array
-            axios.post( this.getHostname+'/api/tag?token='+this.getToken, this.form
+            axios.post( this.getHostname+'/api/tag?token='+this.getToken, this.form, { store: this.getCurrentStore.id}
             ).then((res) => {
                 //console.log(res)
                 if(res.data.status === 1) {
@@ -121,7 +121,7 @@ export default {
         },
         submitEditTag() {
             this.form.products = this.getTempContainer.array
-            axios.put( this.getHostname+'/api/tag/'+this.form.id+'?token='+this.getToken, this.form)
+            axios.put( this.getHostname+'/api/tag/'+this.form.id+'?token='+this.getToken, this.form, { store: this.getCurrentStore.id})
             .then((res) => {
                 if(res.data.status === 1) {
                     const newData = {

@@ -51,7 +51,7 @@ export default {
   components: { BarChart, Backdrop, LineChart },
     name: 'ProductInfoStats',
     mixins: [dropdownToggleMixin],
-    computed: mapGetters(['getMobile', 'getFloatingDiv', 'getToken', 'getHostname']),
+    computed: mapGetters(['getMobile', 'getFloatingDiv', 'getToken', 'getHostname', 'getCurrentStore']),
     data() {
         return {
             filters: { id: 1, name: 'Newest'}
@@ -62,7 +62,7 @@ export default {
     },
     methods: {
         getThisStats() {  
-            axios.post(this.getHostname+'/api/product-stats?token='+this.getToken,{id:this.$route.params.id})
+            axios.post(this.getHostname+'/api/product-stats?token='+this.getToken, {id:this.$route.params.id}, { store: this.getCurrentStore.id})
             .then((res) => {
                 console.log(res.data)
             }).catch((e) => {

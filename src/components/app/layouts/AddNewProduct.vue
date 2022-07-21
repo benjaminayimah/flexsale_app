@@ -133,7 +133,7 @@ export default {
     name: "AddNewProduct",
     components: { ImageStatusOverlay },
     computed: {
-        ...mapGetters(["getToken", "getHostname", "getUser", "getDefaultImage", "getEditContainer", "getUserAdminID", "getDiscounts", "getSuppliers", "getAddingProduct"]),
+        ...mapGetters(["getToken", "getHostname", "getUser", "getDefaultImage", "getEditContainer", "getUserAdminID", "getDiscounts", "getSuppliers", "getAddingProduct", 'getCurrentStore']),
         computeProfit() {
             let profit = (this.form.sellingPrice - this.form.cost);
             return profit.toFixed(2);
@@ -209,7 +209,7 @@ export default {
                         this.image = this.$refs.img.files[0];
                         let formData = new FormData();
                         formData.append("image", this.image);
-                        axios.post(this.getHostname + "/api/temp-upload?token=" + this.getToken, formData, {
+                        axios.post(this.getHostname + "/api/temp-upload?token=" + this.getToken, formData, { store: this.getCurrentStore.id}, {
                             headers: {
                                 "Content-Type": ["multipart/form-data", "application/json"]
                             },
@@ -239,7 +239,7 @@ export default {
                 if (this.getEditContainer.active) {
                     let id = this.getEditContainer.data.id;
                     const putUrl = this.getHostname + "/api/products/" + id + "?token=" + this.getToken;
-                    axios.put(putUrl, x, {
+                    axios.put(putUrl, x, { store: this.getCurrentStore.id}, {
                         headers: {
                             "Content-Type": ["application/json"]
                         },
@@ -257,7 +257,7 @@ export default {
                         this.alertMsg("danger", "Submition error", "The batch field is required");
                     }else {
                         const postUrl = this.getHostname + "/api/products?token=";
-                        axios.post(postUrl + this.getToken, x, {
+                        axios.post(postUrl + this.getToken, x, { store: this.getCurrentStore.id}, {
                             headers: {
                                 "Content-Type": ["application/json"]
                             },
@@ -284,7 +284,7 @@ export default {
                 this.error.active = false;
             }
             if (id !== "") {
-                axios.post(this.getHostname + "/api/check-unit?token=" + this.getToken, { batch_no: id })
+                axios.post(this.getHostname + "/api/check-unit?token=" + this.getToken, { batch_no: id }, { store: this.getCurrentStore.id})
                 .then((res) => {
                     if (res.data.status === 2) {
                         this.showUnitError();
@@ -331,7 +331,7 @@ export default {
             this.doingtempUpload = true;
             this.load = true;
             let image = this.getEditContainer.data.image;
-            axios.post(this.getHostname + "/api/reset-temp-img?token=" + this.getToken, { id: image })
+            axios.post(this.getHostname + "/api/reset-temp-img?token=" + this.getToken, { id: image }, { store: this.getCurrentStore.id})
                 .then((res) => {
                 this.afterTempUpload(res.data.image);
             }).catch((e) => {

@@ -16,7 +16,7 @@ export default {
     name: 'TagSelectionGridItem',
     props: ['tag', 'prodID'],
     computed: {
-        ...mapGetters(['getAllFilters', 'getHostname', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getToken']),
+        ...mapGetters(['getAllFilters', 'getHostname', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getToken', 'getCurrentStore']),
         computedFilters: function (){
             return this.getAllFilters.filter(item => item.tag_id == this.tag.id)
         }
@@ -25,7 +25,7 @@ export default {
         doSelect(tag,prod) {
             const payload = { tagID: tag, productID: prod }
             axios.post(this.getHostname+'/api/addthis-to-tag?token='+this.getToken,
-                payload, {
+                payload, { store: this.getCurrentStore.id}, {
                     headers: {
                         'Content-Type': ['application/json']
                     },
