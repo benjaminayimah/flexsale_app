@@ -107,7 +107,6 @@ export default {
         }
     }
     .alert-close{
-        background-image: url(/images/close.svg);
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
