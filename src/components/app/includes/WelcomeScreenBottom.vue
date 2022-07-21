@@ -20,12 +20,7 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 export default {
-    name: 'WelcomeScreenBottom',
-    computed: {
-        ...mapGetters(['getThisHostname'])
-    },
+    name: 'WelcomeScreenBottom'
 }
 </script>
-            <!-- <lottie-player class="lottie-player" :src="getThisHostname+'/img/store-locations.json'" background="transparent"  speed="1" loop autoplay></lottie-player> -->

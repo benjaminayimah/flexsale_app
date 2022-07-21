@@ -1,44 +1,46 @@
 <template>
-<teleport to="#add_title">
-    <span v-if="getEditContainer.active">Update store details</span>
-    <span v-else>Create new store</span>
+<div v-if="getAddingProduct.store">
+    <teleport to="#add_title">
+        <span v-if="getEditContainer.active">Update store details</span>
+        <span v-else>Create new store</span>
+    </teleport>
+    <teleport to="#add_submit_button">
+        <button class="button button-primary top-submit-btn" @click.prevent="doSubmitUpdate">Save</button>
+    </teleport>
+    <teleport to="#add_master_body_container">
+        <form id="product_form" @submit.prevent="" class="overlay-hero-form">
+            <div class="form-row">
+                <label>Store name:</label>
+                <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Full name" required>
+            </div>
+            <div class="form-row">
+                <label>Phone 1:</label>
+                <input v-model="form.phone1" type="text" name="phone" class="form-control" placeholder="Phone number" required>
+            </div>
+            <div class="form-row">
+                <label>Phone 2:</label>
+                <input v-model="form.phone2" type="text" name="Otherphone" class="form-control" placeholder="Phone number" required>
+            </div>
+            <div class="form-row">
+                <label>Address:</label>
+                <input v-model="form.address" type="text" name="address" class="form-control" placeholder="Store address" required>
+            </div>
+            <div class="form-row">
+                <label>City:</label>
+                <input v-model="form.city" type="text" name="city" class="form-control" placeholder="City" required>
+            </div>
+            <div class="form-row">
+                <label>Region:</label>
+                <input v-model="form.region" type="text" name="region" class="form-control" placeholder="Region" required>
+            </div>
+            <div class="form-row">
+                <label>Country:</label>
+                <input v-model="form.country" type="text" name="country" class="form-control" placeholder="Country" required>
+            </div>
+        </form>
 </teleport>
-<teleport to="#add_submit_button">
-    <button class="button button-primary top-submit-btn" @click.prevent="doSubmitUpdate">Save</button>
-</teleport>
-<teleport to="#add_master_body_container">
-    <form id="product_form" @submit.prevent="">
-        
-        <div class="form-row">
-            <label>Store name:</label>
-            <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Full name" required>
-        </div>
-        <div class="form-row">
-            <label>Phone 1:</label>
-            <input v-model="form.phone1" type="text" name="phone" class="form-control" placeholder="Phone number" required>
-        </div>
-        <div class="form-row">
-            <label>Phone 2:</label>
-            <input v-model="form.phone2" type="text" name="Otherphone" class="form-control" placeholder="Phone number" required>
-        </div>
-        <div class="form-row">
-            <label>Address:</label>
-            <input v-model="form.address" type="text" name="address" class="form-control" placeholder="Store address" required>
-        </div>
-        <div class="form-row">
-            <label>City:</label>
-            <input v-model="form.city" type="text" name="city" class="form-control" placeholder="City" required>
-        </div>
-        <div class="form-row">
-            <label>Region:</label>
-            <input v-model="form.region" type="text" name="region" class="form-control" placeholder="Region" required>
-        </div>
-        <div class="form-row">
-            <label>Country:</label>
-            <input v-model="form.country" type="text" name="country" class="form-control" placeholder="Country" required>
-        </div>
-    </form>
-</teleport>
+</div>
+
 </template>
 <script>
 import axios from 'axios'
@@ -46,7 +48,7 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewStore',
     computed: {
-        ...mapGetters(['getToken', 'getHostname', 'getEditContainer', 'getCurrentStore']),
+        ...mapGetters(['getToken', 'getHostname', 'getEditContainer', 'getCurrentStore', 'getAddingProduct']),
     },
     data() {
         return {
@@ -62,10 +64,9 @@ export default {
         }
     },
     methods: {
-        async doSubmitUpdate() {
+        doSubmitUpdate() {
             let id = this.getCurrentStore.id
                 const putUrl = this.getHostname+'/api/store/'+id+'?token='+this.getToken
-
                     axios.put(putUrl, this.form,
                         {
                             headers: {

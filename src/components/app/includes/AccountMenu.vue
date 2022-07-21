@@ -67,7 +67,7 @@
                 </div>
                 <hr v-show="getStores.length > 1">
                 <div class="logout-hold" @mouseup="showthisMenu('account_menu')">
-                    <a href="#" @click.prevent="this.$store.commit('forceSetOnboard', 'basicInfo')">
+                    <a v-if="getStores.length < 2" href="#" @click.prevent="this.$store.commit('forceSetOnboard', 'basicInfo')">
                       <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 15.882 15.882">
                         <path d="M-7843.453-4503.179v-5.94h-5.94a1,1,0,0,1-1-1,1,1,0,0,1,1-1h5.94v-5.94a1,1,0,0,1,1-1,1,1,0,0,1,1,1v5.94h5.94a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-5.94v5.94a1,1,0,0,1-1,1A1,1,0,0,1-7843.453-4503.179Z" transform="translate(7850.395 4518.06)" fill="#0e142c"></path>
                       </svg>

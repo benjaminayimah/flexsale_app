@@ -8,11 +8,20 @@ $dark-light: #e9ebf0;
 $accent-color: #ffab23;
 $white-color: #ffffff;
 $danger: #e63232;
+$danger-alt: #ad1616;
 $success: #20C647;
 $warning: #EFB91C;
 $button-disabled: #9ea7d8;
 
 $myFont: 'Urbanist', Helvetica, sans-serif;
+$r-20: 20px;
+
+.body-light {
+  background-color: #fff;
+}
+.body-dark {
+  background-color: #131D52;
+}
 
 .h-list-wrap ul li:last-child div, #ovw_content ul li:last-child .a-wrap{
   padding-right: 20px;
@@ -58,6 +67,7 @@ li:last-child a, li:last-child .info-section-hold{
   padding: 20px 0;
   text-align: center;
   position: relative;
+  font-size: 0.9rem;
   &::before{
     background-color: $gray-light;
     bottom: 0;
@@ -108,7 +118,7 @@ li:last-child a, li:last-child .info-section-hold{
   color: $gray-color;
 }
 #add_master_body_container{
-  form{
+  .overlay-hero-form{
     margin: 20px 0 90px 0;
   }
 }
@@ -116,6 +126,7 @@ li:last-child a, li:last-child .info-section-hold{
   height: 45px;
   border-radius: 13px;
   min-width: 80px;
+  gap: 5px;
 }
 .relative{
   position: relative;
@@ -188,54 +199,41 @@ li:last-child a, li:last-child .info-section-hold{
     background-color: $dark-light;
     border-radius: 8px;
     margin-top: 8px;
-    border: 1px solid #e6e7eb;
+    // border: 1px solid #e6e7eb;
     .this-bold{
         font-weight: 600;
         margin: 0 4px;
     }
     svg{
-        margin-left: 8px;
+        margin-right: 8px;
+        flex-shrink: 0;
     }
     .is-valid{
-        color: #189f38;
+        color: #0f6824;
         path {
             fill: #189f38;
         }
     }
   }
   .all-correct{
-    background-color: #f0f7f1;
-    color: #0f6824;
-    border-color: #e0eee4;
-  }
-  .has-error{
-    border-color: $danger;
+    background-color: #f0f7f1 !important;
+    color: #0f6824 !important;
   }
   .pass-has-error{
-    color: $danger;
-    background-color: rgba(230, 50, 50, 0.05);
-    border-color: #fce9e9;
+    color: $danger-alt;
+    background-color: #ffeaea;
     svg path{
         fill: rgba(230, 50, 50, 0.1);
     }
   }
-
-// .validation-error {
-//     padding: 15px;
-//     border-radius: 6px;
-//     background-color: rgba(230, 50, 50, 0.1);
-//     // border: 1px solid rgba(230, 50, 50, 0.5);
-//     color: $danger;
-//     margin-bottom: 20px;
-//     & span{
-//         font-size: 14px;
-//     }
-// }
-  .validation-err{
-    color: $danger;
-    padding-top: 8px;
-    display: flex;
-    font-size: 14px;
+  .invalid-credentials{
+    font-weight: 500;
+    color: $danger-alt;
+    background-color: #ffeaea;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    line-height: 1.5;
   }
 
   .hide-mob{
@@ -251,7 +249,7 @@ li:last-child a, li:last-child .info-section-hold{
 
     a{
         color: $primary-color;
-        font-weight: 600;
+        font-weight: 500;
         text-decoration: none;
         &:hover{
             text-decoration: underline;
@@ -271,51 +269,81 @@ li:last-child a, li:last-child .info-section-hold{
         span{
             font-weight: 500;
             color: $gray-color;
-            font-size: 1.1rem;
         }
     }
-    .social-signin{
-      flex-direction: row;
-      button{
-        box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        line-height: 52px;
-        border-radius: 14px;
-        //border: 2px solid $gray-light;
-        background-color: $white-color;
-        &:first-child{
-            margin-right: 8px;
-        }
-        &:last-child{
-            margin-left: 8px;
-        }
-        &:hover{
-            background-color: $primary-light;
-            border-color: $primary-color;
-            span{
-                color:$primary-color;
-            }
-            path{
-                fill: $primary-color ;
-            }
-        }
-        svg{
-        margin-right: 10px
-        }
-        span{
-            font-weight: 600;
-            color: $dark;
-        }
+      .social-signin{
+        flex-direction: row;
+        button{
+          box-shadow: 0 1px 3px 0 rgb(14 20 44 / 15%);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          line-height: 52px;
+          border-radius: 14px;
+          background-color: $white-color;
+          &:first-child{
+              margin-right: 8px;
+          }
+          &:last-child{
+              margin-left: 8px;
+          }
+          &:hover{
+              background-color: $primary-light;
+              border-color: $primary-color;
+              span{
+                  color:$primary-color;
+              }
+              path{
+                  fill: $primary-color ;
+              }
+          }
+          svg{
+            margin-right: 10px
+          }
+          span{
+              font-weight: 600;
+              color: $dark;
+          }
+      }
     }
-  }
-  .password{
+    .password{
       font-family: 'Helvetica', sans-serif;
     }
     .show-mob{
         display: none;
     }
+    .disclaimer{
+        display: block;
+        text-align: center;
+        font-size: 0.96rem;
+        font-weight: 500;
+        color: $gray-color;
+        margin-top: 20px;
+          a {
+            color: $primary-color;
+            text-decoration: none;
+          &:hover {
+              text-decoration: underline;
+          }
+        }
+    }
+}
+form {
+  .input-has-error{
+    input[type="text"],select {
+      border-color: $danger !important;
+    }
+    label {
+      color: $danger;
+    }
+    .span{
+      color: $danger-alt;
+      padding-top: 8px;
+      display: flex;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
 }
 .hide-show-pass{
   position: absolute;
@@ -366,26 +394,27 @@ li:last-child a, li:last-child .info-section-hold{
           }
       }
   }
-  .or div{
-       background-color: $primary-light;
-  }
+  
  
   #login_card{
      background-color: transparent;
-      padding: 0;
-      
+      padding: 0 10px;
       .title{
+        margin-bottom: 30px;
           h1{
               font-size: 1.6rem;
-                  padding-bottom: 5px;
+              padding-bottom: 5px;
           }
+      }
+      label {
+        left: 0;
       }
       .form-control{
           border-radius: 0;
           background-color: transparent;
           border: none;
           border-bottom: 1px solid $gray-color;
-          padding-left: 0;
+          padding-left: 0 !important;
           transition: all 0.1s linear;
           box-shadow: none;
           height: 50px;
@@ -393,6 +422,12 @@ li:last-child a, li:last-child .info-section-hold{
               border-bottom-width: 2px;
               border-bottom-color: $primary-color;
           }
+      }
+      .form-row {
+        margin-bottom: 15px !important;
+      }
+      .logon-btn{
+        height: 50px;
       }
 
   }
@@ -437,14 +472,23 @@ ul{
 .mt-0{
   margin-top: 0 !important;
 }
+.mt-16{
+  margin-top: 16px;
+}
 .mg-0{
   margin: 0;
+}
+.gap-4{
+  gap: 4px;
 }
 .gap-8{
   gap: 8px;
 }
 .gap-16 {
   gap: 16px;
+}
+.gap-24{
+  gap: 24px;
 }
 .gap-32 {
   gap: 32px
@@ -566,6 +610,7 @@ button{
 .logon-btn{
   height: 56px;
   gap: 8px;
+  margin-top: 20px;
 }
 .after-created{
   margin-top: 60%;
@@ -578,6 +623,12 @@ button{
   }
   span{
       font-size: 1.2rem;
+  }
+  .progress-bg{
+    stroke: rgba(0,0,0,0.2);
+  }
+  .progress{
+    stroke: #fff;
   }
   button{
       line-height: 2.5rem;
@@ -663,6 +714,9 @@ button{
       border: 1px solid $primary-color !important;
       background-color: $primary-light !important;
     }
+}
+.grid{
+  display: grid;
 }
 .flex{
   display: flex;
@@ -794,7 +848,6 @@ textarea{
 }
 //radio
 .form-check{
-  width: 50%;
   display: flex;
   align-items: center;
 }
@@ -870,24 +923,74 @@ textarea{
     span{
       margin-left: 5px;
     }
-    .noti-count{
-      font-size: 12px;
-      font-weight: 600;
-      color: #ffffff;
-      height: 20px;
-      width: 20px;
-      background-color: $danger;
-      position: absolute;
-      border-radius: 50%;
-      border: 1px $white-color solid;
-      top: 5px;
-      right: 5px;
-    }
+    
   }
 }
 .time-remains{
   color: $danger;
   font-size: 0.9rem;
+}
+.ob-head, .add-head-content{
+  h1{
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+  }
+  
+}
+//stock row
+
+form.stock-form {
+  margin: 10px 0 0 0;
+  .form-control {
+    height: 45px;
+    border-radius: 10px;
+  }
+  .button-wrap {
+    margin-top: 15px;
+      a {
+          padding: 8px 10px;
+          text-decoration: none;
+          font-size: 15px;
+          border-radius: 6px;
+          display: flex;
+          transition: 0.2s all;
+      }
+  }
+  .submit-edit{
+      font-weight: 600;
+      background-color: $primary-color;
+      color: #fff;
+      // min-width: 67px;
+      justify-content: center;
+      &:hover {
+          background-color: $primary-hover;
+      }
+  }
+  .cancel-edit {
+      color: $dark;
+      font-weight: 500;
+      &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+      }
+  }
+  .stk-val{
+      padding: 6px;
+      width: 60px;
+      text-align: center;
+  }
+  .stk-input-wrap{
+      svg {
+          margin:0 5px;
+          flex-shrink: 0;
+      }
+  }
+  .expiry{
+      max-width: 165px;
+  }
 }
 
 //delete container
@@ -1402,6 +1505,18 @@ input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
   }
 }
 
+.progress-secondary{
+  color: $primary-color;
+  .progress {
+    stroke: $primary-color;
+  }
+  .progress-bg{
+    stroke: $primary-light;
+  }
+}
+.stk-edit-wrap .stk-row:last-child{
+  border-bottom: none;
+}
 
 //empty state
 .empty-state{
@@ -1409,7 +1524,6 @@ input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
   padding-top: 120px;
   text-align: center;
   align-items: center;
- 
   h1{
       margin: 32px 0 16px 0;
   }
@@ -2095,7 +2209,10 @@ hr{
 .lottie-player{
   height: 140px;
 }
-
+.noti-count{
+  top: 2px;
+  right: 2px;
+}
 
 
 

@@ -67,13 +67,6 @@
                                         </svg>
                                     </a>
                                 </li> -->
-                                <!-- <li id="product_filter_toggle">
-                                    <a href="#" @click.prevent="doMenu('product_filter_toggle')" :class="{ 'dropdown-out' : toggleFilter }" >
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 21.259 20.97">
-                                            <path id="Union_8_-_Outline" data-name="Union 8 - Outline" d="M-9309.519-336.817h-.561a3.5,3.5,0,0,1-3.5-3.454h-4.376v-2h4.409a3.5,3.5,0,0,1,3.467-3.019h.561a3.5,3.5,0,0,1,3.467,3.019h9.355v2h-9.322A3.5,3.5,0,0,1-9309.519-336.817Zm-.561-6.473a1.5,1.5,0,0,0-1.5,1.5v1.473a1.5,1.5,0,0,0,1.5,1.5h.561a1.5,1.5,0,0,0,1.5-1.5v-1.473a1.5,1.5,0,0,0-1.5-1.5Zm6.969-6.024h-.563a3.5,3.5,0,0,1-3.5-3.452h-10.783v-2h10.815a3.5,3.5,0,0,1,3.466-3.021h.563a3.506,3.506,0,0,1,3.468,3.021h2.946v2h-2.914A3.5,3.5,0,0,1-9303.11-349.314Zm-.563-6.473a1.5,1.5,0,0,0-1.5,1.5v1.473a1.5,1.5,0,0,0,1.5,1.5h.563a1.5,1.5,0,0,0,1.5-1.5v-1.473a1.5,1.5,0,0,0-1.5-1.5Z" transform="translate(9317.955 357.787)" fill="#0e142c"/>
-                                        </svg>
-                                    </a>
-                                </li> -->
                                 <li id="product_filter_toggle" @click.prevent="doMenu('product_filter_toggle')">
                                     <a href="#" :class="{ 'dropdown-out' : toggleFilter }" @click.prevent="doMenu('product_filter_toggle')">
                                     {{ sort.name}}
@@ -85,8 +78,6 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- {{computedProducts}} -->
-                    <!-- <router-view></router-view> -->
                     <product-row v-for="product in sortProducts(computedProducts)" :key="product.id" v-bind:product="product" />
                 </div>
             </div>
@@ -108,7 +99,7 @@
         <span>Add products</span>
     </button>
 </div>
- <teleport to="body">
+<teleport to="body">
     <transition name="fade">
         <backdrop v-if="toggleFilter" @mousedown="closeJustMenu('product_filter_toggle')" />
     </transition>
@@ -131,18 +122,20 @@
         </div>
     </transition>
 </teleport>
+<select-tag-overlay v-if="getSelectionSheet.selectTag"  />
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import Backdrop from '../../components/app/includes/Backdrop.vue'
 import ProductRow from '../../components/app/includes/ProductRow.vue'
 import dropdownToggleMixin from '../../mixins/dropdownToggle'
+import SelectTagOverlay from '../../components/app/includes/SelectTagOverlay.vue'
 export default {
-  components: { Backdrop, ProductRow },
+  components: { Backdrop, ProductRow, SelectTagOverlay },
     name: 'Products',
     mixins: [dropdownToggleMixin],
     computed: {
-        ...mapGetters(['getMobile', 'getProducts', 'getAllFilters', 'getTags', 'getFloatingDiv', 'getStores']),
+        ...mapGetters(['getMobile', 'getProducts', 'getAllFilters', 'getTags', 'getFloatingDiv', 'getStores', 'getSelectionSheet']),
         computedProducts() {
             if(this.$route.params.id !== 'all') {
                 return this.getAllFilters.filter(product => product.tag_id === this.$route.params.id)

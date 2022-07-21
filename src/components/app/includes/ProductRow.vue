@@ -54,8 +54,9 @@
                     </div>
                     <ul @mouseup="dismissMenu">
                         <li v-if="!product.deleted"><router-link :to="{ name: 'ProductDetailsBasic', params: { id: product.id, name: product.name }}">View details</router-link></li>
-                        <li v-if="!product.deleted"><a href="#" @click.prevent="">Add to Tag</a></li>
-                        <li v-if="!product.deleted"><a href="#" @click.prevent="">Update stock</a></li>
+                        <li v-if="!product.deleted"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'product', id: product.id })">Edit product</a></li>
+                        <li v-if="!product.deleted"><a href="#" @click.prevent="$store.commit('setSelectionSheet', { type: 'tag', id: product.id })">Add to Tag</a></li>
+                        <li v-if="!product.deleted"><a href="#" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: product.id })">Update stock</a></li>
                         <li v-if="product.deleted"><a href="#" @click.prevent="$store.dispatch('restoreThisProduct', product.id)">Restore</a></li>
                         <li><a :class="{ 'perm-delete' : product.deleted }" href="#" @click.prevent="$store.commit('setDeleteModal', { id: product.id, type: product.deleted ? 'product' : 'trash' })">{{ !product.deleted ? 'Move to Trash' : 'Delete' }}</a></li>
                     </ul>
@@ -82,18 +83,18 @@ export default {
         ... mapGetters(['getHostname', 'getUser', 'getWindowHeight', 'getMobile', 'getDefaultImage', 'getCurrency', 'getDiscounts', 'getUserAdminID', 'getBulkSelection']),
         computeDiscount: function () {
             if(this.getDiscounts.length > 0) {
-                return this.getDiscounts.filter(discount => discount.id == this.product.discount)
+                return this.getDiscounts.find(discount => discount.id == this.product.discount)
             }else{
                 return false
             }
         },
         computePrice() {
-            if(this.product.discount !== null && this.computeDiscount.length > 0 && this.computeDiscount[0].active == 1 ) {
-                if(this.computeDiscount[0].percentage == 1 && this.product.selling_price > 0 ) {
-                    let price = this.product.selling_price - ((this.computeDiscount[0].value)/100) * this.product.selling_price
+            if(this.product.discount !== null && this.computeDiscount && this.computeDiscount.active == 1 ) {
+                if(this.computeDiscount.percentage == 1 && this.product.selling_price > 0 ) {
+                    let price = this.product.selling_price - ((this.computeDiscount.value)/100) * this.product.selling_price
                     return price
                 }else{
-                    let price = this.product.selling_price - this.computeDiscount[0].value
+                    let price = this.product.selling_price - this.computeDiscount.value
                     return price
                 }
             }else {
@@ -123,7 +124,7 @@ export default {
             let elem = document.getElementById(id).getBoundingClientRect().top
             this.toggleMenu = true
             document.body.classList.add('fixed-body')
-            if((this.getWindowHeight-elem) > 200)
+            if((this.getWindowHeight-elem) > 300)
             this.classAbove = true
             else
             this.classAbove = false
@@ -210,7 +211,7 @@ export default {
   top: 55%;
 }
 .class-below{
-    top: -100%;
+    top: -120%;
 }
 li{
     list-style-type: none;
@@ -290,7 +291,6 @@ li{
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(250px);
-  
 }
   
 </style>

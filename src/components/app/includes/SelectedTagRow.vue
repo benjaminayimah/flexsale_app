@@ -29,15 +29,15 @@ export default {
     computed: {
         ...mapGetters(['getHostname', 'getUser', 'getDefaultImage', 'getDiscounts', 'getCurrency', 'getUserAdminID']),
         computeDiscount: function () {
-            return this.getDiscounts.filter(discount => discount.id == this.checkedProduct.discount)
+            return this.getDiscounts.find(discount => discount.id == this.checkedProduct.discount)
         },
         computePrice() {
-            if(this.checkedProduct.discount !== null && this.computeDiscount.length > 0 && this.computeDiscount[0].active == 1 ) {
-                if(this.computeDiscount[0].percentage == 1 && this.checkedProduct.selling_price > 0 ) {
-                    let price = this.checkedProduct.selling_price - ((this.computeDiscount[0].value)/100) * this.checkedProduct.selling_price
+            if(this.checkedProduct.discount !== null && this.computeDiscount && this.computeDiscount.active == 1 ) {
+                if(this.computeDiscount.percentage == 1 && this.checkedProduct.selling_price > 0 ) {
+                    let price = this.checkedProduct.selling_price - ((this.computeDiscount.value)/100) * this.checkedProduct.selling_price
                     return price
                 }else{
-                    let price = this.checkedProduct.selling_price - this.computeDiscount[0].value
+                    let price = this.checkedProduct.selling_price - this.computeDiscount.value
                     return price
                 }
             }else {

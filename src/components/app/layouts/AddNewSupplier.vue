@@ -1,38 +1,40 @@
 <template>
-<teleport to="#add_title">
-    <span v-if="getEditContainer.active">Edit supplier</span>
-    <span v-else>Add New Supplier</span>
-</teleport>
-<teleport to="#add_submit_button">
-    <button class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Submit supplier'}}</button>
-</teleport>
-<teleport to="#add_master_body_container">
-    <form id="supplier_form" @submit.prevent="">
-        <div class="form-row">
-            <label>Name:</label>
-            <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Supplier name" required>
-        </div>
-        <div class="form-row">
-            <label>Email:</label>
-            <input v-model="form.email" type="email" name="email" class="form-control" placeholder="example@gmail.com">
-        </div>
-        <div class="form-row" >
-            <label>Phone:</label>
-            <input v-model="form.phone" type="number" name="phone" class="form-control" placeholder="+233 24 123 4567">
-        </div>
-        <div class="form-row">
-            <label>Location:</label>
-            <input v-model="form.location" type="text" name="address" class="form-control" placeholder="Lapaz, Accra">
-        </div>
-    </form>
-</teleport>
+<div v-if="getAddingProduct.supplier">
+    <teleport to="#add_title">
+        <span v-if="getEditContainer.active">Edit supplier</span>
+        <span v-else>Add New Supplier</span>
+    </teleport>
+    <teleport to="#add_submit_button">
+        <button class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Submit supplier'}}</button>
+    </teleport>
+    <teleport to="#add_master_body_container">
+        <form id="supplier_form" @submit.prevent="" class="overlay-hero-form">
+            <div class="form-row">
+                <label>Name:</label>
+                <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Supplier name" required>
+            </div>
+            <div class="form-row">
+                <label>Email:</label>
+                <input v-model="form.email" type="email" name="email" class="form-control" placeholder="example@gmail.com">
+            </div>
+            <div class="form-row" >
+                <label>Phone:</label>
+                <input v-model="form.phone" type="tel" name="phone" class="form-control" placeholder="+233 24 123 4567">
+            </div>
+            <div class="form-row">
+                <label>Location:</label>
+                <input v-model="form.location" type="text" name="address" class="form-control" placeholder="Lapaz, Accra">
+            </div>
+        </form>
+    </teleport>
+</div>
 </template>
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewSupplier',
-    computed: mapGetters(['getToken', 'getHostname', 'getEditContainer']),
+    computed: mapGetters(['getToken', 'getHostname', 'getEditContainer', 'getAddingProduct', 'getCurrentStore' ]),
     data() {
         return {
             form: {
@@ -45,7 +47,7 @@ export default {
         }
     },
     methods: {
-     async doSubmit() {
+    doSubmit() {
          if(this.getEditContainer.active) {
             const id = this.getEditContainer.data.id
             this.id = id
@@ -57,7 +59,7 @@ export default {
             }
         },
         doPost(url) {
-             axios.post(url, this.form,
+             axios.post(url, this.form, { store: this.getCurrentStore.id},
                     {
                         headers: {
                             'Content-Type': ['application/json']
@@ -71,7 +73,7 @@ export default {
 
         },
         doUpdate(url) {
-            axios.put(url, this.form,
+            axios.put(url, this.form, { store: this.getCurrentStore.id},
                     {
                         headers: {
                             'Content-Type': ['application/json']

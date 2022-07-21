@@ -14,20 +14,19 @@
                 </div>
             </div>
             <div class="add-master-body" :style="{maxHeight: (winHeight-180)+'px'}">
-                <div id="add_master_body_container">
-                </div>
+                <div id="add_master_body_container"></div>
             </div>
         </div>
     </div>
-    <add-new-product v-if="getAddingProduct.product" />
-    <add-new-tag v-else-if="getAddingProduct.tag" />
-    <add-new-discount v-else-if="getAddingProduct.discount" />
-    <add-new-user v-else-if="getAddingProduct.admin" />
-    <add-new-store v-else-if="getAddingProduct.store" />
-    <add-new-supplier v-else-if="getAddingProduct.supplier" />
+    <add-new-product />
+    <add-new-tag />
+    <add-new-discount />
+    <add-new-user />
+    <add-new-store />
+    <add-new-supplier />
+    <update-stock />
 </template>
 <script>
-
 import { mapGetters } from 'vuex'
 import AddNewTag from './AddNewTag.vue'
 import SecondaryBackdrop from '../includes/SecondaryBackdrop.vue'
@@ -36,12 +35,13 @@ import AddNewDiscount from './AddNewDiscount.vue'
 import AddNewUser from './AddNewUser.vue'
 import AddNewStore from './AddNewStore.vue'
 import AddNewSupplier from './AddNewSupplier.vue'
+import UpdateStock from './UpdateStock.vue'
 export default {
-  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser, AddNewStore, AddNewSupplier },
+  components: { AddNewTag, SecondaryBackdrop, AddNewProduct, AddNewDiscount, AddNewUser, AddNewStore, AddNewSupplier, UpdateStock },
     name: 'AddNew',
     props: ['winHeight'],
     computed: {
-        ...mapGetters(['getAddingProduct', 'getTempContainer', 'getEditContainer', 'getWindowWidth']),
+        ...mapGetters(['getAddingProduct', 'getWindowWidth']),
         computeWidth() {
             if(this.getWindowWidth <= 600) {
                 return true
@@ -49,21 +49,14 @@ export default {
                 return false
             }
         }
-    }
-        
+    }  
 }
 </script>
 <style scoped lang="scss">
-
 #add_hero_modal{
     background-color: #ffffff;
     position: fixed;
     z-index: 202;
-    h1{
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin: 0 0 0 20px;
-    }
     .add-master-head{
         border-bottom: 1px solid $dark-light;
     }
@@ -83,6 +76,9 @@ export default {
             scrollbar-width: none; 
         }
     }
+}
+.add-master-wrap{
+    height: 100%;
 }
 .width-inactive{
     border-radius: 16px;
@@ -109,17 +105,12 @@ export default {
         padding: 0 15px;
     }
     .add-master-body{
-        height: 100% !important;
-        padding: 0 15px;
+        max-height: 100% !important;
+        padding: 0 15px 50px 15px;
     }
 }
-
-
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(200px);
 }
-
-
-
 </style>

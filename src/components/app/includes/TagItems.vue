@@ -2,11 +2,6 @@
     <div class="card-outer">
         <router-link :to="'/tag/'+tag.id+'/'+tag.name">
             <div class="card-inner">
-                <!-- <button class="menu-toggle-btn">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                </button> -->
                 <div class="card-content text-overflow-ellipsis">{{ tag.name }}</div>
                 <span class="text-overflow-ellipsis">{{ filteredItems.length }} Items</span>
             </div>
@@ -17,13 +12,6 @@
                     <div class="img-holder bg-img" v-for="img in filteredItems.slice(0, 5)" :key="img.id" :style="img.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+img.image+')' } : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                     <div class="img-holder more" v-if="filteredItems.length > 5">+{{ filteredItems.length - 5}}</div>
                 </div>
-                <!-- <div class="add-col">
-                    <button class="rounded-btn-light">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 9.83 9.83">
-                            <path  d="M-5292.419-3474.585h1.5v4.164h4.164v1.5h-4.164v4.166h-1.5v-4.166h-4.166v-1.5h4.166Z" transform="translate(5296.585 3474.585)"/>
-                        </svg>
-                    </button>
-                </div> -->
             </div>
         </div>
     </div>

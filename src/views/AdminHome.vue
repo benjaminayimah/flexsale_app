@@ -117,7 +117,8 @@
       </div>
 </section>
 <onboarding-view v-bind:winHeight="getWindowHeight" v-if="getOnboard.status" />
-<add-new v-bind:winHeight="getWindowHeight" v-if="getAddingProduct.status" />
+<add-new v-bind:winHeight="getWindowHeight" v-if="getAddingProduct.active" />
+<selection-sheet v-if="getSelectionSheet.active" v-bind:windowHeight="getWindowHeight" />
 
 </template>
 <script>
@@ -137,11 +138,13 @@ import OnboardingView from '../components/app/layouts/OnboardingView.vue'
 import RestoreTrashModal from '../components/app/includes/RestoreTrashModal.vue'
 import Notification from '../components/app/includes/NotificationFloat.vue'
 import SearchFloat from '../components/app/includes/SearchFloat.vue'
+import SelectionSheet from '../components/app/layouts/SelectionSheet.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, SelectionSheet, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat },
     name: 'AdminHome',
-    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard','getStores']),
+    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard','getStores', 'getSelectionSheet']),
     created() {
+      this.$store.commit('setBodyBgColor')
       this.$store.dispatch('getAuthUser')
       window.addEventListener('resize', this.windowSize )
       window.addEventListener('scroll', this.pageScroll)
@@ -386,21 +389,6 @@ header, .right-header{
 .menu{
   margin-top: 10px;
 }
-.mob-title{
-  animation: fade-in 0.7s
-}
-@keyframes fade-in {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-.mob-logo{
-  animation: fade-out 0.7s
-}
-@keyframes fade-out {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
 
 
 </style>

@@ -5,7 +5,7 @@
             <span>Enter your email to continue</span>
         </div>
         <!-- <div id="g_id_onload"
-         data-client_id="617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com"
+         data-client_id="749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com"
          data-login_uri="http://localhost:8080"
          data-cancel_on_tap_outside="false">
       </div>
@@ -20,7 +20,7 @@
         <form @submit.prevent="">
             <div class="form-row">
                 <!-- <label>Email:</label> -->
-                <input v-model="form.email"  type="email" name="email" class="form-control" placeholder="Enter email" :class="{ 'has-error' : validation.error && validation.errors.email}">
+                <input v-model="form.email"  type="email" name="email" class="form-control" placeholder="Enter email" :class="{ 'input-has-error' : validation.error && validation.errors.email}">
                 <span class="validation-err" v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
                 </span>

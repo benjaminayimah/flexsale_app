@@ -16,7 +16,6 @@
                         <path  d="M12.044,0H0V12.045H1.5V1.5H12.044Z" transform="translate(17.033 8.517) rotate(135)" fill="#0e142c"/>
                     </svg>
                 </button>
-
                 <div class="ovw-hold" @scroll="ovwScroll">
                     <div class="ovw-content" id="ovw_content">
                         <ul>
@@ -88,7 +87,7 @@ export default {
     name: 'Dashboard',
     mixins: [CouterMixin],
     computed: {
-        ...mapGetters(['getStores', 'getActivities', 'getProducts', 'getUser', 'getThisHostname']),
+        ...mapGetters(['getStores', 'getActivities', 'getProducts', 'getUser']),
         computedUser() {
             if(this.getUser.name) {
                 return this.getUser.name.split(' ')[0]
@@ -178,6 +177,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .h-list-wrap{
     display: block;
     overflow-y: hidden;
