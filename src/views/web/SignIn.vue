@@ -67,9 +67,9 @@
                     <span class="show-mob">Sign in with</span><span>Facebook</span>
                 </button> -->
             </div>
-            <div class="flex create-acct">
+            <!-- <div class="flex create-acct">
                 <span>New to Flexsale?</span><a href="/signup">Create an account</a>
-            </div>
+            </div> -->
             <span class="disclaimer">This application is protected by Flexsale's <a href="https://www.flexsale.store/terms-and-conditions">Terms</a>, <a href="https://www.flexsale.store/privacy-policy">Privacy policy</a> & <a href="https://www.flexsale.store/cookies-policy">Cookie policy.</a></span>
         </form>
     </div>
