@@ -180,7 +180,7 @@ export default {
             const item = this.searchInput
             if(item != '') {
                 try {
-                    const res = await axios.post(this.getHostname+'/api/fetch-item?token='+this.getToken, { item: item }, { store: this.getCurrentStore.id})
+                    const res = await axios.post(this.getHostname+'/api/fetch-item?token='+this.getToken, { item: item })
                     if(res.data.item == null){
                         this.showError('Item not found')
                         this.clearSearch()
@@ -250,7 +250,7 @@ export default {
             if(this.thisSale.length > 0) {
                 let date = new Date()
                 const receipt = '' + date.getFullYear() + parseInt(date.getMonth()+1) + date.getDate()  + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds()
-                axios.post(this.getHostname+'/api/perform-sale?token='+this.getToken, { store: this.getCurrentStore.id},
+                axios.post(this.getHostname+'/api/perform-sale?token='+this.getToken,
                 { items: this.thisSale, total: this.computeTotal, receipt: receipt, currency: this.getCurrency  })
                 .then((res) => {
                     const payload = {

@@ -58,7 +58,7 @@ export default {
         async doSearch(input) {
             if(this.chechInput(input)) {
                 this.submitting = true
-                axios.post(this.getHostname + "/api/search?token=" + this.getToken, { query: this.form.input }, { store: this.getCurrentStore.id})
+                axios.post(this.getHostname + "/api/search?token=" + this.getToken, { query: this.form.input })
                 .then((res) => {
                     this.submitting = false
                     this.searchResults = res.data.results

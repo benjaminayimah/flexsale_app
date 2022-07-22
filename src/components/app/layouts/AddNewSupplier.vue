@@ -59,7 +59,7 @@ export default {
             }
         },
         doPost(url) {
-             axios.post(url, this.form, { store: this.getCurrentStore.id},
+             axios.post(url, this.form,
                     {
                         headers: {
                             'Content-Type': ['application/json']
@@ -73,7 +73,7 @@ export default {
 
         },
         doUpdate(url) {
-            axios.put(url, this.form, { store: this.getCurrentStore.id},
+            axios.put(url, this.form,
                     {
                         headers: {
                             'Content-Type': ['application/json']

@@ -25,7 +25,7 @@ export default {
         doSelect(tag,prod) {
             const payload = { tagID: tag, productID: prod }
             axios.post(this.getHostname+'/api/addthis-to-tag?token='+this.getToken,
-                payload, { store: this.getCurrentStore.id}, {
+                payload, {
                     headers: {
                         'Content-Type': ['application/json']
                     },

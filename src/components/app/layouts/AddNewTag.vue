@@ -81,7 +81,7 @@ export default {
     methods: {
         submitTag() {
             this.form.products = this.getTempContainer.array
-            axios.post( this.getHostname+'/api/tag?token='+this.getToken, this.form, { store: this.getCurrentStore.id}
+            axios.post( this.getHostname+'/api/tag?token='+this.getToken, this.form,
             ).then((res) => {
                 //console.log(res)
                 if(res.data.status === 1) {
@@ -121,7 +121,7 @@ export default {
         },
         submitEditTag() {
             this.form.products = this.getTempContainer.array
-            axios.put( this.getHostname+'/api/tag/'+this.form.id+'?token='+this.getToken, this.form, { store: this.getCurrentStore.id})
+            axios.put( this.getHostname+'/api/tag/'+this.form.id+'?token='+this.getToken, this.form)
             .then((res) => {
                 if(res.data.status === 1) {
                     const newData = {

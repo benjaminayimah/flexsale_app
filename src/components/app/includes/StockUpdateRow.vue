@@ -89,7 +89,7 @@ export default {
         submitBatch: function() {
             this.validation.error ? this.clearErrs() : ''
             axios.put(this.getHostname+'/api/product-batch/'+this.id+'?token='+this.getToken,
-                this.form, { store: this.getCurrentStore.id}, {
+                this.form, {
                     headers: {
                         'Content-Type': ['application/json']
                     },

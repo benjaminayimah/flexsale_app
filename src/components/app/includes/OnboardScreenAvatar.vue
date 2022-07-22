@@ -97,7 +97,7 @@ export default {
                         this.load = true;
                         let formData = new FormData();
                         formData.append("image", file);
-                        axios.post(this.getHostname + "/api/store-temp-upload?token=" + this.getToken, formData, { store: this.getCurrentStore.id}, {
+                        axios.post(this.getHostname + "/api/store-temp-upload?token=" + this.getToken, formData, {
                             headers: {
                                 "Content-Type": ["multipart/form-data", "application/json"]
                             },
@@ -136,7 +136,7 @@ export default {
             return this.doSubmitImage(url);
         },
         async doSubmitImage(Url) {
-            axios.post(Url, this.getOnboard.imageForm, { store: this.getCurrentStore.id}, {
+            axios.post(Url, this.getOnboard.imageForm, {
                 headers: {
                     "Content-Type": ["application/json"]
                 },

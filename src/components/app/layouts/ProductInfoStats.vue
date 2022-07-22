@@ -62,7 +62,7 @@ export default {
     },
     methods: {
         getThisStats() {  
-            axios.post(this.getHostname+'/api/product-stats?token='+this.getToken, {id:this.$route.params.id}, { store: this.getCurrentStore.id})
+            axios.post(this.getHostname+'/api/product-stats?token='+this.getToken, {id:this.$route.params.id})
             .then((res) => {
                 console.log(res.data)
             }).catch((e) => {
