@@ -4,7 +4,7 @@ import store from '@/store'
 //import About from '@/views/web/About.vue'
 import Welcome from '@/views/web/Welcome.vue'
 import SignIn from '@/views/web/SignIn.vue'
-// import SignUp from '@/views/web/SignUp.vue'
+import SignUp from '@/views/web/SignUp.vue'
 import ForgotPassword from '@/views/web/ForgotPassword.vue'
 import AdminHome from '@/views/AdminHome.vue'
 //import WebHome from '@/views/WebHome.vue'
@@ -83,7 +83,7 @@ const routes = [
   { path: '/signin', component: Welcome,
   children: [
     { path: '/signin', name: 'SignIn', component: SignIn},
-    // { path: '/signup', name: 'SignUp', component: SignUp},
+    { path: '/signup', name: 'SignUp', component: SignUp},
     { path: '/forgotpassword', name: 'ForgotPassword', component: ForgotPassword},
   ],
   meta: {requiresVisitor: true}
