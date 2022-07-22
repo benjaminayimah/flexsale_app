@@ -154,7 +154,7 @@ export default {
         },
         async submitEditDiscount() {
             this.form.products = this.getTempContainer.array
-            axios.put( this.getHostname+'/api/discount/'+this.form.id+'?token='+this.getToken, this.form, { store: this.getCurrentStore.id})
+            axios.put( this.getHostname+'/api/discount/'+this.form.id+'?token='+this.getToken, this.form)
             .then((res) => {
                 if(res.data.status === 1) {
                     const newData = {

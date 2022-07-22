@@ -109,7 +109,7 @@ export default {
         },
         async fetchDetailedRecordList() {
             this.toggleList = true
-            const res = await axios.post(this.getHostname+'/api/fetch-detailed-record-list?token='+this.getToken, { id: this.record.id }, { store: this.getCurrentStore.id})
+            const res = await axios.post(this.getHostname+'/api/fetch-detailed-record-list?token='+this.getToken, { id: this.record.id })
             if(res.data.result) {
                 this.saleItemList = res.data.result
             }

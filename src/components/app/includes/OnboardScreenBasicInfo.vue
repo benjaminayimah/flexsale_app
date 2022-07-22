@@ -73,7 +73,7 @@ export default {
         async submitStore() {
             this.validation.error ? this.clearErrs() : ''
             this.submiting = true
-            axios.post(this.getHostname + "/api/store?token=" + this.getToken, this.getOnboard.form, { store: this.getCurrentStore.id}, {
+            axios.post(this.getHostname + "/api/store?token=" + this.getToken, this.getOnboard.form, {
                 headers: {
                     "Content-Type": ["application/json"]
                 },

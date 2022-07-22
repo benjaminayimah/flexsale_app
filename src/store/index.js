@@ -4,8 +4,8 @@ import router from '@/router'
 import country from './modules/country'
 export default createStore({
   state: {
-    // hostname: 'http://localhost:8000',
-    hostname: 'https://api.flexsale.store',
+    hostname: 'http://localhost:8000',
+    // hostname: 'https://api.flexsale.store',
     thisHostname: 'https://app.flexsale.store',
     token: localStorage.getItem('token') || null,
     windowHeight: '',

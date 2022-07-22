@@ -234,7 +234,7 @@ export default {
         async submitReceiptQuery() {
             if (!this.receiptSearch.input == '') {
                 this.clrError()
-                axios.post(this.getHostname+'/api/receipt-detailed-record?token='+this.getToken, {receipt: this.receiptSearch.input}, { store: this.getCurrentStore.id})
+                axios.post(this.getHostname+'/api/receipt-detailed-record?token='+this.getToken, {receipt: this.receiptSearch.input})
                 .then((res) => {
                     this.receiptSearch.submited = true
                     this.receiptSearch.result = res.data.result

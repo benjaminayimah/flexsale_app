@@ -91,7 +91,7 @@ export default {
             if(this.getEditContainer.active) {
                 let id = this.getEditContainer.data.id
                 const putUrl = this.getHostname+'/api/edit-admin-user/'+id+'?token='+this.getToken
-                    axios.put(putUrl, this.form, { store: this.getCurrentStore.id},
+                    axios.put(putUrl, this.form,
                         {
                             headers: {
                                 'Content-Type': ['application/json']
@@ -123,7 +123,7 @@ export default {
                    
             }else{
                 axios.post(this.getHostname+'/api/create-admin-user?token='+this.getToken,
-                        this.form, { store: this.getCurrentStore.id},
+                        this.form,
                         {
                             headers: {
                                 'Content-Type': ['application/json']
@@ -154,7 +154,7 @@ export default {
         async doSubmitPassword() {
             let id = this.getEditContainer.data.id
                 const putUrl = this.getHostname+'/api/reset-password/'+id+'?token='+this.getToken
-                    axios.put(putUrl, this.form, { store: this.getCurrentStore.id},
+                    axios.put(putUrl, this.form,
                         {
                             headers: {
                                 'Content-Type': ['application/json']
