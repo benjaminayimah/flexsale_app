@@ -25,7 +25,10 @@ export default {
     name: 'NotificationRow',
     mixins: [NotificationMixin],
     computed: {
-        ...mapGetters(['getHostname', 'getDefaultImage', 'getUser', 'getUserAdminID']),
+        ...mapGetters(['getHostname', 'getDefaultImage', 'getUser', 'getUserAdminID'])
+    },
+    created() {
+        console.log(this.computedNotifications)
     }
 }
 </script>

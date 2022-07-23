@@ -21,17 +21,20 @@
                         <ul>
                             <li :id="'ovw'+stat.index" v-for="stat in stats" :key="stat.id" :style="{ transform: 'translateX('+parseInt(stat.index * 170+(transitionVal))+'px )'}">
                                 <div class="a-wrap">
-                                    <a href="#" class="li-hold">
+                                    <router-link :to="stat.url" class="li-hold">
                                         <div class="overview-content">
-                                            <div>
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 0 50.043 50.042">
-                                                    <path d="M-514.957-141.053-539-165.1V-189.14h24.044l24.043,24.044a6.63,6.63,0,0,1,1.955,4.718,6.63,6.63,0,0,1-1.955,4.719l-14.608,14.607a6.626,6.626,0,0,1-4.718,1.955A6.626,6.626,0,0,1-514.957-141.053Zm-20.707-25.425,23.066,23.066a3.318,3.318,0,0,0,2.36.977,3.315,3.315,0,0,0,2.359-.977l14.608-14.607a3.318,3.318,0,0,0,.977-2.36,3.315,3.315,0,0,0-.977-2.359L-516.338-185.8h-19.326Zm5-7.65a6.679,6.679,0,0,1,6.673-6.672,6.679,6.679,0,0,1,6.673,6.672,6.68,6.68,0,0,1-6.673,6.673A6.68,6.68,0,0,1-530.66-174.128Zm3.336,0a3.34,3.34,0,0,0,3.336,3.336,3.34,3.34,0,0,0,3.336-3.336,3.34,3.34,0,0,0-3.336-3.336A3.34,3.34,0,0,0-527.323-174.128Z" transform="translate(539 189.14)" fill="#fff"/>
+                                            <div class="icon-wrap flex" :class="[{ 'danger-icon' : stat.alert.active && stat.alert.type == 'danger'}, {'warning-icon' : stat.alert.active && stat.alert.type == 'warning'}, {'default-icon' : !stat.alert.active}]">
+                                                <svg v-if="stat.alert.active" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6.018 5.775">
+                                                    <path d="M11186.313-4415.611a.817.817,0,0,1-.7-.391.822.822,0,0,1-.025-.8l2.2-4.148a.817.817,0,0,1,.72-.436.818.818,0,0,1,.722.436l2.2,4.148a.819.819,0,0,1-.025.8.816.816,0,0,1-.693.391Zm2.006-5.059-2.2,4.148a.211.211,0,0,0,.008.208.213.213,0,0,0,.181.1h4.393l0,.3v-.3a.212.212,0,0,0,.18-.1.211.211,0,0,0,.008-.208l-2.2-4.148a.214.214,0,0,0-.19-.115A.213.213,0,0,0,11188.318-4420.67Zm-.244,3.648a.369.369,0,0,1,.37-.368.369.369,0,0,1,.368.368.37.37,0,0,1-.368.371A.37.37,0,0,1,11188.074-4417.021Zm.07-.9v-1.812h.6v1.812Z" transform="translate(-11185.499 4421.386)"/>
+                                                </svg>
+                                                <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6.02 6.021">
+                                                    <path d="M11232.391-4418.323l-2.9-2.907v-2.876h2.877l2.9,2.9a.819.819,0,0,1,0,1.156l-1.724,1.723a.808.808,0,0,1-.575.237A.818.818,0,0,1,11232.391-4418.323Zm-2.306-3.155,2.729,2.729a.213.213,0,0,0,.154.065.212.212,0,0,0,.152-.065l1.724-1.723a.215.215,0,0,0,.062-.152.22.22,0,0,0-.062-.152l-2.732-2.729h-2.027Zm.428-.846a.8.8,0,0,1,.8-.8.8.8,0,0,1,.8.8.8.8,0,0,1-.8.795A.8.8,0,0,1,11230.513-4422.324Zm.4,0a.4.4,0,0,0,.4.395.4.4,0,0,0,.4-.395.4.4,0,0,0-.4-.4A.4.4,0,0,0,11230.913-4422.324Z" transform="translate(-11229.486 4424.106)"/>
                                                 </svg>
                                             </div>
-                                            <div class="stat-count">{{ stat.count }}</div>
-                                            <div>{{ stat.title }}</div>
+                                            <div class="stat-count text-overflow-ellipsis">{{ stat.count }}</div>
+                                            <span>{{ stat.title }}</span>
                                         </div>
-                                    </a>
+                                    </router-link>
                                 </div>
                             </li>
                         </ul>
@@ -82,10 +85,12 @@ import ActivityListRow from '../../components/app/includes/ActivityListRow.vue'
 import SupplierHorizontalList from '../../components/app/includes/SupplierHorizontalList.vue'
 import WelcomeScreenTop from '../../components/app/includes/WelcomeScreenTop.vue'
 import WelcomeScreenBottom from '../../components/app/includes/WelcomeScreenBottom.vue'
+import notificationsMixin from '../../mixins/notifications'
+
 export default {
   components: { SupplierHorizontalList, ActivityListRow, WelcomeScreenTop, WelcomeScreenBottom },
     name: 'Dashboard',
-    mixins: [CouterMixin],
+    mixins: [CouterMixin, notificationsMixin],
     computed: {
         ...mapGetters(['getStores', 'getActivities', 'getProducts', 'getUser']),
         computedUser() {
@@ -93,6 +98,39 @@ export default {
                 return this.getUser.name.split(' ')[0]
             }else
             return ''
+        },
+        computeLowStk() {
+            if(this.computedNotifications.length > 0) {
+                let lowstk = this.computedNotifications.find(data => data.key == 'low-stocks')
+                if(lowstk)
+                return lowstk.count
+            }
+            return 0
+        },
+        computeExp() {
+            if(this.computedNotifications.length > 0) {
+                let exp = this.computedNotifications.find(data => data.key == 'expired')
+                if(exp)
+                return exp.count
+            }
+            return 0
+        },
+        computeExpSoon() {
+            if(this.computedNotifications.length > 0) {
+                let expsoon = this.computedNotifications.find(data => data.key == 'expiring-soon')
+                if(expsoon)
+                return expsoon.count
+            }
+            return 0
+        },
+        stats() {
+            const mystats = [
+                {id: 1, index: 0, count: this.getProducts.length, title: 'Products', url: { name: 'Products', params: { id: 'all' , name: 'products'}}, alert: {active: false}},
+                {id: 2, index: 1, count: this.computeExp, title: 'Expired', url: { name: 'Notifications', params: { name: 'expired'} }, alert: {active: true, type: 'danger'}},
+                {id: 3, index: 2, count: this.computeExpSoon, title: 'Expiring soon', url: { name: 'Notifications', params: { name: 'expiring-soon'} }, alert: {active: true, type: 'warning'}},
+                {id: 4, index: 3, count: this.computeLowStk, title: 'Low stocks', url: { name: 'Notifications', params: { name: 'low-stocks'} }, alert: {active: true, type: 'warning'}}
+            ]
+            return mystats
         }
     },
     data() {
@@ -118,15 +156,6 @@ export default {
                 {id: 12, index: 11, name: 'Chris Sharw', image: 'profile-9.png'},
                 {id: 13, index: 12, name: 'Dominic Campbel', image: 'profile-10.png'},
             ],
-            stats: [
-                {id: 1, index: 0, count: '1,200', title: 'Products'},
-                {id: 2, index: 1, count: '200', title: 'Low stocks'},
-                {id: 3, index: 2, count: '50', title: 'Expiry alert'},
-                {id: 4, index: 3, count: '15', title: 'Expiry alert'},
-                {id: 5, index: 4, count: '15', title: 'Expiry alert'},
-                {id: 6, index: 5, count: '15', title: 'Expiry alert'},
-                {id: 7, index: 6, count: '15', title: 'Expiry alert'},
-            ],
         }
     },
     created() {
@@ -138,7 +167,6 @@ export default {
             const title = { title: this.title, back: false}
             this.$store.commit('setPagetitle', title)
         },
-       
         scrollLeft() {
             let no = this.stats.length -1
             let elem_1 = document.getElementById('ovw'+0).getBoundingClientRect().left + 170
@@ -194,7 +222,6 @@ export default {
 }
 
 .list-hold{
-
     display: flex;
     position: relative;
     height: 100%;
@@ -279,20 +306,14 @@ export default {
             height: 100%;
             background-color: $primary-light;
             border-radius: 18px;
-            padding: 25px 20px;
+            padding: 20px;
             color: $dark;
             text-decoration: none;
         }
-        svg path{
-            fill: $dark;
-        }
         &:first-child{
             .li-hold{
-                background-color: rgba(86, 110, 244, 0.8);
-                color: $white-color;
-                svg path{
-                    fill: $white-color;
-                }       
+                background-color: rgba(86, 110, 244, 0.9);
+                color: $white-color;     
             }
             
         }
@@ -308,13 +329,26 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    .icon-wrap{
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+        svg{
+            height: 22px;
+        }
+    }
+    span {
+        font-weight: 600;
+    }
 }
 #ovw_content{
     transition: transform 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
 }
 
 .stat-count{
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 700;
 }
 .scroll-button{
@@ -391,6 +425,24 @@ export default {
 }
 h1{
     margin: 0;
+}
+.danger-icon {
+    background-color: rgba(255, 255, 255, 0.6);
+    svg path {
+        fill: $danger;
+    }
+}
+.warning-icon {
+    background-color: rgba(255, 255, 255, 0.6);
+    svg path {
+        fill: $warning;
+    }
+}
+.default-icon {
+    background-color: rgba(255, 255, 255, 0.16);
+    svg path {
+        fill: #ffffff;
+    }
 }
 
 

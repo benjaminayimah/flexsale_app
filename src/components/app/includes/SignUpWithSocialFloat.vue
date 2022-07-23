@@ -10,7 +10,7 @@
                         <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
                     </svg>
                 </a>
-                <div class="flex-col gap-8">
+                <div class="flex-col gap-8 ta-center">
                     <h3 class="mg-0">This email is not found in our system.</h3>
                     <h2 class="mg-0">Do you wish to Sign Up to Flexsale with {{ getOAuthModal.type }}?</h2>
                 </div>

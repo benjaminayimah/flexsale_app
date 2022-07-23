@@ -10,7 +10,7 @@ $white-color: #ffffff;
 $danger: #e63232;
 $danger-alt: #ad1616;
 $success: #20C647;
-$warning: #EFB91C;
+$warning: #FF952C;
 $button-disabled: #9ea7d8;
 
 $myFont: 'Urbanist', Helvetica, sans-serif;
@@ -496,7 +496,9 @@ ul{
 .flx-shrink-0{
   flex-shrink: 0;
 }
-
+.ta-center {
+  text-align: center;
+}
 #form_submit_btn_holder{
   bottom: 0; 
   position: fixed; 

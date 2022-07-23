@@ -149,12 +149,13 @@ export default {
       window.addEventListener('resize', this.windowSize )
       window.addEventListener('scroll', this.pageScroll)
       this.$store.commit('computeWindow')
-      setTimeout(()=> {
-        if(this.getStores && this.getStores.length > 0) {
-          this.$store.dispatch('setNotification')
-          this.checkForNotification()
-        }
-      }, 4000)
+      this.$store.dispatch('setNotification')
+      // this.checkForNotification()
+      // setTimeout(()=> {
+      //   if(this.getStores && this.getStores.length > 0) {
+          
+      //   }
+      // }, 4000)
   },
   unmounted() {
     window.removeEventListener('resize', this.windowSize)
@@ -177,16 +178,16 @@ export default {
             return this.$store.commit('unSetMobileTitle')
         }
     },
-    checkForNotification() {
-      let counter = 0
-      setInterval(() => {
-          counter++
-          if (counter === 3600) {
-            this.$store.dispatch('setNotification')
-            counter = 0
-          }
-      }, 1000)
-    }
+    // checkForNotification() {
+    //   let counter = 0
+    //   setInterval(() => {
+    //       counter++
+    //       if (counter === 3600) {
+    //         this.$store.dispatch('setNotification')
+    //         counter = 0
+    //       }
+    //   }, 1000)
+    // }
   }
 }
 </script>
