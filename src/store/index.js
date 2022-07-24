@@ -8,6 +8,8 @@ export default createStore({
     hostname: 'https://api.flexsale.store',
     thisHostname: 'https://app.flexsale.store',
     token: localStorage.getItem('token') || null,
+    // OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
+    OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
     windowHeight: '',
     windowWidth: '',
     bodyWidth: '',
@@ -646,7 +648,12 @@ export default createStore({
       }
     },
     setNotifications(state, payload) {
-      state.notifications = payload
+      state.notifications = []
+      payload.forEach(element => {
+        element.forEach(data => {
+          state.notifications.push(data)
+        });
+      });
     },
     addCheckedProdToArray(state, payload) {
       state.tempDataContainer.array.push(payload)
@@ -1039,7 +1046,6 @@ export default createStore({
     axios.post( this.getters.getHostname+'/api/notification?token='+this.getters.getToken, { id: 'me' }, { store: this.getters.getCurrentStore.id})
     .then((res) => {
       state.commit('setNotifications', res.data.notifications)
-      console.log(res.data)
     }).catch((e) => {
         console.log(e.response)
     })
@@ -1264,6 +1270,7 @@ export default createStore({
     getSearch: (state) => state.searchIn,
     getBodyWidth: (state) => state.bodyWidth,
     getSignInStatus: (state) => state.signinStatus,
+    getOAuth: (state) => state.OAuth,
 
 
 

@@ -1,9 +1,7 @@
 <template>
     <li :style="{ transform: 'translateX('+parseInt(supplier.index * 82+(transitionVal))+'px )'}" :title="supplier.name">
-        <div class="a-wrap">
-            <a href="" class="bg-img" v-if="supplier.image" :style="{backgroundImage: 'url('+require('@/assets/images/profiles/'+supplier.image)+')'}"></a>
-            <a href="" v-else><span :style="{ backgroundColor: this.color}">{{ computeInitials }}</span></a>
-        </div>
+        <router-link :to="{ name: 'DetailedSupplier', params: { id: supplier.id, name: supplier.name} }" class="bg-img" v-if="supplier.image" :style="{backgroundImage: 'url('+require('@/assets/images/profiles/'+supplier.image)+')'}"></router-link>
+        <router-link :to="{ name: 'DetailedSupplier', params: { id: supplier.id, name: supplier.name} }" v-else><span :style="{ backgroundColor: this.color}">{{ computeInitials }}</span></router-link>
     </li>
 </template>
 <script>
@@ -36,9 +34,10 @@ export default {
 <style scoped lang="scss">
 li{
     height: 100%;
-    position: absolute;
+    display: flex;
+    // position: absolute;
     a{
-        border: 1px solid $dark-light;
+        // border: 1px solid $dark-light;
         border-radius: 50%;
         height: 100%;
         width: 70px;

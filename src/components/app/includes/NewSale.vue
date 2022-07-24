@@ -1,6 +1,6 @@
 <template>
 <tertiary-backdrop v-if="sale.maximize" />
-    <div class="sale-holder" :class="[sale.maximize ? 'sale-maximize' : 'sale-normal', sale.minimize ? 'minimized': '']">
+    <div class="sale-holder" :class="[sale.maximize ? 'sale-maximize' : 'sale-normal', sale.minimize ? 'minimized': '', computeWidth ? 'full-width': '']">
         <div class="inner">
             <div class="header flex-row-js">
                 <div class="flex">
@@ -150,7 +150,7 @@ export default {
     components: { TertiaryBackdrop },
      props: ['sale'],
     computed: {
-      ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID']),
+      ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getWindowWidth']),
       computeTotal() {
             return this.thisSale.reduce((acc, item) => acc + item.price, 0)
       },
@@ -161,6 +161,13 @@ export default {
           }else
             return []
         },
+        computeWidth() {
+            if(this.getWindowWidth <= 528) {
+                return true
+            }else {
+                return false
+            }
+        }
     },
     data() {
         return {
@@ -586,6 +593,15 @@ table{
 .minimized{
     .minimize-btn{
         transform: scaleY(-1);
+    }
+    .body{
+        padding-bottom: 0px !important;
+    }
+}
+.full-width{
+    width: 100% !important;
+    .body{
+        padding-bottom: 40px;
     }
 }
 </style>

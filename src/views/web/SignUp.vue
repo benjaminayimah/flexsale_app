@@ -1,7 +1,7 @@
 <template>
     <div id="login_card" v-if="!created">
         <div id="g_id_onload"
-            data-client_id="749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com"
+            :data-client_id="getOAuth"
             data-context="signup"
             data-cancel_on_tap_outside="false">
         </div>
@@ -115,7 +115,7 @@ export default {
     name: 'SignUp',
     mixins: [passwordToggleMixin, inputMixin],
     computed: {
-        ...mapGetters(['getHostname', 'getUser', 'getMobile'])
+        ...mapGetters(['getHostname', 'getUser', 'getMobile', 'getOAuth'])
     },
     data() {
         return {
@@ -152,7 +152,7 @@ export default {
         }
         window.addEventListener('load', () => {
             window.google.accounts.id.initialize({
-                client_id: "749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com",
+                client_id: this.getOAuth,
                 context: "signup",
                 callback: this.handleCredentialResponse
             });

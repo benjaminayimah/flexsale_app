@@ -10,60 +10,57 @@
                     <div class="category-pill">
                         <div class="pill-wrap">
                             <ul class="flex-row-st">
-                                <li><router-link to="todays-sales" @click.prevent="makeFilter('todays-sales', 'todays sales', 0, 0)">Today's Sales</router-link></li>
-                                <li><router-link to="yesterdays-sales" @click.prevent="makeFilter('yesterdays-sales', 'yesterdays sales', 2, 1)">Yesterday’s</router-link></li>
-                                <li><router-link to="one-week-ago" @click.prevent="makeFilter('one-week-ago', 'last 7 days', 2, 7)">Last 7 days</router-link></li>
-                                <li id="record_filter_toggle">
+                                <li class="hideable"><router-link to="todays-sales" @click.prevent="makeFilter('todays-sales', 'todays sales', 0, 0)">Today's Sales</router-link></li>
+                                <li class="hideable"><router-link to="yesterdays-sales" @click.prevent="makeFilter('yesterdays-sales', 'yesterdays sales', 2, 1)">Yesterday’s</router-link></li>
+                                <li class="hideable"><router-link to="one-week-ago" @click.prevent="makeFilter('one-week-ago', 'last 7 days', 2, 7)">Last 7 days</router-link></li>
+                                <li class="hideable" id="record_filter_toggle">
                                     <a class="align-items-center flex h-100" :class="{ 'dropdown-out' : toggleFilter }" href="#" @click.prevent="doMenu('record_filter_toggle')">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="4" viewBox="0 0 20.509 4.059">
                                             <path d="M-7097.549-7163.327a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7097.549-7163.327Zm-8.236,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7105.786-7163.327Zm-8.214,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7114-7163.327Z" transform="translate(7114 7165.355)"/>
                                         </svg>
                                     </a>
                                 </li>
+                                <i class="horizontal-separator hideable"></i>
+                                <li class="hideable" id="custom_date_toggle">
+                                    <a href="#" :class="{ 'dropdown-out' : toggleCustomDate }" @click.prevent="doDateToggle('custom_date_toggle')">
+                                    Custom range
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="8" viewBox="0 0 18.312 11.241">
+                                        <path d="M766.473,22.642a.989.989,0,0,1-.643-.232.784.784,0,0,1-.034-1.19l8.374-7.937-8.357-7.518a.784.784,0,0,1,0-1.19,1.009,1.009,0,0,1,1.321,0l9.646,8.678-9.63,9.127A.984.984,0,0,1,766.473,22.642Z" transform="translate(22.642 -765.539) rotate(90)" fill="#0e142c"/>
+                                    </svg>
+                                    </a>
+                                </li>
+                                <div v-if="searchToggle">
+                                    <div class="receipt-input-wrap">
+                                        <form @submit.prevent="" class="flex">
+                                            <div class="reciept-input-wrap">
+                                                <input autofocus type="text" required @focus="receiptInputFocused" v-model="receiptSearch.input" class="form-control" ref="receipt" name="search" placeholder="Receipt number..." id="receiptInput">
+                                                <span v-if="!receiptSearch.input == ''" class="clear-input-btn" @click="clearReceiptInput">
+                                                    <svg  xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
+                                                        <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <button class="button button-primary" @click.prevent="submitReceiptQuery">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 26.671 26.671">
+                                                    <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#ffffff"></path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                        <span v-if="error" class="danger flex">Enter Receipt number</span>
+                                    </div>
+                                </div>
+                                <li>
+                                    <a class="align-items-center justify-content-center flex h-100 no-border" title="Search by receipt number" href="#" @click.prevent="toggleSearch">
+                                        <svg v-if="!searchToggle" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.671 26.671">
+                                            <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"></path>
+                                        </svg>
+                                        <svg v-else class="minimized" xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
+                                            <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
+                                        </svg>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
-                    </div>
-                    <div class="table-filters">
-                        <ul>
-                            <li id="custom_date_toggle">
-                                <a href="#" :class="{ 'dropdown-out' : toggleCustomDate }" @click.prevent="doDateToggle('custom_date_toggle')">
-                                Custom range
-                                <svg xmlns="http://www.w3.org/2000/svg" height="8" viewBox="0 0 18.312 11.241">
-                                    <path d="M766.473,22.642a.989.989,0,0,1-.643-.232.784.784,0,0,1-.034-1.19l8.374-7.937-8.357-7.518a.784.784,0,0,1,0-1.19,1.009,1.009,0,0,1,1.321,0l9.646,8.678-9.63,9.127A.984.984,0,0,1,766.473,22.642Z" transform="translate(22.642 -765.539) rotate(90)" fill="#0e142c"/>
-                                </svg>
-                                </a>
-                            </li>
-                            <div v-if="searchToggle">
-                                <div class="receipt-input-wrap">
-                                    <form @submit.prevent="" class="flex">
-                                        <div class="reciept-input-wrap">
-                                            <input autofocus type="text" required @focus="receiptInputFocused" v-model="receiptSearch.input" class="form-control" ref="receipt" name="search" placeholder="Receipt number..." id="receiptInput">
-                                            <span v-if="!receiptSearch.input == ''" class="clear-input-btn" @click="clearReceiptInput">
-                                                <svg  xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
-                                                    <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                        <button class="button button-primary" @click.prevent="submitReceiptQuery">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 26.671 26.671">
-                                                <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#ffffff"></path>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                    <span v-if="error" class="danger flex">Enter Receipt number</span>
-                                </div>
-                            </div>
-                            <li>
-                                <a class="align-items-center flex h-100 no-border" title="Search by receipt number" href="#" @click.prevent="toggleSearch">
-                                    <svg v-if="!searchToggle" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.671 26.671">
-                                        <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"></path>
-                                    </svg>
-                                    <svg v-else class="minimized" xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
-                                        <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
                 <sale-report-view v-bind:saleRecords="getSaleRecords" v-bind:receiptSearch="receiptSearch" />
@@ -320,11 +317,8 @@ export default {
 //     transition: 0.4s ease-out all;
 // }
 .search-in{
-    .category-pill, #custom_date_toggle{
-        // transform: translateX(-18px);
-        visibility: hidden;
-        opacity: 0;
-        
+    .hideable{
+        display: none !important;
     }
 }
 .receipt-input-wrap{
@@ -332,9 +326,9 @@ export default {
         position: relative;
         margin-right: 8px;
     }
-    position: absolute;
+ 
     top: 13px;
-    right: 50px;
+
     #receiptInput{
         height: 44px;
         width: 250px;

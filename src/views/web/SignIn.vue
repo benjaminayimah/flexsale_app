@@ -1,7 +1,7 @@
 <template>
 <div>
     <div id="g_id_onload"
-        data-client_id="749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com"
+        :data-client_id="getOAuth"
         data-cancel_on_tap_outside="false">
     </div>
     <div v-if="!getSignInStatus.created" id="login_card">
@@ -109,7 +109,7 @@ export default {
     name: 'SignIn',
     mixins: [passwordToggleMixin, inputMixin],
     computed: {
-        ...mapGetters(['getHostname', 'getUser', 'getSignInStatus', 'getMobile']),
+        ...mapGetters(['getHostname', 'getUser', 'getSignInStatus', 'getMobile', 'getOAuth']),
         computedUser() {
             if(this.getUser.name) {
                 return this.getUser.name.split(' ')[0]
@@ -137,7 +137,7 @@ export default {
     created() {
         window.addEventListener('load', () => {
             window.google.accounts.id.initialize({
-                client_id: "749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com",
+                client_id: this.getOAuth,
                 callback: this.handleCredentialResponse
             });
             window.google.accounts.id.renderButton(
