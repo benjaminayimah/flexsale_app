@@ -119,7 +119,7 @@
 <onboarding-view v-bind:winHeight="getWindowHeight" v-if="getOnboard.status" />
 <add-new v-bind:winHeight="getWindowHeight" v-if="getAddingProduct.active" />
 <selection-sheet v-if="getSelectionSheet.active" v-bind:windowHeight="getWindowHeight" />
-
+<refresh-button />
 </template>
 <script>
 import AccountMenu from '../components/app/includes/AccountMenu.vue'
@@ -129,6 +129,7 @@ import Logo from '../components/app/includes/Logo.vue'
 import MobNav from '../components/app/includes/MobNav.vue'
 import AddNew from '../components/app/layouts/AddNew.vue'
 import BackButton from '../components/app/includes/BackButton.vue'
+import RefreshButton from '../components/app/includes/RefreshButton.vue'
 import Alerts from '../components/app/includes/Alerts.vue'
 import Loader from '../components/app/includes/Loader.vue'
 import DeleteModal from '../components/app/includes/DeleteModal.vue'
@@ -140,7 +141,7 @@ import Notification from '../components/app/includes/NotificationFloat.vue'
 import SearchFloat from '../components/app/includes/SearchFloat.vue'
 import SelectionSheet from '../components/app/layouts/SelectionSheet.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, SelectionSheet, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, SelectionSheet, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat, RefreshButton },
     name: 'AdminHome',
     computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard','getStores', 'getSelectionSheet']),
     created() {
@@ -149,12 +150,13 @@ export default {
       window.addEventListener('resize', this.windowSize )
       window.addEventListener('scroll', this.pageScroll)
       this.$store.commit('computeWindow')
-      setTimeout(()=> {
-        if(this.getStores && this.getStores.length > 0) {
-          this.$store.dispatch('setNotification')
-          this.checkForNotification()
-        }
-      }, 4000)
+      this.$store.dispatch('setNotification')
+      // this.checkForNotification()
+      // setTimeout(()=> {
+      //   if(this.getStores && this.getStores.length > 0) {
+          
+      //   }
+      // }, 4000)
   },
   unmounted() {
     window.removeEventListener('resize', this.windowSize)
@@ -177,16 +179,16 @@ export default {
             return this.$store.commit('unSetMobileTitle')
         }
     },
-    checkForNotification() {
-      let counter = 0
-      setInterval(() => {
-          counter++
-          if (counter === 3600) {
-            this.$store.dispatch('setNotification')
-            counter = 0
-          }
-      }, 1000)
-    }
+    // checkForNotification() {
+    //   let counter = 0
+    //   setInterval(() => {
+    //       counter++
+    //       if (counter === 3600) {
+    //         this.$store.dispatch('setNotification')
+    //         counter = 0
+    //       }
+    //   }, 1000)
+    // }
   }
 }
 </script>
@@ -361,11 +363,11 @@ header, .right-header{
   border: 1px solid #ffffff;
 }
 .desktop-mode .left-new-wrap{
-    border: 1px solid #f0f3ff;
+    border: 1px dashed $primary-color;
     width: 90%;
     padding: 30px 15px;
     border-radius: 16px;
-    background-color: #f0f3ff6b;
+    background-color: #ffffff;
   }
 #left_add_new_pd{
   padding-top: 15px;
