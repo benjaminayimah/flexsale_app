@@ -26,9 +26,6 @@ export default {
     mixins: [NotificationMixin],
     computed: {
         ...mapGetters(['getHostname', 'getDefaultImage', 'getUser', 'getUserAdminID'])
-    },
-    created() {
-        console.log(this.computedNotifications)
     }
 }
 </script>

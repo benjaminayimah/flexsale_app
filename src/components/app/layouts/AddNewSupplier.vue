@@ -2,10 +2,10 @@
 <div v-if="getAddingProduct.supplier">
     <teleport to="#add_title">
         <span v-if="getEditContainer.active">Edit supplier</span>
-        <span v-else>Add New Supplier</span>
+        <span v-else>Add supplier</span>
     </teleport>
     <teleport to="#add_submit_button">
-        <button class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Submit supplier'}}</button>
+        <button class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Submit'}}</button>
     </teleport>
     <teleport to="#add_master_body_container">
         <form id="supplier_form" @submit.prevent="" class="overlay-hero-form">

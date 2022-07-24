@@ -1465,6 +1465,7 @@ input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
           display: flex;
           height: 100%;
           align-items: center;
+          position: absolute;
           li{
               display: flex;
               align-items: center;
@@ -1481,16 +1482,17 @@ input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
       position: relative;
       align-items: center;
       display: flex;
-      overflow: hidden;
+      height: 100%;
+      width: 100%;
+      overflow-x: auto;
+      &::-webkit-scrollbar {
+          display: none;
+          -ms-overflow-style: none; 
+          scrollbar-width: none; 
+      }
       .pill-wrap{
         height: 100%;
         display: flex;
-        overflow-x: auto;
-        &::-webkit-scrollbar {
-            display: none;
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
-        }
         a{
           padding: 10px 14px;
           border: 1px solid $gray-light;

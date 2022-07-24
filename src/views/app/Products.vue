@@ -55,27 +55,17 @@
                                 <ul class="flex-row-st">
                                     <li><router-link replace :to="{ name: 'Products', params: { id: 'all' , name: 'products'} }">All</router-link></li>
                                     <li v-for="tag in getTags" :key="tag.id"><router-link replace class="text-overflow-ellipsis" :to="{ name: 'Products', params: { id: tag.id , name: tag.name } }">{{ tag.name }}</router-link></li>
+                                    <i class="horizontal-separator"></i>
+                                    <li id="product_filter_toggle" @click.prevent="doMenu('product_filter_toggle')">
+                                        <a href="#" :class="{ 'dropdown-out' : toggleFilter }" @click.prevent="doMenu('product_filter_toggle')">
+                                        {{ sort.name}}
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="8" viewBox="0 0 18.312 11.241">
+                                            <path d="M766.473,22.642a.989.989,0,0,1-.643-.232.784.784,0,0,1-.034-1.19l8.374-7.937-8.357-7.518a.784.784,0,0,1,0-1.19,1.009,1.009,0,0,1,1.321,0l9.646,8.678-9.63,9.127A.984.984,0,0,1,766.473,22.642Z" transform="translate(22.642 -765.539) rotate(90)" fill="#0e142c"/>
+                                        </svg>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="table-filters">
-                            <ul>
-                                <!-- <li>
-                                    <a href="">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 22.73 22.73">
-                                            <path d="M-9229.858-332.653l-4.5-4.5a10.129,10.129,0,0,1-6.584,2.408,10.141,10.141,0,0,1-7.212-2.986,10.138,10.138,0,0,1-2.985-7.211,10.138,10.138,0,0,1,2.985-7.211,10.141,10.141,0,0,1,7.212-2.986,10.136,10.136,0,0,1,7.211,2.986,10.138,10.138,0,0,1,2.985,7.211,10.127,10.127,0,0,1-2.408,6.584l4.5,4.5a.853.853,0,0,1,0,1.2.85.85,0,0,1-.6.248A.843.843,0,0,1-9229.858-332.653Zm-19.572-12.284a8.5,8.5,0,0,0,8.493,8.493,8.469,8.469,0,0,0,5.926-2.415.751.751,0,0,1,.071-.081.886.886,0,0,1,.079-.07,8.464,8.464,0,0,0,2.416-5.927,8.5,8.5,0,0,0-8.492-8.493A8.5,8.5,0,0,0-9249.431-344.937Z" transform="translate(9251.135 355.134)" fill="#0e142c"/>
-                                        </svg>
-                                    </a>
-                                </li> -->
-                                <li id="product_filter_toggle" @click.prevent="doMenu('product_filter_toggle')">
-                                    <a href="#" :class="{ 'dropdown-out' : toggleFilter }" @click.prevent="doMenu('product_filter_toggle')">
-                                    {{ sort.name}}
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="8" viewBox="0 0 18.312 11.241">
-                                        <path d="M766.473,22.642a.989.989,0,0,1-.643-.232.784.784,0,0,1-.034-1.19l8.374-7.937-8.357-7.518a.784.784,0,0,1,0-1.19,1.009,1.009,0,0,1,1.321,0l9.646,8.678-9.63,9.127A.984.984,0,0,1,766.473,22.642Z" transform="translate(22.642 -765.539) rotate(90)" fill="#0e142c"/>
-                                    </svg>
-                                    </a>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                     <product-row v-for="product in sortProducts(computedProducts)" :key="product.id" v-bind:product="product" />
