@@ -39,7 +39,7 @@ export default {
             form: {
               email: '',
             },
-            emailSent: true,
+            emailSent: false,
             validation: {
                 error: false,
                 errors: '',
