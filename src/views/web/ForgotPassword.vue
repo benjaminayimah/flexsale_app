@@ -67,7 +67,9 @@ export default {
             try {
                 const res = await axios.post(this.getHostname+'/api/forgot-password', this.form)
                 res.data.email ? this.emailSent = true : ''
+                this.creating = false
             } catch (err) {
+                this.creating = false
                 if(err.response.status == 422){
                     this.validation.error = true
                     this.validation.errors = err.response.data.errors
@@ -78,7 +80,6 @@ export default {
                     this.userError.message = err.response.data.email+' does not exist in our system.'
                 }
             }
-            this.creating = false
 
         },
         clearErr() {

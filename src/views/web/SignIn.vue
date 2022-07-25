@@ -174,8 +174,10 @@ export default {
             this.$store.commit('setCreating')
             axios.post(this.getHostname+'/api/sign-in', this.form)
             .then((res) => {
+                this.$store.commit('unSetCreating')
                 this.setSuccessRes(res.data.token)
             }).catch((err) => {
+                this.$store.commit('unSetCreating')
                 if (err.response.status == 401) {
                     this.userError.error = true
                     this.userError.message = 'Invalid email or password. Please try again or try resetting your password.'
