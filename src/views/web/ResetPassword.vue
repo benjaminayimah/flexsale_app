@@ -22,7 +22,7 @@
                 <!--  -->
                 <div class="input-wrapper" id="password_wrapper">
                     <label for="passwordInput">New password</label>
-                    <input id="passwordInput" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field">
+                    <input id="passwordInput" autocomplete="off" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field">
                     <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">
                         <g transform="translate(1.182 1.182)">
@@ -40,7 +40,7 @@
                 <!--  -->
                 <div class="input-wrapper" id="confirm_pass_wrapper">
                     <label for="confirmPassInput">Confirm password</label>
-                    <input id="confirmPassInput" v-model="form.password_confirmation" @animationstart="isFocusedOut('confirm_pass_wrapper','confirmPassInput')" @focusin="isFocusedIn('confirm_pass_wrapper')" @focusout="isFocusedOut('confirm_pass_wrapper', 'confirmPassInput')" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field">
+                    <input id="confirmPassInput" autocomplete="off" v-model="form.password_confirmation" @animationstart="isFocusedOut('confirm_pass_wrapper','confirmPassInput')" @focusin="isFocusedIn('confirm_pass_wrapper')" @focusout="isFocusedOut('confirm_pass_wrapper', 'confirmPassInput')" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field">
                     <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">
                         <g transform="translate(1.182 1.182)">
