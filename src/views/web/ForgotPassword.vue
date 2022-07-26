@@ -27,7 +27,7 @@
             <p><span>Email not received?</span><a href="#" @click.prevent="toggleBack">Resend</a></p>
         </div>
         <div class="flex create-acct">
-            <router-link :to="{ name: 'SignIn'}">Back to Sign in page</router-link>
+            <a href="/signin">Back to Sign in page</a>
         </div>
     </div>
 </template>
