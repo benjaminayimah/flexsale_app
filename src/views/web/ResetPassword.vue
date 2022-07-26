@@ -7,7 +7,11 @@
         </div>
         <div v-if="userError.error" class="invalid-credentials">
             <span>{{ userError.message }}</span>
+            <div class="forgot-pass">
+                    <router-link :to="{ name: 'ForgotPassword'}">Forgot password.</router-link>
+                </div>
         </div>
+        
         <form @submit.prevent="doSubmit">
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.email}">
                 <div class="input-wrapper" id="email_wrapper">
@@ -19,7 +23,6 @@
                 </span>
             </div>
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.password}">
-                <!--  -->
                 <div class="input-wrapper" id="password_wrapper">
                     <label for="passwordInput">New password</label>
                     <input id="passwordInput" autocomplete="off" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field">
@@ -152,3 +155,9 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+#login_card .forgot-pass {
+    text-align: left;
+    padding-top: 8px;
+}
+</style>
