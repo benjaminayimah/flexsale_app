@@ -2,7 +2,7 @@
     <Line
     :chart-options="chartOptions"
     :chart-data="computedStats"
-    :width="400"
+    width="100%"
     :height="250"
     />
 </template>
