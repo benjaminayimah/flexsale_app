@@ -78,9 +78,8 @@ import LineChart from '../includes/LineChart.vue'
 import dropdownToggleMixin from '../../../mixins/dropdownToggle'
 import Backdrop from '../includes/Backdrop.vue'
 import { mapGetters } from 'vuex'
-// import SecondaryBackdrop from '../includes/SecondaryBackdrop.vue'
 export default {
-  components: { /*BarChart,*/ Backdrop, LineChart, /*SecondaryBackdrop*/ },
+  components: { /*BarChart,*/ Backdrop, LineChart },
     name: 'ProductInfoStats',
     mixins: [dropdownToggleMixin],
     computed: mapGetters(['getMobile', 'getFloatingDiv', 'getToken', 'getHostname', 'getCurrentStore']),
@@ -90,7 +89,6 @@ export default {
             filtered: { id: 7, name: 'Last 7 days'},
             stats: [],
             filters: {
-                // title: '',
                 type: 1,
                 id: this.$route.params.id,
                 interval: Number(7),
@@ -101,7 +99,6 @@ export default {
                 startDate: new Date().toISOString().slice(0,10),
                 endDate: new Date().toISOString().slice(0,10),
             }
-        
         }
     },
     created() {
@@ -119,7 +116,6 @@ export default {
             this.filtered.name = name
         },
         dispatchFetch(type, interval, start, end) {
-            // this.filters.title = title
             this.filters.type = type
             this.filters.interval = interval
             this.filters.start = start
