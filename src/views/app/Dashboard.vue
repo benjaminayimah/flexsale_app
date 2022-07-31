@@ -68,11 +68,17 @@
     <div class="dash-section-holder">
         <div class="flex-row-js dashboard-title-wrap">
             <h1 class="dashboard-title">Activity log</h1>
-            <a href="" class="see-all">See all logs</a>
+            <!-- <a href="#" class="see-all">See all logs</a> -->
         </div>
         <div class="activity-wrap">
             <div class="act-hold">
-                <activity-list-row v-for="activity in getActivities" :key="activity.id" v-bind:activity="activity" />
+                <div v-if="getActivities.length > 0">
+                    <activity-list-row v-for="activity in getActivities" :key="activity.id" v-bind:activity="activity" />
+                </div>
+                <div v-else>
+                    <span class="beta">Coming soon</span>
+                    <h4 class="cwht">Ability to view all logs on your products at a glance.</h4>
+                </div>
             </div>
         </div>
     </div>
@@ -210,7 +216,10 @@ export default {
         align-items: stretch;
     }
 }
-
+.beta{
+    border-color: #ffffff;
+    color: #ffffff;
+}
 .list-hold{
     display: flex;
     position: relative;

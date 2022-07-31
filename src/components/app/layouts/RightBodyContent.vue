@@ -54,7 +54,7 @@
             <div v-else class="flex-col gap-32">
                 <div class="wlc-container wlc-cont-1 flex align-items-center justify-content-center">
                     <div class="wlc-wrap flex-col">
-                        <h3>Recent sale activities shows up here</h3>
+                        <h3>Your most recent sale activities will show up here</h3>
                     </div>
                 </div>
             </div>
