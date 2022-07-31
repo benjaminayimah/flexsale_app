@@ -22,14 +22,14 @@
                     </svg>
                 </button> -->
                 <li>
-                    <a href="#" @click.prevent="">
+                    <a :class="{ 'active-stats-btn' : !showStats }" href="#" @click.prevent="toggleStatsView">
                         <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 16.57 13.463">
                             <path d="M1.553,3.375A1.553,1.553,0,1,0,3.107,4.928,1.553,1.553,0,0,0,1.553,3.375Zm0,5.178a1.553,1.553,0,1,0,1.553,1.553A1.553,1.553,0,0,0,1.553,8.553Zm0,5.178a1.553,1.553,0,1,0,1.553,1.553,1.553,1.553,0,0,0-1.553-1.553Zm14.5.518H5.7a.518.518,0,0,0-.518.518V15.8a.518.518,0,0,0,.518.518H16.052a.518.518,0,0,0,.518-.518V14.767A.518.518,0,0,0,16.052,14.249Zm0-10.356H5.7a.518.518,0,0,0-.518.518V5.446a.518.518,0,0,0,.518.518H16.052a.518.518,0,0,0,.518-.518V4.411A.518.518,0,0,0,16.052,3.893Zm0,5.178H5.7a.518.518,0,0,0-.518.518v1.036a.518.518,0,0,0,.518.518H16.052a.518.518,0,0,0,.518-.518V9.589A.518.518,0,0,0,16.052,9.071Z" transform="translate(0 -3.375)" fill="#7e8596"/>
                         </svg>
                     </a>
                 </li>
                 <li>
-                    <a href="#" @click.prevent="">
+                    <a :class="{ 'active-stats-btn' : showStats }" href="#" @click.prevent="toggleStatsView">
                         <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 30.824 14.013">
                             <path d="M-9368.936-7103.491a2.773,2.773,0,0,1,.4-1.411l-3.568-3.574a4.191,4.191,0,0,0,.989-.991l3.571,3.571a2.718,2.718,0,0,1,2.831,0l3.568-3.571a4.213,4.213,0,0,0,.99.991l-3.569,3.569a2.773,2.773,0,0,1,.4,1.416,2.8,2.8,0,0,1-2.8,2.8A2.8,2.8,0,0,1-9368.936-7103.491Zm-16.813,0a2.8,2.8,0,0,1,2.8-2.8,2.782,2.782,0,0,1,1.413.4l3.571-3.571a4.217,4.217,0,0,0,.991.991l-3.568,3.569a2.773,2.773,0,0,1,.4,1.416,2.8,2.8,0,0,1-2.8,2.8A2.8,2.8,0,0,1-9385.749-7103.491Zm25.221-8.407a2.8,2.8,0,0,1,2.8-2.8,2.8,2.8,0,0,1,2.8,2.8,2.8,2.8,0,0,1-2.8,2.8A2.8,2.8,0,0,1-9360.528-7111.9Zm-16.813,0a2.8,2.8,0,0,1,2.8-2.8,2.8,2.8,0,0,1,2.8,2.8,2.8,2.8,0,0,1-2.8,2.8A2.8,2.8,0,0,1-9377.342-7111.9Z" transform="translate(9385.749 7114.701)" fill="#7e8596"/>
                         </svg>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="table-head b-b-0" v-if="!receiptSearch.active">
-            <div class="flex-row-js tbh-row">
+            <div class="flex tbh-row">
                 <div class="prod-stat-hold">
                     <div class="prod-stat-item">
                         <a href="#" @click.prevent="">
@@ -55,7 +55,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="prod-stat-hold">
+                <!-- <div class="prod-stat-hold">
                     <div class="add-new">
                         <a href="#" @click.prevent="">
                             <i class="flex-column">
@@ -78,10 +78,10 @@
                             <span>Product Performance</span>
                         </a>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
-        <div v-if="saleRecords.array.length > 0 && !receiptSearch.active">
+        <div v-if="saleRecords.array.length > 0 && !receiptSearch.active && !showStats">
             <sales-record-list v-for="record in saleRecords.array" :key="record.id" v-bind:record="record" />
             <div v-if="saleRecords.array.length < 0">
                 <h2>No Record Found</h2>
@@ -104,25 +104,37 @@
                 <h2>No Record Found</h2>
             </div>
         </div>
+        <div v-if="showStats">
+            <line-chart v-bind:results="saleRecords.array"/>
+        </div>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment'
 import SalesRecordList from '../includes/SalesRecordList.vue';
+import LineChart from '../includes/LineChart.vue';
 export default {
-  components: { SalesRecordList },
+  components: { SalesRecordList, LineChart },
     name: 'SaleReportView',
     props: ['saleRecords', 'receiptSearch'],
     computed: {
         ...mapGetters(['getCurrency']),
         computeTotal() {
           return this.saleRecords.array.reduce((acc, item) => acc + Number(item.total_paid), 0);
-        },
+        }
+    },
+    data() {
+        return {
+            showStats: false
+        }
     },
     methods: {
         dateTime(value) {
             return moment(value).format('MMM DD, YYYY')
+        },
+        toggleStatsView() {
+            this.showStats = !this.showStats
         }
     }
 }
@@ -142,6 +154,12 @@ h4{
 .currency{
     font-weight: 500;
 }
+.active-stats-btn{
+    background-color: $primary-light;
+    svg path {
+        fill: $primary-color;
+    }
+}
 
 .results-right-nav{
     gap: 10px;
@@ -152,7 +170,8 @@ h4{
     li{
         list-style-type: none;
         a{
-            padding: 8px;
+            border-radius: 8px;
+            padding: 8px 10px;
             &:hover{
                 path {
                     fill: $primary-color;
