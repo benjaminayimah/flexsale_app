@@ -13,6 +13,15 @@ export default {
                 this.$store.commit('setDynamicFloatingDiv', elem)
             }
         },
+        doDateToggle(id) { 
+            this.toggleFilter ? this.closeJustMenu('stats_filter_toggle') : ''   
+            let elem = document.getElementById(id)
+            if(this.toggleCustomDate === false) {
+                this.toggleCustomDate = true
+                document.body.classList.add('fixed-body')
+                this.$store.commit('setDynamicFloatingDiv', elem)
+            }
+        },
         closeJustMenu(id) {
             let elem = document.getElementById(id)
             this.toggleCustomDate = false

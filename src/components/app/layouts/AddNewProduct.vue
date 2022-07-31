@@ -144,7 +144,7 @@ export default {
                 return pm.toFixed(2);
             }
             else
-                return 0;
+            return 0;
         }
     },
     data() {

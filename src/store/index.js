@@ -4,12 +4,12 @@ import router from '@/router'
 import country from './modules/country'
 export default createStore({
   state: {
-    // hostname: 'http://localhost:8000',
-    hostname: 'https://api.flexsale.store',
+    hostname: 'http://localhost:8000',
+    // hostname: 'https://api.flexsale.store',
     thisHostname: 'https://app.flexsale.store',
     token: localStorage.getItem('token') || null,
-    // OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
-    OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
+    OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
+    // OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
     windowHeight: '',
     windowWidth: '',
     bodyWidth: '',
@@ -74,13 +74,7 @@ export default createStore({
 
     submitting: true,
     customers: [],
-    activities: [
-      {id: 1, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-      {id: 2, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-      {id: 3, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-      {id: 4, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-      {id: 5, type: 'addition', body: 'Lorem ipsum dolor', time: '4 hours ago'},
-    ],
+    activities: [],
   },
   mutations: {
     //authentication

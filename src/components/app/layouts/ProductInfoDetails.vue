@@ -121,8 +121,12 @@ export default {
                 let pm = (this.computeProfit / this.computePrice)*100
                 return pm.toFixed(2)
             }else{
-                let pm = ((this.getTempProduct.data.selling_price - this.getTempProduct.data.cost) / this.getTempProduct.data.selling_price)*100
-                return pm.toFixed(2)
+                if(this.computeProfit > 0) {
+                    let pm = ((this.getTempProduct.data.selling_price - this.getTempProduct.data.cost) / this.getTempProduct.data.selling_price)*100
+                    return pm.toFixed(2)
+                }
+                else
+                return 0
             }
         },
         computedStock() {
@@ -141,7 +145,8 @@ export default {
 </script>
 <style scoped lang="scss">
 .section{
-    padding: 20px 0
+    padding: 20px 0;
+    margin-bottom: 120px;
 }
 a{
     color: $primary-color;

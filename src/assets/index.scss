@@ -22,7 +22,9 @@ $r-20: 20px;
 .body-dark {
   background-color: #131D52;
 }
-
+.cwht{
+  color: $white-color;
+}
 .h-list-wrap ul li:last-child div, #ovw_content ul li:last-child .a-wrap{
   padding-right: 20px;
 }
@@ -88,6 +90,9 @@ li:last-child a, li:last-child .info-section-hold{
       display: inline;
     }
     
+}
+.date-dropdown{
+  width: 300px;
 }
 .sticky-top{
   position: sticky;
@@ -164,6 +169,7 @@ li:last-child a, li:last-child .info-section-hold{
   border: 1px #f9a216 solid;
   padding: 4px 12px;
   border-radius: 15px;
+  font-size: 14px;
 }
 
 //sign up sign in
@@ -1639,6 +1645,7 @@ input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
       }
       li svg{
         display: none;
+        flex-shrink: 0;
       }
       .router-link-exact-active{
           background-color: transparent !important;

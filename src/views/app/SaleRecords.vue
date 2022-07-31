@@ -168,14 +168,6 @@ export default {
             const title = { title: this.title, back: false}
             this.$store.commit('setPagetitle', title)
         },
-        doDateToggle(id) {            
-            let elem = document.getElementById(id)
-            if(this.toggleCustomDate === false) {
-                this.toggleCustomDate = true
-                document.body.classList.add('fixed-body')
-                this.$store.commit('setDynamicFloatingDiv', elem)
-            }
-        },
         makeCustomDate(id) {
             this.dispatchFetch('custom date range', 3, '', this.form.startDate, this.form.endDate)
             this.closeJustMenu(id)
@@ -279,10 +271,6 @@ export default {
     background-color: $dark !important;
     color: #ffffff !important;
     border: 1px solid $dark !important;
-}
-
-.date-dropdown{
-    width: 300px;
 }
 .menu-card-mob{
   padding: 25px 0;
