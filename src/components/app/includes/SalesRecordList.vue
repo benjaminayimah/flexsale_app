@@ -1,11 +1,11 @@
 <template>
     <div class="record-list-main-wrap">
         <div class="controls">
-            <button class="button cancel-btn">
+            <!-- <button class="button cancel-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" height="3.5" viewBox="0 0 20.509 4.059">
                     <path d="M-7097.549-7163.327a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7097.549-7163.327Zm-8.236,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7105.786-7163.327Zm-8.214,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7114-7163.327Z" transform="translate(7114 7165.355)"></path>
                 </svg>
-            </button>
+            </button> -->
             <button class="button cancel-btn" @click="doToggleList">
                 <svg :class="{ 'toggle-in' : toggleList }" xmlns="http://www.w3.org/2000/svg"  height="9" viewBox="0 0 17.181 9.668">
                     <path d="M9245.622,7988.7l-.537-.526-8.233-8.071,1.051-1.071,7.7,7.545,7.361-7.534,1.072,1.048Z" transform="translate(-9236.852 -7979.032)" fill="#0e142c"/>

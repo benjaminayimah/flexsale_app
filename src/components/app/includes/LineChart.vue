@@ -2,8 +2,8 @@
     <Line
     :chart-options="chartOptions"
     :chart-data="computedStats"
-    width="100%"
-    :height="250"
+    :width="300"
+    :height="200"
     />
 </template>
 <script>

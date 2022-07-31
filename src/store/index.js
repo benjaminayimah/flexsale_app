@@ -65,6 +65,7 @@ export default createStore({
     todaysales: [],
     todaysaleItems: [],
     yesterdaySale: Number,
+    salesStats: [],
     admins: [],
     suppliers: [],
     trash: [],
@@ -93,6 +94,9 @@ export default createStore({
     },
     fetchSuppliers(state, payload) {
       state.suppliers = payload
+    },
+    fetchSalesStats(state, payload) {
+      state.salesStats = payload
     },
     addToProducts(state, payload) {
       state.products.push(payload)
@@ -851,6 +855,7 @@ export default createStore({
           state.commit('fetchProducts', res.data.products)
           state.commit('fetchDiscounts', res.data.discounts)
           state.commit('fetchSuppliers', res.data.suppliers)
+          state.commit('fetchSalesStats', res.data.salesStats)
           state.commit('fetchTodaysSales', { sales: res.data.sales, saleItems: res.data.sales_items, yesterdaySale: res.data.yesterday_sale })
           // state.commit('checkOnboard')
           state.commit('unSetLoader')
@@ -1265,6 +1270,7 @@ export default createStore({
     getBodyWidth: (state) => state.bodyWidth,
     getSignInStatus: (state) => state.signinStatus,
     getOAuth: (state) => state.OAuth,
+    getSalesStats: (state) => state.salesStats,
 
 
 

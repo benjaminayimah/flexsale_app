@@ -67,6 +67,21 @@
     </div>
     <div class="dash-section-holder">
         <div class="flex-row-js dashboard-title-wrap">
+            <h1 class="dashboard-title">Sale statistics</h1>
+            <div class="flex align-items-center">
+                <span>Last 7 days</span>
+                <i class="separator-dot"></i>
+                <router-link :to="'/sales-record/filter/todays-sales'"  class="see-all">See more</router-link>
+            </div>
+        </div>
+        <div class="activity-wrap">
+            <div class="">
+                <line-chart v-bind:results="getSalesStats"/>
+            </div>
+        </div>
+    </div>
+    <div class="dash-section-holder">
+        <div class="flex-row-js dashboard-title-wrap">
             <h1 class="dashboard-title">Activity log</h1>
             <!-- <a href="#" class="see-all">See all logs</a> -->
         </div>
@@ -97,13 +112,14 @@ import SupplierHorizontalList from '../../components/app/includes/SupplierHorizo
 import WelcomeScreenTop from '../../components/app/includes/WelcomeScreenTop.vue'
 import WelcomeScreenBottom from '../../components/app/includes/WelcomeScreenBottom.vue'
 import notificationsMixin from '../../mixins/notifications'
+import LineChart from '../../components/app/includes/LineChart.vue'
 
 export default {
-  components: { SupplierHorizontalList, ActivityListRow, WelcomeScreenTop, WelcomeScreenBottom },
+  components: { SupplierHorizontalList, ActivityListRow, WelcomeScreenTop, WelcomeScreenBottom, LineChart },
     name: 'Dashboard',
     mixins: [CouterMixin, notificationsMixin],
     computed: {
-        ...mapGetters(['getStores', 'getActivities', 'getProducts', 'getUser', 'getSuppliers']),
+        ...mapGetters(['getStores', 'getActivities', 'getProducts', 'getUser', 'getSuppliers', 'getSalesStats']),
         computedUser() {
             if(this.getUser.name) {
                 return this.getUser.name.split(' ')[0]

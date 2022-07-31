@@ -8,16 +8,16 @@
                         <div class="prod-stat-hold">
                             <div class="prod-stat-item">
                                 <a href="#">
-                                    <div class="stat-count">1,435</div>
-                                    <span class="label">Expired products</span>
+                                    <div class="stat-count">{{ computedInventory }}</div>
+                                    <span class="label">Total inventory size</span>
                                 </a>
                             </div>
                         </div>
                         <div class="prod-stat-hold">
                             <div class="prod-stat-item">
                                 <a href="#">
-                                    <div class="stat-count">217</div>
-                                    <span class="label">Low stock</span>
+                                    <div class="stat-count">{{ getProducts.length }}</div>
+                                    <span class="label">Unique products</span>
                                 </a>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                                         <path d="M-9242.92-183.675v-8.29h-8.29a1,1,0,0,1-1-1,1,1,0,0,1,1-1h8.29v-8.292a1,1,0,0,1,1-1,1,1,0,0,1,1,1v8.292h8.29a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-8.29v8.29a1,1,0,0,1-1,1A1,1,0,0,1-9242.92-183.675Z" transform="translate(9252.211 203.256)" fill="#fff"/>
                                     </svg>
                                     </i>
-                                    <span>Add product</span>
+                                    <span>Add Product</span>
                                 </a>
                             </div>
                         </div>
@@ -134,6 +134,9 @@ export default {
         },
         computedFilters() {
             return false
+        },
+        computedInventory() {
+            return this.getProducts.reduce((acc, item) => acc + Number(item.stock), 0)
         }
     },
     data() {

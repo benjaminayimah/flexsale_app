@@ -51,7 +51,7 @@
                     </div>
                 </transition>
             </div>
-            <span class="disclaimer">By creating an account you, I have agreed to Flexsale's <a href="https://www.flexsale.store/terms-and-conditions">Terms</a>, <a href="https://www.flexsale.store/privacy-policy">Privacy policy</a> & <a href="https://www.flexsale.store/cookies-policy">Cookie policy.</a></span>
+            <span class="disclaimer">By creating an account, I have agreed to Flexsale's <a href="https://www.flexsale.store/terms-and-conditions">Terms</a>, <a href="https://www.flexsale.store/privacy-policy">Privacy policy</a> & <a href="https://www.flexsale.store/cookies-policy">Cookie policy.</a></span>
             <button class="button button-primary logon-btn" @click.prevent="submitSignUp"  :class="{ 'button-disabled' : creating }" :disabled="creating? true : false">
                 <span>{{ creating ? 'Creating account' : 'Create Account'}}</span>
                 <spinner v-if="creating" v-bind:size="20" v-bind:white="true" />
@@ -76,7 +76,7 @@
                     <span class="show-mob">Sign in with</span><span>Facebook</span>
                 </button> -->
             </div>
-            <div class="flex create-acct">
+            <div class="flex create-acct justify-content-center">
                 <span>Already have an account?</span><a href="/signin">Sign in</a>
                 <!--<router-link id="go_hm" :to="{ name: 'Home' }">Back Home</router-link>-->
             </div>

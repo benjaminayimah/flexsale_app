@@ -26,11 +26,11 @@
                             </div>
                         </div>
                     </div>
-                    <button class="menu-toggle-btn">
+                    <!-- <button class="menu-toggle-btn">
                         <i></i>
                         <i></i>
                         <i></i>
-                    </button>
+                    </button> -->
                 </div>
                 <button class="button button-primary add-sale-btn" @click.prevent="getStores.length > 0 ? $store.commit('addToSale') : this.$store.commit('forceSetOnboard', 'intro')">
                     <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 15.882 15.882">

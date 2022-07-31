@@ -2,7 +2,7 @@
 <div class="noti-main-row flex">
     <div class="noti-main-row-top">
         <div class="flex align-items-center noti-title">
-                <div class="noti-label" :style="{ 'color' : notification.color }">{{ notification.title }}</div>
+            <div class="noti-label" :style="{ 'color' : notification.color }">{{ notification.title }}</div>
             <i class="separator-dot"></i>
             <div class="noti-time">{{ dateTime(notification.time) }}</div>
             <i class="unread" v-if="!notification.read"></i>
