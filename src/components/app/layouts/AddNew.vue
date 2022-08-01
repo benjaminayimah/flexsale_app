@@ -18,12 +18,12 @@
             </div>
         </div>
     </div>
-    <add-new-product />
-    <add-new-tag />
-    <add-new-discount />
-    <add-new-user />
-    <add-new-store />
-    <add-new-supplier />
+    <add-new-product v-if="getAddingProduct.product" />
+    <add-new-tag v-if="getAddingProduct.tag" />
+    <add-new-discount v-if="getAddingProduct.discount" />
+    <add-new-user v-if="getAddingProduct.admin" />
+    <add-new-store v-if="getAddingProduct.store" />
+    <add-new-supplier v-if="getAddingProduct.supplier" />
     <update-stock />
 </template>
 <script>

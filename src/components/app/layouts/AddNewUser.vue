@@ -1,5 +1,4 @@
 <template>
-<div v-if="getAddingProduct.admin">
     <teleport to="#add_title">
         <span v-if="getEditContainer.password">Reset Password</span>
         <span v-else-if="getEditContainer.active && getUser.id !== getEditContainer.data.id">Edit User</span>
@@ -50,7 +49,6 @@
             </div>
         </form>
     </teleport>
-</div>
 </template>
 <script>
 import axios from 'axios'
@@ -60,7 +58,7 @@ export default {
   components: { StoreSelectedCheck },
     name: 'AddNewUser',
     computed: {
-        ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser', 'getCurrentStore', 'getUserAdminID', 'getAddingProduct']),
+        ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser', 'getCurrentStore', 'getUserAdminID']),
         computeInitials() {
             if(this.getUser.name && this.getStores.length < 1) {
                 let name = this.getUser.name.split(' ')
@@ -153,40 +151,40 @@ export default {
         },
         async doSubmitPassword() {
             let id = this.getEditContainer.data.id
-                const putUrl = this.getHostname+'/api/reset-password/'+id+'?token='+this.getToken
-                    axios.put(putUrl, this.form,
-                        {
-                            headers: {
-                                'Content-Type': ['application/json']
-                            },
-                        }
-                ).then((res) => {
+            const putUrl = this.getHostname+'/api/reset-password/'+id+'?token='+this.getToken
+                axios.put(putUrl, this.form,
+                    {
+                        headers: {
+                            'Content-Type': ['application/json']
+                        },
+                    }
+            ).then((res) => {
+                const payload = {
+                    id: 'success',
+                    title: res.data.title,
+                    body: res.data.message
+                }
+                if(res.data.status == 1) {
+                    this.$store.dispatch('resfreshUser')
+                }
+                if(res.status == 201){
+                    this.error.pass = true
+                    this.error.message = res.data.message
+                }else{
+                    this.$store.commit('showAlert', payload)
+                    this.$store.commit('unsetMainHomeWidth', true)
+                }
+            }).catch((err) => {
+                console.log(err.data)
+                if(err.response.status === 422) {
                     const payload = {
-                        id: 'success',
-                        title: res.data.title,
-                        body: res.data.message
+                        id: 'danger',
+                        title: 'Error!',
+                        body: err.response.data.message
                     }
-                    if(res.data.status == 1) {
-                        this.$store.dispatch('resfreshUser')
-                    }
-                    if(res.status == 201){
-                        this.error.pass = true
-                        this.error.message = res.data.message
-                    }else{
-                        this.$store.commit('showAlert', payload)
-                        this.$store.commit('unsetMainHomeWidth', true)
-                    }
-                }).catch((err) => {
-                    console.log(err.data)
-                    if(err.response.status === 422) {
-                        const payload = {
-                            id: 'danger',
-                            title: 'Error!',
-                            body: err.response.data.message
-                        }
-                        this.$store.commit('showAlert', payload)
-                    }
-                })
+                    this.$store.commit('showAlert', payload)
+                }
+            })
         },
         check(item) {
             let array = this.form.store
@@ -225,7 +223,6 @@ export default {
                 this.error.message = ''
             }
         }
-
     },
     created() {
         this.preloadForEdit()

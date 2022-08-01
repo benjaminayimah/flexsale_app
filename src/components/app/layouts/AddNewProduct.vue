@@ -1,5 +1,4 @@
 <template>
-<div v-if="getAddingProduct.product">
     <teleport to="#add_title">
         <span>{{ getEditContainer.active ? 'Edit Product' : 'Add New Product'}}</span>
     </teleport>
@@ -123,7 +122,6 @@
             </div>
         </form>
     </teleport>
-</div>
 </template>
 <script>
 import axios from 'axios'
@@ -362,14 +360,14 @@ export default {
         }
     },
     created() {
-        this.getEditContainer.active && this.getEditContainer.data.image ? this.setTempImage() : "";
+        this.getEditContainer.active && this.getEditContainer.data.image ? this.setTempImage() : ""
+        this.preloadForEdit();
     },
     unmounted() {
         this.getEditContainer.active ? this.clearPreloader() : "";
     },
     beforeMount() {
         window.addEventListener("beforeunload", this.preventReload);
-        this.preloadForEdit();
     },
     beforeUnmount() {
         window.removeEventListener("beforeunload", this.preventReload);

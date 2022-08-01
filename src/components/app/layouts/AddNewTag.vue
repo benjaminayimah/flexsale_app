@@ -1,5 +1,4 @@
 <template>
-<div v-if="getAddingProduct.tag">
     <teleport to="#add_title">
         <span>{{ getTempContainer.active ? 'Edit Tag' : 'Create New Tag'}}</span>
     </teleport>
@@ -53,7 +52,6 @@
         </form>
     </teleport>
     <select-products-overlay v-if="getSelectionSheet.selectProd"/>
-</div>
 </template>
 <script>
 import axios from 'axios'
@@ -62,7 +60,7 @@ import SelectedTagRow from '../includes/SelectedTagRow.vue'
 import SelectProductsOverlay from '../includes/SelectProductsOverlay.vue'
 export default {
   components: { SelectedTagRow, SelectProductsOverlay },
-    computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getAddingProduct', 'getCurrentStore']),
+    computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getCurrentStore']),
     name: 'AddNewTag',
     data() {
         return {

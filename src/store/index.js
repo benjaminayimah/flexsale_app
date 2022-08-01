@@ -318,7 +318,6 @@ export default createStore({
           state.editContainer.data = newData
           state.editContainer.active = true
           state.editContainer.password = true
-          state.editContainer.active = true
           state.addingProduct.admin = true 
         }else{
           state.addingProduct.admin = true
@@ -625,7 +624,6 @@ export default createStore({
       const i = state.filters.findIndex(x => x.id === payload.id)
       state.filters.splice(i, 1, payload)
     },
-
     updateTrash(state, payload) {
       const i = state.products.findIndex(x => x.id === payload.product.id)
       state.products.splice(i, 1, payload.product);
