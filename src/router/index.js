@@ -25,8 +25,8 @@ import DetailedProduct from '@/views/app/DetailedProduct.vue'
 import DetailedSupplier from '@/views/app/DetailedSupplier.vue'
 import Discount from '@/views/app/Discount.vue'
 import Suppliers from '@/views/app/Suppliers.vue'
-import Customers from '@/views/app/Customers.vue'
-import Invoice from '@/views/app/Invoice.vue'
+// import Customers from '@/views/app/Customers.vue'
+// import Invoice from '@/views/app/Invoice.vue'
 import Reports from '@/views/app/Reports.vue'
 import ProductDetailsBasic from '@/components/app/layouts/ProductInfoDetails.vue'
 import ProductDetailsStats from '@/components/app/layouts/ProductInfoStats.vue'
@@ -76,8 +76,8 @@ const routes = [
     { path: '/supplier/:id/:name', name: 'DetailedSupplier', component: DetailedSupplier },
     { path: '/reports', name: 'Reports', component: Reports },
     { path: '/suppliers', name: 'Suppliers', component: Suppliers },
-    { path: '/Customers', name: 'Customers', component: Customers },
-    { path: '/invoice', name: 'Invoice', component: Invoice },
+    // { path: '/Customers', name: 'Customers', component: Customers },
+    // { path: '/invoice', name: 'Invoice', component: Invoice },
 
     ]
   },

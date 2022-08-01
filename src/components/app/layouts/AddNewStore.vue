@@ -1,5 +1,4 @@
 <template>
-<div v-if="getAddingProduct.store">
     <teleport to="#add_title">
         <span v-if="getEditContainer.active">Update store details</span>
         <span v-else>Create new store</span>
@@ -39,8 +38,6 @@
             </div>
         </form>
 </teleport>
-</div>
-
 </template>
 <script>
 import axios from 'axios'
@@ -48,7 +45,7 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'AddNewStore',
     computed: {
-        ...mapGetters(['getToken', 'getHostname', 'getEditContainer', 'getCurrentStore', 'getAddingProduct']),
+        ...mapGetters(['getToken', 'getHostname', 'getEditContainer', 'getCurrentStore']),
     },
     data() {
         return {
