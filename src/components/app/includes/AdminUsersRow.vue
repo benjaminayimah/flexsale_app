@@ -100,7 +100,6 @@ export default {
     border-bottom: 1px solid $dark-light;
     justify-content: space-between;
     padding: 20px;
-    margin: 0 -20px 0 -20px;
     border-radius: 2px;
     position: relative;
 }
