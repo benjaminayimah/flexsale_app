@@ -38,12 +38,8 @@ export default {
 </script>
 <style scoped lang="scss">
 .info-section{
-    padding: 20px;
+    padding: 20px 0;
     transition: 0.3s all;
-    margin: 0 -20px 150px -20px;
-    &:hover {
-        background-color: rgb(250, 250, 250);
-    }
     .align-items-center{
         span{
             text-transform: capitalize;
