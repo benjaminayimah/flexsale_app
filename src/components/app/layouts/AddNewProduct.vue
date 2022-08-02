@@ -162,8 +162,6 @@ export default {
                 prodType: "0",
                 batch: "",
                 expiryDate: new Date().toISOString().slice(0, 10),
-
-
             },
             doingtempUpload: false,
             imageUploaded: false,
@@ -263,7 +261,7 @@ export default {
                             this.$store.commit("addToProducts", res.data.product);
                             this.alertMsg("success", res.data.title, res.data.body);
                             this.resetTempImg();
-                            // this.units = [];
+                            this.$store.commit('unsetMainHomeWidth')
                         }).catch((err) => {
                             console.log(err.response);
                         });
