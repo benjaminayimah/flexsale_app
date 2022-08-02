@@ -3,11 +3,11 @@
         <span>{{ getTempContainer.active ? 'Edit Tag' : 'Create New Tag'}}</span>
     </teleport>
     <teleport to="#add_submit_button">
-        <button v-if="!getTempContainer.active" class="button button-primary top-submit-btn" @click.prevent="submitTag">
+        <button v-if="!getTempContainer.active" class="button button-primary top-submit-btn" @click.prevent="submitTag" :class="{ 'button-disabled' : submiting }" :disabled="submiting ? true : false">
             <span>{{ submiting ? 'Creating' : 'Create' }}</span>
             <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
         </button>
-        <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditTag">
+        <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditTag" :class="{ 'button-disabled' : submiting }" :disabled="submiting ? true : false">
             <span>{{ submiting ? 'Saving' : 'Save' }}</span>
             <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
         </button>
@@ -65,8 +65,9 @@ import { mapGetters } from 'vuex'
 import SelectedTagRow from '../includes/SelectedTagRow.vue'
 import SelectProductsOverlay from '../includes/SelectProductsOverlay.vue'
 import validationMixin from '../../../mixins/validationMixin'
+import Spinner from '../includes/Spinner.vue'
 export default {
-  components: { SelectedTagRow, SelectProductsOverlay },
+  components: { SelectedTagRow, SelectProductsOverlay, Spinner },
     computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getCurrentStore']),
     name: 'AddNewTag',
     mixins: [ validationMixin ],
