@@ -1,5 +1,14 @@
 <template>
 <div class="section">
+    <div v-if="getTempProduct.data.description">
+        <div class="flex align-items-center content-row">
+            <div class="row-title">Product description</div>
+        </div>
+        <div class="flex lign-items-center item-row">
+            <div>{{ getTempProduct.data.description }}</div>
+        </div>
+        <hr />
+    </div>
     <div class="flex align-items-center content-row">
         <div class="row-title">inventory</div>
         <a href="#" class="add-more flex align-items-center" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: getTempProduct.data.id })">
@@ -33,7 +42,7 @@
             <div>Add units to this product</div>
         </div>
     </div>
-    <hr>
+    <hr />
     <div class="flex align-items-center content-row" v-if="getTempProduct.data.selling_price && getTempProduct.data.cost">
         <div class="row-title">Cost, pricing & profit</div>
     </div>
