@@ -28,7 +28,7 @@
                         <div v-if="!computeSupplier == false">
                             <div class="flex-row caption-row"><label>Supplied by:</label><router-link :to="{ name: 'DetailedSupplier', params: { id: computeSupplier.id, name: computeSupplier.name} }">{{computeSupplier.name }}</router-link></div>
                         </div>
-                        <div class="flex-row caption-row"><span v-if="getTempProduct.data.batch_no">({{ getTempProduct.data.batch_no }})</span></div>
+                        <div class="flex-row caption-row"><span v-if="getTempProduct.data.description">({{ getTempProduct.data.description }})</span></div>
                         <div class="flex-row caption-row"><label>Created:</label><span>{{ dateTime(getTempProduct.data.created_at) }}</span></div>
                         <div class="flex-row caption-row"><label>By:</label><span>{{ getTempProduct.data.added_by }}</span></div>
                     </div>
