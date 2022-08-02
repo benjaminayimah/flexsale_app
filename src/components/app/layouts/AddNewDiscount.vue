@@ -3,11 +3,11 @@
         <span>{{ getTempContainer.active ? 'Edit Discount' : 'Create New Discount'}}</span>
     </teleport>
     <teleport to="#add_submit_button">
-        <button v-if="!getTempContainer.active" class="button button-primary top-submit-btn" @click.prevent="submitDiscount">
+        <button v-if="!getTempContainer.active" class="button button-primary top-submit-btn" @click.prevent="submitDiscount" :class="{ 'button-disabled' : submiting }" :disabled="submiting ? true : false" >
             <span>{{ submiting ? 'Creating' : 'Create' }}</span>
             <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
         </button>
-        <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditDiscount">
+        <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditDiscount" :class="{ 'button-disabled' : submiting }" :disabled="submiting ? true : false">
             <span>{{ submiting ? 'Saving' : 'Save' }}</span>
             <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
         </button>
