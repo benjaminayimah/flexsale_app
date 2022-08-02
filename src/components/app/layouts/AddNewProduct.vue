@@ -3,7 +3,15 @@
         <span>{{ getEditContainer.active ? 'Edit Product' : 'Add New Product'}}</span>
     </teleport>
     <teleport to="#add_submit_button">
-        <button :class="{ 'button-disabled' : error.active }" :disabled="error.active? true : false" class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Done'}}</button>
+        <button :class="{ 'button-disabled' : error.active || submiting }" :disabled="error.active || submiting ? true : false" class="button button-primary top-submit-btn" @click.prevent="doSubmit">
+            <span v-if="getEditContainer.active">
+                {{ submiting ? 'Saving' : 'Save'}}
+            </span>
+            <span v-else>
+                {{ submiting ? 'Adding' : 'Add'}}
+            </span>
+            <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
+        </button>
     </teleport>
     <teleport to="#add_master_body_container">
         <form id="product_form" @submit.prevent="" class="overlay-hero-form">
@@ -42,9 +50,12 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row">
+            <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.name}">
                 <label>Product name:</label>
                 <input v-model="form.name" type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Ideal Milk" required>
+                <span class="span" v-if="validation.error && validation.errors.name">
+                    {{ validation.errors.name[0] }}
+                </span>
             </div>
             <div class="form-row">
                 <div id="unit_bg" v-if="!this.getEditContainer.active">
@@ -127,9 +138,12 @@
 import axios from 'axios'
 import { mapGetters } from 'vuex'
 import ImageStatusOverlay from '../includes/ImageStatusOverlay.vue'
+import validationMixin from '../../../mixins/validationMixin'
+import Spinner from '../includes/Spinner.vue'
 export default {
     name: "AddNewProduct",
-    components: { ImageStatusOverlay },
+    components: { ImageStatusOverlay, Spinner },
+    mixins: [ validationMixin ],
     computed: {
         ...mapGetters(["getToken", "getHostname", "getUser", "getDefaultImage", "getEditContainer", "getUserAdminID", "getDiscounts", "getSuppliers", "getAddingProduct", 'getCurrentStore']),
         computeProfit() {
@@ -233,6 +247,7 @@ export default {
             }
             else {
                 if (this.getEditContainer.active) {
+                    this.submiting = true
                     let id = this.getEditContainer.data.id;
                     const putUrl = this.getHostname + "/api/products/" + id + "?token=" + this.getToken;
                     axios.put(putUrl, x, {
@@ -240,11 +255,13 @@ export default {
                             "Content-Type": ["application/json"]
                         },
                     }).then((res) => {
+                        this.submiting = false
                         this.$store.commit("updateProduct", res.data.product)
                         this.alertMsg("success", res.data.title, res.data.body)
                         this.$store.commit("unsetMainHomeWidth", true)
                         this.$router.currentRoute.value.name !='Products' ? this.$router.push({ name: this.$router.currentRoute.value.name, params: { id: res.data.product.id, name: res.data.product.name }, replace: true }) : ''
                     }).catch((err) => {
+                        this.submiting = false
                         console.log(err.response);
                     });
                 }
@@ -252,17 +269,20 @@ export default {
                     if (x.batch == "") {
                         this.alertMsg("danger", "Submition error", "The batch field is required");
                     }else {
+                        this.submiting = true
                         const postUrl = this.getHostname + "/api/products?token=";
                         axios.post(postUrl + this.getToken, x, {
                             headers: {
                                 "Content-Type": ["application/json"]
                             },
                         }).then((res) => {
+                            this.submiting = false
                             this.$store.commit("addToProducts", res.data.product);
                             this.alertMsg("success", res.data.title, res.data.body);
                             this.resetTempImg();
                             this.$store.commit('unsetMainHomeWidth')
                         }).catch((err) => {
+                            this.submiting = false
                             console.log(err.response);
                         });
                     }
