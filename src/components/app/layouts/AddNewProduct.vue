@@ -64,7 +64,7 @@
                             <label>Stock:</label>
                             <input type="text" name="stockNumber" v-model="form.stock"  class="form-control stk2 input-height-2" placeholder="0">
                         </div>
-                        <div style="margin-right:10px">
+                        <div style="margin-right:10px" :class="{ 'input-has-error' : validation.error && validation.errors.batch}">
                             <label>Batch No.:</label>
                             <input type="text" name="stockNumber" @blur="addToUnit(this.form.batch)" v-model="form.batch" class="form-control input-height-2" placeholder="Batch number">
                         </div>
@@ -74,6 +74,11 @@
                         </div>
                     </div>
                     <span v-if="error.active" class="err">{{ error.message }}</span>
+                    <div :class="{ 'input-has-error' : validation.error && validation.errors.batch}">
+                        <span class="span" v-if="validation.error && validation.errors.batch">
+                        {{ validation.errors.batch[0] }}
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="form-row">
@@ -240,12 +245,30 @@ export default {
             };
             this.$store.commit("showAlert", payload);
         },
+        showErr(payload) {
+            this.validation.error = true
+            this.validation.errors = payload
+        },
+        checkForm: function() {
+            const payload = { name: '', batch: ''}
+            if(this.form.name == '' ) {
+                payload.name = ['Name field is required.']
+            }
+            if(this.form.batch == '' && !this.getEditContainer.active ) {
+                payload.batch = ['Batch number field is required.']
+            }
+            if(payload.name !=='' || payload.batch !=='') {
+                this.showErr(payload)
+                return false
+            }else {
+                return true
+            }
+            
+        },
         doSubmit() {
             let x = this.form;
-            if (x.name == "") {
-                this.alertMsg("danger", "Submition error", "The name field is required");
-            }
-            else {
+            this.clearErrs()
+            if (this.checkForm()) {
                 if (this.getEditContainer.active) {
                     this.submiting = true
                     let id = this.getEditContainer.data.id;
@@ -299,6 +322,7 @@ export default {
             if (this.error.active === true) {
                 this.error.active = false;
             }
+            this.clearErrs()
             if (id !== "") {
                 axios.post(this.getHostname + "/api/check-unit?token=" + this.getToken, { batch_no: id })
                 .then((res) => {

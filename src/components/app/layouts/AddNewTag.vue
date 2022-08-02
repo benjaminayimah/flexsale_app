@@ -3,15 +3,21 @@
         <span>{{ getTempContainer.active ? 'Edit Tag' : 'Create New Tag'}}</span>
     </teleport>
     <teleport to="#add_submit_button">
-        <button v-if="!getTempContainer.active" class="button button-primary top-submit-btn" @click.prevent="submitTag">Create</button>
-        <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditTag">Save</button>
+        <button v-if="!getTempContainer.active" class="button button-primary top-submit-btn" @click.prevent="submitTag">
+            <span>{{ submiting ? 'Creating' : 'Create' }}</span>
+            <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
+        </button>
+        <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditTag">
+            <span>{{ submiting ? 'Saving' : 'Save' }}</span>
+            <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
+        </button>
     </teleport>
     <teleport to="#add_master_body_container">
         <form id="tag_form" @submit.prevent="" class="overlay-hero-form">
-            <div class="form-row">
+            <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.tag}">
                 <label>{{ getTempContainer.active? 'Tag name' : 'Give a title to your tag' }}:</label>
                 <input v-model="form.tag" type="text" name="tagName" class="form-control" placeholder="Tag title eg. tooth paste or new arrivals" required>
-                <span class="validation-err" v-if="validation.error && validation.errors.tag">
+                <span class="span" v-if="validation.error && validation.errors.tag">
                     {{ validation.errors.tag[0] }}
                 </span>
             </div>
@@ -36,7 +42,7 @@
                         </ul>
                     </div>
                 </div>
-                <div v-else style="margin-bottom: 30px">
+                <div v-else style="margin-bottom: 30px" :class="{ 'input-has-error' : validation.error && validation.errors.products}">
                     <label>Products:</label>
                     <button id="tag_big_add" class="button-secondary" @click.prevent="$store.commit('setSelectionSheet', { type: 'product' })">
                         <div>
@@ -44,7 +50,7 @@
                         </div>
                         <span>Add products to this tag</span>
                     </button>
-                    <span class="validation-err" v-if="validation.error && validation.errors.products">
+                    <span class="span" v-if="validation.error && validation.errors.products">
                         {{ validation.errors.products[0] }}
                     </span>
                 </div>
@@ -58,30 +64,28 @@ import axios from 'axios'
 import { mapGetters } from 'vuex'
 import SelectedTagRow from '../includes/SelectedTagRow.vue'
 import SelectProductsOverlay from '../includes/SelectProductsOverlay.vue'
+import validationMixin from '../../../mixins/validationMixin'
 export default {
   components: { SelectedTagRow, SelectProductsOverlay },
     computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getCurrentStore']),
     name: 'AddNewTag',
+    mixins: [ validationMixin ],
     data() {
         return {
             form: {
                 tag: '',
                 products: [],
                 id: ''
-            },
-            validation: {
-                error: false,
-                errors: [],
-                message: ''
             }
         }
     },
     methods: {
         submitTag() {
+            this.submiting = true
             this.form.products = this.getTempContainer.array
             axios.post( this.getHostname+'/api/tag?token='+this.getToken, this.form,
             ).then((res) => {
-                //console.log(res)
+                this.submiting = false
                 if(res.data.status === 1) {
                     const payload = {
                         id: 'success',
@@ -103,14 +107,8 @@ export default {
                     
                 }
             }).catch((err) => {
-                console.log(err.response)
+                this.submiting = false
                 if(err.response.status === 422) {
-                    const payload = {
-                        id: 'danger',
-                        title: 'Error!',
-                        body: err.response.data.message
-                    }
-                    this.$store.commit('showAlert', payload)
                     this.validation.error = true
                     this.validation.errors = err.response.data.errors
                     this.validation.message = err.response.data.message
@@ -118,9 +116,11 @@ export default {
             })
         },
         submitEditTag() {
+            this.submiting = true
             this.form.products = this.getTempContainer.array
             axios.put( this.getHostname+'/api/tag/'+this.form.id+'?token='+this.getToken, this.form)
             .then((res) => {
+                this.submiting = false
                 if(res.data.status === 1) {
                     const newData = {
                         tags: res.data.tags, data: { id: this.form.id, name: this.form.tag}
@@ -144,22 +144,9 @@ export default {
                     this.$store.commit('showAlert', payload)
                     
                 }
-                //location.reload()
-
-                // const id = res.data.id
-                // const name = res.data.name
-                // this.$router.push({ name: 'DetailedTag', params: { id,name } })
-                // this.$route.params = name
-                //this.$router.push({ path: `/tag/${id}/${name}` }) // -> /user/123
             }).catch((err) => {
-                console.log(err.response)
+                this.submiting = false
                 if(err.response.status === 422) {
-                    const payload = {
-                        id: 'danger',
-                        title: 'Error!',
-                        body: err.response.data.message
-                    }
-                    this.$store.commit('showAlert', payload)
                     this.validation.error = true
                     this.validation.errors = err.response.data.errors
                     this.validation.message = err.response.data.message
@@ -171,10 +158,7 @@ export default {
         buttonHeight() {
             let elem = document.getElementById('tag_big_add')
             let elemWidth = elem.offsetWidth
-            //let me = elem.offsetHeight = +'px'
-            //elem.style.height = parseInt(elemWidth/2)+'px'
             console.log(elemWidth/2)
-            
         },
         preloadForEdit() {
             if(this.getTempContainer.active){
