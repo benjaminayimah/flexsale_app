@@ -3,14 +3,23 @@
         <span>{{ getTempContainer.active ? 'Edit Discount' : 'Create New Discount'}}</span>
     </teleport>
     <teleport to="#add_submit_button">
-        <button v-if="!getTempContainer.active" class="button button-primary top-submit-btn" @click.prevent="submitDiscount">Create</button>
-        <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditDiscount">Save</button>
+        <button v-if="!getTempContainer.active" class="button button-primary top-submit-btn" @click.prevent="submitDiscount">
+            <span>{{ submiting ? 'Creating' : 'Create' }}</span>
+            <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
+        </button>
+        <button v-else class="button button-primary top-submit-btn" @click.prevent="submitEditDiscount">
+            <span>{{ submiting ? 'Saving' : 'Save' }}</span>
+            <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
+        </button>
     </teleport>
     <teleport to="#add_master_body_container">
         <form class="overlay-hero-form">
-            <div class="form-row">
+            <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.name}">
                 <label>Discount name:</label>
                 <input type="text" v-model="form.name" name="DiscountName" class="form-control" placeholder="Eg. Workers day discount" required>
+                <span class="span" v-if="validation.error && validation.errors.name">
+                    {{ validation.errors.name[0] }}
+                </span>
             </div>
             <div class="form-row">
                 <label>Discount Type:</label>
@@ -29,9 +38,12 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row">
+            <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.amount}">
                 <label>Amount:</label>
                 <input type="number" v-model="form.amount" name="Amount" class="form-control" placeholder="Eg. 5" required>
+                <span class="span" v-if="validation.error && validation.errors.amount">
+                    {{ validation.errors.amount[0] }}
+                </span>
             </div>
             <div class="form-row-col">
                 <div class="col-2 pl-0">
@@ -83,10 +95,13 @@ import axios from 'axios'
 import { mapGetters } from 'vuex'
 import SelectProductsOverlay from '../includes/SelectProductsOverlay.vue';
 import SelectedTagRow from '../includes/SelectedTagRow.vue';
+import validationMixin from '../../../mixins/validationMixin';
+import Spinner from '../includes/Spinner.vue';
 export default {
     name: 'AddNewDiscount',
-     components: { SelectProductsOverlay, SelectedTagRow },
-     computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getCurrentStore']),
+    mixins: [ validationMixin ],
+    components: { SelectProductsOverlay, SelectedTagRow, Spinner },
+    computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getCurrentStore']),
     data() {
         return {
             form: {
@@ -103,8 +118,9 @@ export default {
     },
     methods: {
         async submitDiscount() {
+            this.clearErrs()
+            this.submiting = true
             this.form.products = this.getTempContainer.array
-            //console.log(this.form.startDate.toJSON())
             axios.post( this.getHostname+'/api/discount?token='+this.getToken,
                     this.form, {store: this.getCurrentStore.id},
                     {
@@ -113,13 +129,12 @@ export default {
                         },
                     }
             ).then((res) => {
-                console.log(res.data)
+                this.submiting = false
                 if(res.data.status === 1) {
                     const addTo = {
                         discount: res.data.discount, products: res.data.products
                     }
                     this.$store.commit('addToDiscounts', addTo)
-                    //console.log(res.data)
                     const payload = {
                         id: 'success',
                         title: res.data.title,
@@ -135,25 +150,24 @@ export default {
                         body: res.data.message
                     }
                     this.$store.commit('showAlert', payload)
-                    
                 }
                 
             }).catch((err) => {
+                this.submiting = false
                 if(err.response.status === 422) {
-                    const payload = {
-                        id: 'danger',
-                        title: 'Error!',
-                        body: err.response.data.message
-                    }
-                    this.$store.commit('showAlert', payload)
+                    this.validation.error = true
+                    this.validation.errors = err.response.data.errors
+                    this.validation.message = err.response.data.message
                 }
-                console.log(err.response.data.errors)
             })
         },
         async submitEditDiscount() {
+            this.clearErrs()
+            this.submiting = true
             this.form.products = this.getTempContainer.array
             axios.put( this.getHostname+'/api/discount/'+this.form.id+'?token='+this.getToken, this.form)
             .then((res) => {
+                this.submiting = false
                 if(res.data.status === 1) {
                     const newData = {
                         discount: res.data.discount, discounts: res.data.discounts, products: res.data.products
@@ -177,15 +191,12 @@ export default {
                     this.$store.commit('showAlert', payload)
                 }
             }).catch((err) => {
+                this.submiting = false
                 if(err.response.status === 422) {
-                    const payload = {
-                        id: 'danger',
-                        title: 'Error!',
-                        body: err.response.data.message
-                    }
-                    this.$store.commit('showAlert', payload)
+                    this.validation.error = true
+                    this.validation.errors = err.response.data.errors
+                    this.validation.message = err.response.data.message
                 }
-                console.log(err.response.data.errors)
             })
 
 
