@@ -3,12 +3,11 @@
         <div v-if="getStores.length > 0">
             <div class="flex-col">
                 <div class="flex align-items-center"><label>Store name:</label><span>{{ getCurrentStore.name }}</span></div>
-                <div class="flex align-items-center"><label>Phone:</label><span>{{ getCurrentStore.phone_1 }}</span><span v-if="getCurrentStore.phone_2">, {{ getCurrentStore.phone_2 }}</span></div>
-                <div class="flex align-items-center"><label>Address:</label><span>{{ getCurrentStore.address }}</span></div>
-                <div class="flex align-items-center"><label>City:</label><span>{{ getCurrentStore.city }}</span></div>
-                <div class="flex align-items-center"><label>Region:</label><span>{{ getCurrentStore.region }}</span></div>
-                <div class="flex align-items-center"><label>Country:</label><span>{{ getCurrentStore.country }}</span></div>
-                <div class="flex align-items-center"><label>Store type:</label><span>{{ getCurrentStore.type }}</span></div>
+                <div class="flex align-items-center" v-if="getCurrentStore.phone_1 || getCurrentStore.phone_2"><label>Phone:</label><span>{{ getCurrentStore.phone_1 }}</span><span v-if="getCurrentStore.phone_2">, {{ getCurrentStore.phone_2 }}</span></div>
+                <div class="flex align-items-center"><label>Address:</label><span>{{ getCurrentStore.address || 'n/a' }}</span></div>
+                <div class="flex align-items-center"><label>City:</label><span>{{ getCurrentStore.city || 'n/a' }}</span></div>
+                <div class="flex align-items-center"><label>Region:</label><span>{{ getCurrentStore.region || 'n/a' }}</span></div>
+                <div class="flex align-items-center"><label>Country:</label><span>{{ getCurrentStore.country || 'n/a' }}</span></div>
                 <div class="flex align-items-center"><label>Date created:</label><span>{{ dateTime(getCurrentStore.created_at) }}</span></div>
             </div>
             <button v-if="getUser.role == 1" class="button button-secondary" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'store'})">
