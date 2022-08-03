@@ -6,8 +6,15 @@
         <span v-else>Add New User</span>
     </teleport>
     <teleport to="#add_submit_button">
-        <button v-if="getEditContainer.password" class="button button-primary top-submit-btn" @click.prevent="doSubmitPassword">Save</button>
-        <button v-else class="button button-primary top-submit-btn" @click.prevent="doSubmit">{{ getEditContainer.active ? 'Save' : 'Submit user'}}</button>
+        <button v-if="getEditContainer.password" class="button button-primary top-submit-btn" @click.prevent="doSubmitPassword">
+            {{ submiting ? 'Saving' : 'Save' }}
+            <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
+        </button>
+        <button v-else class="button button-primary top-submit-btn" @click.prevent="doSubmit">
+            <span v-if="getEditContainer.active">{{ submiting? 'Saving' : 'Save' }}</span>
+            <span v-else>{{ submiting ? 'Submitting' : 'Submit user' }}</span>
+            <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
+        </button>
     </teleport>
     <teleport to="#add_master_body_container">
         <form id="product_form" @submit.prevent="" class="overlay-hero-form">
@@ -15,13 +22,19 @@
                 <div v-if="getStores.length > 0" class="justify-content-center align-items-center profile-pg-avatar" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ !getCurrentStore.image ? computeInitials: '' }}</div>
                 <div v-else class="no-store-profile-large justify-content-center align-items-center">{{ computeInitials }}</div>
             </div>
-            <div class="form-row" v-if="!getEditContainer.password">
+            <div class="form-row" v-if="!getEditContainer.password" :class="{ 'input-has-error' : validation.error && validation.errors.name }">
                 <label>Name:</label>
                 <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Full name" required>
+                <span class="span" v-if="validation.error && validation.errors.name">
+                    {{ validation.errors.name[0] }}
+                </span>
             </div>
-            <div class="form-row" v-if="!getEditContainer.password">
+            <div class="form-row" v-if="!getEditContainer.password" :class="{ 'input-has-error' : validation.error && validation.errors.email }">
                 <label>Email:</label>
                 <input v-model="form.email" type="email" name="email" class="form-control" placeholder="example@gmail.com" required>
+                <span class="span" v-if="validation.error && validation.errors.email">
+                    {{ validation.errors.email[0] }}
+                </span>
             </div>
             <div class="form-row" v-if="getUser.id !== getEditContainer.data.id && !getEditContainer.password">
                 <label>Select Store:</label>
@@ -30,22 +43,31 @@
                     <store-selected-check v-for="store in getStores" :key="store.id" v-bind:store="store" v-bind:checked="this.form.store" v-on:check="check" />
                 </ul>
             </div>
-            <div class="form-row" v-if="!getEditContainer.active">
+            <div class="form-row" v-if="!getEditContainer.active" :class="{ 'input-has-error' : validation.error && validation.errors.password }">
                 <label>Password:</label>
                 <input v-model="form.password" type="password" name="password" class="form-control password-field"  placeholder="Enter password" required>
+                <span class="span" v-if="validation.error && validation.errors.password">
+                    {{ validation.errors.password[0] }}
+                </span>
             </div>
-            <div class="form-row" v-if="getEditContainer.active && getEditContainer.password && getUser.id === getEditContainer.data.id">
+            <div class="form-row" v-if="getEditContainer.active && getEditContainer.password && getUser.id === getEditContainer.data.id" :class="{ 'input-has-error' : validation.error && validation.errors.password }">
                 <label>Current password:</label>
-                <input v-model="form.password" @mousedown="resetError" :class="[{ 'err-exist-border':error.pass }, { 'input-disabled' : getUser.oauth && !getUser.has_pass }]" type="password" name="password" :disabled="getUser.oauth && !getUser.has_pass ? true : false" class="form-control password-field" placeholder="Current password" required>
+                <input v-model="form.password" :class="[{ 'err-exist-border':error.pass }, { 'input-disabled' : getUser.oauth && !getUser.has_pass }]" type="password" name="password" :disabled="getUser.oauth && !getUser.has_pass ? true : false" class="form-control password-field" placeholder="Current password" required>
+                <span class="span" v-if="validation.error && validation.errors.password">
+                    {{ validation.errors.password[0] }}
+                </span>
                 <div class="forgot-pass">
                     <div v-if="getUser.oauth && !getUser.has_pass" class="flex oauth-provider-wrap gap-8"><span>You are currently logged in with</span><span class="provider">{{ getUser.oauth_provider }}</span></div>
                     <a v-else href="#" class="">Forgot your password?</a>
                 </div>
                 <div v-if="error.pass" class="error-hold"><span class="error">{{ error.message }}</span></div>
             </div>
-            <div class="form-row" v-if="getEditContainer.active && getEditContainer.password">
+            <div class="form-row" v-if="getEditContainer.active && getEditContainer.password" :class="{ 'input-has-error' : validation.error && validation.errors.newPassword }">
                 <label>New password:</label>
                 <input v-model="form.newPassword" type="password" name="password" class="form-control password-field" placeholder="New password" required>
+                <span class="span" v-if="validation.error && validation.errors.newPassword">
+                    {{ validation.errors.newPassword[0] }}
+                </span>
             </div>
         </form>
     </teleport>
@@ -54,9 +76,12 @@
 import axios from 'axios'
 import { mapGetters } from 'vuex'
 import StoreSelectedCheck from '../includes/StoreSelectedCheck.vue'
+import validationMixin from '../../../mixins/validationMixin'
+import Spinner from '../includes/Spinner.vue'
 export default {
-  components: { StoreSelectedCheck },
+  components: { StoreSelectedCheck, Spinner },
     name: 'AddNewUser',
+    mixins: [ validationMixin ],
     computed: {
         ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser', 'getCurrentStore', 'getUserAdminID']),
         computeInitials() {
@@ -86,6 +111,8 @@ export default {
     },
     methods: {
         doSubmit() {
+            this.submiting = true
+            this.clearErrs()
             if(this.getEditContainer.active) {
                 let id = this.getEditContainer.data.id
                 const putUrl = this.getHostname+'/api/edit-admin-user/'+id+'?token='+this.getToken
@@ -96,6 +123,7 @@ export default {
                             },
                         }
                 ).then((res) => {
+                    this.submiting = false
                     if(this.getUser.id === this.getEditContainer.data.id ){
                         this.$store.commit('setUser', res.data.admin)
                     }else{
@@ -109,13 +137,10 @@ export default {
                     this.$store.commit('showAlert', payload)
                     this.$store.commit('unsetMainHomeWidth', true)
                 }).catch((err) => {
+                    this.submiting = false
                     if(err.response.status === 422) {
-                        const payload = {
-                            id: 'danger',
-                            title: 'Error!',
-                            body: err.response.data.message
-                        }
-                        this.$store.commit('showAlert', payload)
+                        this.validation.error = true
+                        this.validation.errors = err.response.data.errors
                     }
                 })
                    
@@ -128,6 +153,7 @@ export default {
                             },
                         }
                 ).then((res) => {
+                    this.submiting = false
                     this.$store.commit('addToAdmins', res.data.admin)
                     const payload = {
                         id: 'success',
@@ -137,19 +163,17 @@ export default {
                     this.$store.commit('showAlert', payload)
                     this.$store.commit('unsetMainHomeWidth', true)
                 }).catch((err) => {
-                    console.log(err.response)
+                    this.submiting = false
                     if(err.response.status === 422) {
-                        const payload = {
-                            id: 'danger',
-                            title: 'Error!',
-                            body: err.response.data.message
-                        }
-                        this.$store.commit('showAlert', payload)
+                        this.validation.error = true
+                        this.validation.errors = err.response.data.errors
                     }
                 })
             }
         },
         async doSubmitPassword() {
+            this.submiting = true
+            this.clearErrs()
             let id = this.getEditContainer.data.id
             const putUrl = this.getHostname+'/api/reset-password/'+id+'?token='+this.getToken
                 axios.put(putUrl, this.form,
@@ -159,6 +183,7 @@ export default {
                         },
                     }
             ).then((res) => {
+                this.submiting = false
                 const payload = {
                     id: 'success',
                     title: res.data.title,
@@ -175,14 +200,10 @@ export default {
                     this.$store.commit('unsetMainHomeWidth', true)
                 }
             }).catch((err) => {
-                console.log(err.data)
+                this.submiting = false
                 if(err.response.status === 422) {
-                    const payload = {
-                        id: 'danger',
-                        title: 'Error!',
-                        body: err.response.data.message
-                    }
-                    this.$store.commit('showAlert', payload)
+                    this.validation.error = true
+                    this.validation.errors = err.response.data.errors
                 }
             })
         },
@@ -215,12 +236,6 @@ export default {
                     }
                 this.check(newObj)
                 }
-            }
-        },
-        resetError() {
-            if(this.error.pass) {
-                this.error.pass = false
-                this.error.message = ''
             }
         }
     },

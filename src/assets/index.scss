@@ -334,7 +334,7 @@ li:last-child a, li:last-child .info-section-hold{
 }
 form {
   .input-has-error{
-    input[type="text"],select {
+    input, select {
       border-color: $danger !important;
     }
     label {
