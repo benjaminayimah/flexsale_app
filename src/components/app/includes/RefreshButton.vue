@@ -12,6 +12,7 @@ export default {
     computed: mapGetters(['getLoader']),
     methods: {
         refreshPage: function () {
+            
             window.location = this.$router.currentRoute.value.path
         }
     }
