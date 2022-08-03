@@ -139,7 +139,24 @@ li:last-child a, li:last-child .info-section-hold{
 .no-border{
   border: unset !important;
 }
-
+.icon-label-btn{
+  padding: 14px;
+  border-radius: 16px;
+  background-color: transparent;
+  transition: 0.2s linear all;
+  margin-left: 5px;
+  font-weight: 500;
+  border-radius: 50%;
+  span{
+      margin-left: 8px;
+      color: $dark;
+ 
+  }
+  &:hover {
+      background-color: $dark-light;
+      
+  }
+}
 .clear-input-btn{
   transition: 0.3s all;
   height: 25px;
