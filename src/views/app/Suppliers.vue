@@ -50,7 +50,7 @@ export default {
         ...mapGetters(['getSuppliers', 'getStores']),
         computedSuppliers: function() {
             return this.getSuppliers.filter((supplier) => {
-                return supplier.name.toLowerCase().match(this.search.toLowerCase())
+                return supplier.name.toLowerCase().match(this.search.toLowerCase()) || supplier.location.toLowerCase().match(this.search.toLowerCase())
             })
         }
     },
@@ -64,7 +64,6 @@ export default {
     created() {
         window.scrollTo(0,0)
         this.setPage()
-        console.log(this.getSuppliers)
     },
     methods: {
         setPage() {
