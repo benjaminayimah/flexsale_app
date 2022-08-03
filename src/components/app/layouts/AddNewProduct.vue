@@ -52,7 +52,7 @@
             </div>
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.name}">
                 <label>Product name:</label>
-                <input v-model="form.name" type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Ideal Milk" required>
+                <input v-model="form.name" type="text" name="ProductName" class="form-control" placeholder="Product’s name eg. Fresh Milk" required>
                 <span class="span" v-if="validation.error && validation.errors.name">
                     {{ validation.errors.name[0] }}
                 </span>
