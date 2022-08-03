@@ -6,7 +6,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
                     <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"/>
                 </svg>
-                <input id="search_field" type="text" name="searchField" class="form-control" placeholder="Search suppliers...">
+                <input id="search_field" v-model="search" type="text" name="searchField" class="form-control" placeholder="Search suppliers...">
             </div>
             <div class="add-wrap">
                 <button class="button button-primary" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'supplier'})">
@@ -19,7 +19,7 @@
         </div>
         <div class="main-page-table">
             <ul>
-                <suppliers-page-list v-for="supplier in getSuppliers.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))" :key="supplier.id" v-bind:supplier="supplier" />
+                <suppliers-page-list v-for="supplier in computedSuppliers.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))" :key="supplier.id" v-bind:supplier="supplier" />
             </ul>
         </div>
     </div>
@@ -46,15 +46,25 @@ import SuppliersPageList from '../../components/app/includes/SuppliersPageList.v
 export default {
   components: { SuppliersPageList },
     name: 'Suppliers',
-    computed: mapGetters(['getSuppliers', 'getStores']),
+    computed: {
+        ...mapGetters(['getSuppliers', 'getStores']),
+        computedSuppliers: function() {
+            return this.getSuppliers.filter((supplier) => {
+                return supplier.name.toLowerCase().match(this.search.toLowerCase())
+            })
+        }
+    },
+
     data() {
         return {
-            title: 'Suppliers'
+            title: 'Suppliers',
+            search: ''
         }
     },
     created() {
         window.scrollTo(0,0)
         this.setPage()
+        console.log(this.getSuppliers)
     },
     methods: {
         setPage() {
