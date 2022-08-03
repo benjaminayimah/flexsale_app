@@ -310,9 +310,6 @@ li:last-child a, li:last-child .info-section-hold{
           }
       }
     }
-    .password{
-      font-family: 'Helvetica', sans-serif;
-    }
     .show-mob{
         display: none;
     }
@@ -827,7 +824,7 @@ textarea{
     color: #999999;
   }
 }
-.password-field{
+input[type=password]{
   font-family: 'Helvetica', sans-serif !important;
 }
 .select{
