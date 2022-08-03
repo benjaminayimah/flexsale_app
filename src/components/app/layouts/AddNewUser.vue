@@ -6,11 +6,11 @@
         <span v-else>Add New User</span>
     </teleport>
     <teleport to="#add_submit_button">
-        <button v-if="getEditContainer.password" class="button button-primary top-submit-btn" @click.prevent="doSubmitPassword">
+        <button v-if="getEditContainer.password" class="button button-primary top-submit-btn" @click.prevent="doSubmitPassword" :class="{ 'button-disabled' : submiting }" :disabled="submiting? true : false">
             {{ submiting ? 'Saving' : 'Save' }}
             <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
         </button>
-        <button v-else class="button button-primary top-submit-btn" @click.prevent="doSubmit">
+        <button v-else class="button button-primary top-submit-btn" @click.prevent="doSubmit" :class="{ 'button-disabled' : submiting }" :disabled="submiting? true : false">
             <span v-if="getEditContainer.active">{{ submiting? 'Saving' : 'Save' }}</span>
             <span v-else>{{ submiting ? 'Submitting' : 'Submit user' }}</span>
             <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
