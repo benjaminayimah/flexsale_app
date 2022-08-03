@@ -58,69 +58,69 @@
 import axios from 'axios'
 import { mapGetters } from 'vuex'
 import validationMixin from '../../../mixins/validationMixin'
+import Spinner from '../includes/Spinner.vue'
 export default {
-    name: 'AddNewStore',
+    name: "AddNewStore",
     mixins: [validationMixin],
     computed: {
-        ...mapGetters(['getToken', 'getHostname', 'getEditContainer', 'getCurrentStore']),
+        ...mapGetters(["getToken", "getHostname", "getEditContainer", "getCurrentStore"]),
     },
     data() {
         return {
             form: {
-                name: '',
-                phone1: '',
-                phone2: '',
-                address: '',
-                city: '',
-                region: '',
-                country: ''
+                name: "",
+                phone1: "",
+                phone2: "",
+                address: "",
+                city: "",
+                region: "",
+                country: ""
             },
-        }
+        };
     },
     methods: {
         doSubmitUpdate() {
-            this.submiting = true
-            let id = this.getCurrentStore.id
-                const putUrl = this.getHostname+'/api/store/'+id+'?token='+this.getToken
-                    axios.put(putUrl, this.form,
-                        {
-                            headers: {
-                                'Content-Type': ['application/json']
-                            },
-                        }
-                ).then((res) => {
-                    this.submiting = false
-                    const payload = {
-                        id: 'success',
-                        title: res.data.title,
-                        body: res.data.message
-                    }
-                    this.$store.commit('updateStore', res.data.store)
-                    this.$store.commit('showAlert', payload)
-                    this.$store.commit('unsetMainHomeWidth', true)
-                }).catch((err) => {
-                    this.submiting = false
-                    if(err.response.status === 422) {
-                        this.validation.error = true;
-                        this.validation.errors = err.response.data.errors;
-                    }
-                })
+            this.submiting = true;
+            let id = this.getCurrentStore.id;
+            const putUrl = this.getHostname + "/api/store/" + id + "?token=" + this.getToken;
+            axios.put(putUrl, this.form, {
+                headers: {
+                    "Content-Type": ["application/json"]
+                },
+            }).then((res) => {
+                this.submiting = false;
+                const payload = {
+                    id: "success",
+                    title: res.data.title,
+                    body: res.data.message
+                };
+                this.$store.commit("updateStore", res.data.store);
+                this.$store.commit("showAlert", payload);
+                this.$store.commit("unsetMainHomeWidth", true);
+            }).catch((err) => {
+                this.submiting = false;
+                if (err.response.status === 422) {
+                    this.validation.error = true;
+                    this.validation.errors = err.response.data.errors;
+                }
+            });
         },
         preloadForEdit() {
-            if(this.getEditContainer.active){
-                this.form.name = this.getEditContainer.data.name
-                this.form.phone1 = this.getEditContainer.data.phone_1
-                this.form.phone2 = this.getEditContainer.data.phone_2
-                this.form.address = this.getEditContainer.data.address
-                this.form.city = this.getEditContainer.data.city
-                this.form.region = this.getEditContainer.data.region
-                this.form.country = this.getEditContainer.data.country
+            if (this.getEditContainer.active) {
+                this.form.name = this.getEditContainer.data.name;
+                this.form.phone1 = this.getEditContainer.data.phone_1;
+                this.form.phone2 = this.getEditContainer.data.phone_2;
+                this.form.address = this.getEditContainer.data.address;
+                this.form.city = this.getEditContainer.data.city;
+                this.form.region = this.getEditContainer.data.region;
+                this.form.country = this.getEditContainer.data.country;
             }
         }
     },
     created() {
-        this.preloadForEdit()
-    }
+        this.preloadForEdit();
+    },
+    components: { Spinner }
 }
 </script>
 <style scoped lang="scss">
