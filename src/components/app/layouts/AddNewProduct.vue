@@ -283,9 +283,8 @@ export default {
                         this.alertMsg("success", res.data.title, res.data.body)
                         this.$store.commit("unsetMainHomeWidth", true)
                         this.$router.currentRoute.value.name !='Products' ? this.$router.push({ name: this.$router.currentRoute.value.name, params: { id: res.data.product.id, name: res.data.product.name }, replace: true }) : ''
-                    }).catch((err) => {
+                    }).catch(() => {
                         this.submiting = false
-                        console.log(err.response);
                     });
                 }
                 else {
@@ -304,9 +303,8 @@ export default {
                             this.alertMsg("success", res.data.title, res.data.body);
                             this.resetTempImg();
                             this.$store.commit('unsetMainHomeWidth')
-                        }).catch((err) => {
+                        }).catch(() => {
                             this.submiting = false
-                            console.log(err.response);
                         });
                     }
                 }

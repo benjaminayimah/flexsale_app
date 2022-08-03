@@ -4,13 +4,19 @@
         <span v-else>Create new store</span>
     </teleport>
     <teleport to="#add_submit_button">
-        <button class="button button-primary top-submit-btn" @click.prevent="doSubmitUpdate">Save</button>
+        <button class="button button-primary top-submit-btn" @click.prevent="doSubmitUpdate" :class="{ 'button-disabled' : submiting }" :disabled="submiting? true : false">
+            {{ submiting ? 'Saving' : 'Save' }}
+            <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
+        </button>
     </teleport>
     <teleport to="#add_master_body_container">
         <form id="product_form" @submit.prevent="" class="overlay-hero-form">
-            <div class="form-row">
+            <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.name}">
                 <label>Store name:</label>
                 <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Full name" required>
+                <span class="span" v-if="validation.error && validation.errors.name">
+                    {{ validation.errors.name[0] }}
+                </span>
             </div>
             <div class="form-row">
                 <label>Phone 1:</label>
@@ -20,21 +26,30 @@
                 <label>Phone 2:</label>
                 <input v-model="form.phone2" type="text" name="Otherphone" class="form-control" placeholder="Phone number" required>
             </div>
-            <div class="form-row">
+            <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.address}">
                 <label>Address:</label>
                 <input v-model="form.address" type="text" name="address" class="form-control" placeholder="Store address" required>
+                <span class="span" v-if="validation.error && validation.errors.address">
+                    {{ validation.errors.address[0] }}
+                </span>
             </div>
-            <div class="form-row">
+            <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.city}">
                 <label>City:</label>
                 <input v-model="form.city" type="text" name="city" class="form-control" placeholder="City" required>
+                <span class="span" v-if="validation.error && validation.errors.city">
+                    {{ validation.errors.city[0] }}
+                </span>
             </div>
             <div class="form-row">
                 <label>Region:</label>
                 <input v-model="form.region" type="text" name="region" class="form-control" placeholder="Region" required>
             </div>
-            <div class="form-row">
+            <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.country}">
                 <label>Country:</label>
                 <input v-model="form.country" type="text" name="country" class="form-control" placeholder="Country" required>
+                <span class="span" v-if="validation.error && validation.errors.country">
+                    {{ validation.errors.country[0] }}
+                </span>
             </div>
         </form>
 </teleport>
@@ -42,8 +57,10 @@
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import validationMixin from '../../../mixins/validationMixin'
 export default {
     name: 'AddNewStore',
+    mixins: [validationMixin],
     computed: {
         ...mapGetters(['getToken', 'getHostname', 'getEditContainer', 'getCurrentStore']),
     },
@@ -62,6 +79,7 @@ export default {
     },
     methods: {
         doSubmitUpdate() {
+            this.submiting = true
             let id = this.getCurrentStore.id
                 const putUrl = this.getHostname+'/api/store/'+id+'?token='+this.getToken
                     axios.put(putUrl, this.form,
@@ -71,6 +89,7 @@ export default {
                             },
                         }
                 ).then((res) => {
+                    this.submiting = false
                     const payload = {
                         id: 'success',
                         title: res.data.title,
@@ -80,14 +99,10 @@ export default {
                     this.$store.commit('showAlert', payload)
                     this.$store.commit('unsetMainHomeWidth', true)
                 }).catch((err) => {
-                    console.log(err.data)
+                    this.submiting = false
                     if(err.response.status === 422) {
-                        const payload = {
-                            id: 'danger',
-                            title: 'Error!',
-                            body: err.response.data.message
-                        }
-                        this.$store.commit('showAlert', payload)
+                        this.validation.error = true;
+                        this.validation.errors = err.response.data.errors;
                     }
                 })
         },
