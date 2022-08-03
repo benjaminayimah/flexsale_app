@@ -49,7 +49,7 @@ export default {
     computed: {
         ...mapGetters(['getSuppliers', 'getStores']),
         computedSuppliers: function() {
-            return this.getSuppliers.filter((supplier) => {
+            return this.getSuppliers.filter(supplier => {
                 return supplier.name.toLowerCase().match(this.search.toLowerCase()) || supplier.location.toLowerCase().match(this.search.toLowerCase())
             })
         }
