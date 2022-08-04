@@ -1035,6 +1035,7 @@ export default createStore({
         }
         state.commit('showAlert', newPayload)
         state.commit('closeTrashRestoreDeleteModal')
+        state.commit('clearSelection')
       }).catch((e) => {
           console.log(e.response)
       })
@@ -1169,6 +1170,7 @@ export default createStore({
       }
       state.commit('showAlert', newPayload)
       state.commit('closeTrashRestoreDeleteModal')
+      state.commit('clearSelection')
       router.currentRoute.value.name === 'Products' || router.currentRoute.value.name === 'Trash'  ? '' : router.go(-1)
     }).catch((err) => {
         console.log(err)
