@@ -157,7 +157,7 @@ export default {
         },
         makeReceipt() {
             this.closeJustMenu('export_toggle')
-            window.open('http://localhost:8000/generate-receipt/'+this.getUser.id+'/'+this.getCurrentStore.id+'/'+this.record.id+'/'+this.getRememberToken,'popup','width=700,height=800'); return false
+            window.open(this.getHostname+'/generate-receipt/'+this.getUser.id+'/'+this.getCurrentStore.id+'/'+this.record.id+'/'+this.getRememberToken,'popup','width=700,height=800'); return false
         }
     }
 }
