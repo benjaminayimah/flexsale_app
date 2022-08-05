@@ -2062,6 +2062,18 @@ hr{
   .header-wrap, .header-content{
     height: 60px;
   }
+  .perm-delete-row{
+    top: 59px;
+    button{
+      line-height: 22px;
+      width: 150px;
+      span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
   .edit-action{
     display: none;
   }

@@ -4,8 +4,8 @@
         <div class="prod-main-custom-table" v-if="getTempProduct.data.name">
             <div class="header detailed-items-banner-holder">
                 <div v-if="getTempProduct.data.deleted" class="flex gap-8 justify-content-center perm-delete-row">
-                <button class="button button-secondary rounded-button" @click.prevent="$store.dispatch('restoreThisProduct', getTempProduct.data.id)">Restore this product</button>
-                <button class="button button-secondary perm-delete" @click.prevent="$store.commit('setDeleteModal', { id: getTempProduct.data.id, type: 'product' })">Permanently Delete</button>
+                <button class="button button-secondary rounded-button" @click.prevent="$store.dispatch('restoreThisProduct', getTempProduct.data.id)"><span>Restore product</span></button>
+                <button class="button button-secondary perm-delete" @click.prevent="$store.commit('setDeleteModal', { id: getTempProduct.data.id, type: 'product' })"><span>Delete permanently</span></button>
                 </div>
                 <div class="cover-image bg-img" :style="getTempProduct.data.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+getTempProduct.data.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
                     <div class="cover-image-backdrop"></div>
@@ -159,7 +159,11 @@ export default {
     padding: 10px;
     z-index: 11;
     margin: -30px -2px 0 -2px;
+    span{
+        display: block;
+    }
     button{
+        width: 176px;
         line-height: 28px;
         border-radius: 30px;
     }
