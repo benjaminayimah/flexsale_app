@@ -1,7 +1,7 @@
 <template>
     <div class="record-list-main-wrap">
         <div class="controls">
-            <!-- <button class="button cancel-btn">
+            <!-- <button class="button cancel-btn" @click="makeReceipt">
                 <svg xmlns="http://www.w3.org/2000/svg" height="3.5" viewBox="0 0 20.509 4.059">
                     <path d="M-7097.549-7163.327a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7097.549-7163.327Zm-8.236,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7105.786-7163.327Zm-8.214,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7114-7163.327Z" transform="translate(7114 7165.355)"></path>
                 </svg>
@@ -79,7 +79,7 @@ export default {
     name: 'SalesRecordList',
     props: ['record'],
     computed: {
-        ...mapGetters(['getCurrency', 'getHostname', 'getToken', 'getCurrentStore']),
+        ...mapGetters(['getCurrency', 'getHostname', 'getToken', 'getUser', 'getRememberToken', 'getCurrentStore']),
         computeTotal() {
             return this.saleItemList.reduce((acc, item) => acc + Number(item.total_paid), 0);
         },
@@ -116,6 +116,9 @@ export default {
         },
         dateTime(value) {
             return moment(value).format('MMM DD, YYYY hh:mm a')
+        },
+        makeReceipt() {
+            window.open('http://localhost:8000/generate-receipt/'+this.getUser.id+'/'+this.getCurrentStore.id+'/'+this.record.id+'/'+this.getRememberToken,'popup','width=700,height=800'); return false
         }
     }
 }

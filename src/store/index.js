@@ -8,6 +8,7 @@ export default createStore({
     hostname: 'https://api.flexsale.store',
     thisHostname: 'https://app.flexsale.store',
     token: localStorage.getItem('token') || null,
+    rememberToken: '',
     // OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
     OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
     windowHeight: '',
@@ -85,6 +86,9 @@ export default createStore({
     setUser(state, payload) {
         state.user = payload
         payload.role === 1 ?  state.userAdminID = payload.id : state.userAdminID = payload.admin_id 
+    },
+    setRememberToken(state, payload) {
+      state.rememberToken = payload
     },
     fetchProducts(state, payload) {
       state.products = payload
@@ -855,6 +859,7 @@ export default createStore({
           state.commit('fetchSuppliers', res.data.suppliers)
           state.commit('fetchSalesStats', res.data.salesStats)
           state.commit('fetchTodaysSales', { sales: res.data.sales, saleItems: res.data.sales_items, yesterdaySale: res.data.yesterday_sale })
+          state.commit('setRememberToken', res.data.remember_token)
           // state.commit('checkOnboard')
           state.commit('unSetLoader')
 
@@ -879,7 +884,8 @@ export default createStore({
           state.commit('unSetLoader')
         }      
     },
-    async getLogout(state){
+    getLogout(state){
+        state.commit('setLoader') 
         axios.delete(this.getters.getHostname+'/api/logout?token='+this.getters.getToken, { store: this.getters.getCurrentStore.id})
         .then(()=> {
           state.commit('destroyToken')
@@ -1228,6 +1234,7 @@ export default createStore({
     getOnboard: (state) => state.onboard,
     getCurrentStore: (state) => state.currentStore,
     getToken: (state) => state.token,
+    getRememberToken: (state) => state.rememberToken,
     getCurrentpage: (state) => state.navPage,
     getFloatingDiv: (state) => state.dynamicFloatingDiv,
     getMobile: (state) => state.mobile,
