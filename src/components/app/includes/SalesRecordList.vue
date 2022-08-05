@@ -1,11 +1,11 @@
 <template>
     <div class="record-list-main-wrap">
         <div class="controls">
-            <!-- <button class="button cancel-btn" @click="makeReceipt">
+            <button class="button cancel-btn" id="export_toggle" @click.prevent="doMenu('export_toggle')" title="Print receipt">
                 <svg xmlns="http://www.w3.org/2000/svg" height="3.5" viewBox="0 0 20.509 4.059">
                     <path d="M-7097.549-7163.327a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7097.549-7163.327Zm-8.236,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7105.786-7163.327Zm-8.214,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7114-7163.327Z" transform="translate(7114 7165.355)"></path>
                 </svg>
-            </button> -->
+            </button>
             <button class="button cancel-btn" @click="doToggleList">
                 <svg :class="{ 'toggle-in' : toggleList }" xmlns="http://www.w3.org/2000/svg"  height="9" viewBox="0 0 17.181 9.668">
                     <path d="M9245.622,7988.7l-.537-.526-8.233-8.071,1.051-1.071,7.7,7.545,7.361-7.534,1.072,1.048Z" transform="translate(-9236.852 -7979.032)" fill="#0e142c"/>
@@ -62,24 +62,62 @@
                     <div>Total Amount ({{ getCurrency }}):</div>
                     <div>{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</div>
                 </div>
+                <div class="flex justify-content-center">
+                    <button class="button button-secondary flex gap-8" @click="makeReceipt">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 18">
+                        <path d="M19,8H5a3,3,0,0,0-3,3v6H6v4H18V17h4V11A3,3,0,0,0,19,8ZM16,19H8V14h8Zm3-7a1,1,0,1,1,1-1A1,1,0,0,1,19,12ZM18,3H6V7H18Z" transform="translate(-2 -3)" fill="#212121"/>
+                    </svg>
+                    Print / Download Receipt
+                </button>
+                </div>
             </div>
             <div v-else class="loading">
                 <spinner v-bind:size="25" />
             </div>
         </div>
     </div>
+<teleport to="body">
+    <transition name="fade">
+        <backdrop v-if="toggleFilter" @mousedown="closeJustMenu('export_toggle')" />
+    </transition>
+    <transition :name="getMobile? 'slide' : ''">
+        <div class="menu-dropdown dropdown" v-if="toggleFilter" :class="[{ 'show-menu' : toggleFilter && !getMobile}, { 'menu-card-mob': getMobile}]" :style="{ left: !getMobile? getFloatingDiv.left-150+'px' : '', top: !getMobile? getFloatingDiv.top+45 + 'px' : ''}">
+            <div class="title" v-show="getMobile">
+                <div>Export</div>
+                <button @click.prevent="closeJustMenu('export_toggle')">
+                    <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
+                        <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
+                    </svg>
+                </button>
+            </div>
+            <ul>
+                <li>
+                    <a href="#" class="flex-row-js" @click.prevent="makeReceipt">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 18">
+                            <path d="M19,8H5a3,3,0,0,0-3,3v6H6v4H18V17h4V11A3,3,0,0,0,19,8ZM16,19H8V14h8Zm3-7a1,1,0,1,1,1-1A1,1,0,0,1,19,12ZM18,3H6V7H18Z" transform="translate(-2 -3)" fill="#212121"/>
+                        </svg>
+                        <span>Print / Download Receipt</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </transition>
+</teleport>
 </template>
 <script>
 import axios from 'axios'
 import moment from 'moment'
 import { mapGetters } from "vuex"
 import Spinner from './Spinner.vue'
+import Backdrop from './Backdrop.vue'
+import dropdownToggle from '../../../mixins/dropdownToggle'
 export default {
-  components: { Spinner },
+  components: { Spinner, Backdrop },
     name: 'SalesRecordList',
+    mixins: [ dropdownToggle],
     props: ['record'],
     computed: {
-        ...mapGetters(['getCurrency', 'getHostname', 'getToken', 'getUser', 'getRememberToken', 'getCurrentStore']),
+        ...mapGetters(['getCurrency', 'getHostname', 'getToken', 'getUser', 'getRememberToken', 'getCurrentStore', 'getMobile', 'getFloatingDiv']),
         computeTotal() {
             return this.saleItemList.reduce((acc, item) => acc + Number(item.total_paid), 0);
         },
@@ -118,6 +156,7 @@ export default {
             return moment(value).format('MMM DD, YYYY hh:mm a')
         },
         makeReceipt() {
+            this.closeJustMenu('export_toggle')
             window.open('http://localhost:8000/generate-receipt/'+this.getUser.id+'/'+this.getCurrentStore.id+'/'+this.record.id+'/'+this.getRememberToken,'popup','width=700,height=800'); return false
         }
     }
@@ -174,7 +213,6 @@ hr{
     hr:first-child{
         margin-top: 20px;
     }
-
     .rec-btm-content{
         flex-direction: column;
         div:last-child{
@@ -247,5 +285,36 @@ table{
     }
     
 }
-
+.menu-card-mob{
+  padding: 25px 0;
+  position: fixed;
+  bottom: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      button{
+          border-radius: 50%;
+          padding: 10px;
+          background-color: #f0f3ff;
+      }
+  }
+ 
+  width: 100%;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  .acct-label .user-details{
+    max-width: 100%;
+  }
+}
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(150px);
+}
 </style>

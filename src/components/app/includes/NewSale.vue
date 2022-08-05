@@ -256,7 +256,7 @@ export default {
         doSubmitSale() {
             if(this.thisSale.length > 0) {
                 let date = new Date()
-                const receipt = '' + date.getFullYear() + parseInt(date.getMonth()+1) + date.getDate()  + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds()
+                const receipt = '' + date.getFullYear() + parseInt(date.getMonth()+1) + date.getDate()  + date.getHours() + date.getMinutes() + date.getSeconds()
                 axios.post(this.getHostname+'/api/perform-sale?token='+this.getToken,
                 { items: this.thisSale, total: this.computeTotal, receipt: receipt, currency: this.getCurrency  })
                 .then((res) => {
