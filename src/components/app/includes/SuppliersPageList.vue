@@ -207,7 +207,6 @@ li {
             background-color: #f0f3ff;
         }
     }
-   
     width: 100%;
     border-top-right-radius: 16px;
     border-top-left-radius: 16px;
