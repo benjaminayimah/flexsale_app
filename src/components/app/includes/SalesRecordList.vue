@@ -1,7 +1,7 @@
 <template>
     <div class="record-list-main-wrap">
         <div class="controls">
-            <button class="button cancel-btn" id="export_toggle" @click.prevent="doMenu('export_toggle')" title="Print receipt">
+            <button class="button cancel-btn" :id="'export_toggle_'+record.id" @click.prevent="doMenu('export_toggle_'+record.id)" title="Print receipt">
                 <svg xmlns="http://www.w3.org/2000/svg" height="3.5" viewBox="0 0 20.509 4.059">
                     <path d="M-7097.549-7163.327a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7097.549-7163.327Zm-8.236,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7105.786-7163.327Zm-8.214,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7114-7163.327Z" transform="translate(7114 7165.355)"></path>
                 </svg>
@@ -78,13 +78,13 @@
     </div>
 <teleport to="body">
     <transition name="fade">
-        <backdrop v-if="toggleFilter" @mousedown="closeJustMenu('export_toggle')" />
+        <backdrop v-if="toggleFilter" @mousedown="closeJustMenu('export_toggle_'+record.id)" />
     </transition>
     <transition :name="getMobile? 'slide' : ''">
         <div class="menu-dropdown dropdown" v-if="toggleFilter" :class="[{ 'show-menu' : toggleFilter && !getMobile}, { 'menu-card-mob': getMobile}]" :style="{ left: !getMobile? getFloatingDiv.left-150+'px' : '', top: !getMobile? getFloatingDiv.top+45 + 'px' : ''}">
             <div class="title" v-show="getMobile">
                 <div>Export</div>
-                <button @click.prevent="closeJustMenu('export_toggle')">
+                <button @click.prevent="closeJustMenu('export_toggle_'+record.id)">
                     <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
                         <path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#7e8596"/>
                     </svg>
@@ -156,7 +156,7 @@ export default {
             return moment(value).format('MMM DD, YYYY hh:mm a')
         },
         makeReceipt() {
-            this.closeJustMenu('export_toggle')
+            this.closeJustMenu('export_toggle_'+this.record.id)
             window.open(this.getHostname+'/generate-receipt/'+this.getUser.id+'/'+this.getCurrentStore.id+'/'+this.record.id+'/'+this.getRememberToken,'popup','width=700,height=800'); return false
         }
     }
@@ -313,6 +313,7 @@ table{
     max-width: 100%;
   }
 }
+
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(150px);
