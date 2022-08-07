@@ -81,7 +81,7 @@
         <backdrop v-if="toggleFilter" @mousedown="closeJustMenu('export_toggle_'+record.id)" />
     </transition>
     <transition :name="getMobile? 'slide' : ''">
-        <div class="menu-dropdown dropdown" v-if="toggleFilter" :class="[{ 'show-menu' : toggleFilter && !getMobile}, { 'menu-card-mob': getMobile}]" :style="{ left: !getMobile? getFloatingDiv.left-150+'px' : '', top: !getMobile? getFloatingDiv.top+45 + 'px' : ''}">
+        <div class="menu-dropdown dropdown" v-if="toggleFilter" :class="[{ 'show-menu' : toggleFilter && !getMobile}, { 'menu-card-mob': getMobile}]" :style="{ left: !getMobile? getFloatingDiv.left-150+'px' : '', top: !getMobile? getFloatingDiv.top+40 + 'px' : ''}">
             <div class="title" v-show="getMobile">
                 <div>Export</div>
                 <button @click.prevent="closeJustMenu('export_toggle_'+record.id)">

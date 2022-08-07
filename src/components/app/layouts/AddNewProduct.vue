@@ -14,6 +14,12 @@
         </button>
     </teleport>
     <teleport to="#add_master_body_container">
+        <div class="page-info page-info-primary flex mt-20">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                <path id="Path_2104" data-name="Path 2104" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm1,15H11V11h2Zm0-8H11V7h2Z" transform="translate(-2 -2)" fill="#212121"/>
+            </svg>
+            <span>If you're adding a product with multiple batch numbers, add just one product to act as the base product, and then click on <strong>'update stock'</strong> and add the remaining.</span>
+        </div>
         <form id="product_form" @submit.prevent="" class="overlay-hero-form">
             <div class="form-row">
                 <label>Product Image:</label>
@@ -57,64 +63,65 @@
                     {{ validation.errors.name[0] }}
                 </span>
             </div>
-            <div class="form-row">
-                <div id="unit_bg" v-if="!this.getEditContainer.active">
-                    <div class="flex justify-between align-items-center">
-                        <div style="margin-right:10px">
-                            <label>Stock:</label>
-                            <input type="text" name="stockNumber" v-model="form.stock"  class="form-control stk2 input-height-2" placeholder="0">
-                        </div>
-                        <div style="margin-right:10px" :class="{ 'input-has-error' : validation.error && validation.errors.batch}">
-                            <label>Batch No.:</label>
-                            <input type="text" name="stockNumber" @blur="addToUnit(this.form.batch)" v-model="form.batch" class="form-control input-height-2" placeholder="Batch number">
-                        </div>
-                        <div class="unit-input-hold" style="margin:0; padding: 10px 0">
-                            <label>Expiry date:</label>
-                            <input type="date" v-model="form.expiryDate" class="form-control input-height-2" >
-                        </div>
-                    </div>
-                    <span v-if="error.active" class="err">{{ error.message }}</span>
-                    <div :class="{ 'input-has-error' : validation.error && validation.errors.batch}">
-                        <span class="span" v-if="validation.error && validation.errors.batch">
-                        {{ validation.errors.batch[0] }}
-                        </span>
-                    </div>
+            <div v-if="!this.getEditContainer.active" class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.batch}">
+                <label>Batch No.:</label>
+                <input type="text" name="stockNumber" @blur="addToUnit(this.form.batch)" v-model="form.batch" class="form-control" placeholder="Batch number">
+                <span class="span" v-if="validation.error && validation.errors.batch">
+                    {{ validation.errors.batch[0] }}
+                </span>
+            </div>
+            <div class="form-row-col" v-if="!this.getEditContainer.active">
+                <div class="col-2">
+                    <label>Quantity:</label>
+                    <input type="text" name="stockNumber" v-model="form.stock"  class="form-control" placeholder="0">
                 </div>
             </div>
             <div class="form-row">
-                <label>Supply Cost per unit:</label>
-                <div class="form-row-col">
-                    <div class="col-2 pl-0">
+                <div class="form-row-col mb-8">
+                    <div class="col-2">
+                        <label>Supply Cost per unit:</label>
                         <input v-model="form.cost" type="number" name="costPrice" class="form-control" placeholder="0">
                     </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <label>Selling price per unit:</label>
-                <div class="form-row-col">
                     <div class="col-2">
+                        <label>Selling price per unit:</label>
                         <input v-model="form.sellingPrice" type="number" name="sellingPrice" class="form-control" placeholder="0">
                     </div>
-                    <div class="col-2">
-                        <div class="profit-row">
-                            <div class="flex-row-st">
-                                <div class="profit-label">
-                                    Profit per unit:
-                                </div>
-                                <div class="vals">
-                                    <span>GH₵</span><span>{{ Intl.NumberFormat("en-US").format(computeProfit) }}</span>
-                                </div>
-                            </div>
-                            <div class="flex-row-st">
-                                <div class="profit-label">
-                                    Profit margin:
-                                </div>
-                                <div class="vals">
-                                    <span>{{ computePM }}</span><span class="percent value">%</span>
-                                </div>
-                            </div>
+                </div>
+                <div class="profit-row">
+                    <div class="flex-row-st gap-8">
+                        <div class="profit-label">
+                            Profit per unit:
+                        </div>
+                        <div class="vals">
+                            <span>GH₵</span><span>{{ Intl.NumberFormat("en-US").format(computeProfit) }}</span>
                         </div>
                     </div>
+                    <div class="flex-row-st gap-8">
+                        <div class="profit-label">
+                            Profit margin:
+                        </div>
+                        <div class="vals">
+                            <span>{{ computePM }}</span><span class="percent value">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="!this.getEditContainer.active">
+                <div class="flex">
+                    <label for="expires">
+                        <input v-model="form.expires" type="checkbox" name="" id="expires">
+                        Does this product expires?
+                    </label>
+                </div>
+                <div class="form-row-col" :class="{ 'input-has-error' : validation.error && validation.errors.expiryDate}">
+                    <div class="col-2">
+                        <label>Expiry date:</label>
+                        <input :disabled="!form.expires? true : false" :class="{ 'input-disabled' : !form.expires }" type="date" v-model="form.expiryDate" class="form-control" >
+                        <span class="span" v-if="validation.error && validation.errors.expiryDate">
+                        {{ validation.errors.expiryDate[0] }}
+                    </span>
+                    </div>
+                    
                 </div>
             </div>
             <div class="form-row">
@@ -180,7 +187,9 @@ export default {
                 supplier: null,
                 prodType: "0",
                 batch: "",
-                expiryDate: new Date().toISOString().slice(0, 10),
+                expires: false,
+                expiryDate: '',
+                // expiryDate: new Date().toISOString().slice(0, 10),
             },
             doingtempUpload: false,
             imageUploaded: false,
@@ -283,8 +292,11 @@ export default {
                         this.alertMsg("success", res.data.title, res.data.body)
                         this.$store.commit("unsetMainHomeWidth", true)
                         this.$router.currentRoute.value.name !='Products' ? this.$router.push({ name: this.$router.currentRoute.value.name, params: { id: res.data.product.id, name: res.data.product.name }, replace: true }) : ''
-                    }).catch(() => {
+                    }).catch((err) => {
                         this.submiting = false
+                        if (err.response.status === 422) {
+                            this.catchSubmitError(err.response.data.errors)
+                        }
                     });
                 }
                 else {
@@ -303,12 +315,19 @@ export default {
                             this.alertMsg("success", res.data.title, res.data.body);
                             this.resetTempImg();
                             this.$store.commit('unsetMainHomeWidth')
-                        }).catch(() => {
+                        }).catch((err) => {
                             this.submiting = false
+                            if (err.response.status === 422) {
+                                this.catchSubmitError(err.response.data.errors)
+                            }
                         });
                     }
                 }
             }
+        },
+        catchSubmitError(errMsg) {
+            this.validation.error = true
+            this.validation.errors = errMsg
         },
         resetTempImg() {
             this.form.tempImage = "";
@@ -421,14 +440,13 @@ export default {
     border-radius: 16px;
     display: flex;
     flex-direction: column;
-    border: 1px solid #f0f3ff;
+    border: 1px dashed $gray-color;
     span{
     text-align: center;
     color: $gray-color;
     margin-top: 10px;
   }
   .empty-state-container{
-      background-color: rgba(240, 243, 255, 0.4);
       border-radius: 16px;
       display: flex;
       flex-direction: column;
@@ -549,22 +567,23 @@ export default {
 .form-row-col{
     display: flex;
     flex-direction: row;
+    margin-bottom: 30px;
+    gap: 16px;
     .col-2{
         width: 50%;
         display: flex;
         flex-direction: column;
-        padding: 0 10px;
-        .profit-row{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100%;
-        }
-        .profit-label{
-            border-bottom: dashed 1px ;
-            margin-right: 10px;
-        }
+        
     }
+}
+.profit-row{
+        display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+.profit-label{
+    border-bottom: dashed 1px ;
 }
 label{
     position: relative;
@@ -656,15 +675,6 @@ hr{
 }
 .or div{
     background-color: #F9FAFF;
-}
-.stk2{
-    max-width: 65px;
-    text-align: center;
-    padding: 6px;
-}
-
-.input-height-2 {
-    height: 48px !important;
 }
 
 

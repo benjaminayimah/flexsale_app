@@ -122,6 +122,31 @@ li:last-child a, li:last-child .info-section-hold{
   margin-right: 4px;
   color: $gray-color;
 }
+.page-info{
+  padding: 20px;
+  font-size: 1rem;
+  font-weight: 400;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid;
+  svg {
+      margin-right: 15px;
+      flex-shrink: 0;
+  }
+}
+.page-info-primary {
+  color: #009CD0;
+  background-color: #EFF8FC;
+  border-color: #9FDCF0;
+  path {
+    fill: #009CD0 ;
+  }
+}
+.page-info-default {
+  border-color: $dark-light;
+  background-color: #F2F2F7;
+  color: $dark;
+}
 #add_master_body_container{
   .overlay-hero-form{
     margin: 20px 0 90px 0;
@@ -486,13 +511,16 @@ ul{
   margin-bottom: 0 !important;
 }
 .mb-8{
-  margin-bottom: 6px;
+  margin-bottom: 8px !important;
 }
 .mt-0{
   margin-top: 0 !important;
 }
 .mt-16{
   margin-top: 16px;
+}
+.mt-20{
+  margin-top: 20px;
 }
 .mg-0{
   margin: 0;
@@ -708,7 +736,8 @@ button{
   }
 }
 .input-disabled{
-  background-color: $gray-light !important;
+  background-color: #eeeeee !important;
+  color: $gray-color !important;
   &:hover {
     border-color: $gray-light !important;
     cursor: default
