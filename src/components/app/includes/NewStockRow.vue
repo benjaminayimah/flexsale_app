@@ -2,6 +2,7 @@
     <form class="stock-form">
         <div class="flex gap-16">
             <div class="mb-8" :class="{ 'input-has-error' : validation.error && validation.errors.batch_no}">
+                <label>Batch no.:</label>
                 <input v-model="form.batch_no" class="form-control" type="text" name="batchNumber" placeholder="Batch number">
                 <span class="span" v-if="validation.error && validation.errors.batch_no">
                     {{ validation.errors.batch_no[0] }}
@@ -9,6 +10,7 @@
             </div>
             <div :class="{ 'input-has-error' : validation.error && validation.errors.expiry}">
                 <div v-if="expires == 1">
+                    <label>Expiry date:</label>
                     <input  v-model="form.expiry" class="form-control expiry" type="date" name="expiryDate">
                     <span class="span" v-if="validation.error && validation.errors.expiry">
                         {{ validation.errors.expiry[0] }}
@@ -17,6 +19,7 @@
             </div>
         </div>
         <div class="mb-8" :class="{ 'input-has-error' : validation.error && validation.errors.stock}">
+                <label>Qty:</label>
                 <input v-model="form.stock" class="form-control stk-val" type="number" name="stock">
                 <span class="span" v-if="validation.error && validation.errors.stock">
                     {{ validation.errors.stock[0] }}
