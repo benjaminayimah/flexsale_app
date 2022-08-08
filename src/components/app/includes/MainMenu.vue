@@ -41,8 +41,9 @@
             <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 0 15.97 15.97">
                 <path d="M1.207.707h5a.5.5,0,0,1,.354.146l5,5a1.5,1.5,0,0,1,0,2.121L7.975,11.561a1.5,1.5,0,0,1-2.121,0l-5-5a.5.5,0,0,1-.146-.354v-5A.5.5,0,0,1,1.207.707ZM6,1.707H1.707V6l4.853,4.853a.5.5,0,0,0,.707,0l3.586-3.586a.5.5,0,0,0,0-.707Z" transform="translate(16.97 7.985) rotate(135)" fill="#212121"/>
             </svg>
-            <span>Tags</span>
+            <span v-if="getDesktop">Tags</span>
         </router-link>
+        <label v-if="getTablet">Tags</label>
     </li>
     <li>
         <router-link :to="'/sales-record/filter/todays-sales'">
