@@ -65,7 +65,8 @@
             </div>
             <div v-if="!this.getEditContainer.active" class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.batch}">
                 <label>Batch No.:</label>
-                <input type="text" name="stockNumber" @blur="addToUnit(this.form.batch)" v-model="form.batch" class="form-control" placeholder="Batch number">
+                <input type="text" name="batch" @blur="addToUnit()" v-model="form.batch" class="form-control" placeholder="Batch number">
+                <span v-if="error.active" class="err">{{ error.message }}</span>
                 <span class="span" v-if="validation.error && validation.errors.batch">
                     {{ validation.errors.batch[0] }}
                 </span>
@@ -106,14 +107,14 @@
                     </div>
                 </div>
             </div>
-            <div v-if="!this.getEditContainer.active">
+            <div>
                 <div class="flex">
                     <label for="expires">
                         <input v-model="form.expires" type="checkbox" name="" id="expires">
-                        Does this product expires?
+                        This product expires.
                     </label>
                 </div>
-                <div class="form-row-col" :class="{ 'input-has-error' : validation.error && validation.errors.expiryDate}">
+                <div v-if="!this.getEditContainer.active" class="form-row-col" :class="{ 'input-has-error' : validation.error && validation.errors.expiryDate}">
                     <div class="col-2">
                         <label>Expiry date:</label>
                         <input :disabled="!form.expires? true : false" :class="{ 'input-disabled' : !form.expires }" type="date" v-model="form.expiryDate" class="form-control" >
@@ -196,7 +197,8 @@ export default {
             deleting: false,
             load: false,
             imageStatus: { status: false, msg: "" },
-            error: { active: false, message: "" }
+            error: { active: false, message: "" },
+            ready: false
         };
     },
     methods: {
@@ -289,6 +291,7 @@ export default {
                     }).then((res) => {
                         this.submiting = false
                         this.$store.commit("updateProduct", res.data.product)
+                        this.$store.commit('refreshStock', res.data.units)
                         this.alertMsg("success", res.data.title, res.data.body)
                         this.$store.commit("unsetMainHomeWidth", true)
                         this.$router.currentRoute.value.name !='Products' ? this.$router.push({ name: this.$router.currentRoute.value.name, params: { id: res.data.product.id, name: res.data.product.name }, replace: true }) : ''
@@ -302,7 +305,8 @@ export default {
                 else {
                     if (x.batch == "") {
                         this.alertMsg("danger", "Submition error", "The batch field is required");
-                    }else {
+                        return false
+                    } if(this.ready) {
                         this.submiting = true
                         const postUrl = this.getHostname + "/api/products?token=";
                         axios.post(postUrl + this.getToken, x, {
@@ -335,16 +339,19 @@ export default {
             this.doingProductUpload = false;
             return;
         },
-        addToUnit(id) {
+        addToUnit() {
             if (this.error.active === true) {
                 this.error.active = false;
             }
             this.clearErrs()
-            if (id !== "") {
-                axios.post(this.getHostname + "/api/check-unit?token=" + this.getToken, { batch_no: id })
+            const batchNo = this.form.batch
+            if (batchNo !== "") {
+                axios.post(this.getHostname + "/api/check-unit?token=" + this.getToken, { batch_no: batchNo })
                 .then((res) => {
                     if (res.data.status === 2) {
                         this.showUnitError();
+                    }else {
+                        this.ready = true
                     }
                 }).catch((e) => {
                     console.log(e.response);
@@ -411,6 +418,7 @@ export default {
                 this.form.description = this.getEditContainer.data.description;
                 this.form.supplier = this.getEditContainer.data.supplier;
                 this.form.supplier = this.getEditContainer.data.supplier_id;
+                this.getEditContainer.data.expires ? this.form.expires = true : this.form.expires = false
             }
         },
         clearPreloader() {
