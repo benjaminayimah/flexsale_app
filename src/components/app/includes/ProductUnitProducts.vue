@@ -1,10 +1,10 @@
 <template>
     <li>
-        <div class="unit-pill flex" :class="{'expired-prod' :  unit.active == 0 }">
+        <div class="unit-pill flex" :class="{'expired-prod' :  computeExpiry }">
             <span class="pill-batch-no text-overflow-ellipsis">{{ unit.batch_no }}</span>
         </div>
         <div class="pop-over">
-            <div class="has-expired" v-if="unit.active == 0">
+            <div class="has-expired" v-if="computeExpiry">
                 <span>
                     This product has expired. <br /> Please remove from stock.
                 </span>
@@ -13,7 +13,7 @@
             <div class="flex mb-8">
                 <label>Batch No:</label><span>{{ unit.batch_no }}</span>
             </div>
-            <div class="flex">
+            <div class="flex" v-if="unit.expires">
                 <label>Expiry Date:</label><span>{{ unit.expiry_date }}</span>
             </div>
         </div>
@@ -22,7 +22,16 @@
 <script>
 export default {
     name: 'ProductUnitProducts',
-    props: ['unit']
+    props: ['unit'],
+    computed: {
+        computeExpiry() {
+            if(this.unit.expires && this.unit.active == 0) {
+                return true
+            }else {
+                return false
+            }
+        }
+    }
 }
 </script>
 <style scoped lang="scss">

@@ -343,6 +343,14 @@ export default createStore({
         this.dispatch('fetchProdBatch', payload.id)
       }
     },
+    refreshStock(state, payload) {
+      if(state.tempProduct.active) {
+        state.tempProduct.array = payload
+      }
+      if(state.editContainer.active) {
+        state.editContainer.array = payload
+      }
+    },
     updateStock(state, payload) {
       const i = state.editContainer.array.findIndex(x => x.id === payload.id)
       state.editContainer.array.splice(i, 1, payload)
