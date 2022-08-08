@@ -21,6 +21,8 @@ module.exports = {
       msTileColor: '#000000',
       appleMobileWebAppCapable: 'yes',
       appleMobileWebAppStatusBarStyle: 'black',
+      id: '/',
+      startUrl: '/',
   
     }
     
