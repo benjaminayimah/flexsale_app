@@ -551,10 +551,10 @@ ul{
   position: fixed; 
   z-index:300; 
   width:100%;
-  background-color: hsl(0deg 0% 100% / 50%);
   display: flex;
   justify-content: center;
-   -webkit-backdrop-filter: saturate(180%) blur(6px);
+  background-color: hsl(0deg 0% 100% / 50%);
+  -webkit-backdrop-filter: saturate(180%) blur(6px);
   backdrop-filter: saturate(180%) blur(6px);
 
 }
@@ -1835,7 +1835,7 @@ label{
   justify-content: center;
   align-items: center;
   background-color: transparent;
-  transition: 0.4s;
+  // transition: 0.4s;
   padding: 0;
   &:hover{
       background-color: $primary-light;
