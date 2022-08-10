@@ -168,11 +168,6 @@ export default {
           }else
             return []
         },
-        // computeWidth() {
-        //     if(this.getWindowWidth <= 528) {
-        //         return true
-        //     }
-        // },
         computeHeight() {
             const val = this.getMobile ? 100 : 200
             if((!this.getSale.minimize && !this.getSale.mobile) || (!this.getSale.minimize && !this.getSale.mobile)) {
@@ -181,15 +176,6 @@ export default {
                 return 0
             }
         },
-        // computeMobPosition() {
-        //     if(!this.getSale.maximize && !this.getSale.minimize && !this.getSale.mobile && !this.getMobile ) {
-        //        return false
-        //     }else if(!this.getSale.maximize && !this.getSale.minimize && this.getSale.mobile && this.getMobile ) {
-        //         return true
-        //     }else {
-        //         return false
-        //     }
-        // },
         computeExpiry() {
             if(this.searchResult.expires && this.searchResult.active == 0) {
                 return true
