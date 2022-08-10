@@ -112,9 +112,7 @@
     </main>
     <delete-modal />
     <restore-trash-modal />
-    <div class="flex" id="sale_holder" v-if="getSale.active">
-        <new-sale v-for="newsale in getSale.array" :key="newsale.id" v-bind:sale="getSale" />
-      </div>
+    <new-sale />
 </section>
 <onboarding-view v-bind:winHeight="getWindowHeight" v-if="getOnboard.status" />
 <add-new v-bind:winHeight="getWindowHeight" v-if="getAddingProduct.active" />

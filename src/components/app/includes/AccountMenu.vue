@@ -309,13 +309,10 @@ padding: 15px 20px;
   border: none !important;
 }
 
-
-
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(300px);
   
 }
-
   
 </style>

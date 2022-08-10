@@ -832,6 +832,7 @@ export default createStore({
       state.sale.active = false
       state.sale.maximize = false
       state.sale.minimize = false
+      state.sale.mobile = false
     },
     maximizeSale(state) {
       if(state.sale.minimize){
