@@ -692,6 +692,6 @@ table{
 
 .slide-enter-from,
 .slide-leave-to {
-  transform: translateY(700px);  
+  transform: translateY(820px);  
 }
 </style>
