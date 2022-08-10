@@ -61,7 +61,7 @@ export default createStore({
     dynamicFloatingDiv: { left: '', top: '', bottom: ''},
     showDialog: false,
     addingProduct: { active: false, product: false, tag: false, discount: false, admin: false, store: false, supplier: false, stock: false},
-    sale: { active: false, minimize: false, maximize: false, array: []
+    sale: { active: false, minimize: false, maximize: false, mobile: false, array: []
     },
     todaysales: [],
     todaysaleItems: [],
@@ -576,16 +576,6 @@ export default createStore({
           tmp.array.splice(k, 1, data)
         });
       }
-      
-
-      
-      // const tmp = state.tempProduct
-      // console.log(payload)
-      // if(tmp.active) {
-      //   const k = tmp.findIndex(x => x.id == payload.product.id)
-      //   state.products.splice(k, 1, payload.product)
-      //   tmp.data = payload.product
-      // }
       if (router.currentRoute.value.params.name === 'todays-sales' || (router.currentRoute.value.params.name === 'custom-date-range' && new Date(state.saleRecords.endDate).toISOString().slice(0,10)  === new Date().toISOString().slice(0,10))) {
           state.saleRecords.array.push(payload.sale)
       }
@@ -830,9 +820,12 @@ export default createStore({
       payload.classList.remove('this-will-change')
     },
     addToSale(state) {
-      const payload = { id: 1, title: 'New sale: 001'}
-      state.sale.array.push(payload)
-      state.sale.active = true
+      const saleArr = state.sale.array
+      if(saleArr == 0) {
+        const payload = { id: 1, title: 'New sale: 001'}
+        state.sale.array.push(payload)
+        state.sale.active = true
+      }
     },
     closeSale(state) {
       state.sale.array = []
@@ -850,7 +843,14 @@ export default createStore({
       if(state.sale.maximize) {
         state.sale.maximize = false
       }
-      state.sale.minimize = !state.sale.minimize
+      if (!state.sale.mobile && state.mobile) {
+        state.sale.mobile = true 
+      }else if(!state.sale.minimize && !state.mobile){
+        state.sale.minimize = true
+      }else{
+        state.sale.minimize = false
+        state.sale.mobile = false
+      }
     }
 
   },

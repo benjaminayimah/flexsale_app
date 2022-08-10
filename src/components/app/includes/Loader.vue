@@ -24,7 +24,7 @@ export default {
     .loader{
         border-radius: 50%;
         position: fixed;
-        background-color: rgba($color: #ffffff, $alpha: 0.7);
+        background-color: #fff;
         padding: 4px;
         margin: 4px;
     }

@@ -135,6 +135,9 @@ export default {
 .jc li a{
   justify-content: center;
 }
+hr{
+  margin: 8px 20px;
+}
 ul{
     padding: 0;
     position: relative;
