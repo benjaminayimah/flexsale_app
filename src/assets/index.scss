@@ -873,6 +873,9 @@ textarea{
 input[type=password]{
   font-family: 'Helvetica', sans-serif !important;
 }
+input[type=date] {
+  align-items: center;
+}
 .select{
   background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") right 0.75rem center/8px 10px no-repeat;
 }
@@ -995,26 +998,36 @@ input[type=password]{
 
 form.stock-form {
   margin: 10px 0 0 0;
+  hr{
+    margin: 15px 0;
+  }
   .form-control {
     height: 45px;
     border-radius: 10px;
   }
+  label {
+    font-size: 12px;
+    font-weight: 500;
+    color: $gray-color;
+    margin-top: 0;
+  }
   .button-wrap {
-    margin-top: 15px;
       a {
           padding: 8px 10px;
           text-decoration: none;
           font-size: 15px;
-          border-radius: 6px;
+          border-radius: 8px;
           display: flex;
           transition: 0.2s all;
+          min-width: 74px;
+          height: 36px;
+          justify-content: center;
       }
   }
   .submit-edit{
       font-weight: 600;
       background-color: $primary-color;
       color: #fff;
-      // min-width: 67px;
       justify-content: center;
       &:hover {
           background-color: $primary-hover;
@@ -1023,8 +1036,9 @@ form.stock-form {
   .cancel-edit {
       color: $dark;
       font-weight: 500;
+      background-color: rgba(0, 0, 0, 0.1);
       &:hover {
-          background-color: rgba(0, 0, 0, 0.04);
+          background-color: $gray-light;
       }
   }
   .stk-val{
@@ -1569,7 +1583,14 @@ input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
 .stk-edit-wrap .stk-row:last-child{
   border-bottom: none;
 }
-
+hr {
+  margin-right: 0;
+  margin-left: 0 ;
+  border-bottom: 1px solid $dark-light;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
 //empty state
 .empty-state{
   margin: 0;
@@ -1706,7 +1727,7 @@ input:not(:-webkit-autofill) { animation-name: onAutoFillCancel }
       padding: 15px 30px;
       .form-control{
           height: 50px;
-          line-height: 35px;
+          // line-height: 35px;
       }
       .form-row{
           margin-bottom: 18px;
@@ -1794,13 +1815,6 @@ label{
   height: 100%;
   width: 100%;
   z-index: 100;
-}
-hr{
-  margin: 8px 20px;
-  border-bottom: 1px solid $dark-light;
-  border-top: none;
-  border-right: none;
-  border-left: none;
 }
 #main_nav .router-link-exact-active, #mob_nav .router-link-exact-active{
   & span{

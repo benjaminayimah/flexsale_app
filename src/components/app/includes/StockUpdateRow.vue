@@ -63,8 +63,9 @@
                         </span>
                     </div>
                 </div>
+                <hr>
                 <div class="flex gap-8 button-wrap">
-                    <a class="submit-edit" href="#" @click.prevent="submitBatch">Update</a>
+                    <a class="submit-edit" href="#" @click.prevent="submitBatch">Save</a>
                     <a class="cancel-edit" href="#" @click.prevent="toggleEdit">Cancel</a>
                 </div>
             </form>

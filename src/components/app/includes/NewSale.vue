@@ -1,30 +1,31 @@
 <template>
 <tertiary-backdrop v-if="sale.maximize" />
-    <div class="sale-holder" :class="[sale.maximize ? 'sale-maximize' : 'sale-normal', sale.minimize ? 'minimized': '', computeWidth ? 'full-width': '']">
-        <div class="inner">
+<transition :name="getMobile? 'slide' : ''">
+<div class="sale-holder" :class="[sale.maximize ? 'sale-maximize' : 'normal-position', sale.minimize ? 'minimized': '', sale.mobile && getMobile ? 'mini-mob': '', computeWidth ? 'full-width': 'contained-width']">
+        <div class="inner" :class="getMobile? 'mob-header' : 'dsk-header'">
             <div class="header flex-row-js">
+                <div class="title flex-start w-100" @click.prevent="$store.commit('minimizeSale')" >New Sale</div>
                 <div class="flex">
+                    <button class="menu-toggle-btn minimize-btn" @click.prevent="$store.commit('minimizeSale')" :title="sale.minimize ? 'Restore' : 'Minimize'">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="17" height="8.714" viewBox="0 0 17.223 8.714">
+                            <path d="M19.095,25.109l-8.675-7.118A.9.9,0,0,1,11.561,16.6l7.478,6.136,6.77-6.108a.9.9,0,1,1,1.206,1.336Z" transform="translate(-10.09 -16.395)"/>
+                        </svg>
+                    </button>
+                    <button v-if="!getMobile" class="menu-toggle-btn" @click.prevent="$store.commit('maximizeSale')"  :title="sale.maximize ? 'Restore' : 'Maximize'">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 17.518 16.604">
+                            <path v-if="sale.maximize" d="M16035.078-3360.094v-7.606h7.518a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-4.356l3.981,3.4-1.332,1.49-3.81-3.241v3.958a1,1,0,0,1-1,1A1,1,0,0,1,16035.078-3360.094Zm-9-8a1,1,0,0,1-1-1,1,1,0,0,1,1-1h4.356l-3.986-3.4,1.337-1.49,3.809,3.241v-3.958a1,1,0,0,1,1-1,1,1,0,0,1,1,1v7.606Z" transform="translate(-16025.076 3376.698)" fill="#fff"/>
+                            <path v-else  d="M16035.078-3360.094a1,1,0,0,1-1-1,1,1,0,0,1,1-1h4.355l-4.767-4.284,1.337-1.49,4.59,4.127v-3.958a1,1,0,0,1,1-1,1,1,0,0,1,1,1v7.605Zm-10-9v-7.6h7.521a1,1,0,0,1,.994,1,1,1,0,0,1-.994,1h-4.356l4.759,4.284-1.332,1.486-4.59-4.123v3.954a1,1,0,0,1-1,1A1,1,0,0,1,16025.077-3369.1Z" transform="translate(-16025.077 3376.697)" fill="#fff"/>
+                        </svg>
+                    </button>
                     <button class="menu-toggle-btn" @click.prevent="$store.commit('closeSale')" title="Close">
                         <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 15.439 15.434">
                             <path d="M17890.436-3025a1,1,0,0,1,.707.293,1,1,0,0,1,.293.707,1,1,0,0,1-.293.707l-6.012,6.01,6.012,6.01a1,1,0,0,1,.293.707,1,1,0,0,1-.293.707,1,1,0,0,1-1.414,0l-6.012-6.01-6.014,6.01a1,1,0,0,1-1.414,0,1,1,0,0,1-.293-.707,1,1,0,0,1,.293-.707l6.014-6.01-6.014-6.01a1,1,0,0,1-.293-.707,1,1,0,0,1,.293-.707,1,1,0,0,1,1.414,0l6.014,6.01,6.012-6.01A1,1,0,0,1,17890.436-3025Z" transform="translate(-17875.996 3024.998)" fill="#fff"/>
                         </svg>
                     </button>
-                    <button class="menu-toggle-btn" @click.prevent="$store.commit('maximizeSale')"  :title="sale.maximize ? 'Restore' : 'Maximize'">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 17.518 16.604">
-                            <path v-if="sale.maximize" d="M16035.078-3360.094v-7.606h7.518a1,1,0,0,1,1,1,1,1,0,0,1-1,1h-4.356l3.981,3.4-1.332,1.49-3.81-3.241v3.958a1,1,0,0,1-1,1A1,1,0,0,1,16035.078-3360.094Zm-9-8a1,1,0,0,1-1-1,1,1,0,0,1,1-1h4.356l-3.986-3.4,1.337-1.49,3.809,3.241v-3.958a1,1,0,0,1,1-1,1,1,0,0,1,1,1v7.606Z" transform="translate(-16025.076 3376.698)" fill="#fff"/>
-                            <path v-else  d="M16035.078-3360.094a1,1,0,0,1-1-1,1,1,0,0,1,1-1h4.355l-4.767-4.284,1.337-1.49,4.59,4.127v-3.958a1,1,0,0,1,1-1,1,1,0,0,1,1,1v7.605Zm-10-9v-7.6h7.521a1,1,0,0,1,.994,1,1,1,0,0,1-.994,1h-4.356l4.759,4.284-1.332,1.486-4.59-4.123v3.954a1,1,0,0,1-1,1A1,1,0,0,1,16025.077-3369.1Z" transform="translate(-16025.077 3376.697)" fill="#fff"/>
-                        </svg>
-                    </button>
-                    <button class="menu-toggle-btn minimize-btn" @click.prevent="$store.commit('minimizeSale')" :title="sale.minimize ? 'Restore' : 'Minimize'">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="8" viewBox="0 0 21.413 8.868">
-                            <path d="M9.956,17.651l9.111,6.271,9.525-6.271" transform="translate(-8.565 -16.261)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="2"/>
-                        </svg>
-                    </button>
                 </div>
-                <div class="title w-100" @click.prevent="$store.commit('minimizeSale')" >New Sale</div>
             </div>
-            <div class="body" :class="!sale.minimize ? 'default-minimize-sale': ''" >
-                <div v-if="!sale.minimize" class="flex-col flex-space-between">
+            <div class="body" :class="!sale.minimize ? 'default-minimize-sale': ''" :style="{ height: computeHeight+'px' }">
+                <div v-if="!sale.minimize" class="flex-col flex-space-between" :class="computeHeight == 0 ? 'display-none' : ''">
                     <div class="sale-main-body">
                         <div class="sales-top">
                             <form @submit.prevent="">
@@ -42,7 +43,7 @@
                                     </label>
                                 </div>
                             </form>
-                            <transition name="fade">
+                            <!-- <transition name="fade"> -->
                                 <div v-if="error.active" class="error-alert flex-row-js">
                                     <span>{{ error.msg }}</span>
                                     <button @click.prevent="hideError" class="alert-close flex justify-content-center align-items-center">
@@ -51,8 +52,8 @@
                                         </svg>
                                     </button>
                                 </div>
-                            </transition>
-                            <div v-if="searchResult != ''" class="preview-hold flex-row-js" :class="{ 'expired-product': searchResult.active == 0}">
+                            <!-- </transition> -->
+                            <div v-if="searchResult != ''" class="preview-hold flex-row-js" :class="{ 'expired-product': computeExpiry }">
                                 <div class="flex align-items-center">
                                     <div class="prod-image bg-img" :style="searchResult.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+searchResult.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                                     <div class="flex-col sale-captions" style="max-width: 140px">
@@ -60,13 +61,12 @@
                                         <div><span class="currency">{{ getCurrency }}</span><span class="value">{{ Intl.NumberFormat('en-US').format(computePrice(searchResult.selling_price, searchResult.discount).toFixed(2)) }}</span></div>
                                     </div>
                                 </div>
-                                
-                                <div class="flex align-items-center" v-if="searchResult.active !== 0">
+                                <div class="flex align-items-center" v-if="!computeExpiry">
                                     <label>Qty:</label>
                                     <input type="number" v-model="quantity" class="form-control qty-input">
                                 </div>
-                                <div class="flex align-items-center">
-                                    <span class="expired" v-if="searchResult.active == 0">
+                                <div class="flex align-items-center gap-8">
+                                    <span class="expired text-overflow-ellipsis" v-if="computeExpiry">
                                         Expired product
                                     </span>
                                     <button v-else class="button add-btn" @click.prevent="addToSale(searchResult)">
@@ -139,6 +139,8 @@
             </div>
         </div>
     </div>
+</transition>
+    
 </template>
 <script>
 import axios from 'axios'
@@ -150,7 +152,7 @@ export default {
     components: { TertiaryBackdrop },
      props: ['sale'],
     computed: {
-      ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getWindowWidth']),
+      ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getWindowWidth', 'getWindowHeight', 'getMobile']),
       computeTotal() {
             return this.thisSale.reduce((acc, item) => acc + item.price, 0)
       },
@@ -163,6 +165,30 @@ export default {
         },
         computeWidth() {
             if(this.getWindowWidth <= 528) {
+                return true
+            }else {
+                return false
+            }
+        },
+        computeHeight() {
+            const val = this.getMobile ? 100 : 200
+            if((!this.sale.minimize && !this.sale.mobile) || (!this.sale.minimize && !this.sale.mobile)) {
+                return this.getWindowHeight - val
+            }else {
+                return 0
+            }
+        },
+        // computeMobPosition() {
+        //     if(!this.sale.maximize && !this.sale.minimize && !this.sale.mobile && !this.getMobile ) {
+        //        return false
+        //     }else if(!this.sale.maximize && !this.sale.minimize && this.sale.mobile && this.getMobile ) {
+        //         return true
+        //     }else {
+        //         return false
+        //     }
+        // },
+        computeExpiry() {
+            if(this.searchResult.expires && this.searchResult.active == 0) {
                 return true
             }else {
                 return false
@@ -285,27 +311,6 @@ export default {
     //transition: 0.3s all;
 
     .header{
-        border-top-right-radius: 18px;
-        border-top-left-radius: 18px;
-        background-color: #4f5361;
-        color: #ffffff;
-        height: 46px;
-        padding: 0 20px;
-        transition: 0.3s background-color;
-        &:hover{
-            background-color: #30333d;
-        }
-        button{
-            height: 35px;
-            width: 35px;
-            margin-left: 2px;
-            &:hover{
-                background-color: #ffffff28;
-            }
-            &:active{
-                background-color: #0000002c;
-            }
-        }
         .title{
             font-weight: 500;
             cursor: pointer;
@@ -313,16 +318,55 @@ export default {
             display: flex;
             align-items: center;
             font-weight: 600;
-            justify-content: flex-end;
         }
     }
-    .default-minimize-sale{
-        padding: 20px;
-        height: 690px !important;
+    .dsk-header {
+        .default-minimize-sale{
+            padding: 20px;
+        }
+        .header{
+            height: 46px;
+            transition: 0.3s background-color;
+            padding: 0 20px;
+            border-top-right-radius: 18px;
+            border-top-left-radius: 18px;
+            background-color: #2e2f34;
+            color: #ffffff;
+            button{
+                height: 35px;
+                width: 35px;
+                margin-left: 2px;
+                &:hover{
+                    background-color: #3c3d43;
+                }
+                &:active{
+                    background-color: #0000002c;
+                }
+            }
+            &:hover{
+                background-color: #30333d;
+            }
+            svg path {
+                fill: #fff;
+            }
+        }
+    }
+    .mob-header{
+        .header{
+            padding: 0 10px 0 15px;
+            height: 48px;
+            button:hover {
+                background-color: transparent;
+            }
+            svg path {
+                fill: $dark;
+            }
+        }
+        .default-minimize-sale{
+            padding: 0 15px 15px 15px;
+        }
     }
     .body{
-        height: 0;
-        transition: 0.3s ease-out height;
         .flex-col{
             height: 100%;
         }
@@ -359,12 +403,25 @@ export default {
             }
         }
     }
+    
 }
-.sale-normal{
+.mini-mob{
+    bottom: 84px !important;
+    border-radius: 18px;
+    .header {
+        height: 65px !important;
+    }
+}
+.mob-position{
+    bottom: 85px;
+    right: 0;
+}
+.normal-position{
     bottom: 0;
     right: 0;
+}
+.contained-width{
     width: 528px;
-   
 }
 .sale-maximize{
     width: 60%;
@@ -569,7 +626,6 @@ table{
 }
 
 .clear-btn{
-    margin-left: 8px;
     height: 38px !important;
     width: 38px;
     padding: 0 !important;
@@ -590,7 +646,7 @@ table{
         font-weight: 600;
     }
 }
-.minimized{
+.minimized,.mini-mob{
     .minimize-btn{
         transform: scaleY(-1);
     }
@@ -598,10 +654,14 @@ table{
         padding-bottom: 0px !important;
     }
 }
+
 .full-width{
-    width: 100% !important;
+    width: 100%;
     .body{
         padding-bottom: 40px;
     }
+}
+.display-none{
+    display: none;
 }
 </style>

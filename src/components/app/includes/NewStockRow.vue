@@ -19,12 +19,13 @@
             </div>
         </div>
         <div class="mb-8" :class="{ 'input-has-error' : validation.error && validation.errors.stock}">
-                <label>Qty:</label>
-                <input v-model="form.stock" class="form-control stk-val" type="number" name="stock">
-                <span class="span" v-if="validation.error && validation.errors.stock">
-                    {{ validation.errors.stock[0] }}
-                </span>
-            </div>
+            <label>Qty:</label>
+            <input v-model="form.stock" class="form-control stk-val" type="number" name="stock">
+            <span class="span" v-if="validation.error && validation.errors.stock">
+                {{ validation.errors.stock[0] }}
+            </span>
+        </div>
+        <hr>
         <div class="flex gap-8 button-wrap">
             <a class="submit-edit" href="#" @click.prevent="submitNewBatch">Add</a>
             <a class="cancel-edit" href="#" @click.prevent="removeRow(row.id)">Remove</a>
