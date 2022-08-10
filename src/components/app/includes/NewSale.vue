@@ -386,6 +386,7 @@ export default {
         }
     }
     .body{
+        transition: 0.3s all;
         .flex-col{
             height: 100%;
         }
@@ -691,7 +692,6 @@ table{
 
 .slide-enter-from,
 .slide-leave-to {
-  transform: translateY(615px);
-  
+  transform: translateY(700px);  
 }
 </style>
