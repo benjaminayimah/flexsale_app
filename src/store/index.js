@@ -825,6 +825,7 @@ export default createStore({
         const payload = { id: 1, title: 'New sale: 001'}
         state.sale.array.push(payload)
         state.sale.active = true
+        state.mobile ? document.body.classList.add('fixed-body') : ''
       }
     },
     closeSale(state) {
@@ -833,6 +834,7 @@ export default createStore({
       state.sale.maximize = false
       state.sale.minimize = false
       state.sale.mobile = false
+      this.commit('removeBodyFixed')
     },
     maximizeSale(state) {
       if(state.sale.minimize){
@@ -841,20 +843,27 @@ export default createStore({
       state.sale.maximize = !state.sale.maximize
     },
     minimizeSale(state) {
+      this.commit('removeBodyFixed')
       if(state.sale.maximize) {
         state.sale.maximize = false
       }
       if (!state.sale.mobile && state.mobile) {
-        state.sale.mobile = true 
+        state.sale.mobile = true
+         
+        
       }else if(!state.sale.minimize && !state.mobile){
         state.sale.minimize = true
       }else{
         state.sale.minimize = false
         state.sale.mobile = false
       }
+    },
+    removeBodyFixed() {
+      const doc = document.body.classList
+      doc.contains('fixed-body') ? doc.remove('fixed-body') : ''
     }
-
   },
+
   actions: {
     async getAuthUser(state) {  
       state.commit('setLoader')          
