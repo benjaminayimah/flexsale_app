@@ -37,18 +37,23 @@
                     <div v-if="!getSale.minimize" class="flex-col flex-space-between" :class="computeHeight == 0 ? 'display-none' : ''">
                         <div class="sale-main-body">
                             <div class="sales-top">
-                                <form @submit.prevent="">
+                                <form @submit.prevent="doSearch">
                                     <div class="form-row product-search">
                                         <label class="input-label flex align-items-center">
                                             <svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
                                                 <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"></path>
                                             </svg>
-                                            <input type="text" name="searchField" v-model="searchInput" @click="hideError" class="form-control" placeholder="Search product by Batch number..." required>
-                                            <button class="button button-secondary submit-btn" @click.prevent="doSearch" @mouseenter="hoverIn" @mouseleave="hoverOut" :class="{ 'button-disabled' : doingSearch }">
+                                            <input type="text" name="searchField" ref="searchField" v-model="searchInput" @click="hideError" class="form-control" placeholder="Search product by Batch number..." required>
+                                            <span v-if="searchInput != ''" class="clear-input-btn" @click="clearInput">
+                                                <svg  xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
+                                                    <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
+                                                </svg>
+                                            </span>
+                                            <button class="button button-primary submit-btn" :class="{ 'button-disabled' : doingSearch }">
                                                 <svg v-if="!doingSearch" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                                                     <path  d="M12,4,10.59,5.41,16.17,11H4v2H16.17l-5.58,5.59L12,20l8-8Z" transform="translate(-4 -4)"/>
                                                 </svg>
-                                                <spinner v-else v-bind:size="20" v-bind:white="spinnerWhite"/>
+                                                <spinner v-else v-bind:size="20" v-bind:white="true"/>
                                             </button>
                                         </label>
                                     </div>
@@ -196,9 +201,7 @@ export default {
             searchInput: '',
             error: { active: false, msg: ''},
             submiting: false,
-            doingSearch: false,
-            spinnerWhite: false
-            
+            doingSearch: false,            
         }
     },
     methods: {
@@ -298,12 +301,12 @@ export default {
                 }) 
             }
         },
-        hoverIn() {
-            this.spinnerWhite = true
+        clearInput() {
+            this.searchInput = ''
+            this.$nextTick(function () {
+                this.$refs.searchField.focus();
+            });
         },
-        hoverOut() {
-            this.spinnerWhite = false
-        }
 
     }
 }
@@ -427,7 +430,7 @@ export default {
 .mini-mob{
     padding: 0 20px;
     transform: translateY(-84px);
-    transition: 0.5s all ease-out;
+    transition: 0.8s all ease-in-out;
     .sale-holder{
         border-radius: 16px;
         background-color: hsl(0deg 0% 100% / 90%);
@@ -487,25 +490,18 @@ export default {
         padding: 0;
         border-radius: 20px;
         border: none;
-        background-color: $primary-light;
         path{
-            fill: $primary-color;
-        }
-        &:hover{
-            background-color: $primary-color;
-            path{
-                fill: #fff !important;
-            }
+            fill: $white-color;
         }
         &:active{
             border: 1px solid $primary-color;
-            background-color: $white-color;
-            path{
-                fill: $primary-color !important;
-            }
         }
     }
     .input-label{
+        .clear-input-btn{
+            right: 60px;
+            top: unset;
+        }
         input{
             border-radius: 0.9rem;
             background-color: $dark-light;
@@ -518,8 +514,10 @@ export default {
             }
         }
         &:hover, &:focus-within {
-            path{
-                fill: $primary-color;
+            .search-svg {
+                path{
+                    fill: $primary-color;
+                }
             }
         }
     }
@@ -531,7 +529,7 @@ table{
     border-collapse: collapse;
     thead{
         th{
-            border-bottom: 1px solid $gray-color ;
+            border-bottom: 2px solid #D4D8DE ;
             height: 50px;
         }
     }
