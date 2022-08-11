@@ -1,6 +1,6 @@
 <template>
     <teleport to="#app">
-        <tertiary-backdrop @click.prevent="$store.commit('unSetSelectionSheet')" />
+        <tertiary-backdrop @click.prevent="$store.commit('unSetSelectionSheet')" v-bind:zIndex="300"/>
         <div class="product-selection-sheet" :class="computeWidth ? 'width-active': 'width-inactive'">
             <div class="selection-wrap">
                  <div class="selection-main">

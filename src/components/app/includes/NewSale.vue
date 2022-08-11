@@ -1,6 +1,6 @@
 <template>
 <transition name="fade">
-    <tertiary-backdrop v-if="getSale.maximize && getSale.active || (!getSale.mobile && getMobile && getSale.active)" />
+    <tertiary-backdrop v-if="getSale.maximize && getSale.active || (!getSale.mobile && getMobile && getSale.active)" v-bind:zIndex="99" />
 </transition>
 <transition name="slide">
     <div v-if="getSale.active" class="sale-main-wrapper"  :class="[getSale.maximize ? 'sale-maximize' : 'normal-position', getSale.minimize ? 'minimized': '', getSale.mobile && getMobile ? 'mini-mob': '', getWindowWidth <= 528 ? 'full-width': '']">
@@ -292,7 +292,7 @@ export default {
 <style scoped lang="scss">
 .sale-main-wrapper{
     position: fixed;
-    z-index: 999;
+    z-index: 100;
     background-color: transparent;
     bottom: 0;
     right: 0;
@@ -412,7 +412,8 @@ export default {
 }
 .mini-mob{
     padding: 0 20px;
-    bottom: 84px !important;
+    transform: translateY(-84px);
+    transition: 0.5s all ease-out;
     .sale-holder{
         border-radius: 16px;
         background-color: hsl(0deg 0% 100% / 90%);

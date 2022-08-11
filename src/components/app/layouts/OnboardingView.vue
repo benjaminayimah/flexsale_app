@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <tertiary-backdrop v-if="getOnboard.status" />
+        <tertiary-backdrop v-if="getOnboard.status" v-bind:zIndex="300"/>
     </transition>
     <div class="onboarding-wrap" v-if="getOnboard.status" :class="computeWidth ? 'width-active': 'width-inactive'">
         <div class="ob-hold">
