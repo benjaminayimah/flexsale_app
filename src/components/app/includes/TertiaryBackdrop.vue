@@ -1,9 +1,10 @@
 <template>
-    <div class="tertiary-backdrop"></div>
+    <div class="tertiary-backdrop" :style="{ zIndex: zIndex }"></div>
 </template>
 <script>
 export default {
-    name: 'TertiaryBackdrop'
+    name: 'TertiaryBackdrop',
+    props: ['zIndex']
 }
 </script>
 <style scoped>
@@ -14,6 +15,5 @@ export default {
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 300;
 }
 </style>

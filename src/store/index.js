@@ -843,14 +843,14 @@ export default createStore({
       state.sale.maximize = !state.sale.maximize
     },
     minimizeSale(state) {
-      this.commit('removeBodyFixed')
+      state.mobile ? this.commit('setBodyFixed') : ''
       if(state.sale.maximize) {
         state.sale.maximize = false
       }
       if (!state.sale.mobile && state.mobile) {
         state.sale.mobile = true
-         
-        
+        this.commit('removeBodyFixed')
+
       }else if(!state.sale.minimize && !state.mobile){
         state.sale.minimize = true
       }else{
@@ -861,6 +861,9 @@ export default createStore({
     removeBodyFixed() {
       const doc = document.body.classList
       doc.contains('fixed-body') ? doc.remove('fixed-body') : ''
+    },
+    setBodyFixed() {
+      document.body.classList.add('fixed-body')
     }
   },
 
