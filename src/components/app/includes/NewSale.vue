@@ -43,11 +43,12 @@
                                             <svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
                                                 <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"></path>
                                             </svg>
-                                            <input type="text" name="searchField" v-model="searchInput" @click="hideError" class="form-control" placeholder="Search product by Batch number...">
-                                            <button class="button button-secondary submit-btn" @click.prevent="doSearch">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                            <input type="text" name="searchField" v-model="searchInput" @click="hideError" class="form-control" placeholder="Search product by Batch number..." required>
+                                            <button class="button button-secondary submit-btn" @click.prevent="doSearch" @mouseenter="hoverIn" @mouseleave="hoverOut" :class="{ 'button-disabled' : doingSearch }">
+                                                <svg v-if="!doingSearch" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                                                     <path  d="M12,4,10.59,5.41,16.17,11H4v2H16.17l-5.58,5.59L12,20l8-8Z" transform="translate(-4 -4)"/>
                                                 </svg>
+                                                <spinner v-else v-bind:size="20" v-bind:white="spinnerWhite"/>
                                             </button>
                                         </label>
                                     </div>
@@ -66,11 +67,11 @@
                                         <div class="flex-col sale-captions" style="max-width: 140px">
                                             <div class="item-value text-overflow-ellipsis">{{ searchResult.name }}</div>
                                             <div><span class="currency">{{ getCurrency }}</span><span class="value">{{ Intl.NumberFormat('en-US').format(computePrice(searchResult.selling_price, searchResult.discount).toFixed(2)) }}</span></div>
+                                            <div class="flex align-items-center" v-if="!computeExpiry">
+                                                <label>Qty:</label>
+                                                <input type="number" v-model="quantity" class="form-control qty-input">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="flex align-items-center" v-if="!computeExpiry">
-                                        <label>Qty:</label>
-                                        <input type="number" v-model="quantity" class="form-control qty-input">
                                     </div>
                                     <div class="flex align-items-center gap-8">
                                         <span class="expired text-overflow-ellipsis" v-if="computeExpiry">
@@ -121,25 +122,27 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="sale-footer flex-space-between align-items-center">
-                            <div class="flex-space-between align-items-center w-100">
+                        <div>
+                            <div class="flex flex-end">
+                                <div class="flex total-hold">
+                                    <span class="currency">{{ getCurrency }}</span>
+                                    <span class="sale-total">{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</span>
+                                </div>
+                            </div>
+                            <div class="sale-footer flex-space-between align-items-center">
                                 <button class="menu-toggle-btn">
                                     <i></i>
                                     <i></i>
                                     <i></i>
                                 </button>
-                                <div class="flex total-hold">
-                                    <label>Total Amount:</label>
-                                    <span class="currency">{{ getCurrency }}</span>
-                                    <span class="sale-total">{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</span>
-                                </div>
+                                <button class="button gap-8 button-primary add-sale-btn" @click.prevent="doSubmitSale" :class="{ 'button-disabled' : thisSale.length < 1 || submiting }" :disabled="thisSale.length < 1 || submiting ? true : false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 45 27">
+                                        <path d="M24.75,20.25H23.625V14.063a.562.562,0,0,0-.562-.562h-.955a1.685,1.685,0,0,0-.936.283l-1.078.719a.562.562,0,0,0-.156.78l.624.936a.562.562,0,0,0,.78.156l.033-.022v3.9H20.25a.562.562,0,0,0-.562.563v1.125a.562.562,0,0,0,.563.563h4.5a.562.562,0,0,0,.563-.562V20.813A.562.562,0,0,0,24.75,20.25Zm18-15.75H2.25A2.25,2.25,0,0,0,0,6.75v22.5A2.25,2.25,0,0,0,2.25,31.5h40.5A2.25,2.25,0,0,0,45,29.25V6.75A2.25,2.25,0,0,0,42.75,4.5ZM3.375,28.125v-4.5a4.5,4.5,0,0,1,4.5,4.5Zm0-15.75v-4.5h4.5A4.5,4.5,0,0,1,3.375,12.375ZM22.5,25.875c-3.728,0-6.75-3.526-6.75-7.875s3.022-7.875,6.75-7.875S29.25,13.65,29.25,18,26.227,25.875,22.5,25.875Zm19.125,2.25h-4.5a4.5,4.5,0,0,1,4.5-4.5Zm0-15.75a4.5,4.5,0,0,1-4.5-4.5h4.5Z" transform="translate(0 -4.5)"/>
+                                    </svg>
+                                    <span>{{ submiting ? 'Please wait' : 'Sell' }}</span>
+                                    <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
+                                </button>
                             </div>
-                            <button class="button button-primary add-sale-btn" @click.prevent="doSubmitSale" :class="{ 'button-disabled' : thisSale.length < 1 }" :disabled="thisSale.length < 1 ? true : false">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 12.229 21.624">
-                                    <path d="M12.9,12.49c-2.727-.709-3.6-1.442-3.6-2.583,0-1.309,1.213-2.222,3.244-2.222,2.138,0,2.931,1.021,3,2.523H18.2a4.789,4.789,0,0,0-3.856-4.577V3h-3.6V5.595c-2.331.5-4.2,2.018-4.2,4.337,0,2.775,2.295,4.157,5.646,4.961,3,.721,3.6,1.778,3.6,2.9,0,.829-.589,2.15-3.244,2.15-2.475,0-3.448-1.105-3.58-2.523H6.32c.144,2.631,2.114,4.109,4.421,4.6v2.607h3.6V22.041c2.343-.444,4.2-1.8,4.2-4.265C18.549,14.365,15.63,13.2,12.9,12.49Z" transform="translate(-6.32 -3)" fill="#fff"/>
-                                </svg>
-                                <span>Sell</span>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -153,9 +156,10 @@ import axios from 'axios'
 
 import TertiaryBackdrop from './TertiaryBackdrop.vue'
 import { mapGetters } from 'vuex'
+import Spinner from './Spinner.vue'
 export default {
     name: 'NewSale',
-    components: { TertiaryBackdrop },
+    components: { TertiaryBackdrop, Spinner },
     computed: {
       ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getWindowWidth', 'getWindowHeight', 'getMobile', 'getSale']),
       computeTotal() {
@@ -191,6 +195,9 @@ export default {
             thisSale: [],
             searchInput: '',
             error: { active: false, msg: ''},
+            submiting: false,
+            doingSearch: false,
+            spinnerWhite: false
             
         }
     },
@@ -201,16 +208,20 @@ export default {
         async doSearch() {
             const item = this.searchInput
             if(item != '') {
+                this.doingSearch = true
                 try {
                     const res = await axios.post(this.getHostname+'/api/fetch-item?token='+this.getToken, { item: item })
                     if(res.data.item == null){
+                        this.doingSearch = false
                         this.showError('Item not found')
                         this.clearSearch()
                     }
                     else
                     this.searchResult = res.data.item
+                    this.doingSearch = false
                 } catch (e) {
                     this.showError(e.response.data.error)
+                    this.doingSearch = false
                 }
             }
         },
@@ -270,20 +281,28 @@ export default {
         },
         doSubmitSale() {
             if(this.thisSale.length > 0) {
+                this.submiting = true
                 let date = new Date()
                 const receipt = '' + date.getFullYear() + parseInt(date.getMonth()+1) + date.getDate()  + date.getHours() + date.getMinutes() + date.getSeconds()
                 axios.post(this.getHostname+'/api/perform-sale?token='+this.getToken,
                 { items: this.thisSale, total: this.computeTotal, receipt: receipt, currency: this.getCurrency  })
                 .then((res) => {
+                    this.submiting = false
                     const payload = {
                         sale: res.data.sale, saleItems: res.data.sale_items, items: res.data.items, product: res.data.product
                     }
                     this.$store.commit('addToTodaysSale', payload)
                     this.thisSale = []
-                }).catch((err) => {
-                    console.log(err.response) 
+                }).catch(() => {
+                    this.submiting = false
                 }) 
             }
+        },
+        hoverIn() {
+            this.spinnerWhite = true
+        },
+        hoverOut() {
+            this.spinnerWhite = false
         }
 
     }
@@ -378,9 +397,9 @@ export default {
         }
         .add-sale-btn {
             height: 52px;
-            padding: 8px 48px;
-            svg{
-                margin-right: 8px;
+            padding: 8px 30px;
+            path {
+                fill: #fff;
             }
         }
         .menu-toggle-btn{
@@ -399,13 +418,8 @@ export default {
             font-size: inherit;
         }
         .total-hold{
-            padding: 0 32px;
-            font-size: 18px;
-            label{
-                margin: 0 10px 0 0;
-                font-size: inherit;
-                font-weight: 500;
-            }
+            padding: 10px;
+            font-size: 20px;
         }
     }
     
@@ -473,16 +487,22 @@ export default {
         padding: 0;
         border-radius: 20px;
         border: none;
-        background-color: transparent;
+        background-color: $primary-light;
         path{
             fill: $primary-color;
         }
         &:hover{
-            background-color: $primary-light;
+            background-color: $primary-color;
+            path{
+                fill: #fff !important;
+            }
         }
         &:active{
             border: 1px solid $primary-color;
             background-color: $white-color;
+            path{
+                fill: $primary-color !important;
+            }
         }
     }
     .input-label{
@@ -523,17 +543,17 @@ table{
                 height: 32px;
                 width: 32px;
                 padding: 0 !important;
-                background-color: transparent;
+                background-color: $dark-light;
                 transition: 0.3s all;
                 border-radius: 16px;
                 path{
-                    fill: $gray-color;
+                    fill: $dark;
                 }
                 &:hover{
                     path{
-                        fill: $dark;
+                        fill: $danger;
                     }
-                    background-color: $dark-light;
+                    background-color: rgba(230, 50, 50, 0.1);
                 }
             }
         }
@@ -568,7 +588,7 @@ table{
        box-shadow: 3px 10px 20px 7px rgb(7 10 46 / 11%);
        .qty-input{
            width: 70px;
-           height: 50px;
+           height: 45px;
            margin-left: 8px;
        }
        .prod-image{
