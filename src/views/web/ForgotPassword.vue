@@ -11,7 +11,7 @@
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.email}">
                 <div class="input-wrapper" id="email_wrapper">
                     <label for="emailInput">Email</label>
-                    <input v-model="form.email" id="emailInput"  @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" type="email" name="email" class="form-control">
+                    <input v-model="form.email" id="emailInput"  @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" type="email" name="email" class="form-control">
                 </div>
                 <span class="span" v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
