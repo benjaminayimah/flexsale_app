@@ -13,7 +13,7 @@
             <div class="form-row"  :class="{ 'input-has-error' : validation.error && validation.errors.name}">
                 <div class="input-wrapper" id="name_wrapper">
                     <label for="nameInput">Full name</label>
-                    <input id="nameInput" v-model="form.name" @animationstart="isFocusedOut('name_wrapper','nameInput')" @input="isFocusedIn('name_wrapper')" @focusin="isFocusedIn('name_wrapper')" @focusout="isFocusedOut('name_wrapper', 'nameInput')"  type="text" name="name" class="form-control">
+                    <input id="nameInput" ref="name" v-model="form.name" @input="isFocusedIn('name_wrapper')" @focusin="isFocusedIn('name_wrapper')" @focusout="isFocusedOut('name_wrapper', 'nameInput')"  type="text" name="name" class="form-control">
                 </div>
                 <span class="span" v-if="validation.error && validation.errors.name">
                     {{ validation.errors.name[0] }}
@@ -22,7 +22,7 @@
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.email}">
                 <div class="input-wrapper" id="email_wrapper">
                     <label for="emailInput">Email</label>
-                    <input id="emailInput" v-model="form.email" @animationstart="isFocusedOut('email_wrapper','emailInput')" @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" type="email" name="email" class="form-control">
+                    <input id="emailInput" ref="email" v-model="form.email" @input="isFocusedIn('email_wrapper')" @focusin="isFocusedIn('email_wrapper')" @focusout="isFocusedOut('email_wrapper', 'emailInput')" type="email" name="email" class="form-control">
                 </div>
                 <span class="span" v-if="validation.error && validation.errors.email">
                     {{ validation.errors.email[0] }}
@@ -31,7 +31,7 @@
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.password}">
                 <div class="input-wrapper" id="password_wrapper">
                     <label for="passwordInput">Password</label>
-                    <input id="passwordInput" v-model="form.password" @animationstart="isFocusedOut('password_wrapper','passwordInput')" @input="isFocusedIn('password_wrapper')" @keyup="checkPassword" @focusin="showPassRules" @focusout="hidePassRules" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password">
+                    <input id="passwordInput" ref="password" v-model="form.password" @input="isFocusedIn('password_wrapper')" @keyup="checkPassword" @focusin="showPassRules" @focusout="hidePassRules" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password">
                 </div>
                 <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">

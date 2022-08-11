@@ -2,7 +2,7 @@
 <transition name="fade">
     <tertiary-backdrop v-if="getSale.maximize && getSale.active || (!getSale.mobile && getMobile && getSale.active)" v-bind:zIndex="99" />
 </transition>
-<transition name="slide">
+<transition :name="getMobile? 'slide' : ''">
     <div v-if="getSale.active" class="sale-main-wrapper"  :class="[getSale.maximize ? 'sale-maximize' : 'normal-position', getSale.minimize ? 'minimized': '', getSale.mobile && getMobile ? 'mini-mob': '', getWindowWidth <= 528 ? 'full-width': '']">
         <div class="sale-holder">
             <div class="inner" :class="getMobile? 'mob-header' : 'dsk-header'">
@@ -136,9 +136,9 @@
                             </div>
                             <div class="sale-footer flex-space-between align-items-center">
                                 <button class="menu-toggle-btn">
+                                    <!-- <i></i>
                                     <i></i>
-                                    <i></i>
-                                    <i></i>
+                                    <i></i> -->
                                 </button>
                                 <button class="button gap-8 button-primary add-sale-btn" @click.prevent="doSubmitSale" :class="{ 'button-disabled' : thisSale.length < 1 || submiting }" :disabled="thisSale.length < 1 || submiting ? true : false">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 45 27">

@@ -1,7 +1,7 @@
 export default {
-    created() {
-        //
-    },
+    // created() {
+    //     //
+    // },
     methods: {
         $_(x) {
             return document.getElementById(x)
@@ -28,5 +28,14 @@ export default {
                 this.isFocusedIn(id)
             }
         },
+    },
+    mounted () {
+        if(this.form.email && this.form.email != '') {
+            this.isFocusedOut('email_wrapper', 'emailInput')
+        }if(this.form.name && this.form.name != '') {
+            this.isFocusedOut('name_wrapper', 'nameInput')
+        }if(this.form.password && this.form.password != '') {
+            this.isFocusedOut('password_wrapper', 'passwordInput')
+        }
     }
 }
