@@ -18,7 +18,7 @@
                   <div v-for="store in getStores" :key="store.id">
                       <div v-if="store.id == getUser.current" class="store-info-hold active">
                           <div class="avatar">
-                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null || store.image == '' ? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
+                            <span class="justify-content-center align-items-center bg-img"  v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -37,7 +37,7 @@
                     <div v-for="store in getStores" :key="store.id">
                       <div class="store-info-hold inactive" v-if="store.id != getUser.current && getUser.role == 1" @click="doSwitch(store.id)">
                           <div class="avatar">
-                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null || store.image == '' ? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
+                            <span class="justify-content-center align-items-center bg-img" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -51,7 +51,7 @@
                       </div>
                       <div class="store-info-hold inactive" v-else-if="store.id != getUser.current && getUser.role == 2 && (getUser.store_1 == store.id || getUser.store_2 == store.id)" @click="doSwitch(store.id)">
                           <div class="avatar">
-                            <span class="justify-content-center align-items-center bg-img" :class="store.image == null || store.image == '' ? 'no-border': ''" v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
+                            <span class="justify-content-center align-items-center bg-img"  v-bind:style="store.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+store.id+'/'+store.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
                           </div>
                           <div class="acct-label">
                               <div class="user-details">
@@ -85,7 +85,7 @@
     </teleport>
     <div id="account_menu" class="store-info-hold" @click.prevent="showthisMenu('account_menu')" :class="[{ 'mob-acct-menu': getMobile}, { 'acct-menu': !getMobile}]">
       <div class="avatar">
-              <span v-if="getStores.length > 0" class="justify-content-center align-items-center bg-img" :class="getCurrentStore.image == null? 'no-border': ''" v-bind:style="getCurrentStore.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
+              <span v-if="getStores.length > 0" class="justify-content-center align-items-center bg-img" v-bind:style="getCurrentStore.image != null ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></span>
               <div v-else class="no-store-profile-small justify-content-center align-items-center">{{ computeInitials }}</div>
               <!-- <svg v-if="getMobile" xmlns="http://www.w3.org/2000/svg" width="9.747" height="6.014" viewBox="0 0 9.747 6.014">
                   <path d="M404.366,1308.847l-4.744-4.732a.75.75,0,0,1,1.059-1.062l3.663,3.655,3.514-3.644a.75.75,0,1,1,1.08,1.041Z" transform="translate(-399.402 -1302.833)" fill="#11172f"/>
@@ -252,7 +252,7 @@ padding: 15px 20px;
     height: 40px;
     width: 40px;
     border-radius: 50%;
-    border: 1px solid $gray-light;
+    border: 1px solid $dark-light;
   }
   .dialog{
     position: fixed;
@@ -305,9 +305,6 @@ padding: 15px 20px;
       }
     }
   }
-.no-border{
-  border: none !important;
-}
 
 .slide-enter-from,
 .slide-leave-to {
