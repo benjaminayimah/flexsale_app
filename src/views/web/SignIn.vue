@@ -25,7 +25,7 @@
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.password}">
                 <div class="input-wrapper" id="password_wrapper">
                     <label for="passwordInput">Password</label>
-                    <input id="passwordInput" ref="password" v-model="form.password" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field">
+                    <input id="passwordInput" ref="password" v-model="form.password" @input="isFocusedIn('password_wrapper')" @focusin="isFocusedIn('password_wrapper')" @focusout="isFocusedOut('password_wrapper', 'passwordInput')" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password-field">
                     <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">
                         <g transform="translate(1.182 1.182)">
