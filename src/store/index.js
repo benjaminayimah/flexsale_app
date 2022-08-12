@@ -11,6 +11,7 @@ export default createStore({
     rememberToken: '',
     // OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
     OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
+    betaNumber: '2.1',
     windowHeight: '',
     windowWidth: '',
     bodyWidth: '',
@@ -39,7 +40,7 @@ export default createStore({
     thisProduct: {},
     tags: [],
     filters: [],
-    selectionSheet: { active: false, selectProd: false, selectTag: false, prodID: '' },
+    selectionSheet: { active: false, selectProd: false, search: false, selectTag: false, prodID: '' },
     discounts: [],
     tempDataContainer: { active: false, editMode: false, data: {}, array: [], propertyName: ''},
     tempProduct: { active: false, data: {}, array: []},
@@ -274,6 +275,8 @@ export default createStore({
     setSelectionSheet(state, payload) {
       if(payload.type == 'product') {
         state.selectionSheet.selectProd = true
+      }else if(payload.type == 'search') {
+        state.selectionSheet.search = true
       }else {
         state.selectionSheet.selectTag = true
         state.selectionSheet.prodID = payload.id
@@ -285,6 +288,7 @@ export default createStore({
       state.selectionSheet.active = false
       state.selectionSheet.selectProd = false
       state.selectionSheet.selectTag = false
+      state.selectionSheet.search = false
       state.selectionSheet.prodID = ''
       document.body.classList.remove('fixed-body')
     },
@@ -1299,6 +1303,7 @@ export default createStore({
     getSignInStatus: (state) => state.signinStatus,
     getOAuth: (state) => state.OAuth,
     getSalesStats: (state) => state.salesStats,
+    getBeta: (state) => state.betaNumber,
 
 
 

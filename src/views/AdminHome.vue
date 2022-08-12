@@ -53,7 +53,7 @@
                         <span  class="page-title-span text-overflow-ellipsis">{{ getCurrentpage.title }}</span>
                       </div>
                       <div class="noti-help align-items-center justify-content-center" >
-                        <li><span class="beta">Beta 2.0</span></li>
+                        <li><span class="beta">Beta {{ getBeta }}</span></li>
                         <li class="ml-0" v-if="(getHideRight || getMobile) && !getCurrentpage.back">
                           <router-link :to="{ name: 'Search', params: { query: 'all'} }">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
@@ -141,7 +141,7 @@ import SelectionSheet from '../components/app/layouts/SelectionSheet.vue'
 export default {
   components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, SelectionSheet, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat, RefreshButton },
     name: 'AdminHome',
-    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard','getStores', 'getSelectionSheet']),
+    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getBeta', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard','getStores', 'getSelectionSheet']),
     created() {
       this.$store.commit('setBodyBgColor')
       this.$store.dispatch('getAuthUser')
