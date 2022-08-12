@@ -40,11 +40,11 @@
                                     <form @submit.prevent="doSearch">
                                         <div class="form-row product-search">
                                             <label class="input-label flex align-items-center">
-                                                <svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671">
+                                                <svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671" @mousedown.prevent="">
                                                     <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"></path>
                                                 </svg>
                                                 <input type="text" name="searchField" ref="searchField" autocomplete="off" v-model="searchInput" @click="hideError" class="form-control" placeholder="Search product by Batch number..." required>
-                                                <span v-if="searchInput != ''" class="clear-input-btn" @click="clearInput">
+                                                <span v-if="searchInput != ''" class="clear-input-btn" @click="clearInput" @mousedown.prevent="">
                                                     <svg  xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
                                                         <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
                                                     </svg>
@@ -58,9 +58,9 @@
                                             </label>
                                         </div>
                                     </form>
-                                    <!-- <div>
-                                        <button class="button add-more" @click.prevent="$store.commit('setSelectionSheet', { type: 'product' })">Search by name...</button>
-                                    </div> -->
+                                    <div>
+                                        <button class="button add-more" @click.prevent="$store.commit('setSelectionSheet', { type: 'search' })">Search by name...</button>
+                                    </div>
                                     <div v-if="error.active" class="error-alert flex-row-js">
                                         <span>{{ error.msg }}</span>
                                         <button @click.prevent="hideError" class="alert-close flex justify-content-center align-items-center">
@@ -158,6 +158,15 @@
             </div>
         </div>
     </transition>
+    <div v-if="getSelectionSheet.search">
+        <teleport to="#selection_title">
+            <h3>Search by Product name</h3>
+            <span class="text">Select from product list or type into the search field</span>
+        </teleport>
+        <teleport to="#selection_sheet_body">
+            product list
+        </teleport>
+    </div>
 </template>
 <script>
 import axios from 'axios'
@@ -169,7 +178,7 @@ export default {
     name: 'NewSale',
     components: { TertiaryBackdrop, Spinner },
     computed: {
-      ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getWindowWidth', 'getWindowHeight', 'getMobile', 'getSale']),
+      ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getWindowWidth', 'getWindowHeight', 'getMobile', 'getSale', 'getSelectionSheet']),
       computeTotal() {
             return this.thisSale.reduce((acc, item) => acc + item.price, 0)
       },
@@ -316,6 +325,13 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+h3{
+    margin: 0;
+}
+.text{
+    color: $gray-color;
+    font-weight: 500;
+}
 .sale-main-wrapper{
     position: fixed;
     z-index: 100;

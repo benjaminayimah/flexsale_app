@@ -17,7 +17,10 @@
                             </div>
                         </div>
                     </div>
-                    <div id="selection_sheet_body" class="selection-body" :style="{height: (windowHeight-180)+'px'}"></div>
+                    <div class="selection-body" :style="{height: (windowHeight-180)+'px'}">
+                        <div id="selection_sheet_searchInput"></div>
+                        <div id="selection_sheet_body"></div>
+                    </div>
                 </div>
             </div>
         </div>
