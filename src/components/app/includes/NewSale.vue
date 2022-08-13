@@ -57,9 +57,6 @@
                                             </label>
                                         </div>
                                     </form>
-                                    <div>
-                                        <button class="button add-more" @click="searchByName">Search by name...</button>
-                                    </div>
                                     <div v-if="error.active" class="error-alert flex-row-js">
                                         <span>{{ error.msg }}</span>
                                         <button @click.prevent="hideError" class="alert-close flex justify-content-center align-items-center">
@@ -98,6 +95,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <button class="button add-more" @click="searchByName">Search by name...</button>
                                 <table>
                                     <thead>
                                         <tr>
@@ -641,7 +639,7 @@ table{
 .sales-top{
     position: relative;
     border-radius: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     .preview-hold{
        background-color: $white-color; 
        padding: 10px;
@@ -705,6 +703,7 @@ table{
     background-color: rgba(230, 50, 50, 0.1);
     border-radius: 8px;
     border: 1px solid $danger;
+    margin-bottom: 10px;
     span{
         color: $danger;
         font-weight: 600;

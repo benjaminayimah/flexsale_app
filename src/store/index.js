@@ -847,7 +847,13 @@ export default createStore({
       if(state.sale.minimize){
         state.sale.minimize = false
       }
-      state.sale.maximize = !state.sale.maximize
+      if(!state.sale.maximize) {
+        state.sale.maximize = true
+        this.commit('setBodyFixed') 
+      }else {
+        state.sale.maximize = false
+        this.commit('removeBodyFixed')
+      }
     },
     minimizeSale(state) {
       state.mobile ? this.commit('setBodyFixed') : ''
@@ -860,6 +866,7 @@ export default createStore({
 
       }else if(!state.sale.minimize && !state.mobile){
         state.sale.minimize = true
+        this.commit('removeBodyFixed')
       }else{
         state.sale.minimize = false
         state.sale.mobile = false
