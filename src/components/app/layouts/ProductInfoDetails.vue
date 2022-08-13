@@ -68,13 +68,6 @@
                 </span>
                 <span class="discount-val">OFF</span>
             </div>
-            <button class="remove-discount">
-                <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 21.5 23.166">
-                    <path d="M-162.427-433a2.727,2.727,0,0,1-2.714-2.539l-.912-13.682,1.5-.1.912,13.683a1.222,1.222,0,0,0,1.217,1.138h9.118a1.222,1.222,0,0,0,1.217-1.139l.912-13.682,1.5.1-.912,13.682A2.727,2.727,0,0,1-153.309-433Zm-6.039-18v-1.5h6.4v-3.666h8.394v3.666h6.705v1.5Zm13.295-1.5v-2.165h-5.394v2.165Z" transform="translate(168.466 456.167)" fill="#e63232">
-                    </path>
-                </svg>
-                <span>Remove discount</span>
-            </button>
         </div>
     </div>
     <div class="flex lign-items-center item-row" v-if="getTempProduct.data.selling_price && getTempProduct.data.cost">
