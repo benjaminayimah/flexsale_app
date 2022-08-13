@@ -346,6 +346,7 @@ export default {
         },
         searchByName() {
             this.clearCurrentRes()
+            this.hideError()
             this.$store.commit('setSelectionSheet', { type: 'search' })
         },
         doAddByName(payload) {
