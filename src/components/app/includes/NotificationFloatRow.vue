@@ -1,18 +1,18 @@
 <template>
     <li @click="$emit('closeDropdown', 'noti_main_list')" v-for="notification in computedNotifications.sort((a, b) => new Date(b.time) - new Date(a.time))" :key="notification.id">
         <router-link :to="{ name: 'Notifications', params: { name: notification.key} }">
-        <div class="flex gap-8">
-            <div class="img bg-img" :class="{ 'stacks' : notification.count > 1 }" :style="notification.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+ getUser.current+'/'+notification.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
-            <div>
-                <div class="flex align-items-center noti-title">
-                    <div class="noti-label" :style="{ 'color' : notification.color }">{{ notification.title }}</div>
-                    <i class="separator-dot"></i>
-                    <div class="noti-time">{{ dateTime(notification.time) }}</div>
-                    <i class="unread" v-if="!notification.read"></i>
+            <div class="flex gap-8">
+                <div class="img bg-img" :class="{ 'stacks' : notification.count > 1 }" :style="notification.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+ getUser.current+'/'+notification.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
+                <div>
+                    <div class="flex align-items-center noti-title">
+                        <div class="noti-label" :style="{ 'color' : notification.color }">{{ notification.title }}</div>
+                        <i class="separator-dot"></i>
+                        <div class="noti-time">{{ dateTime(notification.time) }}</div>
+                        <i class="unread" v-if="!notification.read"></i>
+                    </div>
+                    <div>{{ notification.message }}</div>
                 </div>
-                <div>{{ notification.message }}</div>
             </div>
-        </div>
         </router-link>
     </li>
 </template>

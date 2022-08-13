@@ -116,7 +116,7 @@
 </section>
 <onboarding-view v-bind:winHeight="getWindowHeight" v-if="getOnboard.status" />
 <add-new v-bind:winHeight="getWindowHeight" v-if="getAddingProduct.active" />
-<selection-sheet v-if="getSelectionSheet.active" v-bind:windowHeight="getWindowHeight" />
+<selection-sheet v-bind:windowHeight="getWindowHeight" />
 <refresh-button />
 </template>
 <script>
@@ -141,7 +141,7 @@ import SelectionSheet from '../components/app/layouts/SelectionSheet.vue'
 export default {
   components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, SelectionSheet, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat, RefreshButton },
     name: 'AdminHome',
-    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getBeta', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getSale', 'getOnboard','getStores', 'getSelectionSheet']),
+    computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getBeta', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getOnboard','getStores']),
     created() {
       this.$store.commit('setBodyBgColor')
       this.$store.dispatch('getAuthUser')

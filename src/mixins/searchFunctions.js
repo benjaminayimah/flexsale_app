@@ -30,6 +30,7 @@ export default {
     },
     methods: {
         clearInput() {
+            console.log('me')
             this.form.input = ''
             this.searchResults = ''
             this.$nextTick(function () {

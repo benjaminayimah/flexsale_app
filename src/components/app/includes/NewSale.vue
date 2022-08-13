@@ -42,8 +42,8 @@
                                                 <svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26.671 26.671" @mousedown.prevent="">
                                                     <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"></path>
                                                 </svg>
-                                                <input type="text" name="searchField" ref="searchField" autocomplete="off" v-model="searchInput" @click="hideError" class="form-control" placeholder="Search product by Batch number..." required>
-                                                <span v-if="searchInput != ''" class="clear-input-btn" @click="clearInput" @mousedown.prevent="">
+                                                <input type="text" name="searchField" ref="searchField2" autocomplete="off" v-model="searchInput" @click="hideError" class="form-control" placeholder="Search product by Batch number..." required>
+                                                <span v-if="searchInput != ''" class="clear-input-btn" @click="clearInput2" @mousedown.prevent="">
                                                     <svg  xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
                                                         <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
                                                     </svg>
@@ -57,9 +57,9 @@
                                             </label>
                                         </div>
                                     </form>
-                                    <!-- <div>
+                                    <div>
                                         <button class="button add-more" @click="searchByName">Search by name...</button>
-                                    </div> -->
+                                    </div>
                                     <div v-if="error.active" class="error-alert flex-row-js">
                                         <span>{{ error.msg }}</span>
                                         <button @click.prevent="hideError" class="alert-close flex justify-content-center align-items-center">
@@ -84,7 +84,7 @@
                                             <span class="expired text-overflow-ellipsis" v-if="computeExpiry">
                                                 Expired product
                                             </span>
-                                            <button v-else class="button add-btn" @click.prevent="addToSale(searchResult)">
+                                            <button v-else class="button add-btn" @click.prevent="addToSale(searchResult, quantity)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 12.429 14.5">
                                                     <path  d="M18.552,12.874l-5.179,5.179a1.036,1.036,0,0,1-1.465,0L6.73,12.874a1.036,1.036,0,0,1,1.465-1.465l3.411,3.411V4.892a1.036,1.036,0,0,1,2.071,0V14.82l3.411-3.411a1.036,1.036,0,0,1,1.465,1.465Z" transform="translate(-6.427 -3.856)" fill="#566ff4"/>
                                                 </svg>
@@ -160,22 +160,46 @@
     <div v-if="getSelectionSheet.search">
         <teleport to="#selection_title">
             <h3>Search by Product name</h3>
-            <span class="text">Select from product list</span>
+            <span class="text">Or select from the list</span>
+        </teleport>
+        <teleport to="#selection_sheet_searchInput">
+            <div class="search-hold">
+                <form @submit.prevent="" @focusin="focusIn" @focusout="focusOut">
+                    <label  class="justify-content-center align-items-center" :class="{ 'is-focused' : isFocused }">
+                        <div class="outer-icons flex-end" @mousedown.prevent="">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-search" width="20" height="20" viewBox="0 0 26.671 26.671">
+                                <path d="M-1381.036-29.043l-5.275-5.275a11.876,11.876,0,0,1-7.725,2.827,11.886,11.886,0,0,1-8.46-3.5,11.888,11.888,0,0,1-3.5-8.461,11.886,11.886,0,0,1,3.5-8.46,11.886,11.886,0,0,1,8.46-3.5,11.888,11.888,0,0,1,8.461,3.5,11.886,11.886,0,0,1,3.5,8.46,11.876,11.876,0,0,1-2.827,7.725l5.275,5.275a1,1,0,0,1,0,1.414,1,1,0,0,1-.707.293A1,1,0,0,1-1381.036-29.043ZM-1404-43.457a9.976,9.976,0,0,0,9.965,9.966,9.93,9.93,0,0,0,6.953-2.833,1.031,1.031,0,0,1,.085-.1,1.017,1.017,0,0,1,.1-.085,9.934,9.934,0,0,0,2.832-6.953,9.976,9.976,0,0,0-9.965-9.965A9.976,9.976,0,0,0-1404-43.457Z" transform="translate(1406 55.421)" fill="#7e8596"/>
+                            </svg>
+                        </div>
+                        <div class="fgr-1">
+                            <input v-model="form.input"  autocomplete="off"  ref="searchInput" type="text" name="searchField" class="form-control" placeholder="Search product by name...">
+                        </div>
+                        <div class="outer-icons flex-start" v-if="!form.input == '' && isFocused" @mousedown.prevent="">
+                            <span class="clear-input-btn" @click="clearInput">
+                                <svg  xmlns="http://www.w3.org/2000/svg" height="10" viewBox="0 0 20 20">
+                                    <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"></path>
+                                </svg>
+                            </span>
+                        </div>
+                    </label>
+                </form>
+            </div>
         </teleport>
         <teleport to="#selection_sheet_body">
-            <sale-prod-search-overlay-row v-for="product in getProducts" :key="product.id" v-bind:product="product" />
+            <sale-prod-search-overlay-row v-for="product in computedProducts" :key="product.id" v-bind:product="product" @addByName="doAddByName"/>
         </teleport>
     </div>
 </template>
 <script>
 import axios from 'axios'
-
+import searchFunctionsMixin from '../../../mixins/searchFunctions'
 import TertiaryBackdrop from './TertiaryBackdrop.vue'
 import { mapGetters } from 'vuex'
 import Spinner from './Spinner.vue'
 import SaleProdSearchOverlayRow from './SaleProdSearchOverlayRow.vue'
 export default {
     name: 'NewSale',
+    mixins: [searchFunctionsMixin],
     components: { TertiaryBackdrop, Spinner, SaleProdSearchOverlayRow },
     computed: {
       ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getWindowWidth', 'getWindowHeight', 'getMobile', 'getSale', 'getSelectionSheet', 'getProducts']),
@@ -188,6 +212,11 @@ export default {
               return newSales
           }else
             return []
+        },
+        computedProducts: function() {
+            return this.getProducts.filter(product => {
+                return product.name.toLowerCase().match(this.form.input.toLowerCase())
+            })
         },
         computeHeight() {
             const val = this.getMobile ? 100 : 200
@@ -213,7 +242,7 @@ export default {
             searchInput: '',
             error: { active: false, msg: ''},
             submiting: false,
-            doingSearch: false,            
+            doingSearch: false,
         }
     },
     methods: {
@@ -239,6 +268,12 @@ export default {
                     this.doingSearch = false
                 }
             }
+        },
+        focusIn: function () {
+            this.isFocused = true
+        },
+        focusOut: function () {
+            this.isFocused = false;
         },
         clearSearch() {
             this.searchResult = ''
@@ -282,8 +317,8 @@ export default {
                 return Number(price)
             }
         },
-        addToSale(searchResult) {
-            let qty = this.checkUnitQty(searchResult.product_id) + this.quantity
+        addToSale(searchResult, quantity) {
+            let qty = this.checkUnitQty(searchResult.product_id) + quantity
             const price = this.computePrice(searchResult.selling_price, searchResult.discount)
             let unitTotal = price * qty
             const payload = {
@@ -315,10 +350,13 @@ export default {
             this.clearCurrentRes()
             this.$store.commit('setSelectionSheet', { type: 'search' })
         },
-        clearInput() {
+        doAddByName(payload) {
+            this.addToSale(payload.item, payload.quantity)
+        },
+        clearInput2() {
             this.searchInput = ''
             this.$nextTick(function () {
-                this.$refs.searchField.focus();
+                this.$refs.searchField2.focus();
             });
         },
         clearCurrentRes() {
@@ -326,8 +364,6 @@ export default {
             this.searchInput = ''
             this.quantity = Number(1)
         }
-
-
     }
 }
 </script>
@@ -346,8 +382,10 @@ h3{
     bottom: 0;
     right: 0;
 }
-
-
+.search-hold {
+    padding: 0 10px;
+    margin: 5px 0;
+}
 
 
 .sale-holder{

@@ -83,7 +83,10 @@ h3{
 ul{
     height: 100px;
     padding-left: 0;
-} 
+}
+.search-hold {
+    padding: 0 15px;
+}
 
 </style>
                                 

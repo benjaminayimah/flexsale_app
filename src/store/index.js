@@ -273,16 +273,19 @@ export default createStore({
       state.navPage.mobile = false
     },
     setSelectionSheet(state, payload) {
-      if(payload.type == 'product') {
-        state.selectionSheet.selectProd = true
-      }else if(payload.type == 'search') {
-        state.selectionSheet.search = true
-      }else {
-        state.selectionSheet.selectTag = true
-        state.selectionSheet.prodID = payload.id
-      }
       state.selectionSheet.active = true
       document.body.classList.add('fixed-body')
+      setTimeout(()=> {
+        if(payload.type == 'product') {
+          state.selectionSheet.selectProd = true
+        }else if(payload.type == 'search') {
+          state.selectionSheet.search = true
+        }else {
+          state.selectionSheet.selectTag = true
+          state.selectionSheet.prodID = payload.id
+        }
+      }, 100)
+
     },
     unSetSelectionSheet(state) {
       state.selectionSheet.active = false
