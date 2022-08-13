@@ -4,13 +4,13 @@ import router from '@/router'
 import country from './modules/country'
 export default createStore({
   state: {
-    // hostname: 'http://localhost:8000',
-    hostname: 'https://api.flexsale.store',
+    hostname: 'http://localhost:8000',
+    // hostname: 'https://api.flexsale.store',
     thisHostname: 'https://app.flexsale.store',
     token: localStorage.getItem('token') || null,
     rememberToken: '',
-    // OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
-    OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
+    OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
+    // OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
     betaNumber: '2.1',
     windowHeight: '',
     windowWidth: '',

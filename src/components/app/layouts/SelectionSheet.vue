@@ -60,7 +60,7 @@ export default {
         position: relative;
         .selection-body{
             overflow-y: auto;
-            padding: 0 20px;
+            padding: 0 20px 60px 20px;
             min-height: 300px;
             
         }

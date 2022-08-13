@@ -57,9 +57,9 @@
                                             </label>
                                         </div>
                                     </form>
-                                    <!-- <div>
+                                    <div>
                                         <button class="button add-more" @click="searchByName">Search by name...</button>
-                                    </div> -->
+                                    </div>
                                     <div v-if="error.active" class="error-alert flex-row-js">
                                         <span>{{ error.msg }}</span>
                                         <button @click.prevent="hideError" class="alert-close flex justify-content-center align-items-center">
@@ -84,7 +84,7 @@
                                             <span class="expired text-overflow-ellipsis" v-if="computeExpiry">
                                                 Expired product
                                             </span>
-                                            <button v-else class="button add-btn" @click.prevent="addToSale(searchResult)">
+                                            <button v-else class="button add-btn" @click.prevent="addToSale(searchResult, quantity)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 12.429 14.5">
                                                     <path  d="M18.552,12.874l-5.179,5.179a1.036,1.036,0,0,1-1.465,0L6.73,12.874a1.036,1.036,0,0,1,1.465-1.465l3.411,3.411V4.892a1.036,1.036,0,0,1,2.071,0V14.82l3.411-3.411a1.036,1.036,0,0,1,1.465,1.465Z" transform="translate(-6.427 -3.856)" fill="#566ff4"/>
                                                 </svg>
@@ -163,7 +163,7 @@
             <span class="text">Select from product list</span>
         </teleport>
         <teleport to="#selection_sheet_body">
-            <sale-prod-search-overlay-row v-for="product in getProducts" :key="product.id" v-bind:product="product" />
+            <sale-prod-search-overlay-row v-for="product in getProducts" :key="product.id" v-bind:product="product" @addByName="doAddByName"/>
         </teleport>
     </div>
 </template>
@@ -282,8 +282,8 @@ export default {
                 return Number(price)
             }
         },
-        addToSale(searchResult) {
-            let qty = this.checkUnitQty(searchResult.product_id) + this.quantity
+        addToSale(searchResult, quantity) {
+            let qty = this.checkUnitQty(searchResult.product_id) + quantity
             const price = this.computePrice(searchResult.selling_price, searchResult.discount)
             let unitTotal = price * qty
             const payload = {
@@ -314,6 +314,9 @@ export default {
         searchByName() {
             this.clearCurrentRes()
             this.$store.commit('setSelectionSheet', { type: 'search' })
+        },
+        doAddByName(payload) {
+            this.addToSale(payload.item, payload.quantity)
         },
         clearInput() {
             this.searchInput = ''
