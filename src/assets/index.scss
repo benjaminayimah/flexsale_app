@@ -532,6 +532,7 @@ opacity: 0;
   background-position: center;
   background-size: cover;
   background-color: $primary-color;
+  flex-shrink: 0;
 }
 .text-overflow-ellipsis{
   white-space: nowrap;
@@ -1863,6 +1864,7 @@ label{
   }
 }
 
+
 .menu-toggle-btn{
   height: 40px;
   width: 40px;
@@ -2295,47 +2297,44 @@ label{
     top: 60px;
     height: 70px;
     background-color: #ffffff;
-}
-.wlc-container{
-  margin: 0 15px;
-  align-items: center;
-  text-align: center;
-  padding: 50px 30px;
-  h1 {
-    font-size: 1.5rem;
   }
-  svg{
-    height: 70px;
+  .wlc-container{
+    margin: 0 15px;
+    align-items: center;
+    text-align: center;
+    padding: 50px 30px;
+    h1 {
+      font-size: 1.5rem;
+    }
+    svg{
+      height: 70px;
+    }
   }
-}
-.align-items-start{
-  align-items: center;
-}
-.wlc-cont-1, .wlc-cont-2{
-  flex-direction: column-reverse;
-}
-.wlc-cont-2{
-  .wlc-wrap {
+  .align-items-start{
+    align-items: center;
+  }
+  .wlc-cont-1, .wlc-cont-2{
+    flex-direction: column-reverse;
+  }
+  .wlc-cont-2{
+    .wlc-wrap {
+      width: 100%;
+    }
+  }
+  .w-50 {
     width: 100%;
   }
-}
-.w-50 {
-  width: 100%;
-}
-.lottie-player{
-  height: 140px;
-}
-.noti-count{
-  top: 2px;
-  right: 2px;
-}
+  .lottie-player{
+    height: 140px;
+  }
+  .noti-count{
+    top: 2px;
+    right: 2px;
+  }
 
 
 
   
-
-
-
   
 }
 
