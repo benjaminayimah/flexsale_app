@@ -32,7 +32,6 @@
                             </button>
                         </div>
                     </div>
-                    
                     <div class="body" :class="!getSale.minimize ? 'default-minimize-sale': ''" :style="{ height: computeHeight+'px' }">
                         <div v-if="!getSale.minimize" class="flex-col flex-space-between" :class="computeHeight == 0 ? 'display-none' : ''">
                             <div class="sale-main-body">
@@ -58,9 +57,9 @@
                                             </label>
                                         </div>
                                     </form>
-                                    <div>
-                                        <button class="button add-more" @click.prevent="$store.commit('setSelectionSheet', { type: 'search' })">Search by name...</button>
-                                    </div>
+                                    <!-- <div>
+                                        <button class="button add-more" @click="searchByName">Search by name...</button>
+                                    </div> -->
                                     <div v-if="error.active" class="error-alert flex-row-js">
                                         <span>{{ error.msg }}</span>
                                         <button @click.prevent="hideError" class="alert-close flex justify-content-center align-items-center">
@@ -161,10 +160,10 @@
     <div v-if="getSelectionSheet.search">
         <teleport to="#selection_title">
             <h3>Search by Product name</h3>
-            <span class="text">Select from product list or type into the search field</span>
+            <span class="text">Select from product list</span>
         </teleport>
         <teleport to="#selection_sheet_body">
-            product list
+            <sale-prod-search-overlay-row v-for="product in getProducts" :key="product.id" v-bind:product="product" />
         </teleport>
     </div>
 </template>
@@ -174,11 +173,12 @@ import axios from 'axios'
 import TertiaryBackdrop from './TertiaryBackdrop.vue'
 import { mapGetters } from 'vuex'
 import Spinner from './Spinner.vue'
+import SaleProdSearchOverlayRow from './SaleProdSearchOverlayRow.vue'
 export default {
     name: 'NewSale',
-    components: { TertiaryBackdrop, Spinner },
+    components: { TertiaryBackdrop, Spinner, SaleProdSearchOverlayRow },
     computed: {
-      ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getWindowWidth', 'getWindowHeight', 'getMobile', 'getSale', 'getSelectionSheet']),
+      ...mapGetters(['getCurrency', 'getCurrentStore', 'getHostname', 'getToken', 'getDiscounts', 'getUser', 'getDefaultImage', 'getUserAdminID', 'getWindowWidth', 'getWindowHeight', 'getMobile', 'getSale', 'getSelectionSheet', 'getProducts']),
       computeTotal() {
             return this.thisSale.reduce((acc, item) => acc + item.price, 0)
       },
@@ -290,9 +290,7 @@ export default {
                 id: searchResult.id, image: searchResult.image, qty: qty, name: searchResult.name, unit_price: Number(price), price: Number(unitTotal), og_price: searchResult.selling_price, prod_id: searchResult.product_id, discount: searchResult.discount, batch_no: searchResult.batch_no
             }
             this.thisSale.push(payload)
-            this.searchResult = ''
-            this.searchInput = ''
-            this.quantity = Number(1)
+            this.clearCurrentRes()
         },
         doSubmitSale() {
             if(this.thisSale.length > 0) {
@@ -313,11 +311,20 @@ export default {
                 }) 
             }
         },
+        searchByName() {
+            this.clearCurrentRes()
+            this.$store.commit('setSelectionSheet', { type: 'search' })
+        },
         clearInput() {
             this.searchInput = ''
             this.$nextTick(function () {
                 this.$refs.searchField.focus();
             });
+        },
+        clearCurrentRes() {
+            this.searchResult = ''
+            this.searchInput = ''
+            this.quantity = Number(1)
         }
 
 

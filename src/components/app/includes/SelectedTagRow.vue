@@ -1,7 +1,7 @@
 <template>
     <li>
         <hr>
-         <div class="li-hold">
+        <div class="li-hold">
             <div class="flex-row">
                 <div class="prd-img bg-img" :style="checkedProduct.image ? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getUser.current+'/'+checkedProduct.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                 <div class="prod-captions">
@@ -12,7 +12,6 @@
                         <div class="discount-price" v-if="checkedProduct.discount !== null && checkedProduct.selling_price != 0 &&  computePrice !== 0"><span class="currency">{{ getCurrency }}</span><span>{{ Intl.NumberFormat('en-US').format(computePrice.toFixed(2)) }}</span></div>
                     </div>
                     <div><label>Stock:</label><span>{{ checkedProduct.stock }}</span></div>
-
                 </div>
             </div>
             <button v-if="editMode || addMode" class="button" @click.prevent="removeSelectedProduct(checkedProduct.id)">
@@ -56,65 +55,32 @@ export default {
 </script>
 <style scoped lang="scss">
 
-.li-hold{
+.button{
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-decoration: none;
-    justify-content: space-between;
-    padding: 15px 0;
-    //border: 1px $dark-light solid;
-    transition: 0.3s all;
-    .button{
-        display: flex;
-        background-color: #fff;
-        border-radius: 50%;
-        height: 40px;
-        width: 40px;
-        padding: 0;
-        transition: 0.2s all;
-        margin-right: 3px;
-        &:hover{
-            background-color: $primary-light;
-            svg path{
-                fill: $dark;
-            }
-        }
-        &:active{
-            box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
-            border: 1px solid $dark;
-            background-color: #fff;
-        }
+    background-color: #fff;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    transition: 0.2s all;
+    margin-right: 3px;
+    &:hover{
+        background-color: $primary-light;
         svg path{
-            fill: $gray-color;
+            fill: $dark;
         }
     }
-}
-.prod-captions{
-    display: flex;
-    flex-direction: column;
-    padding: 0 10px;
-    color: $dark;
-    font-size: 0.9rem;
-    div{
-        display: flex;
-        align-items: center;
+    &:active{
+        box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
+        border: 1px solid $dark;
+        background-color: #fff;
     }
-    label{
-        margin: 0 5px 0 0;
-        color: $gray-color;
-        font-weight: 600;
+    svg path{
+        fill: $gray-color;
     }
 }
-.item-name{
-    font-weight: 700;
-}
-.prd-img{
-    height: 70px;
-    width: 70px;
-    border-radius: 10px;
-    background-color: $dark-light;
-}
+
+
 hr{
     border-color: $dark-light;
     margin: 0;
