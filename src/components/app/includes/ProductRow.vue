@@ -158,7 +158,7 @@ export default {
 }
 .notSelected{
     &:hover {
-            background-color: rgb(250, 250, 250);
+        background-color: rgb(250, 250, 250);
     }
 }
 .isSelected{
