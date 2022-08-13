@@ -13,7 +13,10 @@
                 </div>
                 </div>
             </div>
-            <div class="flex gap-4" :class="{ 'flex-col' : getMobile }">
+            <div class="flex-col flex-end gap-4" :class="{ 'flex-col' : getMobile }">
+                <div v-if="status.active" :class="status.success ? 'success-status': 'error-status'" class="add-status">
+                    <span>{{ status.msg }}</span>
+                </div>
                 <button class="button uppercase gap-4" @click="fetchProduct">
                     <svg v-if="!submitting" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11.41 11.41">
                         <path d="M-16851.348,10385.642h-2v-4.7h-4.707v-2h4.707v-4.707h2v4.707h4.7v2h-4.7Z" transform="translate(16858.055 -10374.231)" fill="#566ff4"/>
@@ -37,8 +40,13 @@ export default {
     data() {
         return {
             quantity: Number(1),
-            submitting: false
-        };
+            submitting: false,
+            status: {
+                active: false,
+                success: false,
+                msg: ''
+            }
+        }
     },
     computed: {
         ...mapGetters(["getHostname", "getToken", "getUser", "getDefaultImage", "getDiscounts", "getCurrency", "getUserAdminID", "getMobile"]),
@@ -69,15 +77,26 @@ export default {
                     discount: this.product.discount,
                 }
                 this.emitAddProduct(newProduct)
+                this.successStatus()
             }
             catch (err) {
                 this.submitting = false
-                //
+                this.errorStatus()
             }
         },
         emitAddProduct(payload) {
             const newPayload = { item: payload, quantity: this.quantity}
             this.$emit('addByName', newPayload)
+        },
+        successStatus() {
+            this.status.active = true
+            this.status.success = true
+            this.status.msg = 'Added'
+        },
+        errorStatus() {
+            this.status.active = true
+            this.status.success = false
+            this.status.msg = 'Error, try again'
         }
     }
 }
@@ -105,6 +124,21 @@ hr{
     width: 68px;
     height: 40px;
     border-radius: 10px;
+}
+.add-status{
+    margin: 0 10px;
+    font-size: 13px;
+    text-align: center;
+    border-radius: 20px;
+    padding: 2px 6px;
+}
+.error-status{
+    color: $danger;
+    background-color: #ffeaea;
+}
+.success-status {
+    background-color: #f0f7f1;
+    color: $success;
 }
 
 </style>

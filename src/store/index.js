@@ -11,7 +11,7 @@ export default createStore({
     rememberToken: '',
     // OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
     OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
-    betaNumber: '2.1',
+    betaNumber: '2.2',
     windowHeight: '',
     windowWidth: '',
     bodyWidth: '',
