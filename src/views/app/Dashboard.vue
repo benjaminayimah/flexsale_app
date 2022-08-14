@@ -347,6 +347,7 @@ export default {
     width: 110px;
     display: flex;
     flex-direction: column;
+    height: 100%;
     justify-content: space-between;
     .icon-wrap{
         background-color: rgba(255, 255, 255, 0.6);
