@@ -831,8 +831,9 @@ export default createStore({
       if(saleArr == 0) {
         // const payload = { id: 1, title: 'New sale: 001'}
         // state.sale.array.push(payload)
-        if(state.sale.active && state.sale.minimize) {
+        if(state.sale.active && (state.sale.minimize || state.sale.mobile)) {
           state.sale.minimize = false
+          state.sale.mobile = false
         }else {
           state.sale.active = true
         }
