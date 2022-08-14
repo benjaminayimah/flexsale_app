@@ -829,10 +829,15 @@ export default createStore({
     addToSale(state) {
       const saleArr = state.sale.array
       if(saleArr == 0) {
-        const payload = { id: 1, title: 'New sale: 001'}
-        state.sale.array.push(payload)
-        state.sale.active = true
+        // const payload = { id: 1, title: 'New sale: 001'}
+        // state.sale.array.push(payload)
+        if(state.sale.active && state.sale.minimize) {
+          state.sale.minimize = false
+        }else {
+          state.sale.active = true
+        }
         state.mobile ? document.body.classList.add('fixed-body') : ''
+      
       }
     },
     closeSale(state) {
