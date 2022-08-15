@@ -158,7 +158,7 @@
     <div v-if="getSelectionSheet.search">
         <teleport to="#selection_title">
             <h3>Search by Product name</h3>
-            <span class="text">Or select from the list</span>
+            <span class="text">Or Add from list</span>
         </teleport>
         <teleport to="#selection_sheet_searchInput">
             <div class="search-hold">

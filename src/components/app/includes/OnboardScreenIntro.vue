@@ -51,10 +51,10 @@
         <div class="heading">
             <h3>Welcome on board, {{ getUser.name.split(' ')[0] }}</h3>
             <h2>Create Your First Store</h2>
-            <span>Let's get your first store set up real quick.</span>
+            <span>Let's get your first store set up really quick.</span>
         </div>
         <div>
-            <button @click.prevent="this.$store.commit('forceSetOnboard', 'basicInfo')" class="button button-primary ob-begin-btn">
+            <button v-if="getStores.length < 1" @click.prevent="this.$store.commit('forceSetOnboard', 'basicInfo')" class="button button-primary ob-begin-btn">
             <span>Let's go!</span>
         </button>
         <button class="button ob-begin-btn ob-btn-2" @click.prevent="$store.commit('forceCloseOnboard')">
@@ -69,7 +69,7 @@
 import { mapGetters } from 'vuex'
 export default {
     name: 'OnboardScreenIntro',
-    computed: mapGetters(['getUser'])
+    computed: mapGetters(['getUser', 'getStores'])
 
 }
 </script>
