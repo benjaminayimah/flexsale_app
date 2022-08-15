@@ -17,6 +17,11 @@
             <button v-if="editMode || addMode" class="button" @click.prevent="removeSelectedProduct(checkedProduct.id)">
                 <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 14 14"><path d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)"></path></svg>
             </button>
+            <router-link :to="{ name: 'ProductDetailsBasic', params: { id: checkedProduct.id, name: checkedProduct.name } }" class="flex justify-items-center align-content-center" v-else>
+                <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 15.6 15.6">
+                    <path d="M1181.982-10350.9a2.357,2.357,0,0,1-2.354-2.354v-8.558a2.357,2.357,0,0,1,2.354-2.354h4.667a.8.8,0,0,1,.8.8.8.8,0,0,1-.8.8h-4.667a.755.755,0,0,0-.755.754v8.558a.755.755,0,0,0,.755.754h8.557a.755.755,0,0,0,.755-.754v-4.668a.8.8,0,0,1,.8-.8.8.8,0,0,1,.8.8v4.668a2.357,2.357,0,0,1-2.354,2.354Zm3.325-5.68a.8.8,0,0,1,0-1.129l7.189-7.191h-2.735a.8.8,0,0,1-.8-.8.8.8,0,0,1,.8-.8h4.665a.8.8,0,0,1,.567.234.8.8,0,0,1,.234.566h0v4.665a.8.8,0,0,1-.8.8.8.8,0,0,1-.8-.8v-2.734l-7.191,7.188a.793.793,0,0,1-.565.234A.793.793,0,0,1,1185.307-10356.58Z" transform="translate(-1179.628 10366.5)"></path>
+                </svg>
+            </router-link>
         </div> 
     </li>
 </template>
@@ -89,6 +94,17 @@ hr{
     border: 1px $primary-color solid !important;
     .button{
         background-color: $primary-color !important;
+    }
+}
+a{
+    padding: 12px;
+    path {
+        fill: $gray-color;
+    }
+    &:hover {
+        path {
+            fill: $primary-color;
+        }
     }
 }
 
