@@ -5,8 +5,7 @@
         </transition>
         <transition :name="getMobile? 'slide' : ''">
             <div v-if="getSelectionSheet.active" class="product-selection-sheet" :class="computeWidth ? 'width-active': 'width-inactive'">
-                <div class="selection-wrap">
-                    <div class="selection-main">
+                 <div class="selection-main">
                         <div class="selection-header">
                             <div class="header-holder">
                                 <div class="flex top-hold">
@@ -20,12 +19,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="selection-body" :style="{height: (windowHeight-180)+'px'}">
+                        <div class="selection-body" :style="{maxHeight: (windowHeight-180)+'px'}">
                             <div id="selection_sheet_searchInput"></div>
                             <div id="selection_sheet_body"></div>
                         </div>
                     </div>
-                </div>
             </div>
         </transition>
     </teleport>
@@ -40,7 +38,7 @@ export default {
     computed: {
         ...mapGetters(['getWindowWidth', 'getSelectionSheet', 'getMobile']),
         computeWidth() {
-            if(this.getWindowWidth <= 600) {
+            if(this.getWindowWidth <= 540) {
                 return true
             }else {
                 return false
@@ -55,16 +53,15 @@ export default {
     z-index: 301;
     display: flex;
     justify-content: center;
-    height: 100%;
-    width: 600px;
-    top: 0;
+    width: 540px;
+    top: 8%;
     .selection-main{
         width: 100%;
         background-color: #ffffff;
         position: relative;
         .selection-body{
             overflow-y: auto;
-            padding: 20px 20px 60px 20px;
+            padding: 10px 20px 60px 20px;
             min-height: 300px; 
         }
     }
@@ -89,21 +86,25 @@ export default {
 .width-inactive{
     align-items: center;
     .selection-wrap{
-        width: 90%;
+        width: 100%;
     }
     .selection-main{
         border-radius: 20px;
+        width: 100%;
     }
 }
 .width-active{
     width: 100%;
-    align-items: flex-end;
+    bottom: 0;
+    top: unset;
     .selection-wrap{
+        width: 100%;
         width: 100%;
     }
      .selection-main{
         border-top-right-radius: 20px;
         border-top-left-radius: 20px;
+        width: 100%;
     }
 }
 @media screen and (max-width: 499px){

@@ -64,11 +64,11 @@
                 </div>
                 <div class="flex justify-content-center">
                     <button class="button button-secondary flex gap-8" @click="makeReceipt">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 18">
-                        <path d="M19,8H5a3,3,0,0,0-3,3v6H6v4H18V17h4V11A3,3,0,0,0,19,8ZM16,19H8V14h8Zm3-7a1,1,0,1,1,1-1A1,1,0,0,1,19,12ZM18,3H6V7H18Z" transform="translate(-2 -3)" fill="#212121"/>
-                    </svg>
-                    Print / Download Receipt
-                </button>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 18">
+                            <path d="M19,8H5a3,3,0,0,0-3,3v6H6v4H18V17h4V11A3,3,0,0,0,19,8ZM16,19H8V14h8Zm3-7a1,1,0,1,1,1-1A1,1,0,0,1,19,12ZM18,3H6V7H18Z" transform="translate(-2 -3)" fill="#212121"/>
+                        </svg>
+                        Print / Download Receipt
+                    </button>
                 </div>
             </div>
             <div v-else class="loading">
@@ -170,9 +170,9 @@ export default {
     margin-bottom: 15px;
     position: relative;
     padding: 20px;
-    // &:hover {
-    //     background-color: rgb(250, 250, 250);
-    // }
+    &:hover {
+        background-color: rgb(250, 250, 250);
+    }
 }
 .controls{
     position: absolute;
@@ -243,6 +243,18 @@ hr{
     .loading{
         text-align: center;
         padding: 20px;
+    }
+    .button-secondary{
+        height: 45px;
+        color: $primary-color;
+        border-color: $primary-color;
+        path {
+            fill: $primary-color;
+        }
+        &:hover {
+            background-color: $primary-light;
+        }
+
     }
 }
 table{

@@ -81,7 +81,6 @@ h3{
     font-weight: 500;
 }
 ul{
-    height: 100px;
     padding-left: 0;
 }
 .search-hold {

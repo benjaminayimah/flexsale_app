@@ -78,7 +78,6 @@ export default {
 <style scoped lang="scss">
 li{
     &:last-child hr{
-        margin-top: 40px;
         visibility: hidden;
     }
     &:hover .button{

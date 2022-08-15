@@ -42,7 +42,7 @@ h3{
 .grid{
     gap: 20px;
     grid-template-columns: 1fr 1fr;
-    margin: 30px 0 60px 0;
+    margin: 30px 0;
 }
 .empty-state{
     padding-top: 0;
