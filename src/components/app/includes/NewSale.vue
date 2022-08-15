@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <tertiary-backdrop v-if="getSale.maximize && getSale.active || (!getSale.mobile && getMobile && getSale.active)" v-bind:zIndex="99" />
+        <tertiary-backdrop v-if="(getSale.maximize && getSale.active || (!getSale.mobile && getMobile && getSale.active)) || sold" v-bind:zIndex="zIndex" />
     </transition>
     <transition :name="getMobile? 'slide' : ''">
         <div v-if="getSale.active" class="sale-main-wrapper"  :class="[getSale.maximize ? 'sale-maximize' : 'normal-position', getSale.minimize ? 'minimized': '', getSale.mobile && getMobile ? 'mini-mob': '', getWindowWidth <= 528 ? 'full-width': '']">
@@ -184,7 +184,12 @@
             </div>
         </teleport>
         <teleport to="#selection_sheet_body">
-            <sale-prod-search-overlay-row v-for="product in computedProducts" :key="product.id" v-bind:product="product" @addByName="doAddByName"/>
+            <div v-if="computedProducts.length > 0">
+                <sale-prod-search-overlay-row v-for="product in computedProducts" :key="product.id" v-bind:product="product" @addByName="doAddByName"/>
+            </div>
+            <h4 v-else style="padding: 0 10px">
+                No product found
+            </h4>
         </teleport>
     </div>
 </template>
@@ -241,6 +246,8 @@ export default {
             error: { active: false, msg: ''},
             submiting: false,
             doingSearch: false,
+            zIndex: 99,
+            sold: false
         }
     },
     methods: {

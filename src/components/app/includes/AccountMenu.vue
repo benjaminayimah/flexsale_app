@@ -308,7 +308,7 @@ padding: 15px 20px;
 
 .slide-enter-from,
 .slide-leave-to {
-  transform: translateY(300px);
+  transform: translateY(350px);
   
 }
   

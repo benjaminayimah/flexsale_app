@@ -972,8 +972,6 @@ input[type=date] {
   }
   &:focus{
       box-shadow: none;
-      border: none;
-      background-color: transparent;
   }&:active {
     box-shadow: 0 0 0 0.2rem rgb(14 20 44 / 20%);
     border: 1px solid #0e142c;
