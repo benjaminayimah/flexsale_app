@@ -10,14 +10,14 @@
               <div class="flex gap-8"><span>Receipt ID:</span><span>{{ sold.receipt }}</span></div>
               <div class="card-outline">
                 <div class="flex-row-js">
-                  <label>Total</label><h3><span class="currency">{{ getCurrency }}</span><span  class="value">{{ sold.total }}</span></h3>
+                  <label>Total</label><h3><span class="currency">{{ getCurrency }}</span><span  class="value">{{ Intl.NumberFormat('en-US').format(sold.total.toFixed(2)) }}</span></h3>
                 </div>
                 <hr class="mb-16">
                 <div class="flex-row-js mb-16">
-                  <label>Amount received</label><span>{{ sold.received }}</span>
+                  <label>Amount received</label><span>{{ getCurrency }}{{ Intl.NumberFormat('en-US').format(sold.received) }}</span>
                 </div>
                 <div class="flex-row-js">
-                  <label>Change</label><span>{{ sold.change }}</span>
+                  <label>Change</label><span>{{ getCurrency }}{{ Intl.NumberFormat('en-US').format(sold.change) }}</span>
                 </div>
               </div>
               <button class="button print-receipt-btn flex gap-8" @click="makeReceipt">
