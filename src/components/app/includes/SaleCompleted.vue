@@ -14,7 +14,7 @@
                 </div>
                 <hr class="mb-16">
                 <div class="flex-row-js mb-16">
-                  <label>Amount received</label><span>{{ getCurrency }}{{ Intl.NumberFormat('en-US').format(sold.received) }}</span>
+                  <label>Cash received</label><span>{{ getCurrency }}{{ Intl.NumberFormat('en-US').format(sold.received) }}</span>
                 </div>
                 <div class="flex-row-js">
                   <label>Change</label><span>{{ getCurrency }}{{ Intl.NumberFormat('en-US').format(sold.change) }}</span>
