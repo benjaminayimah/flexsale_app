@@ -92,7 +92,7 @@
                 </div>
                 <div v-else>
                     <span class="beta">Coming soon</span>
-                    <h4 class="cwht">Ability to view all logs on your products at a glance.</h4>
+                    <h4 class="cwht">View all logs on your products at a glance.</h4>
                 </div>
             </div>
         </div>
