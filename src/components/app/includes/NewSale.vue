@@ -262,7 +262,7 @@ export default {
         },
         computeChange() {
           const change = this.received - this.computeTotal
-          return change
+          return change.toFixed(2)
         }
     },
     data() {
