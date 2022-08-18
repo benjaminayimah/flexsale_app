@@ -253,6 +253,7 @@ section{
   justify-content: space-between;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 main{
   width: 100%;

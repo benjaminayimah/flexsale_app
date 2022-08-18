@@ -120,6 +120,16 @@ li:last-child a, li:last-child .info-section-hold{
       }
   }
 }
+.f-f-c{
+  position: fixed;
+  z-index: 301;
+  display: flex;
+  justify-content: center;
+}
+.card-outline{
+  border-radius: 16px;
+  border: 1px solid $gray-light;
+}
 .currency{
   font-size: 14px;
   margin-right: 4px;
@@ -160,6 +170,9 @@ li:last-child a, li:last-child .info-section-hold{
   border-radius: 13px;
   min-width: 80px;
   gap: 5px;
+}
+.add-sale-btn {
+  height: 52px;
 }
 .relative{
   position: relative;
@@ -551,6 +564,9 @@ ul, li{
 .mb-8{
   margin-bottom: 8px !important;
 }
+.mb-16{
+  margin-bottom: 16px !important;
+}
 .mt-0{
   margin-top: 0 !important;
 }
@@ -802,6 +818,21 @@ button{
       border: 1px solid $primary-color !important;
       background-color: $primary-light !important;
     }
+}
+.print-receipt-btn{
+  height: 48px;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  background-color: transparent;
+  path {
+      fill: $primary-color;
+  }
+  &:hover {
+      background-color: $primary-light;
+  }
+}
+.button-clear{
+  background-color: transparent;
 }
 .grid{
   display: grid;

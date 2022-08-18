@@ -1,7 +1,7 @@
 <template>
     <div class="record-list-main-wrap">
         <div class="controls">
-            <button class="button cancel-btn" :id="'export_toggle_'+record.id" @click.prevent="doMenu('export_toggle_'+record.id)" title="Print receipt">
+            <button class="button cancel-btn" :id="'export_toggle_'+record.id" @click.prevent="doMenu('export_toggle_'+record.id)">
                 <svg xmlns="http://www.w3.org/2000/svg" height="3.5" viewBox="0 0 20.509 4.059">
                     <path d="M-7097.549-7163.327a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7097.549-7163.327Zm-8.236,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7105.786-7163.327Zm-8.214,0a2.029,2.029,0,0,1,2.03-2.028,2.028,2.028,0,0,1,2.028,2.028,2.029,2.029,0,0,1-2.028,2.03A2.029,2.029,0,0,1-7114-7163.327Z" transform="translate(7114 7165.355)"></path>
                 </svg>
@@ -63,7 +63,7 @@
                     <div>{{ Intl.NumberFormat('en-US').format(computeTotal.toFixed(2)) }}</div>
                 </div>
                 <div class="flex justify-content-center">
-                    <button class="button button-secondary flex gap-8" @click="makeReceipt">
+                    <button class="button print-receipt-btn flex gap-8" @click="makeReceipt">
                         <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 18">
                             <path d="M19,8H5a3,3,0,0,0-3,3v6H6v4H18V17h4V11A3,3,0,0,0,19,8ZM16,19H8V14h8Zm3-7a1,1,0,1,1,1-1A1,1,0,0,1,19,12ZM18,3H6V7H18Z" transform="translate(-2 -3)" fill="#212121"/>
                         </svg>
@@ -243,18 +243,6 @@ hr{
     .loading{
         text-align: center;
         padding: 20px;
-    }
-    .button-secondary{
-        height: 45px;
-        color: $primary-color;
-        border-color: $primary-color;
-        path {
-            fill: $primary-color;
-        }
-        &:hover {
-            background-color: $primary-light;
-        }
-
     }
 }
 table{

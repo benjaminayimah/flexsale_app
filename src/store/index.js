@@ -11,7 +11,7 @@ export default createStore({
     rememberToken: '',
     // OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
     OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
-    betaNumber: '2.5',
+    betaNumber: '3.0',
     windowHeight: '',
     windowWidth: '',
     bodyWidth: '',
@@ -284,7 +284,7 @@ export default createStore({
           state.selectionSheet.selectTag = true
           state.selectionSheet.prodID = payload.id
         }
-      }, 100)
+      }, 10)
 
     },
     unSetSelectionSheet(state) {
@@ -584,7 +584,7 @@ export default createStore({
         });
       }
       if (router.currentRoute.value.params.name === 'todays-sales' || (router.currentRoute.value.params.name === 'custom-date-range' && new Date(state.saleRecords.endDate).toISOString().slice(0,10)  === new Date().toISOString().slice(0,10))) {
-          state.saleRecords.array.push(payload.sale)
+        state.saleRecords.array.push(payload.sale)
       }
     },
     addToDiscounts(state, payload) {

@@ -139,9 +139,11 @@ export default {
             if(this.showMenu === false) {
                 this.showMenu = true
                 this.$store.commit('setDynamicFloatingDiv', elem)
+                this.$store.commit('setBodyFixed')
             }else{
                 this.showMenu = false
                 this.$store.commit('reSetDynamicFloatingDiv', elem)
+                this.$store.commit('removeBodyFixed')
             }
         },
         doSwitch(id) {
@@ -194,7 +196,6 @@ padding: 15px 20px;
     align-items: center;
     border-radius: 1rem;
     transition: 0.2s all linear;
-    width: 100%;
   }
   
   .acct-label{
@@ -232,6 +233,7 @@ padding: 15px 20px;
       display: flex;
       align-items: center;
       width: 24px;
+      justify-content: flex-end;
       span{
         display: block;
         height: 4px;

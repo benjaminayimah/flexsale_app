@@ -31,7 +31,7 @@
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.password}">
                 <div class="input-wrapper" id="password_wrapper">
                     <label for="passwordInput">Password</label>
-                    <input id="passwordInput" ref="password" autocomplete="off" v-model="form.password" @input="isFocusedIn('password_wrapper')" @keyup="checkPassword" @focusin="showPassRules" @focusout="hidePassRules" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password">
+                    <input id="passwordInput" ref="password" autocomplete="new-password" v-model="form.password" @input="isFocusedIn('password_wrapper')" @keyup="checkPassword" @focusin="showPassRules" @focusout="hidePassRules" required :type="showPass ? 'text' : 'password'" name="password" class="form-control password">
                 </div>
                 <i class="hide-show-pass" :class="{ 'hide-pass-active' : showPass }" @click="togglePass">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 26.364 26.364">

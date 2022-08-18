@@ -4,7 +4,7 @@
             <tertiary-backdrop v-if="getSelectionSheet.active" @click.prevent="$store.commit('unSetSelectionSheet')" v-bind:zIndex="300"/>
         </transition>
         <transition :name="getMobile? 'slide' : ''">
-            <div v-if="getSelectionSheet.active" class="product-selection-sheet" :class="computeWidth ? 'width-active': 'width-inactive'">
+            <div v-if="getSelectionSheet.active" class="product-selection-sheet f-f-c" :class="computeWidth ? 'width-active': 'width-inactive'">
                  <div class="selection-main">
                         <div class="selection-header">
                             <div class="header-holder">
@@ -49,12 +49,6 @@ export default {
 </script>
 <style scoped lang="scss">
 .product-selection-sheet{
-    position: fixed;
-    z-index: 301;
-    display: flex;
-    justify-content: center;
-    width: 540px;
-    top: 8%;
     .selection-main{
         width: 100%;
         background-color: #ffffff;
@@ -84,7 +78,9 @@ export default {
     border-radius: 12px;
 }
 .width-inactive{
+    top: 8%;
     align-items: center;
+    width: 540px;
     .selection-wrap{
         width: 100%;
     }
@@ -96,7 +92,6 @@ export default {
 .width-active{
     width: 100%;
     bottom: 0;
-    top: unset;
     .selection-wrap{
         width: 100%;
         width: 100%;
