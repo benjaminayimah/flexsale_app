@@ -2,7 +2,7 @@
     <div class="wlc-container flex wlc-cont-1">
         <div class="wlc-wrap flex-col w-50 justify-content-center align-items-start">
             <h1>Welcome on board, <strong>{{ computedUser }}</strong></h1>
-            <div>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</div>
+            <div>Flexsale offers you a flexible way to manage your store's inventory, record sales, perform sales analysis, get notified of expiring products and more.</div>
             <button @click.prevent="this.$store.commit('forceSetOnboard', 'intro')" class="button">Set up your store</button>
         </div>
         <div class="w-50">

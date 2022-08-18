@@ -27,8 +27,8 @@
         </div>
         <hr>
         <div class="flex gap-8 button-wrap">
-            <a class="submit-edit" href="#" @click.prevent="submitNewBatch">Add</a>
-            <a class="cancel-edit" href="#" @click.prevent="removeRow(row.id)">Remove</a>
+            <a class="submit-edit button-primary" href="#" @click.prevent="submitNewBatch">Add</a>
+            <a class="cancel-edit button-secondary" href="#" @click.prevent="removeRow(row.id)">Remove</a>
         </div>
     </form>
 </template>
