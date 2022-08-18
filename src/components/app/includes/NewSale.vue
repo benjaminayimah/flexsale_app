@@ -151,7 +151,12 @@
                                     <div class="flex align-items-center gap-8">
                                         <div class="form-row">
                                             <div class="input-wrapper is-iddle" id="received_wrapper">
-                                                <label for="receivedInput" class="text-overflow-ellipsis">Cash received</label>
+                                                <label for="receivedInput" class="text-overflow-ellipsis">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="8" viewBox="0 0 45 27">
+                                                        <path d="M24.75,20.25H23.625V14.063a.562.562,0,0,0-.562-.562h-.955a1.685,1.685,0,0,0-.936.283l-1.078.719a.562.562,0,0,0-.156.78l.624.936a.562.562,0,0,0,.78.156l.033-.022v3.9H20.25a.562.562,0,0,0-.562.563v1.125a.562.562,0,0,0,.563.563h4.5a.562.562,0,0,0,.563-.562V20.813A.562.562,0,0,0,24.75,20.25Zm18-15.75H2.25A2.25,2.25,0,0,0,0,6.75v22.5A2.25,2.25,0,0,0,2.25,31.5h40.5A2.25,2.25,0,0,0,45,29.25V6.75A2.25,2.25,0,0,0,42.75,4.5ZM3.375,28.125v-4.5a4.5,4.5,0,0,1,4.5,4.5Zm0-15.75v-4.5h4.5A4.5,4.5,0,0,1,3.375,12.375ZM22.5,25.875c-3.728,0-6.75-3.526-6.75-7.875s3.022-7.875,6.75-7.875S29.25,13.65,29.25,18,26.227,25.875,22.5,25.875Zm19.125,2.25h-4.5a4.5,4.5,0,0,1,4.5-4.5Zm0-15.75a4.5,4.5,0,0,1-4.5-4.5h4.5Z" transform="translate(0 -4.5)"/>
+                                                    </svg>
+                                                    Cash received
+                                                </label>
                                                 <input id="receivedInput" v-model="received" class="form-control" type="text" placeholder="0.00">
                                             </div>
                                         </div>
@@ -163,9 +168,6 @@
                                         </div>
                                     </div>
                                     <button class="button gap-8 button-primary add-sale-btn" @click.prevent="doSubmitSale" :class="{ 'button-disabled' : thisSale.length < 1 || submiting }" :disabled="thisSale.length < 1 || submiting ? true : false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 45 27">
-                                            <path d="M24.75,20.25H23.625V14.063a.562.562,0,0,0-.562-.562h-.955a1.685,1.685,0,0,0-.936.283l-1.078.719a.562.562,0,0,0-.156.78l.624.936a.562.562,0,0,0,.78.156l.033-.022v3.9H20.25a.562.562,0,0,0-.562.563v1.125a.562.562,0,0,0,.563.563h4.5a.562.562,0,0,0,.563-.562V20.813A.562.562,0,0,0,24.75,20.25Zm18-15.75H2.25A2.25,2.25,0,0,0,0,6.75v22.5A2.25,2.25,0,0,0,2.25,31.5h40.5A2.25,2.25,0,0,0,45,29.25V6.75A2.25,2.25,0,0,0,42.75,4.5ZM3.375,28.125v-4.5a4.5,4.5,0,0,1,4.5,4.5Zm0-15.75v-4.5h4.5A4.5,4.5,0,0,1,3.375,12.375ZM22.5,25.875c-3.728,0-6.75-3.526-6.75-7.875s3.022-7.875,6.75-7.875S29.25,13.65,29.25,18,26.227,25.875,22.5,25.875Zm19.125,2.25h-4.5a4.5,4.5,0,0,1,4.5-4.5Zm0-15.75a4.5,4.5,0,0,1-4.5-4.5h4.5Z" transform="translate(0 -4.5)"/>
-                                        </svg>
                                         <span>{{ submiting ? 'Please wait' : 'Record Sale' }}</span>
                                         <spinner v-if="submiting" v-bind:size="20" v-bind:white="true" />
                                     </button>
@@ -261,8 +263,12 @@ export default {
             }
         },
         computeChange() {
-          const change = this.received - this.computeTotal
-          return change.toFixed(2)
+            if(this.received > 0) {
+                const change = this.received - this.computeTotal
+                return change.toFixed(2)
+            }
+            else
+            return 0
         }
     },
     data() {
@@ -463,6 +469,9 @@ h3{
     }
     label {
         width: 80%;
+        path {
+            fill: $gray-color;
+        }
     }
 }
 .sale-holder{
