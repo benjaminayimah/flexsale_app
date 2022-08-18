@@ -827,6 +827,7 @@ button{
   color: $primary-color;
   border: 1px solid $primary-color;
   background-color: transparent;
+  border-radius: $border-rounded;
   path {
       fill: $primary-color;
   }
