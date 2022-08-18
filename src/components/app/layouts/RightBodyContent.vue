@@ -130,7 +130,6 @@ label{
 }
 .add-sale-btn {
     margin: 15px 0;
-    height: 52px;
     svg{
         margin-right: 5px;
     }
