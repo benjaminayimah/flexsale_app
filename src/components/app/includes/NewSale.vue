@@ -151,7 +151,7 @@
                                     <div class="flex align-items-center gap-8">
                                         <div class="form-row">
                                             <div class="input-wrapper is-iddle" id="received_wrapper">
-                                                <label for="receivedInput" class="text-overflow-ellipsis">Amount received</label>
+                                                <label for="receivedInput" class="text-overflow-ellipsis">Cash received</label>
                                                 <input id="receivedInput" v-model="received" class="form-control" type="text" placeholder="0.00">
                                             </div>
                                         </div>
