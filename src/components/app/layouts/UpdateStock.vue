@@ -4,7 +4,7 @@
         <span>Update stock</span>
     </teleport>
     <teleport to="#add_submit_button">
-        <button class="button button-seconday top-submit-btn" @click.prevent="$store.commit('unsetMainHomeWidth')">Close</button>
+        <button class="button button-secondary top-submit-btn" @click.prevent="$store.commit('unsetMainHomeWidth')">Close</button>
     </teleport>
     <teleport to="#add_master_body_container">
         <div class="page-info page-info-primary flex mt-20">

@@ -34,8 +34,7 @@ export default {
 <style scoped lang="scss">
 .button-primary{
     height: 44px;
-    padding: 0 13px;
-    border-radius: 11px;
+    padding: 0 15px;
     span{
         margin-left: 5px;
     }

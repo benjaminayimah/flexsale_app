@@ -65,8 +65,8 @@
                 </div>
                 <hr>
                 <div class="flex gap-8 button-wrap">
-                    <a class="submit-edit" href="#" @click.prevent="submitBatch">Save</a>
-                    <a class="cancel-edit" href="#" @click.prevent="toggleEdit">Cancel</a>
+                    <a class="submit-edit button-primary" href="#" @click.prevent="submitBatch">Save</a>
+                    <a class="cancel-edit button-secondary" href="#" @click.prevent="toggleEdit">Cancel</a>
                 </div>
             </form>
         </div>

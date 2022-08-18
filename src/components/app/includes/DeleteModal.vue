@@ -38,6 +38,9 @@ export default {
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 99999;
 }
+.cancel-btn{
+    border-radius: 30px;
+}
 .icon-delete path{
     fill: $danger
 }
