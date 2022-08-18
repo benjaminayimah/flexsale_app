@@ -34,14 +34,13 @@
     </teleport>
 </template>
 <script>
-import axios from 'axios';
 import { mapGetters } from 'vuex';
 export default {
     inheritAttrs: false,
     name: 'SaleCompletion',
     props: ['sold'],
     computed: {
-        ...mapGetters(['getWindowWidth', 'getCurrency', 'getHostname', 'getUser', 'getCurrentStore', 'getRememberToken', 'getToken']),
+        ...mapGetters(['getWindowWidth', 'getCurrency', 'getHostname', 'getUser', 'getCurrentStore', 'getRememberToken']),
         computeWidth() {
             if(this.getWindowWidth <= 540) {
                 return true
@@ -54,22 +53,6 @@ export default {
     methods: {
       makeReceipt() {
             window.open(this.getHostname+'/generate-receipt/'+this.getUser.id+'/'+this.getCurrentStore.id+'/'+this.sold.id+'/'+this.getRememberToken,'popup','width=700,height=800'); return false
-      },
-      async done() {
-        this.form.change = this.$refs.change.value
-        const id = this.sold.id
-        try {
-          await axios.put(this.getHostname+'/api/perform-sale/'+ id +'?token='+this.getToken, this.form)
-          this.$store.commit('removeBodyFixed')
-          this.$emit('closeCompleted')
-        } catch (e) {
-          const payload = {
-            id: 'danger',
-            body: 'An error occured. Check your connection'
-          }
-          this.$store.commit("showAlert", payload);
-        }
-
       }
     }
 }
