@@ -97,9 +97,6 @@ export default {
         position: relative;
         
         .logon-btn{
-            width: 100%;
-            height: 54px;
-            border-radius: 14px;
             margin-top: 0;
         }
         h2{
