@@ -56,10 +56,10 @@
                 <span class="span" v-if="validation.error && validation.errors.password">
                     {{ validation.errors.password[0] }}
                 </span>
-                <!-- <div class="forgot-pass">
+                <div class="forgot-pass">
                     <div v-if="getUser.oauth && !getUser.has_pass" class="flex oauth-provider-wrap gap-8"><span>You are currently logged in with</span><span class="provider">{{ getUser.oauth_provider }}</span></div>
-                    <a v-else href="#" class="">Forgot your password?</a>
-                </div> -->
+                    <!-- <a v-else href="#" class="">Forgot your password?</a> -->
+                </div>
                 <div v-if="error.pass" class="error-hold"><span class="error">{{ error.message }}</span></div>
             </div>
             <div class="form-row" v-if="getEditContainer.active && getEditContainer.password" :class="{ 'input-has-error' : validation.error && validation.errors.newPassword }">

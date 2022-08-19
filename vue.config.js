@@ -10,7 +10,7 @@ module.exports = {
         // in that case, we can target the `scss` syntax separately using the `scss` option
         sass: {
           prependData: `@import "@/assets/index.scss";`
-        },
+        }
        
       }
     },
@@ -20,10 +20,7 @@ module.exports = {
       themeColor: '#ffffff',
       msTileColor: '#000000',
       appleMobileWebAppCapable: 'yes',
-      appleMobileWebAppStatusBarStyle: 'black',
-      id: '/',
-      startUrl: '/',
-  
+      appleMobileWebAppStatusBarStyle: 'black'
     }
     
   }
