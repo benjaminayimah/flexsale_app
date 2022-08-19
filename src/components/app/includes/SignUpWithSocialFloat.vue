@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <button class="button button-primary logon-btn" @click.prevent="signUpOAuthUser"  :class="{ 'button-disabled' : getSignInStatus.creating }" :disabled="getSignInStatus.creating? true : false">
-                    <span>{{ getSignInStatus.creating ? 'Creating account' : 'Sign Up with '+ getOAuthModal.user.given_name }}</span>
+                    <span class="text-overflow-ellipsis">{{ getSignInStatus.creating ? 'Creating account' : 'Sign Up with '+ getOAuthModal.user.given_name }}</span>
                     <spinner v-if="getSignInStatus.creating" v-bind:size="20" v-bind:white="true" />
                 </button>
             </div>
@@ -98,6 +98,9 @@ export default {
         
         .logon-btn{
             margin-top: 0;
+            span {
+                width: 80%;
+            }
         }
         h2{
             font-size: 1.1rem;

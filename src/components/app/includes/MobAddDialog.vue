@@ -35,7 +35,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 14.481 14.481">
                             <path d="M11.241,7.62V4l7.241,7.241-7.241,7.241v-3.62H4V7.62Z" transform="translate(-4 -4)" fill="#212121"/>
                         </svg>
-                        <span>Sell</span>
+                        <span>Add Sale</span>
                     </a>
                 </li>
             </ul>

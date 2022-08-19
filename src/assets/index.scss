@@ -631,6 +631,7 @@ button.add-more{
   height: 44px;
   border-radius: 25px;
   padding: 8px 16px;
+  gap: 6px;
   &:hover{
       background-color: $dark-light;
   }
@@ -638,7 +639,6 @@ button.add-more{
       box-shadow: 0 0 0 0.2rem rgb(86 111 244 / 20%);
   }
   span{
-      padding-left: 4px;
       color: $dark;
   }
 }
