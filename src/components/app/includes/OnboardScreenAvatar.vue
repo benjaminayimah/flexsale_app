@@ -1,6 +1,6 @@
 <template>
 <teleport to="#onboarding_title">
-    <span>Upload Store Photo</span>
+    <span>Store Photo</span>
 </teleport>
 <teleport to="#onboarding_top_button">
     <div class="flex">

@@ -7,7 +7,7 @@
             <lottie-player class="lottie-player" :src="getThisHostname+'/img/mark-correct.json'" background="transparent" style="width: 200px; height: 200px;"  speed="1" autoplay></lottie-player>
             <div class="heading">
                 <h2>Completed</h2>
-                <span>Your store has been set up successfully.</span>
+                <span>Store setup is completed. You can begin to upload your products.</span>
             </div>
             <div>
                 <button @click.prevent="this.$store.commit('forceCloseOnboard')" class="button button-primary ob-begin-btn">
