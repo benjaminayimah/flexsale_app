@@ -168,9 +168,9 @@ export default {
   left: 0;
 //   border-top-left-radius: 8px;
 //   border-top-right-radius: 8px;
-  box-shadow: rgb(86 111 244 / 33%) 0 5px 12px 0;
+//   box-shadow: rgb(86 111 244 / 33%) 0 5px 12px 0;
   background-color: $white-color;
-//   border-top: 1px solid #e9ebf0;
+  border-top: 1px solid #e9ebf0;
 }
 .mob-nav-content{
   display: flex;
