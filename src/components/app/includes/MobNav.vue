@@ -166,23 +166,18 @@ export default {
   bottom: 0;
   width: 100%;
   left: 0;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+//   border-top-left-radius: 8px;
+//   border-top-right-radius: 8px;
   box-shadow: rgb(86 111 244 / 33%) 0 5px 12px 0;
   background-color: $white-color;
-}
-.iphone{
-    height: 68px;
-}
-.android{
-    height: 50px;
+//   border-top: 1px solid #e9ebf0;
 }
 .mob-nav-content{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding-bottom: 15px;
-  height: 50px;
+  height: 52px;
   padding: 0 15px;
   li{
     list-style-type: none;
