@@ -48,8 +48,9 @@
                 <label>Country*:</label>
                 <select v-model="getOnboard.form.country" class="form-control select">
                     <option selected="selected" :value="null">Select your country</option>
-                    <option v-for="country in getCountries" :key="country" :value="country">{{ country }}</option>
+                    <option v-for="country in getCountries" :key="country" :value="country.country">{{ country.country }}</option>
                 </select>
+                <div v-if="computedCurrency" class="flex gap-4 mt-4"><span>Currency:</span><strong ref="currencyCode">{{ computedCurrency }}</strong></div>
                 <span class="span" v-if="validation.error && validation.errors.country">
                     {{ validation.errors.country[0] }}
                 </span>
@@ -68,11 +69,23 @@ export default {
     name: "OnboardScreenBasicInfo",
     mixins: [validationMixin],
     components: { Spinner },
-    computed: mapGetters(["getOnboard", "getHostname", "getToken", "getCountries", 'getCurrentStore']),
+    computed: {
+        ...mapGetters(['getOnboard', 'getHostname', 'getToken', 'getCountries', 'getCurrentStore']),
+        computedCurrency() {
+            let country = this.getOnboard.form.country
+            if(country != null) {
+                const country_code = this.getCountries.find(list => list.country == country).currency_code
+                return country_code
+            }
+            else
+            return null
+        }
+    },
     methods: {
         async submitStore() {
             this.validation.error ? this.clearErrs() : ''
             this.submiting = true
+            this.$refs.currencyCode ? this.getOnboard.form.currency_code = this.$refs.currencyCode.innerHTML : ''
             axios.post(this.getHostname + "/api/store?token=" + this.getToken, this.getOnboard.form, {
                 headers: {
                     "Content-Type": ["application/json"]
@@ -100,7 +113,7 @@ export default {
                 }
                 console.log(err.response.data.errors)
             });
-        },
+        }
     },
 }
 </script>

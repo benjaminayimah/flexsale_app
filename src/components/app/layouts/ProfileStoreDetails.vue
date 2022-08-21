@@ -8,6 +8,7 @@
                 <div class="flex align-items-center"><label>City:</label><span>{{ getCurrentStore.city || 'n/a' }}</span></div>
                 <div class="flex align-items-center"><label>Region:</label><span>{{ getCurrentStore.region || 'n/a' }}</span></div>
                 <div class="flex align-items-center"><label>Country:</label><span>{{ getCurrentStore.country || 'n/a' }}</span></div>
+                <div class="flex align-items-center"><label>Currency:</label><span>{{ getCurrentStore.currency_code || 'n/a' }}</span></div>
                 <div class="flex align-items-center"><label>Date created:</label><span>{{ dateTime(getCurrentStore.created_at) }}</span></div>
             </div>
             <button v-if="getUser.role == 1" class="button button-secondary" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'store'})">

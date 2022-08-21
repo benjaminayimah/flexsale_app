@@ -8,7 +8,7 @@
             </div>
             <div class="admin-email">{{ admin.email }}</div>
             <div class="access flex-col" v-if="admin.role != '1'">
-                <h4>Can access:</h4>
+                <h4 v-if="computeAccess1.length > 0 || computeAccess2.length > 0">Can access:</h4>
                 <div v-for="access in computeAccess1" :key="access.id" class="flex accesses">
                     <svg xmlns="http://www.w3.org/2000/svg" height="13" viewBox="0 0 27.028 19.354"><path d="M301.593,2748.482l-9.772-9.461,2.087-2.155,7.652,7.409,15.169-15.146,2.12,2.123Z" transform="translate(-291.821 -2729.128)" fill="#566ff4"></path></svg>
                     <div class="flex-col">

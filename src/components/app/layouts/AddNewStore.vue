@@ -46,7 +46,11 @@
             </div>
             <div class="form-row" :class="{ 'input-has-error' : validation.error && validation.errors.country}">
                 <label>Country:</label>
-                <input v-model="form.country" type="text" name="country" class="form-control" placeholder="Country" required>
+                <select v-model="form.country" class="form-control select" required>
+                    <option selected="selected" :value="form.country">{{ form.country }}</option>
+                    <option v-for="country in getCountries" :key="country" :value="country.country">{{ country.country }}</option>
+                </select>
+                <div v-if="computedCurrency" class="flex gap-4 mt-4"><span>Currency:</span><strong ref="currencyCode">{{ computedCurrency }}</strong></div>
                 <span class="span" v-if="validation.error && validation.errors.country">
                     {{ validation.errors.country[0] }}
                 </span>
@@ -63,7 +67,16 @@ export default {
     name: "AddNewStore",
     mixins: [validationMixin],
     computed: {
-        ...mapGetters(["getToken", "getHostname", "getEditContainer", "getCurrentStore"]),
+        ...mapGetters(["getToken", "getHostname", "getEditContainer", "getCurrentStore", 'getCountries']),
+        computedCurrency() {
+            let country = this.form.country
+            if(country != null) {
+                const country_code = this.getCountries.find(list => list.country == country).currency_code
+                return country_code
+            }
+            else
+            return null
+        }
     },
     data() {
         return {
@@ -74,7 +87,8 @@ export default {
                 address: "",
                 city: "",
                 region: "",
-                country: ""
+                country: "",
+                currency_code: ""
             },
         };
     },
@@ -82,6 +96,8 @@ export default {
         doSubmitUpdate() {
             this.submiting = true;
             let id = this.getCurrentStore.id;
+            this.$refs.currencyCode ? this.form.currency_code = this.$refs.currencyCode.innerHTML : ''
+            console.log(this.form)
             const putUrl = this.getHostname + "/api/store/" + id + "?token=" + this.getToken;
             axios.put(putUrl, this.form, {
                 headers: {
