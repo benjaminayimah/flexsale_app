@@ -24,7 +24,8 @@ export default createStore({
         address: '',
         city: '',
         region: '',
-        country: null
+        country: null,
+        currency_code: null
       },
       imageForm: {
         storeID: '',
@@ -32,7 +33,7 @@ export default createStore({
       },
       uploaded: false,
     },
-    currency: 'GHS',
+    currency: 'USD',
     user: {},
     userAdminID: '',
     stores: [],
@@ -112,8 +113,10 @@ export default createStore({
     setStore(state, payload) {
       state.stores = payload
       payload.forEach(element => {
-        if(element.id == state.user.current)
-        state.currentStore = element
+        if(element.id == state.user.current) {
+          state.currentStore = element
+          state.currency = element.currency_code
+        }
       });
     },
     closeOAuthModal(state) {
@@ -600,6 +603,7 @@ export default createStore({
       state.currentStore = payload
       const i = state.stores.findIndex(x => x.id === payload.id)
       state.stores.splice(i, 1, payload)
+      state.currency = payload.currency_code
     },
     updateAvatar(state, payload) {
       const i = state.stores.findIndex(x => x.id === payload.id)
@@ -611,6 +615,7 @@ export default createStore({
     addStore(state, payload) {
       if(Object.keys(state.currentStore).length === 0) {
         state.currentStore = payload.store
+        state.currency = payload.store.currency_code
       }
       state.stores.push(payload.store)
       state.user = payload.user
