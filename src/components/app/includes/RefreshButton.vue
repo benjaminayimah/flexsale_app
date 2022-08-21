@@ -30,7 +30,7 @@ export default {
 button{
     background-color: $accent-color;
     position: fixed;
-    bottom: 80px;
+    bottom: 70px;
     right: 15px;
     height: 45px;
     width: 45px;

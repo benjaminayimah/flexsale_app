@@ -129,8 +129,8 @@ export default {
   
     #mob_add{
         background-color: $primary-color;
-        height: 53px;
-        width: 53px;
+        height: 48px;
+        width: 48px;
         border-radius: 50%;
         box-shadow: rgb(86 111 244 / 33%) 0 5px 15px 0;
         padding: 0;

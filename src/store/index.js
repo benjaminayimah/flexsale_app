@@ -33,6 +33,7 @@ export default createStore({
       },
       uploaded: false,
     },
+    phone: '',
     currency: 'USD',
     user: {},
     userAdminID: '',
@@ -143,6 +144,9 @@ export default createStore({
         this.commit('setDesktop')
       }else{
         this.commit('setTablet', winWidth)
+      }
+      if( /iPhone|iPad /i.test(navigator.userAgent) ) {
+        state.phone = 'iphone'
       }
     },
     setStoreTempImg(state, payload) {
@@ -1325,10 +1329,7 @@ export default createStore({
     getOAuth: (state) => state.OAuth,
     getSalesStats: (state) => state.salesStats,
     getBeta: (state) => state.betaNumber,
-
-
-
-
+    getPhone: (state) => state.phone,
 
 
   getSubmitting: (state) => state.submitting
