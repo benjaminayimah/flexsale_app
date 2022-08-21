@@ -167,7 +167,7 @@ export default {
             leftShow: false,
             rightShow: false,
             firstVal: '',
-            lastVal: ''
+            lastVal: '',
         }
     },
     created() {
