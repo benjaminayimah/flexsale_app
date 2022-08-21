@@ -177,7 +177,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   padding-bottom: 15px;
-  height: 52px;
+  height: 54px;
   padding: 0 15px;
   li{
     list-style-type: none;
@@ -204,7 +204,7 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: center;
-        font-weight: 500;
+        font-weight: 600;
         color: $dark;
         
       }
