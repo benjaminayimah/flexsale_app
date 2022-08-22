@@ -65,7 +65,10 @@
                 </div>
                 <hr>
                 <div class="flex gap-8 button-wrap">
-                    <a class="submit-edit button-primary" href="#" @click.prevent="submitBatch">Save</a>
+                    <a class="button-primary gap-4" href="#" @click.prevent="submitBatch" :class="{ 'button-disabled' : submiting }" :disabled="submiting ? true : false">
+                        <span>{{ submiting ? 'Saving' : 'Save' }}</span>
+                        <spinner v-if="submiting" v-bind:size="16" v-bind:white="true" /> 
+                    </a>
                     <a class="cancel-edit button-secondary" href="#" @click.prevent="toggleEdit">Cancel</a>
                 </div>
             </form>
@@ -76,92 +79,100 @@
 import axios from 'axios'
 import validationMixin from '../../../mixins/validationMixin'
 import { mapGetters } from 'vuex'
+import Spinner from './Spinner.vue'
 export default {
-    name: 'StockUpdateRow',
+    name: "StockUpdateRow",
     mixins: [validationMixin],
-    props: ['stock', 'id', 'expires'],
+    props: ["stock", "id", "expires"],
+    components: { Spinner },
     computed: {
-        ...mapGetters(['getHostname', 'getToken', 'getCurrentStore']),
+        ...mapGetters(["getHostname", "getToken", "getCurrentStore"]),
         computeQty() {
-            if(this.form.switch) {
-                let newVal = Number(this.stock.unit_stock) + Number(this.initStock)
+            if (this.form.switch) {
+                let newVal = Number(this.stock.unit_stock) + Number(this.initStock);
                 if (newVal >= 0) {
-                    return newVal
-                } else
-                return 0 
-            }else {
-                let newVal = Number(this.stock.unit_stock) - Number(this.initStock)
+                    return newVal;
+                }
+                else
+                    return 0;
+            }
+            else {
+                let newVal = Number(this.stock.unit_stock) - Number(this.initStock);
                 if (newVal >= 0) {
-                    return newVal
-                } else
-                return 0 
+                    return newVal;
+                }
+                else
+                    return 0;
             }
         }
     },
     data() {
         return {
             edit: false,
-            initStock: '',
+            initStock: "",
+            submiting: false,
             form: {
-                batch_no: '',
-                stock: '',
+                batch_no: "",
+                stock: "",
                 expiry: new Date().toISOString().slice(0, 10),
-                unitID: '',
+                unitID: "",
                 expires: this.expires,
                 switch: true
             }
-        }
+        };
     },
     methods: {
         toggleEdit() {
-            if(!this.edit) {
+            if (!this.edit) {
                 this.form.batch_no = this.stock.batch_no
                 this.form.expiry = this.stock.expiry_date
-                this.form.stock = ''
+                this.form.stock = "";
                 this.form.unitID = this.stock.id
                 this.edit = true
-            }else {
+            }
+            else {
                 this.edit = false
-                this.form.stock = ''
-                this.validation.error ? this.clearErrs() : ''
+                this.form.stock = ""
+                this.initStock = ""
+                this.validation.error ? this.clearErrs() : ""
+                
             }
         },
-        submitBatch: function() {
-            this.validation.error ? this.clearErrs() : ''
+        submitBatch: function () {
+            this.submiting = true
+            this.validation.error ? this.clearErrs() : ""
             this.form.stock = this.computeQty
-            console.log(this.form)
-            axios.put(this.getHostname+'/api/product-batch/'+this.id+'?token='+this.getToken,
-                this.form, {
-                    headers: {
-                        'Content-Type': ['application/json']
-                    },
-                }
-            ).then((res) => {
-                if(res.data.unit || res.data.stock) {
-                    this.$store.commit('updateStock', res.data.unit)
-                    this.$store.commit('updateProduct', res.data.stock)
+            axios.put(this.getHostname + "/api/product-batch/" + this.id + "?token=" + this.getToken, this.form, {
+                headers: {
+                    "Content-Type": ["application/json"]
+                },
+            }).then((res) => {
+                this.submiting = false
+                if (res.data.unit || res.data.stock) {
+                    this.$store.commit("updateStock", res.data.unit);
+                    this.$store.commit("updateProduct", res.data.stock);
                     const successPayload = {
-                        id: 'success',
+                        id: "success",
                         body: res.data.status
-                    }
-                    this.$store.commit('showAlert', successPayload)
-                    this.form.stock = ''
-                    this.initStock = ''
-                }else if(res.data.exists) {
-                    this.validation.error = true
-                    const payload = { batch_no: [res.data.exists] }
-                    this.validation.errors = payload
+                    };
+                    this.$store.commit("showAlert", successPayload);
+                    this.toggleEdit()
+                }
+                else if (res.data.exists) {
+                    this.validation.error = true;
+                    const payload = { batch_no: [res.data.exists] };
+                    this.validation.errors = payload;
                 }
             }).catch((err) => {
-                console.log(err.response)
-                if(err.response.status == 422){
-                    this.validation.error = true
-                    this.validation.errors = err.response.data.errors
+                this.submiting = false
+                if (err.response.status == 422) {
+                    this.validation.error = true;
+                    this.validation.errors = err.response.data.errors;
                 }
-            })
+            });
         },
         toggleSwitch() {
-            this.form.switch = !this.form.switch
+            this.form.switch = !this.form.switch;
         }
     }
 }

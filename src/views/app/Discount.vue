@@ -61,7 +61,6 @@ ul{
 }
 .add-wrap{
     display: flex;
-    justify-content: flex-end;
     margin-bottom: 20px;
     button {
         height: 52px;

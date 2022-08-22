@@ -209,6 +209,9 @@ export default {
         
       }
     }
+    &:nth-child(3) {
+        width: 15%;
+    }
   }
   #add_button{
     position: absolute;

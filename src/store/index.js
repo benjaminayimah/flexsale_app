@@ -33,7 +33,7 @@ export default createStore({
       },
       uploaded: false,
     },
-    phone: '',
+    phone: false,
     currency: 'USD',
     user: {},
     userAdminID: '',
@@ -146,7 +146,7 @@ export default createStore({
         this.commit('setTablet', winWidth)
       }
       if( /iPhone|iPad /i.test(navigator.userAgent) ) {
-        state.phone = 'iphone'
+        state.phone = true
       }
     },
     setStoreTempImg(state, payload) {
