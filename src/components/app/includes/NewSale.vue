@@ -579,7 +579,7 @@ h3{
 }
 .mini-mob{
     padding: 0 20px;
-    transform: translateY(-65px);
+    transform: translateY(-70px);
     transition: 0.8s all ease-in-out;
     .sale-holder{
         border-radius: 16px;
