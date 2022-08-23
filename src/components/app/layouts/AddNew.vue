@@ -1,6 +1,6 @@
 <template>
     <transition :name="getMobile? 'fade' : ''">
-        <secondary-backdrop v-if="getAddingProduct.active" />
+        <secondary-backdrop v-if="getAddingProduct.active" @click="beat" />
     </transition>
     <transition :name="getMobile? 'slide' : ''">
         <div v-if="getAddingProduct.active" id="add_hero_modal" :class="computeWidth ? 'width-active': 'width-inactive'">
@@ -53,7 +53,16 @@ export default {
                 return false
             }
         }
-    }  
+    },
+    methods: {
+        beat() {
+            const elem = document.getElementById('add_hero_modal')
+            elem.classList.add('beat-in')
+            setTimeout(() => {
+                elem.classList.remove('beat-in')
+            }, 100);
+        }
+    }
 }
 </script>
 <style scoped lang="scss">
@@ -117,6 +126,20 @@ export default {
 .slide-leave-to {
   transform: translateY(900px);
 //   opacity: 0;
+}
+.beat-in {
+  animation: animateHeart 1.2s;
+}
+@keyframes animateHeart {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 </style>

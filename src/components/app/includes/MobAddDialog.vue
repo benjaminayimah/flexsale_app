@@ -11,9 +11,9 @@
       <transition name="fade">
         <backdrop v-if="showMenu" @click.prevent="showthisMenu('mob_add')" />
       </transition>
-      <transition name="slide">
-        <div class="dialog" v-if="showMenu" :class="{ 'menu-card-mob': getMobile}" :style="{ left: getFloatingDiv.left+'px', bottom: getFloatingDiv.bottom + 'px' }">
-            <div class="title">
+      <transition :name="getMobile? 'slide' : ''">
+        <div class="dialog" v-if="showMenu" :class="getMobile ? 'menu-card-mob' : 'menu-card-tab'" :style="{ left: getFloatingDiv.left+'px', bottom: getFloatingDiv.bottom + 'px' }">
+            <div class="title" v-if="getMobile">
                 <div>Add</div>
                 <button @click.prevent="showthisMenu('mob_add')">
                     <svg xmlns="http://www.w3.org/2000/svg"  height="12" viewBox="0 0 14 14">
@@ -125,6 +125,22 @@ export default {
     width: 100%;
     border-top-right-radius: 16px;
     border-top-left-radius: 16px;
+    box-shadow: rgb(86 111 244 / 33%) 0 5px 15px 0;
+  }
+  .menu-card-tab{
+    left: 3.5px !important;
+    width: unset;
+    border-radius: 16px;
+    bottom: unset !important;
+    top: 50%;
+    box-shadow: 0 1px 15px 0 rgb(14 20 44 / 12%);
+    li a{
+        padding-left: 30px;
+        padding-right: 30px;
+        span {
+            font-size: 1rem;
+        }
+    }
   }
   
     #mob_add{
@@ -132,7 +148,6 @@ export default {
         height: 48px;
         width: 48px;
         border-radius: 50%;
-        box-shadow: rgb(86 111 244 / 33%) 0 5px 15px 0;
         padding: 0;
       }
 </style>
