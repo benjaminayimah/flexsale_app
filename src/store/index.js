@@ -291,8 +291,7 @@ export default createStore({
           state.selectionSheet.selectTag = true
           state.selectionSheet.prodID = payload.id
         }
-      }, 10)
-
+      }, 5)
     },
     unSetSelectionSheet(state) {
       state.selectionSheet.active = false
@@ -316,46 +315,51 @@ export default createStore({
     },
     setMainHomeWidth(state, payload) {
       state.addingProduct.active = true
-      if(payload.type == 'product'){
-        state.addingProduct.product = true
-        if(payload.mode == 'edit') {
-          const newPayload = { data: state.products.find(data => data.id == payload.id)}
-          this.commit('setEditContainer', newPayload)
+      setTimeout(()=> {
+        if(payload.type == 'product'){
+          state.addingProduct.product = true
+          if(payload.mode == 'edit') {
+            const newPayload = { data: state.products.find(data => data.id == payload.id)}
+            this.commit('setEditContainer', newPayload)
+          }
+        }else if(payload.type == 'tag'){
+          state.addingProduct.tag = true
+          payload.mode == 'edit' ? this.commit('editMode') : ''
+        }else if(payload.type == 'discount'){
+          state.addingProduct.discount = true
+          payload.mode == 'edit' ? this.commit('editMode') : ''
+        }else if(payload.type == 'admin') {
+          if(payload.mode == 'edit'){
+            this.dispatch('fetchThisAdmin', payload.id)
+          }else if(payload.mode == 'pass') {
+            const newData = { id: payload.id }
+            state.editContainer.data = newData
+            state.editContainer.active = true
+            state.editContainer.password = true
+            state.addingProduct.admin = true 
+          }else{
+            state.addingProduct.admin = true
+          }
+        }else if(payload.type == 'store') {
+          state.addingProduct.store = true
+          if(payload.mode == 'edit') {
+            const newPayload = { data: state.currentStore}
+            this.commit('setEditContainer', newPayload)
+          }
+        }else if(payload.type == 'supplier') {
+          state.addingProduct.supplier = true
+          if(payload.mode == 'edit') {
+            const newPayload = { data: state.suppliers.find(data => data.id == payload.id)}
+            this.commit('setEditContainer', newPayload)
+          }
+        }else if(payload.type == 'stock') {
+          state.addingProduct.stock = true
+          this.dispatch('fetchProdBatch', payload.id)
         }
-      }else if(payload.type == 'tag'){
-        state.addingProduct.tag = true
-        payload.mode == 'edit' ? this.commit('editMode') : ''
-      }else if(payload.type == 'discount'){
-        state.addingProduct.discount = true
-        payload.mode == 'edit' ? this.commit('editMode') : ''
-      }else if(payload.type == 'admin') {
-        if(payload.mode == 'edit'){
-          this.dispatch('fetchThisAdmin', payload.id)
-        }else if(payload.mode == 'pass') {
-          const newData = { id: payload.id }
-          state.editContainer.data = newData
-          state.editContainer.active = true
-          state.editContainer.password = true
-          state.addingProduct.admin = true 
-        }else{
-          state.addingProduct.admin = true
-        }
-      }else if(payload.type == 'store') {
-        state.addingProduct.store = true
-        if(payload.mode == 'edit') {
-          const newPayload = { data: state.currentStore}
-          this.commit('setEditContainer', newPayload)
-        }
-      }else if(payload.type == 'supplier') {
-        state.addingProduct.supplier = true
-        if(payload.mode == 'edit') {
-          const newPayload = { data: state.suppliers.find(data => data.id == payload.id)}
-          this.commit('setEditContainer', newPayload)
-        }
-      }else if(payload.type == 'stock') {
-        state.addingProduct.stock = true
-        this.dispatch('fetchProdBatch', payload.id)
-      }
+        
+      }, 5)
+
+      
     },
     refreshStock(state, payload) {
       if(state.tempProduct.active) {
