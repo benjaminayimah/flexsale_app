@@ -142,7 +142,7 @@ export default {
   components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, SelectionSheet, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat, RefreshButton },
     name: 'AdminHome',
     computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getBeta', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getOnboard','getStores']),
-    mounted() {
+    created() {
       this.$store.commit('setBodyBgColor')
       this.$store.dispatch('getAuthUser')
       window.addEventListener('resize', this.windowSize )
