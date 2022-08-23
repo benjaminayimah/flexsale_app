@@ -1,23 +1,27 @@
 <template>
-    <secondary-backdrop />
-    <div id="add_hero_modal" :class="computeWidth ? 'width-active': 'width-inactive'">
-        <div class="add-master-wrap">
-            <div class="add-master-head">
-                <div class="add-head-content flex-row-js">
-                    <button class="button button-secondary cancel-btn" @click.prevent="$store.commit('unsetMainHomeWidth')">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
-                            <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"/>
-                        </svg>
-                    </button>
-                    <h1 id="add_title" class="text-overflow-ellipsis"></h1>
-                    <div id="add_submit_button"></div> 
+    <transition :name="getMobile? 'fade' : ''">
+        <secondary-backdrop v-if="getAddingProduct.active" />
+    </transition>
+    <transition :name="getMobile? 'slide' : ''">
+        <div v-if="getAddingProduct.active" id="add_hero_modal" :class="computeWidth ? 'width-active': 'width-inactive'">
+            <div class="add-master-wrap">
+                <div class="add-master-head">
+                    <div class="add-head-content flex-row-js">
+                        <button class="button button-secondary cancel-btn" @click.prevent="$store.commit('unsetMainHomeWidth')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 20">
+                                <path d="M5793.4-3003.846l-7.881-7.881-7.879,7.88a1.241,1.241,0,0,1-1.756,0,1.242,1.242,0,0,1,0-1.756l7.88-7.879-7.88-7.879a1.243,1.243,0,0,1,0-1.757,1.241,1.241,0,0,1,1.756,0l7.88,7.88,7.88-7.88a1.24,1.24,0,0,1,1.755,0,1.24,1.24,0,0,1,0,1.756l-7.88,7.88,7.88,7.88a1.241,1.241,0,0,1,0,1.757,1.236,1.236,0,0,1-.877.363A1.236,1.236,0,0,1,5793.4-3003.846Z" transform="translate(-5775.518 3023.483)" fill="#0e142c"/>
+                            </svg>
+                        </button>
+                        <h1 id="add_title" class="text-overflow-ellipsis"></h1>
+                        <div id="add_submit_button"></div> 
+                    </div>
+                </div>
+                <div class="add-master-body" :style="{maxHeight: (winHeight-180)+'px'}">
+                    <div id="add_master_body_container"></div>
                 </div>
             </div>
-            <div class="add-master-body" :style="{maxHeight: (winHeight-180)+'px'}">
-                <div id="add_master_body_container"></div>
-            </div>
         </div>
-    </div>
+    </transition>
     <add-new-product v-if="getAddingProduct.product" />
     <add-new-tag v-if="getAddingProduct.tag" />
     <add-new-discount v-if="getAddingProduct.discount" />
@@ -41,7 +45,7 @@ export default {
     name: 'AddNew',
     props: ['winHeight'],
     computed: {
-        ...mapGetters(['getAddingProduct', 'getWindowWidth']),
+        ...mapGetters(['getAddingProduct', 'getWindowWidth', 'getMobile']),
         computeWidth() {
             if(this.getWindowWidth <= 600) {
                 return true
@@ -111,6 +115,8 @@ export default {
 }
 .slide-enter-from,
 .slide-leave-to {
-  transform: translateY(200px);
+  transform: translateY(800px);
+//   opacity: 0;
 }
+
 </style>

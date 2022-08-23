@@ -115,7 +115,7 @@
     <new-sale />
 </section>
 <onboarding-view v-bind:winHeight="getWindowHeight" v-if="getOnboard.status" />
-<add-new v-bind:winHeight="getWindowHeight" v-if="getAddingProduct.active" />
+<add-new v-bind:winHeight="getWindowHeight" />
 <selection-sheet v-bind:windowHeight="getWindowHeight" />
 <refresh-button />
 </template>
@@ -142,19 +142,13 @@ export default {
   components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, SelectionSheet, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat, RefreshButton },
     name: 'AdminHome',
     computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getBeta', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getOnboard','getStores']),
-    created() {
+    mounted() {
       this.$store.commit('setBodyBgColor')
       this.$store.dispatch('getAuthUser')
       window.addEventListener('resize', this.windowSize )
       window.addEventListener('scroll', this.pageScroll)
       this.$store.commit('computeWindow')
       this.$store.dispatch('setNotification')
-      // this.checkForNotification()
-      // setTimeout(()=> {
-      //   if(this.getStores && this.getStores.length > 0) {
-          
-      //   }
-      // }, 4000)
   },
   unmounted() {
     window.removeEventListener('resize', this.windowSize)
@@ -176,17 +170,7 @@ export default {
         }else{
             return this.$store.commit('unSetMobileTitle')
         }
-    },
-    // checkForNotification() {
-    //   let counter = 0
-    //   setInterval(() => {
-    //       counter++
-    //       if (counter === 3600) {
-    //         this.$store.dispatch('setNotification')
-    //         counter = 0
-    //       }
-    //   }, 1000)
-    // }
+    }
   }
 }
 </script>
