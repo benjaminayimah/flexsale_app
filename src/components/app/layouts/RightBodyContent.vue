@@ -45,7 +45,7 @@
             </div>
             <div v-if="getStores.length > 0">
                 <div class="flex-col" id="dash_sales" v-if="getTodaysales.length > 0">
-                    <today-sales-row v-for="sale in getTodaysales.slice(0, 3)" :key="sale.id" v-bind:sale="sale" />
+                    <today-sales-row v-for="sale in getTodaysales.slice(0, 10)" :key="sale.id" v-bind:sale="sale" />
                 </div>
                 <div v-else>
                     No sales today

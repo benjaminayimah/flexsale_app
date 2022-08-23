@@ -18,7 +18,7 @@
               </div>
               <div id="left_add_new_pd" :class="{ 'desktop-mode': getDesktop}">
                 <div class="left-new-wrap flex-column" :class="{ 'jc' : getTablet }">
-                  <div class="left-new-hold flex-column">
+                  <div class="left-new-hold flex-column" v-if="!getHideRight">
                     <button class="flex-column rounded-btn-light" @click.prevent="getStores.length > 0 ? $store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'product'}) : this.$store.commit('forceSetOnboard', 'intro')">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20.291 20.29">
                         <path d="M-4280.267-699.712a2.84,2.84,0,0,1-2.837-2.838v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a1.339,1.339,0,0,0,1.337,1.338h14.615a1.34,1.34,0,0,0,1.338-1.338v-4.175a.75.75,0,0,1,.75-.75.75.75,0,0,1,.75.75v4.175a2.842,2.842,0,0,1-2.839,2.838Zm6.558-7.013v-10.717l-3.939,3.94a.751.751,0,0,1-1.061,0,.751.751,0,0,1,0-1.061l5.22-5.22a.748.748,0,0,1,.531-.219h.018a.745.745,0,0,1,.33.085h0l.012.006.007,0,.007,0,.01.006,0,0,.014.009h0a.762.762,0,0,1,.126.1l5.22,5.22a.751.751,0,0,1,0,1.061.748.748,0,0,1-.531.219.749.749,0,0,1-.53-.219l-3.939-3.94v10.718a.749.749,0,0,1-.749.749A.749.749,0,0,1-4273.709-706.725Z" transform="translate(4283.104 720.002)" fill="#566ff4"/>
@@ -26,6 +26,7 @@
                     </button>
                     <span v-if="getDesktop">Add new product</span>
                   </div>
+                  <mob-add-dialog v-if="getHideRight" />
                 </div>
               </div>
             </div>
@@ -138,8 +139,9 @@ import RestoreTrashModal from '../components/app/includes/RestoreTrashModal.vue'
 import Notification from '../components/app/includes/NotificationFloat.vue'
 import SearchFloat from '../components/app/includes/SearchFloat.vue'
 import SelectionSheet from '../components/app/layouts/SelectionSheet.vue'
+import MobAddDialog from '../components/app/includes/MobAddDialog.vue'
 export default {
-  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, SelectionSheet, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat, RefreshButton },
+  components: { MainMenu, AccountMenu, Logo, MobNav, AddNew, SelectionSheet, BackButton, Alerts, Loader, DeleteModal, RightBodyContent, NewSale, OnboardingView, RestoreTrashModal, Notification, SearchFloat, RefreshButton, MobAddDialog },
     name: 'AdminHome',
     computed: mapGetters(['getCurrentpage', 'getMobile', 'getTablet', 'getBeta', 'getDesktop', 'getHideRight', 'getAddingProduct', 'getWindowHeight', 'getOnboard','getStores']),
     created() {

@@ -103,7 +103,8 @@ li:last-child a, li:last-child .info-section-hold{
   -webkit-position: sticky;
 }
 #right_top{
-  top: 3px;
+  top: 0;
+  background-color: $white-color;
 }
 .dashboard-title-wrap{
   padding: 0 20px;
