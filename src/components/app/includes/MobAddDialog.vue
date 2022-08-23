@@ -72,7 +72,7 @@ export default {
 <style scoped lang="scss">
 .slide-enter-from,
 .slide-leave-to {
-  transform: translateY(200px);
+  transform: translateY(250px);
   
 }
 
