@@ -401,7 +401,6 @@ export default createStore({
       state.bulkSelection.array = []
     },
     unsetMainHomeWidth(state, payload){
-      // this.commit('dismisAlert')
       this.commit('clearEditContainer')
       state.addingProduct.active = false
       state.addingProduct.tag = false
