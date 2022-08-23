@@ -115,7 +115,7 @@ export default {
 }
 .slide-enter-from,
 .slide-leave-to {
-  transform: translateY(800px);
+  transform: translateY(900px);
 //   opacity: 0;
 }
 
