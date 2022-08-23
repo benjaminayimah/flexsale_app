@@ -212,7 +212,7 @@ export default {
 
 .slide-enter-from,
 .slide-leave-to {
-  transform: translateY(250px);
+  transform: translateY(350px);
 }
 .router-link-exact-active{
     background-color: $dark !important;

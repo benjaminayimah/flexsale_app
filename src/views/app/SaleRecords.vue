@@ -333,6 +333,6 @@ export default {
 
 .slide-enter-from,
 .slide-leave-to {
-  transform: translateY(250px);
+  transform: translateY(380px);
 }
 </style>

@@ -957,6 +957,7 @@ input[type=password]{
   font-family: 'Helvetica', sans-serif !important;
 }
 input[type=date] {
+  display: flex;
   align-items: center;
 }
 .select{
