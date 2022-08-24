@@ -33,7 +33,7 @@
                     <div class="form-check flex-row-st">
                         <input v-model="form.type" id="amount" value="0" class="form-check-input" type="radio" >
                         <label for="amount">
-                            Direct amount(GH₵)
+                            Direct amount({{ getCurrency }})
                         </label>
                     </div>
                 </div>
@@ -101,7 +101,7 @@ export default {
     name: 'AddNewDiscount',
     mixins: [ validationMixin ],
     components: { SelectProductsOverlay, SelectedTagRow, Spinner },
-    computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getCurrentStore']),
+    computed: mapGetters(['getToken', 'getHostname', 'getSelectionSheet', 'getTempContainer', 'getCurrentStore', 'getCurrency']),
     data() {
         return {
             form: {
