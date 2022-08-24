@@ -142,12 +142,11 @@ export default {
         }
     }
   }
-  
-    #mob_add{
-        background-color: $primary-color;
-        height: 48px;
-        width: 48px;
-        border-radius: 50%;
-        padding: 0;
-      }
+#mob_add{
+    background-color: $primary-color;
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+    padding: 0;
+}
 </style>
