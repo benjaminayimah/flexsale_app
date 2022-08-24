@@ -93,8 +93,8 @@
                         <div class="profit-label">
                             Profit per unit:
                         </div>
-                        <div class="vals">
-                            <span>GH₵</span><span>{{ Intl.NumberFormat("en-US").format(computeProfit) }}</span>
+                        <div class="vals gap-4 flex">
+                            <span>{{ getCurrency}}</span><span>{{ Intl.NumberFormat("en-US").format(computeProfit) }}</span>
                         </div>
                     </div>
                     <div class="flex-row-st gap-8">
@@ -158,7 +158,7 @@ export default {
     components: { ImageStatusOverlay, Spinner },
     mixins: [ validationMixin ],
     computed: {
-        ...mapGetters(["getToken", "getHostname", "getUser", "getDefaultImage", "getEditContainer", "getUserAdminID", "getDiscounts", "getSuppliers", "getAddingProduct", 'getCurrentStore']),
+        ...mapGetters(["getToken", "getHostname", "getUser", "getDefaultImage", "getEditContainer", "getUserAdminID", "getDiscounts", "getSuppliers", "getAddingProduct", 'getCurrentStore', 'getCurrency']),
         computeProfit() {
             let profit = (this.form.sellingPrice - this.form.cost);
             return profit.toFixed(2);
