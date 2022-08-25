@@ -128,7 +128,6 @@ export default {
     box-shadow: rgb(86 111 244 / 33%) 0 5px 15px 0;
   }
   .menu-card-tab{
-    left: 3.5px !important;
     width: unset;
     border-radius: 16px;
     bottom: unset !important;
