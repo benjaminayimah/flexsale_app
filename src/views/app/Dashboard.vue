@@ -53,10 +53,12 @@
                 <div class="list-hold">
                     <div class="list-content">
                         <ul class="flex">
-                            <li class="supplier-add-new flex justify-content-center align-items-center" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'supplier'})">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 27.002 27.002">
-                                    <path d="M21590.5,8099v-11.5H21579a1,1,0,1,1,0-2h11.5V8074a1,1,0,1,1,2,0v11.5h11.5a1,1,0,1,1,0,2h-11.5V8099a1,1,0,1,1-2,0Z" transform="translate(-21577.998 -8073)" fill="#566ff4"/>
-                                </svg>
+                            <li>
+                                <a href="#" class="supplier-add-new flex justify-content-center align-items-center" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'add', type: 'supplier'})">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 27.002 27.002">
+                                        <path d="M21590.5,8099v-11.5H21579a1,1,0,1,1,0-2h11.5V8074a1,1,0,1,1,2,0v11.5h11.5a1,1,0,1,1,0,2h-11.5V8099a1,1,0,1,1-2,0Z" transform="translate(-21577.998 -8073)" fill="#566ff4"/>
+                                    </svg>
+                                </a>
                             </li>
                                 <supplier-horizontal-list v-for="supplier in getSuppliers.slice(0, 10)" :key="supplier.id" v-bind:supplier="supplier" />
                         </ul>
@@ -455,7 +457,6 @@ h1{
     border-radius: 50%;
     background-color: $primary-light;
     flex-shrink: 0;
-    cursor: pointer;
     transition: 0.2s all;
     &:hover {
         background-color: rgba(86, 110, 244, 0.15);
