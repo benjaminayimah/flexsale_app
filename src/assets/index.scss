@@ -475,6 +475,9 @@ form {
   .hide-mob{
       display: none;
   }
+  a, button, #account_menu{
+    cursor: none !important;
+  }
   
   .social-signin{
       flex-direction: column !important;
@@ -708,9 +711,9 @@ button{
   justify-content: center;
   align-items: center;
   padding: 0;
-  cursor: pointer;
   transition: 0.2s all;
   white-space: nowrap;
+  cursor: pointer;
 }
 .add-new{
   &:hover{

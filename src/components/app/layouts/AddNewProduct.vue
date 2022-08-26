@@ -466,7 +466,6 @@ export default {
       button{
         border-radius: 50%;
         color: $white-color;
-        cursor: pointer;
         background-color: rgba(86, 110, 244, 0.15);
         padding: 10px;
         height: 70px;
