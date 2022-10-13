@@ -98,42 +98,8 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.info-section-hold{
-    padding: 25px 0;
-    margin-left: 15px;
-    border-bottom: 1px solid $dark-light;
-    width: 85%;
-        .supplier-info{
-        label{
-            margin: 0 5px 0 0;
-            color: $gray-color;
-        }
-        .name{
-            font-weight: 600;
-            text-transform: capitalize;
-        }
-    }
-    
-}
 .mrg{
     margin: 4px 0;
-}
-.image-hold{
-    height: 80px;
-    width: 80px;
-    min-width: 80px;
-    border-radius: 50%;
-    .bg-img, span{
-        height: 100%;
-        width: 100%;
-        border-radius: inherit;
-        display: flex;
-        font-weight: 600;
-        justify-content: center;
-        align-items: center;
-        color: $white-color;
-        font-size: 1.7rem;
-    }
 }
 
 li {
@@ -145,6 +111,7 @@ li {
         width: 100%;
         flex-direction: row;
         align-items: center;
+        gap: 15px;
         &:hover{
             background-color: rgb(250, 250, 250);
         }

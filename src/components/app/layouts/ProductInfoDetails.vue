@@ -12,10 +12,11 @@
     <div class="flex align-items-center content-row">
         <div class="row-title">inventory</div>
         <a href="#" class="add-more flex align-items-center" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: getTempProduct.data.id })">
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 18.002 18.002">
-                <path d="M3,17.25V21H6.75L17.81,9.94,14.06,6.19ZM20.71,7.04a1,1,0,0,0,0-1.41L18.37,3.29a1,1,0,0,0-1.41,0L15.13,5.12l3.75,3.75,1.83-1.83Z" transform="translate(-3 -2.998)"/>
+            <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 14.62 16.711">
+                <path d="M-8807.809-385.606a.691.691,0,0,1-.692-.69.692.692,0,0,1,.692-.692h13.237a.692.692,0,0,1,.69.692.691.691,0,0,1-.69.69Zm-.489-2.477a.691.691,0,0,1-.146-.759l1.781-4.153a.706.706,0,0,1,.145-.216l8.367-8.4a2.379,2.379,0,0,1,1.7-.7,2.375,2.375,0,0,1,1.693.7,2.4,2.4,0,0,1,0,3.384l-8.4,8.37a.647.647,0,0,1-.216.145l-4.155,1.781a.667.667,0,0,1-.271.057A.692.692,0,0,1-8808.3-388.083Zm2.852-4.247-1.048,2.446,2.446-1.05,6.716-6.686-1.428-1.426Zm8.767-5.94.942-.938a1.017,1.017,0,0,0,0-1.433,1,1,0,0,0-.717-.3,1,1,0,0,0-.718.3l-.936.94Z" transform="translate(8808.501 402.318)" fill="#0e142c"></path>
             </svg>
-            Update stock</a>
+            Update stock
+        </a>
     </div>
     <div class="flex lign-items-center item-row">
         <div class="item-label">Total stock:</div>
@@ -157,17 +158,6 @@ a{
     &:hover{
         text-decoration: underline;
     }
-}
-.row-title{
-    text-transform: uppercase;
-    font-weight: 700;
-    //color: $gray-color;
-}
-.content-row{
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid $gray-light;
-    position: relative
 }
 .item-row{
     margin-bottom: 18px;

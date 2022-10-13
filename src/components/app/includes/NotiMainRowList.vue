@@ -10,25 +10,25 @@
                     <span>{{ computeExpiryDate(list.key, list.expiry_date) }}</span>
                 </div>
             </div>
-            <div class="flex actions align-items-center">
+            <div class="flex actions align-items-center ">
                 <router-link :to="{ name: 'ProductDetailsBasic', params: { id: list.product_id, name: list.name } }">
                     <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 15.6 15.6">
                         <path d="M1181.982-10350.9a2.357,2.357,0,0,1-2.354-2.354v-8.558a2.357,2.357,0,0,1,2.354-2.354h4.667a.8.8,0,0,1,.8.8.8.8,0,0,1-.8.8h-4.667a.755.755,0,0,0-.755.754v8.558a.755.755,0,0,0,.755.754h8.557a.755.755,0,0,0,.755-.754v-4.668a.8.8,0,0,1,.8-.8.8.8,0,0,1,.8.8v4.668a2.357,2.357,0,0,1-2.354,2.354Zm3.325-5.68a.8.8,0,0,1,0-1.129l7.189-7.191h-2.735a.8.8,0,0,1-.8-.8.8.8,0,0,1,.8-.8h4.665a.8.8,0,0,1,.567.234.8.8,0,0,1,.234.566h0v4.665a.8.8,0,0,1-.8.8.8.8,0,0,1-.8-.8v-2.734l-7.191,7.188a.793.793,0,0,1-.565.234A.793.793,0,0,1,1185.307-10356.58Z" transform="translate(-1179.628 10366.5)" fill="#566ff4"/>
                     </svg>
-                    <span class="hide-mob">Goto product</span>
+                    <span class="hide-mob text-overflow-ellipsis">See product</span>
                 </router-link>
                 <span class="horizontal-separator"></span>
                 <a href="#" class="rm-prod" v-if="list.key !== 'low-stocks'" @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: list.product_id })">
                     <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 21.5 23.166">
                         <path fill="#e63232" d="M-162.427-433a2.727,2.727,0,0,1-2.714-2.539l-.912-13.682,1.5-.1.912,13.683a1.222,1.222,0,0,0,1.217,1.138h9.118a1.222,1.222,0,0,0,1.217-1.139l.912-13.682,1.5.1-.912,13.682A2.727,2.727,0,0,1-153.309-433Zm-6.039-18v-1.5h6.4v-3.666h8.394v3.666h6.705v1.5Zm13.295-1.5v-2.165h-5.394v2.165Z" transform="translate(168.466 456.167)"></path>
                     </svg>
-                    <span class="hide-mob">Remove</span>
+                    <span class="hide-mob text-overflow-ellipsis">Remove</span>
                 </a>
                 <a href="#" v-else @click.prevent="$store.commit('getMainHomeWidth', payload = { mode: 'edit', type: 'stock', id: list.product_id })">
                     <svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 20 14">
                         <path d="M14,10H2v2H14Zm0-4H2V8H14Zm4,8V10H16v4H12v2h4v4h2V16h4V14ZM2,16h8V14H2Z" transform="translate(-2 -6)" fill="#566ff4"/>
                     </svg>
-                    <span class="hide-mob">Re-Stock</span>
+                    <span class="hide-mob text-overflow-ellipsis">Re-stock</span>
                 </a>
             </div>
         </div>
@@ -93,6 +93,9 @@ export default {
         &:hover{
             background-color: $primary-light;
         }
+    }
+    svg{
+        flex-shrink: 0;
     }
     .rm-prod{
         color: $danger;

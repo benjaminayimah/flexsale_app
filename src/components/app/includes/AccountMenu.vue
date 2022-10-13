@@ -24,7 +24,7 @@
                               <div class="user-details">
                                   <div class="user-name"><strong>{{ store.name }}</strong></div>
                                   <div class="shop">{{ store.address }}</div>
-                                  <router-link @mouseup="showthisMenu('account_menu')" :to="{ name: 'ProfileStoreDetails', params: { name: getUser.name }}">Manage store</router-link>
+                                  <router-link @mouseup="showthisMenu('account_menu')" :to="{ name: 'SettingsAccount' }">Manage store</router-link>
                               </div>
                               <div class="acct-elipse">
                                   <svg xmlns="http://www.w3.org/2000/svg"  height="13" viewBox="0 0 27.028 19.354">
@@ -311,7 +311,6 @@ padding: 15px 20px;
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(350px);
-  
 }
   
 </style>

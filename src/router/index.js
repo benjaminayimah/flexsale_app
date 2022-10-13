@@ -17,6 +17,13 @@ import Search from '@/views/app/Search.vue'
 import Profile from '@/views/app/Profile.vue'
 import Trash from '@/views/app/Trash.vue'
 import Settings from '@/views/app/Settings.vue'
+import SettingsProfile from '@/views/app/SettingsProfile.vue'
+import SettingsAccount from '@/views/app/SettingsAccount.vue'
+import SettingsAdministrators from '@/views/app/SettingsAdmins.vue'
+import SettingsAlerts from '@/views/app/SettingsAlerts.vue'
+import SettingsSubscription from '@/views/app/SettingsSubscription.vue'
+import SettingsSecurity from '@/views/app/SettingsSecurity.vue'
+import SettingsPaymentInfo from '@/views/app/SettingsPaymentInfo.vue'
 import Tags from '@/views/app/Tags.vue'
 // import All from '@/components/app/layouts/AllProducts.vue'
 // import Filter from '@/components/app/layouts/ProductFilter.vue'
@@ -41,11 +48,6 @@ import ProfileAdministration from '@/components/app/layouts/ProfileAdministratio
 //import Error404 from '@/views/web/Error404.vue'
 
 const routes = [
-  /*{ path: '/', component: WebHome,
-  children: [
-    { path: '/', component: Home, name: 'Home'},
-    { path: '/about', name: 'About', component: About}
-  ]},*/
   { path: '/', component: AdminHome, 
     meta: {requiresAuth: true },
     children: [
@@ -62,6 +64,18 @@ const routes = [
       { path: '/profile/:name/admins', name: 'ProfileAdministration', component: ProfileAdministration},
     ]},
     { path: '/settings', name: 'Settings', component: Settings },
+    { path: '/settings/profile', name: 'SettingsProfile', component: SettingsProfile },
+    { path: '/settings/account', name: 'SettingsAccount', component: SettingsAccount },
+    { path: '/settings/administrators', name: 'SettingsAdministrators', component: SettingsAdministrators },
+    { path: '/settings/alerts&notifications', name: 'SettingsAlerts', component: SettingsAlerts },
+    { path: '/settings/subscription', name: 'SettingsSubscription', component: SettingsSubscription },
+    { path: '/settings/security', name: 'SettingsSecurity', component: SettingsSecurity },
+    { path: '/settings/payment-info', name: 'SettingsPaymentInfo', component: SettingsPaymentInfo },
+
+
+    
+
+
     { path: '/tags', name: 'Tags', component: Tags },
     { path: '/tag/:id/:name', name: 'DetailedTag', component: DetailedTag },
     { path: '/product/:id/:name', component: DetailedProduct,

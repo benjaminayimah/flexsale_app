@@ -232,7 +232,6 @@ export default {
     width: 60px;
     position: relative;
     div{
-        position: absolute;
         height: 30px;
         width: 30px;
         box-shadow: 0 1px 6px 0 rgb(14 20 44 / 18%);

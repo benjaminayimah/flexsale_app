@@ -9,8 +9,7 @@
                     </svg>
                 </button>
                 <div class="img-hold">
-                    <div class="img bg-img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}">
-                    </div>
+                    <div class="img bg-img" :style="product.image? { backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+ getUser.current+'/'+product.image+')'} : { backgroundImage: 'url('+getDefaultImage+')'}"></div>
                 </div>
                 <div class="prod-capt-hold">
                     <div class="itm-name">{{ product.name }}</div>
