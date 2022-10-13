@@ -4,13 +4,13 @@ import router from '@/router'
 import country from './modules/country'
 export default createStore({
   state: {
-    // hostname: 'http://localhost:8000',
-    hostname: 'https://api.flexsale.store',
+    hostname: 'http://localhost:8000',
+    // hostname: 'https://api.flexsale.store',
     thisHostname: 'https://app.flexsale.store',
     token: localStorage.getItem('token') || null,
     rememberToken: '',
-    // OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
-    OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
+    OAuth: '617984689362-02931j85j49mm913mn3lf72j4njggajg.apps.googleusercontent.com',
+    // OAuth: '749226126008-jhs808q75ioafn76o109qcuh4peav4jl.apps.googleusercontent.com',
     betaNumber: '3.0',
     windowHeight: '',
     windowWidth: '',
@@ -717,11 +717,6 @@ export default createStore({
         state.editContainer.password = false
       }
     },
-    // fetchDetailedSupplier(state, payload) {
-    //   const data = state.suppliers.find(data => data.id == payload)
-    //   const newData = { data: data, array: [], propertyName: '' }
-    //   this.commit('setTempDataContainer', newData)
-    // },
     setTempProduct(state, payload) {
       if(payload.active) {
         state.tempProduct.array = payload.array
@@ -841,8 +836,6 @@ export default createStore({
     addToSale(state) {
       const saleArr = state.sale.array
       if(saleArr == 0) {
-        // const payload = { id: 1, title: 'New sale: 001'}
-        // state.sale.array.push(payload)
         if(state.sale.active && (state.sale.minimize || state.sale.mobile)) {
           state.sale.minimize = false
           state.sale.mobile = false
@@ -918,7 +911,12 @@ export default createStore({
 
         } catch (e) {
           state.commit('unSetLoader')
-          state.commit('destroyToken') 
+          const newPayload = {
+            id: 'danger',
+            body: 'Error loading store! Please check your internet connection'
+          }
+          state.commit('showAlert', newPayload)
+          // state.commit('destroyToken') 
         }      
     },
     //OAuth signin

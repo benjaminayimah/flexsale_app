@@ -338,6 +338,10 @@ header, .right-header{
   font-weight: 700;
   font-size: 1.2rem;
   align-items: center;
+  width: 70%;
+  a {
+    flex-shrink: 0;
+  }
 }
 .noti-help{
   display: flex;

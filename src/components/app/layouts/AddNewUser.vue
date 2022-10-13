@@ -18,10 +18,6 @@
     </teleport>
     <teleport to="#add_master_body_container">
         <form id="product_form" @submit.prevent="" class="overlay-hero-form">
-            <div class="form-row justify-content-center flex" v-if="getEditContainer.active && !getEditContainer.password && getUser.id === getEditContainer.data.id && getUser.role == 1">
-                <div v-if="getStores.length > 0" class="justify-content-center align-items-center profile-pg-avatar" :class="getCurrentStore.image? 'bg-img': 'no-store-profile-large'" v-bind:style="getCurrentStore.image ? {backgroundImage: 'url('+getHostname+'/storage/'+getUserAdminID+'/'+getCurrentStore.id+'/'+getCurrentStore.image+')'} : ''">{{ !getCurrentStore.image ? computeInitials: '' }}</div>
-                <div v-else class="no-store-profile-large justify-content-center align-items-center">{{ computeInitials }}</div>
-            </div>
             <div class="form-row" v-if="!getEditContainer.password" :class="{ 'input-has-error' : validation.error && validation.errors.name }">
                 <label>Name:</label>
                 <input v-model="form.name" type="text" name="name" class="form-control" placeholder="Full name" required>
@@ -38,7 +34,7 @@
             </div>
             <div class="form-row" v-if="getUser.id !== getEditContainer.data.id && !getEditContainer.password">
                 <label>Select Store:</label>
-                <span class="sub-info">Your users (sellers) can only access the selected stores.</span>
+                <span class="sub-info">Your users (sellers) can only access the stores you grant them access to. Please select from your stores below.</span>
                 <ul>
                     <store-selected-check v-for="store in getStores" :key="store.id" v-bind:store="store" v-bind:checked="this.form.store" v-on:check="check" />
                 </ul>
@@ -83,19 +79,7 @@ export default {
     name: 'AddNewUser',
     mixins: [ validationMixin ],
     computed: {
-        ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser', 'getCurrentStore', 'getUserAdminID']),
-        computeInitials() {
-            if(this.getUser.name && this.getStores.length < 1) {
-                let name = this.getUser.name.split(' ')
-                let initial = name[0].charAt(0).toUpperCase() + (name[1] ? name[1].charAt(0).toUpperCase() : '')
-                return initial
-            }else if(this.getCurrentStore.name){
-              let name = this.getCurrentStore.name.split(' ')
-              let initial = name[0].charAt(0).toUpperCase() + (name[1] ? name[1].charAt(0).toUpperCase() : '')
-              return initial
-            }
-            return ''
-        }
+        ...mapGetters(['getToken', 'getHostname', 'getStores', 'getEditContainer', 'getUser'])
     },
     data() {
         return {

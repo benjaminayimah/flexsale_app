@@ -64,9 +64,7 @@ ul{
     margin-bottom: 20px;
     button {
         height: 52px;
-        svg{
-            margin-right: 5px;
-        }
+        gap: 5px;
     }
 }
 

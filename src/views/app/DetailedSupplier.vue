@@ -120,16 +120,7 @@ ul{
 .section{
     padding: 50px 0
 }
-.row-title{
-    text-transform: uppercase;
-    font-weight: 700;
-}
-.content-row{
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid $gray-light;
-    position: relative
-}
+
 .sup-items-count{
     color: $gray-color;
 }

@@ -101,9 +101,7 @@ export default {
     display: flex;
     button {
         height: 52px;
-        span{
-            margin-left: 5px;
-        }
+        gap: 5px;
     }
 }
 ul{
